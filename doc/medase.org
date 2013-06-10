@@ -1,0 +1,70 @@
+#+TITLE: Language Bank of Finland OAI-PMH server to mirror META-SHARE
+#+AUTHOR: Jussi Piitulainen (UHEL), Martin Matthiesen (CSC)
+#+EMAIL: jpiitula@ling.helsinki.fi, martin.matthiesen@csc.fi
+
+* Two scripts
+
+- An OAI-PMH server implements a harvesting protocol over HTTP
+
+- We have a CGI-script for this, written in Python3
+
+- Metadata is served from a static SQLite3 database file
+
+- An update is done by replacing the database file with a new version
+
+- The old database can still be accessed through a resumption token
+  for a limited time.
+
+- We have another script to update the database file from our
+  META-SHARE node, written in Python3/lxml, to be run as a cron job
+
+- *Almost* done!
+
+* The server script
+
+- The OAI-PMH server is a CGI script written in Python3
+
+- Metadata is served from a static SQLite3 database file
+
+- Resumption tokens contain the information needed to resume the
+  service
+
+- There are so few records that the resumption mechanism is not even
+  used (yet?)
+
+- Updates are atomic: create a new database file, make it current
+
+- Advertised as transient - not sure of our ability to track all
+  deletions yet
+
+* The update script
+
+- The server database remembers META-SHARE storage identifiers and
+  checksums
+
+- New OAI identifiers for META-SHARE records are based on their
+  storage identifiers but shorter
+
+- Checksum change indicates an update
+
+- META-SHARE's harvesting protocol requires login credentials, then
+  provides access to metadata that may not be public in the node
+
+- We serve published META-SHARE records as such, others as deleted
+
+- We serve META-SHARE resourceInfo, minimal Dublin Core (because
+  OAI-PMH), and (minimal?) OLAC
+
+- waiting the ability to derive corresponding CMDI directly
+
+
+* Some issues
+
+- not yet validating the META-SHARE records - needs done
+
+- DC and OLAC are flat, resourceInfo is a component architecture
+
+- a "managing node" would have all META-SHARE records - not sure of
+  the issues there
+
+- lack of resource identifiers as opposed to record identifiers

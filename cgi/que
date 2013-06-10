@@ -20,24 +20,18 @@ sys.stderr = sys.stdout # to see tracebacks from Python
 
 # --Configuration section--
 
-# OLD: Requests with a resumption token identify the repository
-# database by an arbitrary tag. Absent resumption token, the current
-# version is repositories[repositoryVersion]. Assign a new tag to a
-# new version, and let the old tag point to the old version until all
-# resumption tokens are sure to be expired.
-#
-# NEW: "current" is a symbolic link to an sqlite database named
-# <NAME>.db, sibling to "current". The <NAME> is included in a
-# resumption token but the path is the real path to "current".
+# "current" is a symbolic link to an sqlite database named <NAME>.db,
+# sibling to "current". The <NAME> is included in a resumption token
+# but the path is the real path to "current".
 
-currentLink = '/home/jpiitula/proj/medase/data/current'
+currentLink = '/fs/proj1/kieli/Meta/data/current'
 
 # At most this many records are sent at a time. Protocol specifiers
 # suggest that it is all right to send a thousand.
 
 maxRecords = 100
  
-# The URL of this server
+# The URL of this server, returned in the OAI-PMH/request element
 
 base = b"http://metalb.csc.fi/cgi-bin/que"
 
@@ -130,7 +124,7 @@ def decode(token):
     try:
         resumptionList = base64.urlsafe_b64decode(token).split(b' ')
         if len(resumptionList) != len(resumptionKeys):
-            raise Exception(('len', token, resumptionList, resumptionKeys))
+            # raise Exception(('len', token, resumptionList, resumptionKeys))
             badResumptiontoken()
             return None
         resumption = { key : value
@@ -139,8 +133,8 @@ def decode(token):
                        if value != b'' }
         # raise Exception(('built', resumption))
         if int(resumption['expire']) < now():
-            raise Exception(('expired', resumption['expire'], now()))
-            badResumptionToken()
+            # raise Exception(('expired', resumption['expire'], now()))
+            badResumptionToken('expired')
             return None
         # raise Exception(('current', resumption))
         if not resumption['version'].decode('ascii').isidentifier():
@@ -148,12 +142,14 @@ def decode(token):
             # file, conservatively limited to be like a Python
             # identifier; length is controlled by request length
             # 
-            raise Exception(('safety', token, resumption(['version'])))
+            # raise Exception(('safety', token, resumption(['version'])))
             badResumptionToken()
             return None
         # raise Exception(('through', resumption))
     except Exception as exn:
-        raise Exception(('got', exn))
+        # raise Exception(('got', exn))
+        badResumptionToken()
+        return None
     except: # got binascii.Error: incorrect padding, for one
         raise Exception('exception')
         badResumptionToken()

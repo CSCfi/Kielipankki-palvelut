@@ -1,1 +1,14 @@
 *~
+
+# The test database directory
+data/
+
+# ./out/ is a directory that ./check uses (and creates if needed) for
+# the response from the server
+out/
+
+# ./OLD/ is an old version of the system that is now
+# being made into a Git archive
+OLD/
+
+mongoose/
