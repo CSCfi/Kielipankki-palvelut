@@ -1,0 +1,670 @@
+#! /usr/bin/env python3
+# -*- mode: Python; -*-
+
+# Serves OAI-PMH 2.0 metadata over CGI from an SQLite3 database.
+# Response elements are <OAI-PMH /> as text/xml.
+
+# 2009 - 2013 Jussi Piitulainen for CLARIN, FIN-CLARIN, the
+# Language Bank of Finland at CSC, first in the Department
+# of General Linguistics, University of Helsinki, now part
+# of the Department of Modern Languages.
+
+import os, os.path, urllib.parse, sqlite3
+import time, calendar, hmac, base64
+
+import sys # for sys.stdout.buffer.write and sys.stdin.read
+
+from collections import namedtuple
+
+sys.stderr = sys.stdout # to see tracebacks from Python
+
+# --Configuration section--
+
+# OLD: Requests with a resumption token identify the repository
+# database by an arbitrary tag. Absent resumption token, the current
+# version is repositories[repositoryVersion]. Assign a new tag to a
+# new version, and let the old tag point to the old version until all
+# resumption tokens are sure to be expired.
+#
+# NEW: "current" is a symbolic link to an sqlite database named
+# <NAME>.db, sibling to "current". The <NAME> is included in a
+# resumption token but the path is the real path to "current".
+
+currentLink = '/home/jpiitula/proj/medase/data/current'
+
+# At most this many records are sent at a time. Protocol specifiers
+# suggest that it is all right to send a thousand.
+
+maxRecords = 100
+ 
+# The URL of this server
+
+base = b"http://metalb.csc.fi/cgi-bin/que"
+
+# --Library section--
+
+State = namedtuple('State',
+                   ( 'version', 'repository', 'cursor', 'secret',
+                     'effectiveRequest',
+                     'fromStamp', 'untilStamp',
+                     'sentListSize', 'leastNumber' ))
+
+# cgi.parse() failed to serve for POST, so I wrote my own. This also
+# does not die on an empty request.  Well, died with mongoose when
+# there was not even the question mark, so might die for some other
+# such silly invokation still.
+
+def parse_request():
+    many = 500
+
+    if os.environ['REQUEST_METHOD'] == 'GET':
+        request = os.environ.get('QUERY_STRING', '')
+        if len(request) > many:
+            raise ValueError('overlong request')
+    elif os.environ['REQUEST_METHOD'] == 'POST':
+        request = sys.stdin.read(many)
+        if sys.stdin.read(1):
+            raise ValueError('overlong request')
+    else:
+        raise ValueError('impossible method')
+
+    if request == '':
+        return dict()
+    else:
+        return urllib.parse.parse_qs(request,
+                                     keep_blank_values=True,
+                                     strict_parsing=True)
+
+# Time stamps and UTC
+# Protocol says to use that and that only. Adamant about that Z.
+
+ZULUFORMAT = "%Y-%m-%dT%H:%M:%SZ"
+
+def date_from_stamp(stamp):
+    return time.strftime(ZULUFORMAT, time.gmtime(stamp)).encode('utf-8')
+
+def stamp_from_date(date):
+    return calendar.timegm(time.strptime(date.decode('utf-8'), ZULUFORMAT))
+
+def now():
+    return round(time.time())
+
+def utf8(n):
+    return str(n).encode('utf-8')
+
+# Resumption tokens with a secure hash on a private key, because we
+# MUST return an error when someone sends us a resumption token that
+# did not originate with us. The protocol says so.
+
+# These two key tuples are treated as global constants. Some of the
+# resumption keys are intentionally the same as the corresponding
+# request keys.
+
+requestKeys = ( 'verb', 'resumptionToken', 'metadataPrefix',
+                'identifier', 'set', 'from', 'until' )
+
+argumentKeys = ( 'resumptionToken', 'metadataPrefix',
+                 'identifier', 'set', 'from', 'until' )
+
+resumptionKeys = ( 'verb', 'version', 'expire',
+                   'metadataPrefix', 'set', 'from', 'until',
+                   'sentListSize', 'leastNumber', 'hash' )
+
+# Get the signature of the resumption token: nine parts, ignoring the
+# possible presence of a signature in the list. In Python3, hmac and
+# base64 act on byte strings. We encode and decode here, so that the
+# rest of our code acts on strings. NO MORE! CALLER BEWARE! Clean up.
+
+def signature(resumption, key):
+    secret = hmac.new(key)
+    for k in resumptionKeys[:-1]:
+        secret.update(resumption.get(k, b''))
+    return secret.hexdigest().encode('utf-8')
+
+def encode(resumption):
+    values = ( resumption.get(k, b'') for k in resumptionKeys )
+    return base64.urlsafe_b64encode(b' '.join(values))
+
+def decode(token):
+    resumption = None
+    try:
+        resumptionList = base64.urlsafe_b64decode(token).split(b' ')
+        if len(resumptionList) != len(resumptionKeys):
+            raise Exception(('len', token, resumptionList, resumptionKeys))
+            badResumptiontoken()
+            return None
+        resumption = { key : value
+                       for key, value in zip(resumptionKeys,
+                                             resumptionList)
+                       if value != b'' }
+        # raise Exception(('built', resumption))
+        if int(resumption['expire']) < now():
+            raise Exception(('expired', resumption['expire'], now()))
+            badResumptionToken()
+            return None
+        # raise Exception(('current', resumption))
+        if not resumption['version'].decode('ascii').isidentifier():
+            # resumption['version'] is the basename of a database
+            # file, conservatively limited to be like a Python
+            # identifier; length is controlled by request length
+            # 
+            raise Exception(('safety', token, resumption(['version'])))
+            badResumptionToken()
+            return None
+        # raise Exception(('through', resumption))
+    except Exception as exn:
+        raise Exception(('got', exn))
+    except: # got binascii.Error: incorrect padding, for one
+        raise Exception('exception')
+        badResumptionToken()
+        return None
+    return resumption
+
+# bytes elements no longer have .isalnum()
+#def issafebasename(version):
+#    return ( 0 < len(version) < 40 and
+#             version[0].isalnum() and
+#             all((c.isalnum() or c == '-')
+#                 for c in version) )
+
+# OAI-PMH error elements
+
+def badArgument(*reasons):
+    message = b'''\
+      The request includes illegal arguments, is missing required
+      arguments, includes a repeated argument, or values for arguments
+      have an illegal syntax; attributes MUST NOT be provided in the
+      request element in this case'''
+    errors.extend((b'   ', b'<error code="badArgument">\n',
+                   message,
+                   b'\n   </error>\n'))
+    if reasons:
+        errorInformation(b'badArgument', reasons)
+
+def badResumptionToken(*reasons):
+    '''Also adds a badArgument, which write_result checks for before
+    trying to access the state.'''
+    message = b'''\
+      The value of the resumptionToken argument is invalid or expired'''
+    errors.extend((b'   ', b'<error code="badResumptionToken">\n',
+                   message,
+                   b'\n   </error>\n',
+                   b'   ', b'<error code="badArgument"/>\n'))
+    if reasons:
+        errorInformation(b'badResumptionToken', reasons)
+
+def badVerb(*reasons):
+    message = b'''\
+      Value of the verb argument is not a legal OAI-PMH verb, the verb
+      argument is missing, or the verb argument is repeated;
+      attributes MUST NOT be provided in the request element in this
+      case'''
+    errors.extend((b'   ', b'<error code="badVerb">\n',
+                   message,
+                   b'\n   </error>\n'))
+    if reasons:
+        errorInformation(b'badVerb', reasons)
+
+def cannotDisseminateFormat(*reasons):
+    message = b'''\
+      The metadata format identified by the value given for the
+      metadataPrefix argument is not supported by the item or by the
+      repository'''
+    errors.extend((b'   <error code="cannotDisseminateFormat">\n',
+                   message,
+                   b'\n   </error>\n'))
+    if reasons:
+        errorInformation(b'cannotDisseminateFormat', reasons)
+
+def idDoesNotExist(*reasons):
+    message = b'''\
+      The value of the identifier argument is unknown or illegal in
+      this repository'''
+    errors.extend((b'   <error code="idDoesNotExist">\n',
+                   message,
+                   b'\n   </error>\n'))
+    if reasons:
+        errorInformation(b'idDoesNotExist', reasons)
+
+def noRecordsMatch(*reasons):
+    message = b'''\
+      The combination of the values of the from, until, set and
+      metadataPrefix arguments results in an empty list'''
+    errors.extend((b'   <error code="noRecordsMatch">\n',
+                   message,
+                   b'\n   </error>\n'))
+    if reasons:
+        errorInformation(b'noRecordsMatch', reasons)
+
+def noMetadataFormats(*reasons): # This is never called!
+    message = b'''\
+      There are no metadata formats available for the specified item'''
+    errors.extend((b'   <error code="noMetadataFormats">\n',
+                   message, b'\n',
+                   b'   </error>\n'))
+    if reasons:
+        errorInformation(b'noMetadataFormats', reasons)
+
+def errorInformation(code, reasons):
+    errors.extend((b'   <error code="', code, b'">\n'))
+    errors.extend(reasons)
+    errors.extend((b'\n',
+                   b'   </error>\n'))
+
+# --Main program section--
+
+# Check the general form of the request: one verb, and that in OAI-PMH.
+
+# Check the general form of the request: each argument at most once
+# and in OAI-PMH, skipping 'verb' which was dealt with above.
+
+def check_arguments():
+
+    if 'verb' not in actualRequest:
+        badVerb(b'      missing')
+        return False
+
+    if actualRequest['verb'] not in [ ['GetRecord'], ['Identify'],
+                                      ['ListIdentifiers'],
+                                      ['ListRecords'],
+                                      ['ListMetadataFormats'],
+                                      ['ListSets'] ]:
+        badVerb(b'      unknown or repeated')
+        return False
+
+    for key in actualRequest:
+        if ( key != 'verb'
+             and ( key not in argumentKeys
+                   or len(actualRequest[key]) != 1 ) ):
+            badArgument(b'      unknown or repeated')
+            return False
+
+    return True
+
+def check_combination():
+    request = actualRequest
+    verb = request['verb'][0]
+    if ( ( verb == 'GetRecord'
+           and request.keys() == { 'verb', 'identifier',
+                                   'metadataPrefix' } )
+         or ( verb == 'Identify' and request.keys() == { 'verb' } )
+         or ( verb in { 'ListIdentifiers', 'ListRecords' }
+              and ( { 'verb', 'metadataPrefix' }
+                    <= request.keys() <=
+                    { 'verb', 'metadataPrefix', 'from', 'until', 'set' }
+                    or request.keys() == { 'verb', 'resumptionToken' } ))
+         or ( verb == 'ListMetadataFormats' )
+         or ( verb == 'ListSets' ) ):
+        return True
+    else:
+        badArgument(b'      combination')
+        return False
+
+
+def resume_state(resumption):
+    parent, link = os.path.split(os.path.realpath(currentLink))
+    version = resumption['version'].decode('ASCII')
+    name =  os.path.join(parent, version + '.db')
+    repository = sqlite3.connect(name) # crash if not there - not too good
+    repository.text_factory = bytes
+    cursor = repository.cursor()
+    cursor.execute(" select minstamp, maxstamp, secret "
+                   " from repository              ")
+    fromStamp, untilStamp, secret = cursor.fetchone()
+    if resumption['hash'] == signature(resumption, secret):
+        request = { key : value
+                    for key, value in resumption.items()
+                    if key in requestKeys }
+        if 'from' in request:
+            fromStamp = int(request['from'])
+            request['from'] = date_from_stamp(fromStamp)
+            pass
+        if 'until' in request:
+            untilStamp = int(request['until'])
+            request['until'] = date_from_stamp(untilStamp)
+            pass
+        sentListSize = int(resumption['sentListSize'])
+        leastNumber = int(resumption['leastNumber'])
+        return State(resumption['version'], repository, cursor, secret,
+                     request, fromStamp, untilStamp,
+                     sentListSize, leastNumber)
+    else:
+        badResumptionToken(b'      bad hash')
+        return None
+
+
+def set_state():
+    repository = sqlite3.connect(currentLink)
+    repository.text_factory = bytes
+    cursor = repository.cursor()
+    cursor.execute(" select minstamp, maxstamp, secret "
+                   " from repository              ")
+    fromStamp, untilStamp, secretKey = cursor.fetchone()
+    request = { key : values[0].encode('utf-8')
+                for key, values in actualRequest.items() }
+    if ( 'from' in request and 'until' in request
+         and len(request['from']) != len(request['until']) ):
+        badArgument()
+        return None
+    if 'from' in request and len(request['from']) == len('YYYY-MM-DD'):
+        request['from'] += b'T00:00:00Z'
+        pass
+    if 'until' in request and len(request['until']) == len('YYYY-MM-DD'):
+        request['until'] += b'T23:59:59Z'
+        pass
+    try:
+        if 'from' in request:
+            fromStamp = stamp_from_date(request['from'])
+        if 'until' in request:
+            untilStamp = stamp_from_date(request['until'])
+    except ValueError:
+        badArgument()
+        return None
+    if ( 'from' in request and 'until' in request
+         and fromStamp > untilStamp ):
+        badArgument()
+        return None
+    sentListSize = 0
+    leastNumber = 1
+    parent, name = os.path.split(os.path.realpath(currentLink))
+    version, extension = os.path.splitext(name)
+    return State(version.encode('ASCII'), repository, cursor, secretKey,
+                 request, fromStamp, untilStamp,
+                 sentListSize, leastNumber)
+
+def add_record():
+    '''Adds a record to response or an error to errors.'''
+    identifier = state.effectiveRequest['identifier']
+    prefix = state.effectiveRequest['metadataPrefix']
+    state.cursor.execute('''
+        select header, metadata
+        from ( select recno from ix
+               where identifier = :identifier
+               and metadataPrefix = :format
+               and setSpec = '*')
+             natural join record
+         ''', dict( identifier = identifier.decode('utf-8'),
+                    format = prefix.decode('utf-8') ))
+    result = state.cursor.fetchone()
+    if result:
+        header, metadata = result
+        response.extend((b'     <record>\n',
+                         header, b'\n',
+                         metadata, b'\n',
+                         b'     </record>\n'))
+    else:
+        state.cursor.execute(" select 1 from ix               "
+                             " where identifier = :identifier ",
+                             dict(identifier = identifier.decode('utf-8') ))
+        if state.cursor.fetchone():
+            cannotDisseminateFormat()
+        else:
+            idDoesNotExist()
+        pass
+    pass
+
+def count_records(prefix, setSpec):
+    'Returns the number of matching records in the repository.'
+    state.cursor.execute(" select count(*) from ix        "
+                         " where metadataPrefix = :prefix "
+                         "   and setSpec = :setSpec       "
+                         "   and stamp between :fromStamp  "
+                         "                 and :untilStamp ",
+                   dict(prefix = prefix.decode('utf-8'),
+                        setSpec = setSpec.decode('utf-8'),
+                        fromStamp = state.fromStamp,
+                        untilStamp = state.untilStamp))
+    return state.cursor.fetchone()[0]
+
+def fetch_records():
+    '''Fetches max matching records, if available, from least record
+    number on, but selects one more to flag its presence in the
+    repository and hence the need issue a resumption token.'''
+    setSpec = ( state.effectiveRequest['set']
+                if 'set' in state.effectiveRequest
+                else b'*' )
+    prefix = state.effectiveRequest['metadataPrefix']
+    completeListSize = count_records(prefix, setSpec)
+    state.cursor.execute(" select xno, header, metadata             "
+                         " from ( select xno, recno from ix         "
+                         "        where xno >= :leastNumber         "
+                         "          and metadataPrefix = :prefix    "
+                         "          and setSpec = :setSpec          "
+                         "          and stamp between :fromStamp    "
+                         "                        and :untilStamp   "
+                         "        order by xno                      "
+                         "        limit :maxRecords + 1 )           "
+                         "      natural join record                 "
+                         " order by xno                             ",
+                   dict(prefix = prefix.decode('utf-8'),
+                        setSpec = setSpec.decode('utf-8'),
+                        fromStamp = state.fromStamp,
+                        untilStamp = state.untilStamp,
+                        leastNumber = state.leastNumber,
+                        maxRecords = maxRecords))
+    return completeListSize, state.cursor.fetchmany(maxRecords)
+
+def add_headers():
+    '''Adds record headers to response or an error to errors. Returns
+    three numbers: added records, matching records, next matching
+    record.'''
+    total, results = fetch_records()
+    if results:
+        for number, header, metadata in results:
+            response.extend((header, b'\n'))
+        else: pass
+    else:
+        noRecordsMatch()
+    next = state.cursor.fetchone()
+    return len(results), total, (None if next is None else next[0])
+
+def add_records():
+    '''Adds records to response or an error to errors. Returns three
+    numbers added records, matching records, next matching record.'''
+    total, results = fetch_records()
+    if results:
+        for number, header, metadata in results:
+            response.extend((b'     <record>\n',
+                             header, b'\n',
+                             metadata, b'\n',
+                             b'     </record>\n'))
+        else: pass
+    else:
+        noRecordsMatch()
+    next = state.cursor.fetchone()
+    return len(results), total, (None if next is None else next[0])
+
+def fetch_sets():
+    state.cursor.execute('''
+        select count(*) from subset where setSpec != '*'
+    ''')
+    total, = state.cursor.fetchone()
+    state.cursor.execute('''
+        select sno, description from subset
+        where sno >= :least and setSpec != '*'
+        order by sno
+        limit :most + 1
+    ''', dict(least = state.leastNumber,
+              most = maxRecords))
+    return total, state.cursor.fetchmany(maxRecords)
+
+def add_sets():
+    '''Adds subset descriptions to response.'''
+    total, results = fetch_sets()
+    for number, description in results:
+        response.extend((description, b'\n'))
+    next = state.cursor.fetchone()
+    return len(results), total, (None if next is None else next[0])
+
+def add_token(sending, total, next):
+    '''Adds, if needed, a resumption token to response.'''
+    if next is None and 'resumptionToken' not in actualRequest:
+        pass
+    elif next is None and 'resumptionToken' in actualRequest:
+        response.extend((b'<resumptionToken\n',
+                         b'   completeListSize="', utf8(total),
+                         b'"\n   cursor="', utf8(state.sentListSize),
+                         b'" />\n'))
+    else:
+        expirationStamp = now() + 24000
+        resumption = { 'version' : state.version,
+                       'expire' : utf8(expirationStamp),
+                       'sentListSize' : utf8(state.sentListSize + sending),
+                       'leastNumber' : utf8(next) }
+        resumption.update(state.effectiveRequest)
+        resumption.update({ key : utf8(stamp_from_date(value))
+                            for key, value in state.effectiveRequest.items()
+                            if key in { 'from', 'until' } })
+        resumption['hash'] = signature(resumption, state.secret)
+        token = encode(resumption)
+        response.extend((b'<resumptionToken\n'
+                         b'   expirationDate="',
+                         date_from_stamp(expirationStamp),
+                         b'"\n   completeListSize="',
+                         utf8(total),
+                         b'"\n   cursor="', utf8(state.sentListSize),
+                         b'"\n>', token,
+                         b'</resumptionToken>\n'))
+        pass
+    pass
+
+def add_formats(identifier):
+    if identifier is None:
+        state.cursor.execute(" select description from format ")
+        descriptions = state.cursor.fetchall()
+    else:
+        state.cursor.execute(" select description             "
+                             " from ix natural join format    "
+                             " where identifier = :identifier "
+                             "   and setSpec = '*'            ",
+                             dict(identifier = identifier.decode('utf-8')))
+        descriptions = state.cursor.fetchall()
+        if descriptions == []:
+            # to be is to have metadata
+            idDoesNotExist()
+            return
+        pass
+    for description, in descriptions:
+        response.extend((description, b'\n'))
+    else: pass
+    pass
+
+def write_result():
+    '''Writes the result in stdout. Either writes response, or writes
+    errors. Writes the effective request as attributes unless errors
+    have the protocol prohibit it.'''
+    write = sys.stdout.buffer.write
+
+    front = [b'<?xml version="1.0" encoding="UTF-8"?>\n'
+             b'<OAI-PMH xmlns='
+             b'"http://www.openarchives.org/OAI/2.0/"\n'
+             b'    xmlns:xsi='
+             b'"http://www.w3.org/2001/XMLSchema-instance"\n'
+             b'    xsi:schemaLocation='
+             b'"http://www.openarchives.org/OAI/2.0/\n'
+             b'            http://www.openarchives.org/'
+             b'OAI/2.0/OAI-PMH.xsd">\n',
+             b'   '
+             b'<responseDate>', date_from_stamp(now()),
+             b'</responseDate>\n']
+
+    front.append(b'   <request')
+    if not any( (error.startswith(b'<error code="badArgument"') or
+                 error.startswith(b'<error code="badVerb"'))
+                for error in errors ):
+        for key, value in state.effectiveRequest.items():
+            front.extend((b'\n      ', key.encode('utf-8'),
+                          b'="', value, b'"'))
+        else: pass
+    else: pass
+    front.extend((b'>', base, b'</request>\n'))
+
+    back = []
+
+    if errors:
+        content = errors
+    else:
+        content = response
+        front.extend((b'   <', verb.encode('utf-8'), b'>\n'))
+        back.extend((b'   </', verb.encode('utf-8'), b'>\n'))
+        pass
+
+    back.append(b'</OAI-PMH>\n')
+
+    write(b'Content-type: text/xml; charset="utf-8"\n\n')
+
+    #write(currentLink.encode('ASCII'))
+    #write(b' ==>\n')
+    #write(os.path.realpath(currentLink).encode('ASCII'))
+    #write(b'\n')
+
+    for matter in front: write(matter)
+    for matter in content: write(matter)
+    for matter in back: write(matter)
+
+    pass
+
+
+def initialize():
+    '''Parses and returns verb and state out of actualRequest. One or
+    both may be None. Then there is at least one error.'''
+    if check_arguments() and check_combination():
+        verb = actualRequest['verb'][0]
+    else:
+        return None, None
+
+    if 'resumptionToken' in actualRequest:
+        # raise Exception(('token spotted', actualRequest))
+        token = actualRequest['resumptionToken'][0]
+        resumption = decode(token.encode('utf-8'))
+        if resumption:
+            state = resume_state(resumption)
+        else:
+            badResumptionToken(b'      broken token')
+            return None, None
+    else:
+        state = set_state()
+
+    return verb, state
+
+def execute():
+    #( repositoryVersion, repository, cursor, secretKey,
+    #  effectiveRequest, fromStamp, untilStamp,
+    #  sentListSize, leastNumber ) = state
+
+    # Now there are no errors, the verb and arguments go together, and
+    # there is an open connection to a version of the repository.
+
+    if verb == 'GetRecord':
+        add_record()
+    elif verb == 'Identify':
+        state.cursor.execute('select identification from repository')
+        identity, = state.cursor.fetchone()
+        response.extend((identity, b'\n'))
+    elif verb == 'ListIdentifiers' :
+        sending, total, next = add_headers()
+        add_token(sending, total, next)
+    elif verb == 'ListRecords':
+        sending, total, next = add_records()
+        add_token(sending, total, next)
+    elif verb == 'ListMetadataFormats':
+        add_formats(state.effectiveRequest.get('identifier'))
+    elif verb == 'ListSets':
+        sending, total, next = add_sets()
+        add_token(sending, total, next)
+        pass
+
+# Keep two lists, one of the response elements that go in <Verb /> if
+# there are no errors, and one of error elements.
+
+response, errors = [], []
+
+try:
+    actualRequest = parse_request()
+except ValueError:
+    actualRequest = {}
+    badArgument(b'      parse failed')
+
+verb, state = initialize()
+if not errors: execute()
+write_result()
