@@ -20,7 +20,7 @@
         </xsl:template>
         <xsl:template match ="@*" >
 			<xsl:if test="local-name() = 'lang'">
-				<xsl:attribute name ="{local-name()}">
+				<xsl:attribute name ="xml:lang">
 					<xsl:value-of select ="." />
 				</xsl:attribute>
 			</xsl:if>

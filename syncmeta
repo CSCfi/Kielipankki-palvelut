@@ -31,7 +31,7 @@ from tempfile import NamedTemporaryFile as NamedFile
 from lxml import etree
 import hashlib, json, os.path, shutil, sqlite3
 
-dbparent = '/fs/proj1/kieli/Meta/data/'
+dbparent = '/fs/proj1/kieli/Next/Meta/data/'
 # dbparent/current -> dbparent/mdxxxxxx.db (before)
 # dbparent/current -> dbparent/mdyyyyyy.db (after)
 
@@ -52,7 +52,7 @@ metasharenode = 'http://metashare.csc.fi'
 
 # There will be an XSL Transform for each metadata prefix
 cmditransform = etree.XSLT(etree.parse('xsl/meta-cmdi.xsl')) # partial! now
-cmdjtransform = etree.XSLT(etree.parse('xsl/meta-cmdi.xsl')) # the remains.
+cmdjtransform = etree.XSLT(etree.parse('xsl/meta-cmdj.xsl')) # the remains.
 coretransform = etree.XSLT(etree.parse('xsl/meta-info.xsl'))
 infotransform = etree.XSLT(etree.parse('xsl/meta-info.xsl'))
 olactransform = etree.XSLT(etree.parse('xsl/meta-olac.xsl'))
@@ -392,7 +392,7 @@ def makeInfo(new, doc, deleted):
 def makeCMDI(new, doc, deleted):
     '''Returns the components of a CMDI record as a dict to use in a
     database insertion statement for record or ix.'''
-    cmd = cmditransform(doc) # cmdjtransform -> missing root??
+    cmd = cmdjtransform(cmditransform(doc)) # from Athens
     xxx, = cmd.xpath('attribute::xsi:schemaLocation',
                      namespaces =
                      dict(xsi = 'http://www.w3.org/2001/XMLSchema-instance'))

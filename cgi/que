@@ -24,7 +24,7 @@ sys.stderr = sys.stdout # to see tracebacks from Python
 # sibling to "current". The <NAME> is included in a resumption token
 # but the path is the real path to "current".
 
-currentLink = '/fs/proj1/kieli/Meta/data/current'
+currentLink = '/fs/proj1/kieli/Next/Meta/data/current'
 
 # At most this many records are sent at a time. Protocol specifiers
 # suggest that it is all right to send a thousand.

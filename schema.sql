@@ -39,7 +39,7 @@ on ix(setSpec, metadataPrefix, recno, stamp);
 
 
 -- If sourcename is 'http://metashare.csc.fi', identifier consists of
--- 'sh', then the last six characters of sourceid, then the number of
+-- 'sh', then the last four characters of sourceid, then the number of
 -- older such identifiers in the database in decimal (often 0).
 
 CREATE TABLE origin
@@ -72,11 +72,11 @@ select '"jupinaa"',
 	 || '>'
 	 || '<scheme>oai</scheme>'
 	 || '<repositoryIdentifier>'
-	 || 'metashare.csc.fi'	
+	 || 'kielipankki.fi'	
 	 || '</repositoryIdentifier>'
 	 || '<delimiter>:</delimiter>'
 	 || '<sampleIdentifier>'
-	 || 'oai:metashare.csc.fi:sh31415'
+	 || 'oai:kielipankki.fi:sh31415'
 	 || '</sampleIdentifier>'
 	 || '</oai-identifier>'
 	 ||'</description>',
