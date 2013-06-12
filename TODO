@@ -53,3 +53,10 @@ response with badArgument and badResumptionToken error elements.
 2013-06-10 Trying to use cmdjtransform(cmditransform(doc)) in
 syncmeta, getting document tree not initialized missing root but those
 two transforms were meant to be run in sequence what now?
+
+2013-06-12 OAI identifiers MUST be URL-encoded - we must use the
+colons but then we must encode them because they must not be there
+even though the whole query must or must it be URL-encoded - sigh
+(Encode a colon as %3A.) Except curl at least seems to do the right
+thing either way - oai%3Akielipankki.fi%3Ash9e580 works the same as
+oai:kielipankki.fi:sh9e580 - write tests for this anyway.

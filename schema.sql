@@ -57,7 +57,17 @@ on origin(sourcename, sourceid);
 
 INSERT INTO repository(secret, identification, minstamp, maxstamp)
 select '"jupinaa"',
-	 '<description>'
+         '<repositoryName>Language Bank of Finland</repositoryName>'
+	 || '<baseURL>http://metalb.csc.fi/cgi-bin/que</baseURL>'
+	 || '<protocolVersion>2.0</protocolVersion>'
+	 || '<earliestDatestamp>2013-05-31T23:59:00Z'
+	 || '</earliestDatestamp>'
+	 || '<deletedRecord>transient</deletedRecord>'
+	 || '<granularity>YYYY-MM-DDThh:mm:ssZ'
+	 || '</granularity>'
+	 || '<adminEmail>jpiitula@ling.helsinki.fi</adminEmail>'
+	 || '<adminEmail>ling@csc.fi</adminEmail>'
+	 || '<description>'
 	 || '<oai-identifier'
 	 || ' '
 	 || 'xmlns='
