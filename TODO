@@ -60,3 +60,6 @@ even though the whole query must or must it be URL-encoded - sigh
 (Encode a colon as %3A.) Except curl at least seems to do the right
 thing either way - oai%3Akielipankki.fi%3Ash9e580 works the same as
 oai:kielipankki.fi:sh9e580 - write tests for this anyway.
+
+2013-06-13 Hide diagnostic output (invalidity reports) behind an
+option because otherwise cron sends email every time. Martin said so.
