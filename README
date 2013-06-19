@@ -23,3 +23,5 @@ update the metadata database to mirror changes in a META-SHARE node.
 ./README) this document
 
 ./TODO) known things to do, not necessarily exhaustive
+
+./odds/) contents may or may not become part of the project
