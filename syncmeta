@@ -32,7 +32,7 @@ from lxml import etree
 import hashlib, json, os.path, shutil, sqlite3
 from sys import stderr
 
-dbparent = '/fs/proj1/kieli/Next/Meta/data/'
+dbparent = '/home/u1/jpiitula/foo/Meta/data/'
 # dbparent/current -> dbparent/mdxxxxxx.db (before)
 # dbparent/current -> dbparent/mdyyyyyy.db (after)
 
@@ -353,8 +353,8 @@ def makeheader(identifier, ztime, sets, deleted):
     header = ( '<header{deleted}>'
                '<identifier>{identifier}'
                '</identifier>'
-               '<dateStamp>{ztime}'
-               '</dateStamp>'
+               '<datestamp>{ztime}'
+               '</datestamp>'
                '</header>' )
     return header.format(deleted = ( ' status="deleted"'
                                      if deleted else '' ),
