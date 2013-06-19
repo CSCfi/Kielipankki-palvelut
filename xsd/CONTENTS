@@ -1,0 +1,49 @@
+# META-SHARE CMDI profile schema documents named using the last four
+# digits in the official names. (And modified to be able to use the
+# email pattern in xsltproc.)
+
+# The META-SHARE schema document tree downloaded recursively from the
+# official schema location. (And copied as UHEL and modified to be
+# able to use the email pattern in xsltproc.)
+
+# imported by META-SHARE CMDI schemas to define xml:lang
+# this is a living version of the schema
+( cd xsd/w3/2001
+  curl -O http://www.w3.org/2001/xml.xsd )
+xmlcatalog --noout --add rewriteURI \
+  http://www.w3.org/2001/xml.xsd \
+  w3/2001/xml.xsd \
+  xsd/catalog
+
+# imported by Dublin Core to define xml:lang
+# this is a persistent version of the schema
+( cd xsd/w3/2001/03
+  curl -O http://www.w3.org/2001/03/xml.xsd )
+xmlcatalog --noout --add rewriteURI \
+  http://www.w3.org/2001/03/xml.xsd \
+  w3/2001/03/xml.xsd \
+  xsd/catalog
+
+curl -o xsd/oai/OAI-PMH.xsd http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd
+( cd xsd/oai
+  curl -O http://www.openarchives.org/OAI/2.0/oai_dc.xsd )
+
+( cd xsd/dc # imported by oai_dc.xsd
+  curl -O http://dublincore.org/schemas/xmls/simpledc20021212.xsd )
+xmlcatalog --noout --add rewriteURI \
+  http://dublincore.org/schemas/xmls/simpledc20021212.xsd \
+  dc/simpledc20021212.xsd \
+  xsd/catalog
+
+curl -o xsd/olac/olac.xsd http://www.language-archives.org/OLAC/1.1/olac.xsd
+( cd xsd/olac # these are imported by olac.xsd
+  for f in dcterms \
+           olac-discourse-type \
+           olac-language \
+           olac-linguistic-field \
+           olac-linguistic-type \
+           olac-role
+  do
+     curl -O http://www.language-archives.org/OLAC/1.1/$f.xsd
+  done )
+

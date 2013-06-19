@@ -18,7 +18,11 @@ update the metadata database to mirror changes in a META-SHARE node.
 
 ./xsl/) auxiliary transforms used by ./syncmeta, ./check, ...
 
-./xsd/) relevant XML schemas
+./xsd/) relevant XML schemas - with XML_CATALOG_FILES=xsd/catalog,
+        cache relevant schemas (rewriteURI, relative to xsd/) and
+        xmllint will then use the local schema documents (caching the
+        W3 xml namespace schema made the difference between 15000 and
+        50 milliseconds per META-SHARE CMDI document validation) -
 
 ./README) this document
 

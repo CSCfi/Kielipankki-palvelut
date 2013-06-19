@@ -63,3 +63,6 @@ oai:kielipankki.fi:sh9e580 - write tests for this anyway.
 
 2013-06-13 Hide diagnostic output (invalidity reports) behind an
 option because otherwise cron sends email every time. Martin said so.
+
+2013-06-19 ListRecords with oai_dc produces META-SHARE format!? (from
+the current http://metalb...quetest)
