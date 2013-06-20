@@ -65,4 +65,12 @@ oai:kielipankki.fi:sh9e580 - write tests for this anyway.
 option because otherwise cron sends email every time. Martin said so.
 
 2013-06-19 ListRecords with oai_dc produces META-SHARE format!? (from
-the current http://metalb...quetest)
+the current http://metalb...quetest) - oh yes, syncmeta was coded to
+do that - fixed but not yet live - meta-core.xsl needs replaced anyway
+
+2013-06-20 Should follow all manner of guidelines for OLAC and then
+for DC like so <http://www.language-archives.org/NOTE/usage.html>
+
+2013-06-20 Needs to remove authentication information from the Git
+repository aka lose all history probably - create a separate
+configuration file or two after all

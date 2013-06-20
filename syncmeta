@@ -54,7 +54,7 @@ metasharenode = 'http://metashare.csc.fi'
 # There will be an XSL Transform for each metadata prefix
 cmditransform = etree.XSLT(etree.parse('xsl/meta-cmdi.xsl')) # partial! now
 cmdjtransform = etree.XSLT(etree.parse('xsl/meta-cmdj.xsl')) # the remains.
-coretransform = etree.XSLT(etree.parse('xsl/meta-info.xsl'))
+coretransform = etree.XSLT(etree.parse('xsl/meta-core.xsl'))
 infotransform = etree.XSLT(etree.parse('xsl/meta-info.xsl'))
 olactransform = etree.XSLT(etree.parse('xsl/meta-olac.xsl'))
 

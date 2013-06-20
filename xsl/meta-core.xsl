@@ -8,7 +8,6 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc
 			  http://www.openarchives.org/OAI/2.0/oai_dc.xsc">
-    <TODO/>
     <dc:title>
       <xsl:value-of
 	  select="descendant::info:resourceName"/>
