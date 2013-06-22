@@ -2,12 +2,17 @@
     version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-  <xsl:template match="/">
-    <metadata>
-      <xsl:copy>
-	<xsl:apply-templates select="@* | node()"/>
-      </xsl:copy>
-    </metadata>
+  <xsl:output method="xml" version="1.0"
+	      encoding="UTF-8"
+	      omit-xml-declaration="yes"/>
+
+  <!-- Copy with explicit namespace prefix for OAI-PMH -->
+
+  <xsl:template match="info:resourceInfo"
+		xmlns:info="http://www.ilsp.gr/META-XMLSchema">
+    <info:resourceInfo>
+      <xsl:apply-templates select="@* | node()"/>
+    </info:resourceInfo>
   </xsl:template>
 
   <xsl:template match="@* | node()">

@@ -57,6 +57,7 @@ cmdjtransform = etree.XSLT(etree.parse('xsl/meta-cmdj.xsl')) # the remains.
 coretransform = etree.XSLT(etree.parse('xsl/meta-core.xsl'))
 infotransform = etree.XSLT(etree.parse('xsl/meta-info.xsl'))
 olactransform = etree.XSLT(etree.parse('xsl/meta-olac.xsl'))
+wrap = etree.XSLT(etree.parse('xsl/wrap.xsl'))
 
 # schema-invalid META-SHARE records will be served as "deleted"
 infoschema = etree.XMLSchema(etree.parse('xsd/META-XMLSchema/UHEL/'
@@ -367,7 +368,7 @@ def makeCore(new, doc, deleted):
     if deleted:
         metadata = ''
     else:
-        metadata = coretransform(doc)
+        metadata = wrap(coretransform(doc))
         metadata = etree.tostring(metadata, encoding=str)
     ztime, stamp = now()
     header = makeheader(new, ztime, (), deleted)
@@ -384,7 +385,7 @@ def makeOLAC(new, doc, deleted):
     if deleted:
         metadata = ''
     else:
-        metadata = olactransform(doc)
+        metadata = wrap(olactransform(doc))
         metadata = etree.tostring(metadata, encoding=str)
     ztime, stamp = now()
     header = makeheader(new, ztime, (), deleted)
@@ -401,7 +402,7 @@ def makeInfo(new, doc, deleted):
     if deleted:
         metadata = ''
     else:
-        metadata = infotransform(doc)
+        metadata = wrap(infotransform(doc))
         metadata = etree.tostring(metadata, encoding=str)
     ztime, stamp = now()
     header = makeheader(new, ztime, (), deleted)
@@ -424,7 +425,7 @@ def makeCMDI(new, doc, deleted):
     prefix = 'cmdi{}'.format(xxx[-8:-4])
     metadata = ( ''
                  if deleted
-                 else etree.tostring(cmd, encoding=str) )
+                 else etree.tostring(wrap(cmd), encoding=str) )
     ztime, stamp = now()
     header = makeheader(new, ztime, (), deleted)
     return dict(identifier = new,
