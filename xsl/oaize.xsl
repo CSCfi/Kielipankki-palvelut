@@ -2,8 +2,8 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:oai="http://www.openarchives.org/OAI/2.0/"
 
-    xsd:targetNamespace="http://www.openarchives.org/OAI/2.0/"
-    xsd:elementFormDefault="qualified"
+    targetNamespace="http://www.openarchives.org/OAI/2.0/"
+    elementFormDefault="qualified"
 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xsl:version="1.0">

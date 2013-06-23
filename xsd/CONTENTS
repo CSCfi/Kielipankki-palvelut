@@ -35,10 +35,14 @@ xmlcatalog --noout --add rewriteURI \
   dc/simpledc20021212.xsd \
   xsd/catalog
 
+# dc, dcmitype, olac-extension added validating a record required them
 curl -o xsd/olac/olac.xsd http://www.language-archives.org/OLAC/1.1/olac.xsd
-( cd xsd/olac # these are imported by olac.xsd
-  for f in dcterms \
+( cd xsd/olac # imported by olac.xsd
+  for f in dc \
+           dcterms \
+           dcmitype \
            olac-discourse-type \
+	   olac-extension \
            olac-language \
            olac-linguistic-field \
            olac-linguistic-type \
@@ -47,3 +51,18 @@ curl -o xsd/olac/olac.xsd http://www.language-archives.org/OLAC/1.1/olac.xsd
      curl -O http://www.language-archives.org/OLAC/1.1/$f.xsd
   done )
 
+# This required mongoose (or something) and a local que;
+# the resulting schema is intended to be OAI-PMH/OLAC.
+curl 'http://localhost:31415/que?verb=ListMetadataFormats' |
+xsltproc --stringparam prefix olac xsl/oaize.xsl - |
+xmllint --format - > xsd/OAI-olac.xsd
+
+xmlcatalog --noout --add rewriteURI \
+http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd \
+oai/OAI-PMH.xsd \
+xsd/catalog
+
+xmlcatalog --noout --add rewriteURI \
+http://www.language-archives.org/OLAC/1.1/olac.xsd \
+olac/olac.xsd \
+xsd/catalog
