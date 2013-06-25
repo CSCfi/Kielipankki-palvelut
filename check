@@ -149,6 +149,7 @@ echo @ Resume ListRecords with bogus token
 call "verb=ListRecords&resumptionToken=B0GuS"
 inhead -F '200 OK'
 inbody -F '<error'
+validate xsd/oai/OAI-PMH.xsd
 cp out/body out/bogus
 
 echo @ GetRecord with existing identifier
@@ -160,6 +161,7 @@ do
     call "verb=GetRecord&identifier=$IDENT&metadataPrefix=olac"
     inhead -F '200 OK'
     inbody -F '<record>'
+    validate xsd/OAI-olac.xsd
     break
 done
 # TODO: above, find a deleted record if any, and non-deleted
@@ -181,6 +183,7 @@ do
     notinbody -F '<metadata>'
     notinbody -F '<error'
     notinbody -F Exception:
+    validate xsd/OAI-olac.xsd
 done
 
 # Wonder what it should be when resumption calls use a different verb
@@ -202,6 +205,8 @@ do
     inbody -E '<metadata|deleted'
     notinbody -F '<error'
     notinbody -F Exception:
+    validate xsd/OAI-olac.xsd
 done
+echo '!FIX bogus language code "-" so fix in META-SHARE'
 
 clean
