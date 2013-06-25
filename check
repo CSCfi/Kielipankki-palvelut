@@ -150,7 +150,7 @@ inhead -F '200 OK'
 while xsltproc xsl/OAItoken.xsl out/body | grep -q 'resumptionToken=.'
 do
     TOKEN=$(xsltproc xsl/OAItoken.xsl out/body)
-    echo "$TOKEN"
+    echo "@ - ${TOKEN:0:20}...${TOKEN:0-5}"
     call "verb=ListIdentifiers&$TOKEN"
     inhead -F '200 OK'
     inbody -F '<header>'
@@ -170,7 +170,7 @@ inbody -E '<metadata|deleted'
 while xsltproc xsl/OAItoken.xsl out/body | grep -q 'resumptionToken=.'
 do
     TOKEN=$(xsltproc xsl/OAItoken.xsl out/body)
-    echo "$TOKEN"
+    echo "@ - ${TOKEN:0:20}...${TOKEN:0-5}"
     call "verb=ListRecords&$TOKEN"
     inhead -F '200 OK'
     inbody -F '<record>'
