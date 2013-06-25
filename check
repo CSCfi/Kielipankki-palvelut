@@ -12,6 +12,8 @@ GET=
 mongoose/mongoose -r ./cgi -p $PORT -C '**/cgi/que' 2>&1 & sleep 1
 SERVER=$!
 
+export XML_CATALOG_FILES=xsd/catalog
+
 mkdir --parents out
 
 clean () {
@@ -61,6 +63,15 @@ notinbody () {
     fi
 }
 
+validate () {
+    # stderr redirection suppresses "out/body validates"
+    # when succesful but also the useful output when not :/
+    if xmllint --noout --schema "$@" out/body 2> /dev/null
+    then echo "@ - validates with $@"
+    else echo "!FAILS to validate with $@"
+    fi
+}
+
 # With -Ee, ERR traps when there is an error, and when something
 # returns non-zero that is not otherwise handled appropriately.
 trap clean ERR
@@ -74,51 +85,64 @@ curl $GET \
     "http://localhost:$PORT/que"
 inhead -F '200 OK'
 inbody -F '<error code='
+validate xsd/oai/OAI-PMH.xsd
 
 echo @ question mark but no query
 call ''
 inhead -F '200 OK'
 inbody -F '<error code='
+validate xsd/oai/OAI-PMH.xsd
 
 echo @ Identify
 call verb=Identify
 inhead -F '200 OK'
 inbody -F '<Identify>'
 notinbody -F '<error'
+validate xsd/oai/OAI-PMH.xsd
+echo '!FIX order of elements must be different'
+cp out/body out/Identify
 
 echo @ ListMetadataFormats
 call verb=ListMetadataFormats
 inhead -F '200 OK'
 inbody -F '<ListMetadataFormats>'
 notinbody -F '<error'
+validate xsd/oai/OAI-PMH.xsd
 
 echo @ ListIdentifiers, no format
 call verb=ListIdentifiers
 inhead -F '200 OK'
 notinbody -F '<ListIdentifiers>'
 inbody -F '<error code='
+validate xsd/oai/OAI-PMH.xsd
 
 echo @ ListIdentifiers, OLAC
 call "verb=ListIdentifiers&metadataPrefix=olac"
 inhead -F '200 OK'
 inbody -F '<ListIdentifiers>'
 notinbody -F '<error>'
+validate xsd/OAI-olac.xsd
 
 echo @ ListRecords, OLAC
 call "verb=ListRecords&metadataPrefix=olac"
 inhead -F '200 OK'
 inbody -F '<ListRecords>'
 notinbody -F '<error>'
+validate xsd/OAI-olac.xsd
 
 # Exercises a bug in www/que at 2013-05-21, see TODO
 echo @ ListSets
 call verb=ListSets
 inhead -F '200 OK'
+validate xsd/oai/OAI-PMH.xsd
+cp out/body out/ListSets
+echo '!FIX there must be a set element - oh well'
 
-echo @ GetRecord with bogus identifier
+echo @ GetRecord with bogus identifier, OLAC
 call "verb=GetRecord&identifier=oai:example.com:nsr&metadataPrefix=olac"
 inhead -F '200 OK'
 inbody -F '<error'
+validate xsd/oai/OAI-PMH.xsd
 
 # Exercises a bug in www/que at 2013-06-03, see TODO
 echo @ Resume ListRecords with bogus token
