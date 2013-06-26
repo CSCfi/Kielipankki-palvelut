@@ -32,24 +32,12 @@ from lxml import etree
 import hashlib, json, os.path, shutil, sqlite3
 from sys import stderr
 
-dbparent = '/home/u1/jpiitula/foo/Meta/data/'
-# dbparent/current -> dbparent/mdxxxxxx.db (before)
-# dbparent/current -> dbparent/mdyyyyyy.db (after)
+from syncmetaconf import dbparent, oaiprefix, stemsize
+from syncmetaconf import metasharenode, syncuser
 
-loginURL     = 'http://metashare.csc.fi/login/'
-inventoryURL = 'http://metashare.csc.fi/sync?sync_protocol=1.0'
-recordURL    = 'http://metashare.csc.fi/sync/{}/metadata/'
-
-syncuser = dict(username = 'metalb_syncuser961',
-                password = '!This12Should94Work44As#Password')
-
-# a new oai identifier uses this many characters from the end of the
-# storage identifier
-stemsize = 4
-
-# protocol, plus "sh" for "share", then that stem
-oaiprefix = 'oai:kielipankki.fi:sh'
-metasharenode = 'http://metashare.csc.fi'
+loginURL     = metasharenode + '/login/'
+inventoryURL = metasharenode + '/sync?sync_protocol=1.0'
+recordURL    = metasharenode + '/sync/{}/metadata/'
 
 # There will be an XSL Transform for each metadata prefix
 cmditransform = etree.XSLT(etree.parse('xsl/meta-cmdi.xsl')) # partial! now
