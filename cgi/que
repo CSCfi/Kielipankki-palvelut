@@ -20,20 +20,11 @@ sys.stderr = sys.stdout # to see tracebacks from Python
 
 # --Configuration section--
 
-# "current" is a symbolic link to an sqlite database named <NAME>.db,
-# sibling to "current". The <NAME> is included in a resumption token
-# but the path is the real path to "current".
-
-currentLink = '/home/u1/jpiitula/foo/Meta/data/current'
-
-# At most this many records are sent at a time. Protocol specifiers
-# suggest that it is all right to send a thousand.
-
-maxRecords = 3 # 100
- 
-# The URL of this server, returned in the OAI-PMH/request element
-
-base = b"http://metalb.csc.fi/cgi-bin/que"
+# path/current -> path/xxx.db gives both the current database and the
+# path were a previous database may be found; base is the URI of the
+# server itself, returned in OAI-PMH resposnses; maxRecords gives the
+# max number of records sent in one response.
+from queconf import currentLink, base, maxRecords
 
 # --Library section--
 

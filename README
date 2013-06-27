@@ -6,6 +6,11 @@ update the metadata database to mirror changes in a META-SHARE node.
 ./cgi/que) The OAI-PMH metadata server, configured to serve metadata
 	   from an SQLite3 database file data/current -> data/db*.db
 
+./cgi/queconf.{skel,py}) Configuration: .skel is tracked, .py is
+           imported but not tracked. To set up a local environment,
+           copy .skel as .py and edit at least the path to the
+           current database link.
+
 ./fresh) creates and populates with some metadata a fresh database
            file, assuming ./syncmeta is configured to mirror a
            META-SHARE note with some content

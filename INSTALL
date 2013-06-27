@@ -1,8 +1,8 @@
-(Preliminary instructions 2013-06-13)
+(Preliminary instructions 2013-06-27)
 
 (1) Edit
 
-    * cgi/que
+    * cgi/queconf.py (initially copy cgi/queconf.skel)
     * ./fresh
     * ./syncmeta
 
@@ -11,7 +11,8 @@
 
 (2) $ ./fresh
 
-(3) Copy (or move) cgi/que to be run as a CGI script.
+(3) Copy (or move) cgi/que (with cgi/queconf.py) to be run as a CGI
+    script.
 
 Later:
 
