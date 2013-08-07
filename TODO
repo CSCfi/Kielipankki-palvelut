@@ -2,10 +2,6 @@ When the path to ./data/current in ./cgi/que is misconfigured, the
 result is a server error (good) with garbage HTTP headers (really
 Python stacktrace).
 
-ListSets 2013-05-22: returns ...<ListSets></ListSets> but I fear it
-might need to be an <error> element instead when there are no sets; I
-do consider that silly but IME OAI-PMH tends to be that way.
-
 works: mongoose/mongoose -r ./www -C '**/cgi/que' &
 below: mongoose/mongoose -r www -C '**/que' &
 Why should that be?

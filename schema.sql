@@ -169,3 +169,10 @@ union select
 	 || 'http://www.clarin.eu/cmd/'
 	 || '</metadataNamespace>'
 	 || '</metadataFormat>';
+
+insert into subset(setSpec, sno, description)
+select /* because there must be a set if there are sets */
+'empty', 1, '<set>'
+	 || '<setSpec>empty</setSpec>'
+	 || '<setName>The intentionally empty set</setName>'
+	 || '</set>';
