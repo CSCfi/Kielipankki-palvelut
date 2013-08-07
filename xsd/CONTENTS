@@ -35,6 +35,13 @@ xmlcatalog --noout --add rewriteURI \
   dc/simpledc20021212.xsd \
   xsd/catalog
 
+( cd xsd/oai
+  curl -O http://www.openarchives.org/OAI/2.0/oai-identifier.xsd )
+xmlcatalog --noout --add rewriteURI \
+  http://www.openarchives.org/OAI/2.0/oai-identifier.xsd \
+  oai/oai-identifier.xsd \
+  xsd/catalog
+
 # dc, dcmitype, olac-extension added validating a record required them
 curl -o xsd/olac/olac.xsd http://www.language-archives.org/OLAC/1.1/olac.xsd
 ( cd xsd/olac # imported by olac.xsd
