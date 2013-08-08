@@ -27,6 +27,10 @@ xmlcatalog --noout --add rewriteURI \
 curl -o xsd/oai/OAI-PMH.xsd http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd
 ( cd xsd/oai
   curl -O http://www.openarchives.org/OAI/2.0/oai_dc.xsd )
+xmlcatalog --noout --add rewriteURI \
+  http://www.openarchives.org/OAI/2.0/oai_dc.xsd \
+  oai/oai_dc.xsd \
+  xsd/catalog
 
 ( cd xsd/dc # imported by oai_dc.xsd
   curl -O http://dublincore.org/schemas/xmls/simpledc20021212.xsd )
@@ -83,6 +87,11 @@ xsd/catalog
 xmlcatalog --noout --add rewriteURI \
 http://www.language-archives.org/OLAC/1.1/olac.xsd \
 olac/olac.xsd \
+xsd/catalog
+
+xmlcatalog --noout --add rewriteURI \
+http://metashare.ilsp.gr/META-XMLSchema/v3.0/META-SHARE-Resource.xsd \
+xsd/META-XMLSchema/UHEL/META-SHARE-Resource.xsd \
 xsd/catalog
 
 # xsd/multi.skel is a template to work around xmllint limitation when

@@ -7,4 +7,6 @@
   <rewriteURI uriStartString="http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" rewritePrefix="oai/OAI-PMH.xsd"/>
   <rewriteURI uriStartString="http://www.language-archives.org/OLAC/1.1/olac.xsd" rewritePrefix="olac/olac.xsd"/>
   <rewriteURI uriStartString="http://www.openarchives.org/OAI/2.0/oai-identifier.xsd" rewritePrefix="oai/oai-identifier.xsd"/>
+  <rewriteURI uriStartString="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" rewritePrefix="oai/oai_dc.xsd"/>
+  <rewriteURI uriStartString="http://metashare.ilsp.gr/META-XMLSchema/v3.0/META-SHARE-Resource.xsd" rewritePrefix="META-XMLSchema/UHEL/META-SHARE-Resource.xsd"/>
 </catalog>

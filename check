@@ -115,19 +115,27 @@ notinbody -F '<ListIdentifiers>'
 inbody -F '<error code='
 validate xsd/oai/OAI-PMH.xsd
 
-echo @ ListIdentifiers, OLAC
-call "verb=ListIdentifiers&metadataPrefix=olac"
-inhead -F '200 OK'
-inbody -F '<ListIdentifiers>'
-notinbody -F '<error>'
-validate xsd/oai/PMH-olac.xsd
+for prefix in oai_dc olac info
+do
+   echo @ ListIdentifiers: $prefix
+   call "verb=ListIdentifiers&metadataPrefix=$prefix"
+   inhead -F '200 OK'
+   inbody -F '<ListIdentifiers>'
+   notinbody -F '<error>'
+   validate xsd/oai/PMH-$prefix.xsd
+   cp out/body out/Listidentifiers-$prefix
+done
 
-echo @ ListRecords, OLAC
-call "verb=ListRecords&metadataPrefix=olac"
-inhead -F '200 OK'
-inbody -F '<ListRecords>'
-notinbody -F '<error>'
-validate xsd/oai/PMH-olac.xsd
+for prefix in oai_dc olac info
+do
+   echo @ ListRecords: $prefix
+   call "verb=ListRecords&metadataPrefix=$prefix"
+   inhead -F '200 OK'
+   inbody -F '<ListRecords>'
+   notinbody -F '<error>'
+   validate xsd/oai/PMH-$prefix.xsd
+   cp out/body out/ListRecords-$prefix
+done
 
 # There is a set in order for this to work
 echo @ ListSets
