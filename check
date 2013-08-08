@@ -98,7 +98,7 @@ call verb=Identify
 inhead -F '200 OK'
 inbody -F '<Identify>'
 notinbody -F '<error'
-validate xsd/oai/PMH-with-identifier.xsd
+validate xsd/oai/PMH-identifier.xsd
 # cp out/body out/Identify
 
 echo @ ListMetadataFormats
@@ -120,21 +120,21 @@ call "verb=ListIdentifiers&metadataPrefix=olac"
 inhead -F '200 OK'
 inbody -F '<ListIdentifiers>'
 notinbody -F '<error>'
-validate xsd/OAI-olac.xsd
+validate xsd/oai/PMH-olac.xsd
 
 echo @ ListRecords, OLAC
 call "verb=ListRecords&metadataPrefix=olac"
 inhead -F '200 OK'
 inbody -F '<ListRecords>'
 notinbody -F '<error>'
-validate xsd/OAI-olac.xsd
+validate xsd/oai/PMH-olac.xsd
 
 # There is a set in order for this to work
 echo @ ListSets
 call verb=ListSets
 inhead -F '200 OK'
 validate xsd/oai/OAI-PMH.xsd
-cp out/body out/ListSets
+# cp out/body out/ListSets
 
 echo @ GetRecord with bogus identifier, OLAC
 call "verb=GetRecord&identifier=oai:example.com:nsr&metadataPrefix=olac"
@@ -159,7 +159,7 @@ do
     call "verb=GetRecord&identifier=$IDENT&metadataPrefix=olac"
     inhead -F '200 OK'
     inbody -F '<record>'
-    validate xsd/OAI-olac.xsd
+    validate xsd/oai/PMH-olac.xsd
     break
 done
 # TODO: above, find a deleted record if any, and non-deleted
@@ -181,7 +181,7 @@ do
     notinbody -F '<metadata>'
     notinbody -F '<error'
     notinbody -F Exception:
-    validate xsd/OAI-olac.xsd
+    validate xsd/oai/PMH-olac.xsd
 done
 
 # Wonder what it should be when resumption calls use a different verb
@@ -203,7 +203,7 @@ do
     inbody -E '<metadata|deleted'
     notinbody -F '<error'
     notinbody -F Exception:
-    validate xsd/OAI-olac.xsd
+    validate xsd/oai/PMH-olac.xsd
 done
 echo '!FIX bogus language code "-" so fix in META-SHARE'
 

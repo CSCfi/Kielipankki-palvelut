@@ -62,7 +62,18 @@ curl -o xsd/olac/olac.xsd http://www.language-archives.org/OLAC/1.1/olac.xsd
 # the resulting schema is intended to be OAI-PMH/OLAC.
 curl 'http://localhost:31415/que?verb=ListMetadataFormats' |
 xsltproc --stringparam prefix olac xsl/oaize.xsl - |
-xmllint --format - > xsd/OAI-olac.xsd
+xmllint --format - > xsd/oai/PMH-olac.xsd
+# (Renamed it later as shown - was xsd/OAI-olac.xsd first.)
+
+# Similarly, xsd/oai/PMH-{cmdi0554,...,info,oai_dc}.xsd,
+# with a local web server running at port 31415 and serving
+# these formats:
+for prefix in cmdi0554 cmdi0571 cmdi2312 cmdi9836 info oai_dc
+do
+  curl 'http://localhost:31415/que?verb=ListMetadataFormats' |
+  xsltproc --stringparam prefix $prefix xsl/oaize.xsl - |
+  xmllint --format - > xsd/oai/PMH-$prefix.xsd
+done
 
 xmlcatalog --noout --add rewriteURI \
 http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd \
@@ -78,6 +89,8 @@ xsd/catalog
 # multiple schemas are needed ("No matching global element declaration
 # available but demanded by the strict wildcard");
 
-# xsd/oai/PMH-with-identifier.xsd is an instance of xsd/multi.skel
-# that imports both OAI-PMH.xsd and oai-identifier.xsd so that our
-# Identify element can be validated with the combined schema.
+# xsd/oai/PMH-identifier.xsd is an instance of xsd/multi.skel that
+# imports both OAI-PMH.xsd and oai-identifier.xsd so that our Identify
+# element can be validated with the combined schema.
+
+# Hm, xsd/OAI/PMH-olac.xsd seems to achieve the same!
