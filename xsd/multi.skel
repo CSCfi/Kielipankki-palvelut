@@ -1,0 +1,35 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<xs:schema xmlns   = "http://dummy.libxml2.validator"
+   targetNamespace = "http://dummy.libxml2.validator"
+   xmlns:xs        = "http://www.w3.org/2001/XMLSchema"
+   xmlns:xsi       = "http://www.w3.org/2001/XMLSchema-instance"
+
+   xmlns:<somenamespace>  = "<namespaceurl>"
+   xmlns:<somenamespace2> = "<namespaceurl2>"
+   xmlns:<somenamespace3> = "<namespaceurl3>"
+
+   version="1.0"
+   elementFormDefault  ="qualified"
+   attributeFormDefault="unqualified">
+
+ <xs:import namespace ="<namespaceurl>" schemaLocation = "<schema location>" />
+ <xs:import namespace ="<namespaceurl2>" schemaLocation = "<schema location2>" />
+ <xs:import namespace ="<namespaceurl3>" schemaLocation = "<schema location3>" />
+
+ <!-- https://mail.gnome.org/archives/xml/2009-November/msg00022.html
+
+      Sudhindra Kulkarni: I have a problem validating a xml generated
+      from a schema which contains an element having <xs:any
+      namespace="##other" />. When I try to include a element from
+      another schema I get an error
+
+      "No matching global element declaration available but demanded
+      by the strict wildcard"
+
+      Darko Miletic: This is a limitation of libxml. You must have all
+      declarations from all schemas in one file. So if your xml file
+      uses 6 schemas in order to validate them in libxml you must
+      create new schema that includes all 6 separate schemas and than
+      use that xsd for validation. Something like [the above.]
+ -->
+</xs:schema>

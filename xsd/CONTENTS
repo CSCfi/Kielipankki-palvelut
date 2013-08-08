@@ -73,3 +73,11 @@ xmlcatalog --noout --add rewriteURI \
 http://www.language-archives.org/OLAC/1.1/olac.xsd \
 olac/olac.xsd \
 xsd/catalog
+
+# xsd/multi.skel is a template to work around xmllint limitation when
+# multiple schemas are needed ("No matching global element declaration
+# available but demanded by the strict wildcard");
+
+# xsd/oai/PMH-with-identifier.xsd is an instance of xsd/multi.skel
+# that imports both OAI-PMH.xsd and oai-identifier.xsd so that our
+# Identify element can be validated with the combined schema.

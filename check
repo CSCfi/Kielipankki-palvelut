@@ -98,10 +98,8 @@ call verb=Identify
 inhead -F '200 OK'
 inbody -F '<Identify>'
 notinbody -F '<error'
-validate xsd/oai/OAI-PMH-lax.xsd
-echo '!Lax processing of oai-identifier because xmllint'
-echo '!  does not cope with strict external schema :('
-cp out/body out/Identify
+validate xsd/oai/PMH-with-identifier.xsd
+# cp out/body out/Identify
 
 echo @ ListMetadataFormats
 call verb=ListMetadataFormats
