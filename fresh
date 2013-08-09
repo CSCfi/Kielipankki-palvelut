@@ -3,7 +3,8 @@
 # This creates (if it doesn't exist) a data directory
 # and a fresh database
 # $DATA/current -> $DATA/mdfirst.db
-# with some content from the META-SHARE node that ./syncmeta mirrors.
+
+# Then run ./syncmeta to get content from mirrored META-SHARE node.
 
 #DATA=/fs/proj1/kieli/Next/Meta/data
 DATA=./data
@@ -19,4 +20,6 @@ mkdir --parents $DATA
 #./syncmeta --see=73
 #./syncmeta --see=53,73
 
-./syncmeta
+# ./syncmeta
+# ./syncmeta --verbose
+# ./syncmeta --validate

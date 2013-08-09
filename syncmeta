@@ -30,6 +30,7 @@ from time import time, strftime, gmtime
 from tempfile import NamedTemporaryFile as NamedFile
 from lxml import etree
 import hashlib, json, os.path, shutil, sqlite3
+from os import environ
 from sys import stderr
 
 from syncmetaconf import dbparent, oaiprefix, stemsize
@@ -47,7 +48,9 @@ infotransform = etree.XSLT(etree.parse('xsl/meta-info.xsl'))
 olactransform = etree.XSLT(etree.parse('xsl/meta-olac.xsl'))
 wrap = etree.XSLT(etree.parse('xsl/wrap.xsl'))
 
-# schema-invalid META-SHARE records will be served as "deleted"
+# schema-invalid META-SHARE records will be served as "deleted"; other
+# schemas are only loaded if validating, see below when opts.validate
+# is defined
 infoschema = etree.XMLSchema(etree.parse('xsd/META-XMLSchema/UHEL/'
                                          'META-SHARE-Resource.xsd'))
 
@@ -209,21 +212,29 @@ def synch(connection, opener, oldinv, newinv):
 
 def checkdeleted(doc, identifier, sto):
     '''Check the validity of a published META-SHARE record.  For
-    unpublished records, return true. For published and invalid
-    records, print a report in stderr and return false.'''
-    if ( sto['deleted'] or
-         sto['publication_status'] != 'p' ):
+    actually deleted or currently unpublished records, return
+    true. For published but invalid record, also return true.'''
+    if sto['deleted']:
+        if opts.verbose: print('deleted:', identifier)
         return True
 
+    if sto['publication_status'] != 'p':
+        if opts.verbose: print('not public:', identifier)
+        return True
+
+    # META-SHARE format is always validated and invalid records stored
+    # as deleted; validity is only reported when opts.validate is used
     valid = infoschema(doc)
-    ( valid
-      or print('invalid META-SHARE record:',
-               identifier,
-               doc.xpath('descendant::info:resourceName/text()',
-                         namespaces =
-                         dict(info = 'http://www.ilsp.gr/META-XMLSchema')),
-               # infoschema.error_log, TOO MUCH
-               file = stderr) )
+    if opts.validate and valid:
+        print('valid meta:', identifier)
+    elif opts.validate and not valid:
+        print('invalid meta:', identifier,
+              # infoschema.error_log is TOO MUCH
+              doc.xpath('descendant::info:resourceName/text()',
+                        namespaces =
+                        dict(info = 'http://www.ilsp.gr/META-XMLSchema')))
+    else: pass
+
     return not valid
 
 def create(cursor, doc, sto, chk, old):
@@ -235,7 +246,8 @@ def create(cursor, doc, sto, chk, old):
     stoid = sto['identifier']
     new = makeidentifier(stoid, old)
     old[new] = stoid
-    print('create', new, '=>', stoid)
+    opts.verbose and print('creating', new, '=>',
+                           '{}...{}'.format(stoid[:4], stoid[-8:]))
     cursor.execute('''
             insert into origin(identifier, sourcename, sourceid)
             values (:newid, :source, :stoid)
@@ -356,7 +368,14 @@ def makeCore(new, doc, deleted):
     if deleted:
         metadata = ''
     else:
-        metadata = wrap(coretransform(doc))
+        metadata = coretransform(doc)
+        if opts.validate and coreschema(metadata):
+            print('valid core:', new)
+        elif opts.validate:
+            print('invalid core:', new)
+        else: pass
+            
+        metadata = wrap(metadata)
         metadata = etree.tostring(metadata, encoding=str)
     ztime, stamp = now()
     header = makeheader(new, ztime, (), deleted)
@@ -373,7 +392,14 @@ def makeOLAC(new, doc, deleted):
     if deleted:
         metadata = ''
     else:
-        metadata = wrap(olactransform(doc))
+        metadata = olactransform(doc)
+        if opts.validate and olacschema(metadata):
+            print('valid olac:', new)
+        elif opts.validate:
+            print('invalid olac:', new)
+        else: pass
+
+        metadata = wrap(metadata)
         metadata = etree.tostring(metadata, encoding=str)
     ztime, stamp = now()
     header = makeheader(new, ztime, (), deleted)
@@ -408,9 +434,17 @@ def makeCMDI(new, doc, deleted):
     xxx, = cmd.xpath('attribute::xsi:schemaLocation',
                      namespaces =
                      dict(xsi = 'http://www.w3.org/2001/XMLSchema-instance'))
-    print('schema location:', xxx)
+    # print('schema location:', xxx)
     # ...clarin.eu:cr1:p_1361876010571/xsd
     prefix = 'cmdi{}'.format(xxx[-8:-4])
+    opts.verbose and print('using', prefix,
+                           'for {}...{}'.format(xxx[0:8], xxx[-10:]))
+    if opts.validate and cmdischema[prefix](cmd):
+        print('valid cmdi:', new)
+    elif opts.validate:
+        print('invalid cmdi:', new)
+    else: pass
+
     metadata = ( ''
                  if deleted
                  else etree.tostring(wrap(cmd), encoding=str) )
@@ -465,5 +499,22 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option('--see', action = 'store', default = '', # see all
                       help = 'suffixes of seen storage ids, comma-separated')
+    parser.add_option('--verbose', action = 'store_true',
+                      help = 'report all progress in stdout')
+    parser.add_option('--validate', action = 'store_true',
+                      help = ( 'report validity of public META-SHARE records'
+                               ' in stdout' ))
     opts, args = parser.parse_args()
+
+    if opts.validate:
+        environ['XML_CATALOG_FILES'] = 'xsd/catalog'
+        coreschema = etree.XMLSchema(etree.parse('xsd/oai/oai_dc.xsd'))
+        olacschema = etree.XMLSchema(etree.parse('xsd/olac/olac.xsd'))
+        cmdischema = {}
+        for prefix, schema in ( ('cmdi0554', 'xsd/CMD0554.xsd'),
+                                ('cmdi0571', 'xsd/CMD0571.xsd'),
+                                ('cmdi2312', 'xsd/CMD2312.xsd'),
+                                ('cmdi9836', 'xsd/CMD9836.xsd') ):
+            cmdischema[prefix] = etree.XMLSchema(etree.parse(schema))
+
     main(opts.see.split(','))

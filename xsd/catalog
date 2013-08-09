@@ -9,4 +9,8 @@
   <rewriteURI uriStartString="http://www.openarchives.org/OAI/2.0/oai-identifier.xsd" rewritePrefix="oai/oai-identifier.xsd"/>
   <rewriteURI uriStartString="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" rewritePrefix="oai/oai_dc.xsd"/>
   <rewriteURI uriStartString="http://metashare.ilsp.gr/META-XMLSchema/v3.0/META-SHARE-Resource.xsd" rewritePrefix="META-XMLSchema/UHEL/META-SHARE-Resource.xsd"/>
+  <rewriteURI uriStartString="http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles//clarin.eu:cr1:p_1361876010554/xsd" rewritePrefix="CMD0554.xsd"/>
+  <rewriteURI uriStartString="http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles//clarin.eu:cr1:p_1361876010571/xsd" rewritePrefix="CMD0571.xsd"/>
+  <rewriteURI uriStartString="http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles//clarin.eu:cr1:p_1355150532312/xsd" rewritePrefix="CMD2312.xsd"/>
+  <rewriteURI uriStartString="http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles//clarin.eu:cr1:p_1360931019836/xsd" rewritePrefix="CMD9836.xsd"/>
 </catalog>

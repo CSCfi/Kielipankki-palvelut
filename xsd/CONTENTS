@@ -1,6 +1,28 @@
 # META-SHARE CMDI profile schema documents named using the last four
 # digits in the official names. (And modified to be able to use the
-# email pattern in xsltproc.)
+# email pattern in xsltproc, removing a trailing vertical bar in that
+# regex.)
+
+CLARIN=http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/
+curl -o xsd/CMD0554.xsd $CLARIN/clarin.eu:cr1:p_1361876010554/xsd
+...
+
+xmlcatalog --noout --add rewriteURI \
+  $CLARIN/clarin.eu:cr1:p_1361876010554/xsd \
+  CMD0554.xsd \
+  xsd/catalog
+xmlcatalog --noout --add rewriteURI \
+  $CLARIN/clarin.eu:cr1:p_1361876010571/xsd \
+  CMD0571.xsd \
+  xsd/catalog
+xmlcatalog --noout --add rewriteURI \
+  $CLARIN/clarin.eu:cr1:p_1355150532312/xsd \
+  CMD2312.xsd \
+  xsd/catalog
+xmlcatalog --noout --add rewriteURI \
+  $CLARIN/clarin.eu:cr1:p_1360931019836/xsd \
+  CMD9836.xsd \
+  xsd/catalog
 
 # The META-SHARE schema document tree downloaded recursively from the
 # official schema location. (And copied as UHEL and modified to be
