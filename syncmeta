@@ -25,7 +25,7 @@ from http.cookiejar import CookieJar
 from urllib.parse import urlencode
 from urllib.request import build_opener, HTTPCookieProcessor, Request
 from zipfile import ZipFile
-from io import BytesIO, TextIOWrapper
+from io import BytesIO, StringIO, TextIOWrapper
 from time import time, strftime, gmtime
 from tempfile import NamedTemporaryFile as NamedFile
 from lxml import etree
@@ -35,24 +35,6 @@ from sys import stderr
 
 from syncmetaconf import dbparent, oaiprefix, stemsize
 from syncmetaconf import metasharenode, syncuser
-
-loginURL     = metasharenode + '/login/'
-inventoryURL = metasharenode + '/sync?sync_protocol=1.0'
-recordURL    = metasharenode + '/sync/{}/metadata/'
-
-# There will be an XSL Transform for each metadata prefix
-cmditransform = etree.XSLT(etree.parse('xsl/meta-cmdi.xsl')) # partial! now
-cmdjtransform = etree.XSLT(etree.parse('xsl/meta-cmdj.xsl')) # the remains.
-coretransform = etree.XSLT(etree.parse('xsl/meta-core.xsl'))
-infotransform = etree.XSLT(etree.parse('xsl/meta-info.xsl'))
-olactransform = etree.XSLT(etree.parse('xsl/meta-olac.xsl'))
-wrap = etree.XSLT(etree.parse('xsl/wrap.xsl'))
-
-# schema-invalid META-SHARE records will be served as "deleted"; other
-# schemas are only loaded if validating, see below when opts.validate
-# is defined
-infoschema = etree.XMLSchema(etree.parse('xsd/META-XMLSchema/UHEL/'
-                                         'META-SHARE-Resource.xsd'))
 
 def now():
     stamp = round(time())
@@ -177,9 +159,9 @@ def synch(connection, opener, oldinv, newinv):
         doc, sto = fetch(opener, stoid, newinv[stoid])
         create(cursor, doc, sto, newinv[stoid], pmhids)
 
-    # known but changed metashare items
+    # known but changed metashare items (all known if touching)
     for stoid in newinv.keys() & oldinv.keys():
-        if newinv[stoid] != oldinv[stoid]:
+        if opts.touch or newinv[stoid] != oldinv[stoid]:
             doc, sto = fetch(opener, stoid, newinv[stoid])
             update(cursor, doc, sto, newinv[stoid])
 
@@ -191,11 +173,6 @@ def synch(connection, opener, oldinv, newinv):
 #              'status:', sto['publication_status'],
 #              'deleted' if sto['deleted'] else 'there',
 #              '; modified:', sto['modified'])
-#        #print xml
-#        
-#        if counter > 3:
-#            print('breakin')
-#            break
 
     cursor.execute('''
         select min(stamp), max(stamp) from ix
@@ -213,7 +190,8 @@ def synch(connection, opener, oldinv, newinv):
 def checkdeleted(doc, identifier, sto):
     '''Check the validity of a published META-SHARE record.  For
     actually deleted or currently unpublished records, return
-    true. For published but invalid record, also return true.'''
+    true. Test separately for published but invalid records.'''
+
     if sto['deleted']:
         if opts.verbose: print('deleted:', identifier)
         return True
@@ -222,20 +200,10 @@ def checkdeleted(doc, identifier, sto):
         if opts.verbose: print('not public:', identifier)
         return True
 
-    # META-SHARE format is always validated and invalid records stored
-    # as deleted; validity is only reported when opts.validate is used
-    valid = infoschema(doc)
-    if opts.validate and valid:
-        print('valid meta:', identifier)
-    elif opts.validate and not valid:
-        print('invalid meta:', identifier,
-              # infoschema.error_log is TOO MUCH
-              doc.xpath('descendant::info:resourceName/text()',
-                        namespaces =
-                        dict(info = 'http://www.ilsp.gr/META-XMLSchema')))
-    else: pass
+    return False
 
-    return not valid
+
+    # return not valid
 
 def create(cursor, doc, sto, chk, old):
     # identifier is in sto
@@ -259,7 +227,8 @@ def create(cursor, doc, sto, chk, old):
             values (:newid, :code)
     ''', dict(newid = new, code = chk))
 
-    deleted = checkdeleted(doc, new, sto)
+    deleted = ( checkdeleted(doc, new, sto)
+                or not checkInfo(doc, new) )
     for model in makeCore, makeOLAC, makeInfo, makeCMDI:
         data = model(new, doc, deleted)
         data['recno'] = makerecno(cursor)
@@ -310,7 +279,8 @@ def update(cursor, doc, sto, chk):
     ''', dict(identifier = identifier,
               code = chk))
 
-    deleted = checkdeleted(doc, identifier, sto)
+    deleted = ( checkdeleted(doc, identifier, sto)
+                or not checkInfo(doc, identifier) )
     for model in makeInfo, makeOLAC, makeCore, makeCMDI:
         data = model(identifier, doc, deleted)
         cursor.execute('''
@@ -351,6 +321,8 @@ def update(cursor, doc, sto, chk):
             ''', data) # assuming no sets
 
 def makeheader(identifier, ztime, sets, deleted):
+    '''Make the header element to be stored. (Sets are currently
+    ignored. The parameter is there for possible future use.)'''
     header = ( '<header{deleted}>'
                '<identifier>{identifier}'
                '</identifier>'
@@ -363,22 +335,24 @@ def makeheader(identifier, ztime, sets, deleted):
                          ztime = ztime)
 
 def makeCore(new, doc, deleted):
-    '''Returns the components of a Dublin Core record as a dict to use
-    in a database insertion statement for record or ix.'''
+    '''Returns the components of an OAI Dublin Core record as a dict
+    to use in a database insertion statement for record or ix.'''
     if deleted:
         metadata = ''
     else:
         metadata = coretransform(doc)
-        if opts.validate and coreschema(metadata):
-            print('valid core:', new)
-        elif opts.validate:
-            print('invalid core:', new)
-        else: pass
+        if coreschema(metadata):
+            metadata = wrap(metadata)
+            metadata = etree.tostring(metadata, encoding=str)
+            if opts.validate > 0: print('valid oai_dc:', new)
+        else:
+            metadata = ''
+            if opts.validate > 0:
+                print('invalid oai_dc:', new)
+                report_invalidity(coreschema.error_log, doc)
             
-        metadata = wrap(metadata)
-        metadata = etree.tostring(metadata, encoding=str)
     ztime, stamp = now()
-    header = makeheader(new, ztime, (), deleted)
+    header = makeheader(new, ztime, (), metadata == '')
     return dict(identifier = new,
                 metadataPrefix = 'oai_dc',
                 stamp = stamp,
@@ -393,16 +367,18 @@ def makeOLAC(new, doc, deleted):
         metadata = ''
     else:
         metadata = olactransform(doc)
-        if opts.validate and olacschema(metadata):
-            print('valid olac:', new)
-        elif opts.validate:
-            print('invalid olac:', new)
-        else: pass
+        if olacschema(metadata):
+            metadata = wrap(metadata)
+            metadata = etree.tostring(metadata, encoding=str)
+            if opts.validate > 0: print('valid olac:', new)
+        else:
+            metadata = ''
+            if opts.validate > 0:
+                print('invalid olac:', new)
+                report_invalidity(olacschema.error_log, doc)
 
-        metadata = wrap(metadata)
-        metadata = etree.tostring(metadata, encoding=str)
     ztime, stamp = now()
-    header = makeheader(new, ztime, (), deleted)
+    header = makeheader(new, ztime, (), metadata == '')
     return dict(identifier = new,
                 metadataPrefix = 'olac',
                 stamp = stamp,
@@ -410,16 +386,36 @@ def makeOLAC(new, doc, deleted):
                 metadata = metadata,
                 about = '')
 
+def checkInfo(doc, identifier):
+    '''True if doc validates with the META-SHARE schema, and report in
+    stdout on the validity if requested by --verbose or --validate=n.
+    Invalid records and records derived from them are stored as
+    deleted.'''
+
+    if infoschema(doc) and opts.validate > 0:
+        print('valid meta:', identifier)
+        return True
+
+    if opts.validate > 0:
+        print('invalid meta:', identifier)
+        report_invalidity(infoschema.error_log, doc)
+
+    return False
+
 def makeInfo(new, doc, deleted):
     '''Returns the components of a META-SHARE ResourceInfo record as a
-    dict to use in a database insertion statement for record or ix.'''
+    dict to use in a database insertion statement for record or ix.
+    Unlike derived formats, the record is assumed valid if not
+    deleted; rather, checkInfo is used outside this function to mark
+    invalid records as deleted.'''
     if deleted:
         metadata = ''
     else:
-        metadata = wrap(infotransform(doc))
-        metadata = etree.tostring(metadata, encoding=str)
+        metadata = infotransform(doc)
+        metadata = etree.tostring(wrap(metadata), encoding=str)
+
     ztime, stamp = now()
-    header = makeheader(new, ztime, (), deleted)
+    header = makeheader(new, ztime, (), metadata == '')
     return dict(identifier = new,
                 metadataPrefix = 'info',
                 stamp = stamp,
@@ -434,37 +430,62 @@ def makeCMDI(new, doc, deleted):
     # Theoretically risky to run the transforms at all if doc happens
     # to be invalid in META-SHARE but actual problems have not been
     # noticed. An alternative would be to decide the CMDI profile to
-    # use based on doc itself, duplicating the logic in the transform.
+    # use based on the META-SHARE record itself, duplicating the logic
+    # in the transform and subject to the same theoretical risk.
 
-    cmd = cmdjtransform(cmditransform(doc)) # from Athens
-    xxx, = cmd.xpath('attribute::xsi:schemaLocation',
-                     namespaces =
-                     dict(xsi = 'http://www.w3.org/2001/XMLSchema-instance'))
+    metadata = cmdjtransform(cmditransform(doc)) # from Athens
+    xsispace = 'http://www.w3.org/2001/XMLSchema-instance'
+    xxx, = metadata.xpath('attribute::xsi:schemaLocation',
+                          namespaces = dict(xsi = xsispace))
     # print('schema location:', xxx)
     # ...clarin.eu:cr1:p_1361876010571/xsd
     prefix = 'cmdi{}'.format(xxx[-8:-4])
-    opts.verbose and print('using', prefix,
+    if opts.verbose: print('using', prefix,
                            'for {}...{}'.format(xxx[0:8], xxx[-10:]))
 
     if deleted:
-        pass
-    elif opts.validate and cmdischema[prefix](cmd):
-        print('valid cmdi:', new)
-    elif opts.validate:
-        print('invalid cmdi:', new)
-    else: pass
+        metadata = ''
+    else:
+        if cmdischema[prefix](metadata):
+            metadata = etree.tostring(wrap(metadata), encoding=str)
+            if opts.validate > 0: print('valid {}:'.format(prefix), new)
+        else:
+            metadata = ''
+            if opts.validate > 0:
+                print('invalid {}:'.format(prefix), new)
+                report_invalidity(cmdischema[prefix].error_log, doc)
 
-    metadata = ( ''
-                 if deleted
-                 else etree.tostring(wrap(cmd), encoding=str) )
     ztime, stamp = now()
-    header = makeheader(new, ztime, (), deleted)
+    header = makeheader(new, ztime, (), metadata == '')
     return dict(identifier = new,
                 metadataPrefix = prefix,
                 stamp = stamp,
                 header = header,
                 metadata = metadata,
                 about = '')
+
+def report_invalidity(log, doc):
+    '''Print in stdout opts.validate lines of log, after identifying
+    information from doc, where log is a schema error log and doc is
+    the original META-SHARE record. Print nothing if opts.validate is
+    not positive (the default is 0).'''
+    if opts.validate <= 0: return
+
+    metaschema = dict(info = 'http://www.ilsp.gr/META-XMLSchema')
+    for name in doc.xpath('descendant::info:resourceName/text()',
+                          namespaces = metaschema):
+        parts = StringIO(name).readlines() # sigh with stray newlines
+        for line in [ part.rstrip() for part in parts ]:
+            print('resource name:', line)
+    for name in doc.xpath('descendant::info:resourceShortName/text()',
+                          namespaces = metaschema):
+        parts = StringIO(name).readlines() # sigh with stray newlines
+        for line in [ part.rstrip() for part in parts ]:
+            print('resource short name:', line)
+    lines = StringIO(str(log)).readlines() # ugh
+    for line in [ s.rstrip() for s in lines ][:opts.validate]:
+        print('log:', line)
+    if len(lines) > opts.validate: print('log: ...')
 
 def main(see = ['']):
     current = os.path.join(dbparent, 'current')
@@ -481,10 +502,11 @@ def main(see = ['']):
     # (we are not likely to have those for quite a while -
     # - something has gone wrong in META-SHARE side if that
     # happens)
-    if all(newinv[stoid] == oldinv.get(stoid, '--')
-           for stoid in newinv
-           if any(stoid.endswith(six)
-                  for six in see)):
+    if ( not opts.touch
+         and all(newinv[stoid] == oldinv.get(stoid, '--')
+                 for stoid in newinv
+                 if any(stoid.endswith(six)
+                        for six in see)) ):
         print('database is up-to-date modulo', see)
         exit(0)
 
@@ -509,21 +531,47 @@ if __name__ == '__main__':
     parser.add_option('--see', action = 'store', default = '', # see all
                       help = 'suffixes of seen storage ids, comma-separated')
     parser.add_option('--verbose', action = 'store_true',
-                      help = 'report all progress in stdout')
-    parser.add_option('--validate', action = 'store_true',
-                      help = ( 'report validity of public META-SHARE records'
-                               ' in stdout' ))
+                      help = ( 'report progress in stdout; implies '
+                               'at least --validate=1' ))
+    parser.add_option('--validate', action = 'store',
+                      help = ( 'print in stdout the validity of each record '
+                               'and also the META-SHARE names of '
+                               'the resource and that many lines of the '
+                               'validator error log when a record is'
+                               'found invalid; default is 0' ))
+    parser.add_option('--touch', action = 'store_true',
+                      help = ( 'update seen records as if they were changed '
+                               'or new' ))
     opts, args = parser.parse_args()
+    opts.validate = int(opts.validate)
+    if opts.verbose: opts.validate = max(1, opts.validate)
 
-    if opts.validate:
-        environ['XML_CATALOG_FILES'] = 'xsd/catalog'
-        coreschema = etree.XMLSchema(etree.parse('xsd/oai/oai_dc.xsd'))
-        olacschema = etree.XMLSchema(etree.parse('xsd/olac/olac.xsd'))
-        cmdischema = {}
-        for prefix, schema in ( ('cmdi0554', 'xsd/CMD0554.xsd'),
-                                ('cmdi0571', 'xsd/CMD0571.xsd'),
-                                ('cmdi2312', 'xsd/CMD2312.xsd'),
-                                ('cmdi9836', 'xsd/CMD9836.xsd') ):
-            cmdischema[prefix] = etree.XMLSchema(etree.parse(schema))
+    loginURL     = metasharenode + '/login/'
+    inventoryURL = metasharenode + '/sync?sync_protocol=1.0'
+    recordURL    = metasharenode + '/sync/{}/metadata/'
+
+    # There will be an XSL Transform for each metadata prefix. All
+    # records derived from schema-invalid META-SHARE records will be
+    # served as "deleted", as will those other records that turn out
+    # to be invalid according to their schema.
+
+    cmditransform = etree.XSLT(etree.parse('xsl/meta-cmdi.xsl')) # partial!
+    cmdjtransform = etree.XSLT(etree.parse('xsl/meta-cmdj.xsl')) # the rest.
+    coretransform = etree.XSLT(etree.parse('xsl/meta-core.xsl'))
+    infotransform = etree.XSLT(etree.parse('xsl/meta-info.xsl'))
+    olactransform = etree.XSLT(etree.parse('xsl/meta-olac.xsl'))
+    wrap = etree.XSLT(etree.parse('xsl/wrap.xsl'))
+
+    environ['XML_CATALOG_FILES'] = 'xsd/catalog'
+    infoschema = etree.XMLSchema(etree.parse('xsd/META-XMLSchema/UHEL/'
+                                             'META-SHARE-Resource.xsd'))
+    coreschema = etree.XMLSchema(etree.parse('xsd/oai/oai_dc.xsd'))
+    olacschema = etree.XMLSchema(etree.parse('xsd/olac/olac.xsd'))
+    cmdischema = {}
+    for prefix, schema in ( ('cmdi0554', 'xsd/CMD0554.xsd'),
+                            ('cmdi0571', 'xsd/CMD0571.xsd'),
+                            ('cmdi2312', 'xsd/CMD2312.xsd'),
+                            ('cmdi9836', 'xsd/CMD9836.xsd') ):
+        cmdischema[prefix] = etree.XMLSchema(etree.parse(schema))
 
     main(opts.see.split(','))
