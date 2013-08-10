@@ -37,11 +37,13 @@ from syncmetaconf import dbparent, oaiprefix, stemsize
 from syncmetaconf import metasharenode, syncuser
 
 def now():
+    '''OAI-PMH date format, UTC with Z or so.'''
     stamp = round(time())
     ztime = strftime('%Y-%m-%dT%H:%M:%SZ', gmtime(stamp))
     return ztime, stamp
 
 def login():
+    '''Do protocol to access the META-SHARE node.'''
     
     cookieJar = CookieJar()
     opener = build_opener(HTTPCookieProcessor(cookieJar))
@@ -52,7 +54,7 @@ def login():
     # Step 1
     # get csrftoken cookie in opener/cookieJar
     # also sessionid in there I think
-    print('opening', loginURL, 'with GET')
+    if opts.verbose: print('login: opening', loginURL, 'with GET')
     opener.open(loginURL)
 
     # Extract that csrftoken
@@ -62,7 +64,7 @@ def login():
 
     # Step 2
     # Login. A new cookie with a new session id is returned.
-    print('opening', loginURL, 'with POST')
+    if opts.verbose: print('login: opening', loginURL, 'with POST')
     opener.open(loginURL,
                 postdata(this_is_the_login_form = '1',
                          csrfmiddlewaretoken = token,
@@ -75,9 +77,9 @@ def fetchinventory(opener):
     # get inventory. The cookie with the new session id obtained in
     # Step 2 is automatically returned.
 
-    print('opening', inventoryURL)
+    if opts.verbose: print('inventory: opening', inventoryURL)
     response = opener.open(inventoryURL)
-    print('inventory:', response.status)
+    if opts.verbose: print('inventory: got status', response.status)
     zipbytes = response.read()
     inventoryStream=ZipFile(BytesIO(zipbytes)).open("inventory.json")
     return json.load(TextIOWrapper(inventoryStream))
@@ -87,20 +89,24 @@ def fetch(opener, storid, checksum):
     # Get the resource data
     # load zipped resource data into zip object
     #print('opening', recordURL, '(with storage identifier)')
+    response = None
     for x in 1, 2, 3:
         try:
             response = opener.open(recordURL.format(storid))
             break
         except Exception as whatever:
-            print('attempt', x, whatever)
+            print('fail: attempt', x, whatever)
             # Gives "attempt 1 <urlopen error [Errno -2] Name or
             # service not known>" sometimes, haven't seen more
             # attempts yet.
 
-    if response.status == 200:
+    # TODO: WHAT TO DO IF FAIL TO READ DATA?
+    if not response:
+        print('panic: failed to read resource data')
+    elif response.status == 200:
         pass
     else:
-        print('non-200 record:', response.status, response.reason)
+        print('panic: non-200 record:', response.status, response.reason)
     zipbytes = response.read()
     lrDataZip=ZipFile(BytesIO(zipbytes))
 
@@ -118,6 +124,7 @@ def fetch(opener, storid, checksum):
     if md5.hexdigest() == checksum:
         pass
     else:
+        # TODO: WHAT TO DO IF THIS EVER HAPPENS?
         print("mismatch: %s :: %s" % (md5.hexdigest(), storage))
 
     return etree.parse(BytesIO(documentbytes)), storage
@@ -126,17 +133,17 @@ def dbinventory(cursor):
     cursor.execute('''
             select sourceid, code
             from origin natural join condition
-            where sourcename = 'http://metashare.csc.fi'
-    ''')
+            where sourcename = :origin
+    ''', dict(origin = metasharenode))
     return dict(cursor)
 
 def dbidentifiers(cursor):
-    print('selecting database identifiers')
+    if opts.verbose: print('selecting database identifiers')
     cursor.execute('''
             select identifier, sourceid
             from origin
-            where sourcename = 'http://metashare.csc.fi'
-    ''')
+            where sourcename = :origin
+    ''', dict(origin = metasharenode))
     return dict(cursor)
 
 def synch(connection, opener, oldinv, newinv):
@@ -201,9 +208,6 @@ def checkdeleted(doc, identifier, sto):
         return True
 
     return False
-
-
-    # return not valid
 
 def create(cursor, doc, sto, chk, old):
     # identifier is in sto
@@ -293,7 +297,7 @@ def update(cursor, doc, sto, chk):
         if recnos:
             sole, = recnos
             data['recno'] = sole
-            print('update', identifier, data['recno'])
+            if opts.verbose: print('update:', identifier, data['recno'])
             cursor.execute('''
                 update record
                 set header = :header,
@@ -306,13 +310,16 @@ def update(cursor, doc, sto, chk):
                 where recno = :recno
             ''', data) # assuming sets remain as they were
         else:
+            # This is likely to be an unexercised branch:
+            # presumably there was no record in this format
+            # even though the item was there. Panic?
             data['recno'] = makerecno(cursor)
-            print('create', identifier, data['recno'])
+            if opts.verbose: print('create:', identifier, data['recno'])
             cursor.execute('''
                 insert into record(recno, header, metadata, about)
                 values (:recno, :header, :metadata, :about)
             ''', data)
-            print('inserted', data['recno'])
+            # print('inserted', data['recno'])
             cursor.execute('''
                 insert into ix(xno, identifier,
                                metadataPrefix, setSpec, stamp, recno)
@@ -507,7 +514,9 @@ def main(see = ['']):
                  for stoid in newinv
                  if any(stoid.endswith(six)
                         for six in see)) ):
-        print('database is up-to-date modulo', see)
+        if opts.verbose: print('ok: up-to-date for',
+                               'storage identifiers in seen suffixes:',
+                               see)
         exit(0)
 
     newdb = NamedFile(dir = dbparent, prefix = 'md', suffix = '.db',
@@ -533,7 +542,7 @@ if __name__ == '__main__':
     parser.add_option('--verbose', action = 'store_true',
                       help = ( 'report progress in stdout; implies '
                                'at least --validate=1' ))
-    parser.add_option('--validate', action = 'store',
+    parser.add_option('--validate', action = 'store', default = '0',
                       help = ( 'print in stdout the validity of each record '
                                'and also the META-SHARE names of '
                                'the resource and that many lines of the '

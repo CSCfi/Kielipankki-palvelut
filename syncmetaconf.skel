@@ -12,7 +12,7 @@ dbparent = '/home/jpiitula/proj/Meta/data/'
 
 # The META-SHARE synch protocol is appended to this URI, using this
 # authentication information. The syncuser must of course exist in the
-# node.
+# node. (Also used in database to indicate the origin of each item.)
 metasharenode = 'http://metashare.csc.fi'
 
 syncuser = dict(username = 'REDACTED',
