@@ -430,6 +430,12 @@ def makeInfo(new, doc, deleted):
 def makeCMDI(new, doc, deleted):
     '''Returns the components of a CMDI record as a dict to use in a
     database insertion statement for record or ix.'''
+
+    # Theoretically risky to run the transforms at all if doc happens
+    # to be invalid in META-SHARE but actual problems have not been
+    # noticed. An alternative would be to decide the CMDI profile to
+    # use based on doc itself, duplicating the logic in the transform.
+
     cmd = cmdjtransform(cmditransform(doc)) # from Athens
     xxx, = cmd.xpath('attribute::xsi:schemaLocation',
                      namespaces =
@@ -439,7 +445,10 @@ def makeCMDI(new, doc, deleted):
     prefix = 'cmdi{}'.format(xxx[-8:-4])
     opts.verbose and print('using', prefix,
                            'for {}...{}'.format(xxx[0:8], xxx[-10:]))
-    if opts.validate and cmdischema[prefix](cmd):
+
+    if deleted:
+        pass
+    elif opts.validate and cmdischema[prefix](cmd):
         print('valid cmdi:', new)
     elif opts.validate:
         print('invalid cmdi:', new)
