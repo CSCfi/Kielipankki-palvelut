@@ -212,9 +212,8 @@ do
     notinbody -F '<error'
     notinbody -F Exception:
     validate xsd/oai/PMH-olac.xsd
-    echo saving body as out/resu${TOKEN:0-5}
-    cp out/body out/resu${TOKEN:0-5}
+    # echo saving body as out/resu${TOKEN:0-5}
+    # cp out/body out/resu${TOKEN:0-5}
 done
-echo '!FIX bogus language code "-" so fix in META-SHARE'
 
 clean

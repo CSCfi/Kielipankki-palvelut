@@ -9,6 +9,15 @@ Why should that be?
 Error 500: Internal Server Error
 CGI program sent malformed or too big (>16384 bytes) HTTP headers: [python3: error while loading shared libraries: libpython3.3m.so.1.0: cannot open shared object file: No such file or directory
 
+[2013-08-10] Should work out why this happens and what to do if the
+three attempts are ever insufficient. There are usually a few of
+these but a simple retry, as coded, has always succeeded so far:
+jpiitula@Naali2:~/proj/Meta$ ./syncmeta 
+fail: attempt 1 <urlopen error [Errno -2] Name or service not known>
+fail: attempt 1 <urlopen error [Errno -2] Name or service not known>
+fail: attempt 2 <urlopen error [Errno -2] Name or service not known>
+
+
 2013-06-03 turned out that the resumption mechanism has gone bad:
 http://metalb.csc.fi/cgi-bin/que?verb=ListRecords&resumptionToken=TG
 | Internal Server Error
