@@ -1,5 +1,8 @@
 *~
 
+# Tracked as syncmetaconf.skel
+syncmetaconf.py
+
 # The test database directory
 data/
 
