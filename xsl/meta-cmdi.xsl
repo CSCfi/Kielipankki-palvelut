@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.clarin.eu/cmd/" 
 xmlns:ms="http://www.ilsp.gr/META-XMLSchema" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xalan="http://xml.apache.org/xslt"  xmlns:date="http://exslt.org/dates-and-times" 
@@ -672,11 +672,29 @@ exclude-result-prefixes="ms xalan date" >
 						</xsl:otherwise>
 					</xsl:choose>
 				</MdProfile>
+				<!--normalise URNs and Handles, at least Kielipankki's -->
+                                <xsl:for-each select="//ms:resourceInfo/ms:identificationInfo/ms:identifier">
+                                  <xsl:if test="contains(.,'urn:nbn:fi')">
+                                    <MDSelfLink><xsl:value-of select="concat('http://urn.fi/urn:nbn:fi', substring-after(.,'urn:nbn:fi'))" /></MDSelfLink>
+                                  </xsl:if>
+                                  <xsl:if test="contains(.,'11113/')">
+                                    <MDSelfLink><xsl:value-of select="concat('http://hdl.handle.net/11113/', substring-after(.,'11113/'))" /></MDSelfLink>
+                                  </xsl:if>
+                                </xsl:for-each>
 			</Header>
 			<Resources>
-				<ResourceProxyList/>
-				<JournalFileProxyList/>
-				<ResourceRelationList/>
+			  <ResourceProxyList>
+                            <!--transform Metashare URL to Resource Proxy references -->
+                            <xsl:for-each select="//ms:resourceInfo/ms:identificationInfo/ms:url">
+                              <ResourceProxy>
+                                <xsl:attribute name="id"><xsl:value-of select="position()"/></xsl:attribute>
+                                <ResourceType>Resource</ResourceType>
+                                <ResourceRef><xsl:value-of select="." /></ResourceRef>
+                              </ResourceProxy>
+                            </xsl:for-each>
+                          </ResourceProxyList>
+			  <JournalFileProxyList/>
+			  <ResourceRelationList/>
 			</Resources>
 			<Components>
 				<resourceInfo>
