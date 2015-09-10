@@ -9,7 +9,7 @@ PORT=3141
 GET=
 
 # Sleep to give mongoose time to print its startup message first
-mongoose/mongoose -r ./cgi -p $PORT -C '**/cgi/que' 2>&1 & sleep 1
+#mongoose/mongoose -r ./cgi -p $PORT -C '**/cgi/que' 2>&1 & sleep 1
 SERVER=$!
 
 export XML_CATALOG_FILES=xsd/catalog
@@ -32,7 +32,7 @@ call () {
 	--trace-ascii "out/trace" \
 	--dump-header "out/head" \
 	--output "out/body" \
-	"http://localhost:$PORT/que?$WHAT"
+	"http://metalb.csc.fi/cgi-bin/que?$WHAT"
 }
 
 inhead () {
@@ -82,7 +82,7 @@ curl $GET \
     --trace-ascii "out/trace" \
     --dump-header "out/head" \
     --output "out/body" \
-    "http://localhost:$PORT/que"
+    "http://metalb.csc.fi/cgi-bin/que"
 inhead -F '200 OK'
 inbody -F '<error code='
 validate xsd/oai/OAI-PMH.xsd
