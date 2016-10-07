@@ -1,0 +1,11 @@
+- name: "Copy certs"
+  copy: src={{ item.src }} dest={{ item.dest }}
+  with_items:
+    - { src: '~/certs/sanat.csc.fi.key', dest: '/etc/pki/tls/private' }
+    - { src: '~/certs/sanat.csc.fi.crt', dest: '/etc/pki/tls/certs' }
+    - { src: '~/certs/terenasslca3-chain.crt', dest: '/etc/pki/tls/certs' }
+
+- name: "Overwrite stock ssl.conf"
+  copy:
+    src: ssl.conf
+    dest: /etc/httpd/conf.d/ssl.conf 
