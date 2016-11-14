@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+declare -a REPOS
+
+REPOS=(
+	"workdir https://github.com/wikimedia/mediawiki.git master"
+	"workdir/skins/Vector https://github.com/wikimedia/mediawiki-skins-Vector.git REL1_28"
+	"workdir/extensions/CSS https://github.com/wikimedia/mediawiki-extensions-CSS.git REL1_28"
+	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git REL1_28"
+	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.4.2"
+	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git REL1_28"
+	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git REL1_28"
+	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2016.08"
+	"workdir/extensions/SemanticForms https://github.com/wikimedia/mediawiki-extensions-SemanticForms.git 3.7"
+)
+
+#       "workdir/extensions/Sanat
+#       "workdir/extensions/wordnet
+
+for LINE in "${REPOS[@]}"
+do
+	LINE=($LINE)
+	DIR="${LINE[0]}"
+	URL="${LINE[1]}"
+	VER="${LINE[2]}"
+
+	if [ -d "$DIR" ]
+	then
+		pushd "$DIR"
+		git fetch origin --tags
+		git checkout "$VER"
+		popd
+	else
+		git clone -b "$VER" "$URL" "$DIR"
+	fi
+done

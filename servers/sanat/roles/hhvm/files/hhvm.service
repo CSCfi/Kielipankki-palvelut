@@ -1,0 +1,10 @@
+[Unit]
+Description=hhvm
+
+[Service]
+ExecStart=/usr/bin/hhvm -m daemon -u hhvm -c /etc/hhvm/server.ini
+ExecStop=rm /run/hhvm.pid
+PIDFile=/run/hhvm.pid
+
+[Install]
+WantedBy=multi-user.target

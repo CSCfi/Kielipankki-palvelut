@@ -1,0 +1,133 @@
+<?php
+# {{ ansible_managed }}
+
+# Protect against web entry
+if ( !defined( 'MEDIAWIKI' ) ) {
+	exit;
+}
+
+$IP = __DIR__;
+
+$VHOST = '{{webdomain}}';
+$wgServer = "https://$VHOST";
+
+ini_set( 'error_log', "/www/$VHOST/logs/error_php" );
+ini_set( 'display_errors',         1 );
+ini_set( 'ignore_repeated_errors', 1 );
+ini_set( 'log_errors',             1 );
+ini_set( 'expose_php',             0 );
+ini_set( 'memory_limit',      '350M' );
+ini_set( 'max_execution_time', '60s' );
+
+error_reporting( E_ALL | E_STRICT );
+date_default_timezone_set( 'UTC' );
+
+$wgShowExceptionDetails  = true;
+$wgDebugComments         = true;
+$wgDevelopmentWarnings   = true;
+$wgDebugTimestamps       = true;
+$wgDebugPrintHttpHeaders = false;
+
+$wgCacheDirectory = "/www/$VHOST/cache";
+$wgLocalisationCacheConf['store'] = 'file';
+$wgLocalisationCacheConf['manualRecache'] = true;
+$wgLocalisationCacheConf['storeDirectory'] = "$IP/cache";
+
+$wgSecretKey = "something womsethina woemgwego";
+
+$wgLogo = "/logo.png";
+
+$wgSitename = "Sanat";
+$wgArticlePath = "/wiki/$1";
+$wgScriptPath = "/w";
+
+## Database settings
+$wgDBtype = "mysql";
+$wgDBserver = "localhost";
+$wgDBname = "mediawiki";
+$wgDBuser = "wikiuser";
+$wgDBpassword = "wikipass";
+$wgDBprefix = "";
+$wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
+
+## Shared memory settings
+$wgMainCacheType = CACHE_MEMCACHED;
+$wgMemCachedServers = array( 'localhost:11211' );
+$wgSessionsInObjectCache = true;
+
+$wgShellLocale = "en_US.utf8";
+$wgDiff3 = "/usr/bin/diff3";
+$wgJobRunRate = 0;
+
+$wgLanguageCode = 'fi';
+$wgDefaultUserOptions['usenewrc'] = 1;
+
+wfLoadSkin( 'Vector' );
+
+enableSemantics( $VHOST );
+require "$IP/extensions/SemanticForms/SemanticForms.php";
+$wgIncludejQueryMigrate = true;
+$sfgRedLinksCheckOnlyLocalProps = true;
+$sfgRenameEditTabs = true;
+
+$wgGroupPermissions['sysop']['invitesignup'] = true;
+$wgGroupPermissions['*']['edit'] = true;
+$wgGroupPermissions['*']['createaccount'] = false;
+$wgGroupPermissions['sysop']['deletebatch'] = true;
+$wgGroupPermissions['*']['viewedittab'] = true;
+$wgGroupPermissions['sysop']['viewedittab'] = true;
+$wgDisableAnonEdit = false;
+$wgGroupPermissions['*']['createpage'] = true;
+
+$wgUseRCPatrol = false;
+$wgUseNPPatrol = false;
+
+$smwgQMaxInlineLimit = $wgCategoryPagingLimit = 250;
+
+require "$IP/extensions/MixedNamespaceSearchSuggestions/MixedNamespaceSearchSuggestions.php";
+require "$IP/extensions/ParserFunctions/ParserFunctions.php";
+require "$IP/extensions/DeleteBatch/DeleteBatch.php";
+#require "$IP/extensions/Sanat/Sanat.php";
+
+function lfAddNamespace( $id, $name ) {
+	global $wgExtraNamespaces, $wgContentNamespaces, $wgNamespacesToBeSearchedDefault,
+		$wgCapitalLinkOverrides, $smwgNamespacesWithSemanticLinks;
+
+	$constant = strtoupper( "NS_$name" );
+
+	define( $constant, $id );
+	define( $constant . '_TALK', $id + 1 );
+
+	$wgExtraNamespaces[$id] = $name;
+	$wgExtraNamespaces[$id + 1] = $name . '_talk';
+
+	$wgContentNamespaces[] = $id;
+
+	$wgNamespacesToBeSearchedDefault[$id] = true;
+	$wgCapitalLinkOverrides[$id] = false;
+	$wgCapitalLinkOverrides[$id + 1] = false;
+
+	$smwgNamespacesWithSemanticLinks[$id] = true;
+}
+
+lfAddNamespace( 1200, 'Lud' );
+lfAddNamespace( 1202, 'WordNet' );
+$wgNamespacesWithSubpages[NS_WORDNET] = true;
+$wgAllowDisplayTitle = true;
+$wgRestrictDisplayTitle = false;
+
+#require_once( "$IP/extensions/wordnet/setup.php" );
+#require_once "$IP/extensions/Saame/Saame.php";
+lfAddNamespace( 1204, 'Sms' );
+lfAddNamespace( 1206, 'Izh' );
+
+
+$wgHooks['GetLocalURL'][] = function ( &$title, &$url, $query ) {
+	if ( !$title->isExternal() && $query == '' && $title->isMainPage() ) {
+		$url = '/';
+	}
+};
+
+$wgHooks['TestCanonicalRedirect'][] = function ( $request ) {
+	return $request->getRequestURL() !== '/';
+};

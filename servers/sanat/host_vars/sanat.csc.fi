@@ -1,0 +1,4 @@
+site_ssl_params:
+  certificate_file: "/etc/pki/tls/certs/{{webdomain}}.crt"
+  certificate_key_file: "/etc/pki/tls/private/{{webdomain}}.key"
+  certificate_chain_file: "/etc/pki/tls/certs/terenasslca3-chain.crt"

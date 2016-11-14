@@ -1,11 +1,9 @@
-- name: "Copy certs"
-  copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }}
-  with_items:
-    - { src: '~/certs/sanat.csc.fi.key', dest: '/etc/pki/tls/private', mode: 600 }
-    - { src: '~/certs/sanat.csc.fi.crt', dest: '/etc/pki/tls/certs', mode: 644 }
-    - { src: '~/certs/terenasslca3-chain.crt', dest: '/etc/pki/tls/certs', mode: 644 }
+# You should place the proper certs on the server directly. This wont replace it.
+- name: Create self-signed SSL certificate
+  command: openssl req -new -nodes -x509 -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN={{webdomain}}" -days 365 -keyout /etc/pki/tls/private/{{webdomain}}.key -out /etc/pki/tls/certs/{{webdomain}}.crt -extensions v3_ca creates=/etc/pki/tls/private/{{webdomain}}.key
+  notify: restart apache
 
-- name: "Overwrite stock ssl.conf"
+- name: Overwrite stock ssl.conf
   copy:
     src: ssl.conf
     dest: /etc/httpd/conf.d/ssl.conf 

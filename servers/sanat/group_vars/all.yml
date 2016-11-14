@@ -1,0 +1,6 @@
+webdomain: sanat.csc.fi
+apache_ssl_protocol: "All -SSLv2 -SSLv3"
+apache_ssl_cipher_suite: "AES256+EECDH:AES256+EDH"
+site_ssl_params:
+  certificate_file: "/etc/pki/tls/certs/{{webdomain}}.crt"
+  certificate_key_file: "/etc/pki/tls/private/{{webdomain}}.key"

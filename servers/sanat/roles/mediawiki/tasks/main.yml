@@ -1,0 +1,79 @@
+- name: Create oregano directories
+  file: path={{item}} state=directory
+  with_items:
+    - /srv/mediawiki/workdir
+    - /srv/mediawiki/tags
+    - /srv/mediawiki/targets
+
+- name: Install git
+  yum: name=git state=present
+
+- name: Install rsync for oregano
+  yum: name=rsync state=present
+
+- name: Install oregano
+  get_url:
+    url: https://raw.githubusercontent.com/wikimedia/translatewiki/61adeb16b9f6c7ef0e44fb671af29d0de28769af/bin/oregano
+    dest: /srv/mediawiki/oregano
+    mode: a+x
+
+- name: Install MediaWiki repository clone script
+  copy: src=co_repos dest=/srv/mediawiki/co_repos mode=0755
+
+- name: Clone repos
+  command: /srv/mediawiki/co_repos
+
+- name: Install composer.local.json
+  copy: src=composer.local.json dest=/srv/mediawiki/workdir/composer.local.json
+
+- name: Install LocalSettings.php
+  template: src=LocalSettings.php.j2 dest=/srv/mediawiki/workdir/LocalSettings.php
+
+- name: Run composer update
+  command: /usr/local/bin/composer --no-dev
+  args:
+    chdir: /srv/mediawiki/workdir
+
+- name: Update l10n cache
+  command: /usr/bin/php /srv/mediawiki/workdir/maintenance/rebuildLocalisationCache.php --threads=8
+
+- name: Create docroot
+  file: path={{item}} state=directory
+  with_items:
+    - /www/{{webdomain}}/docroot
+    - /www/{{webdomain}}/logs
+    - /www/{{webdomain}}/cache
+
+- name: Install logo
+  copy: src=logo.png dest=/www/{{webdomain}}/docroot/logo.png
+
+- name: Create symlink to MediaWiki code
+  file: src=/srv/mediawiki/targets/production dest=/www/{{webdomain}}/docroot/w state=link force=yes
+
+- name: Install sql database
+  yum: name={{item}} state=present
+  with_items:
+    - mariadb
+    - mariadb-server
+    - MySQL-python
+
+- name: Install sql config
+  copy: src=my.cnf dest=/etc/my.cnf.d/custom.cnf
+
+- name: Ensure sql is running
+  service: name=mariadb state=started enabled=yes
+
+- name: Add database for wiki
+  mysql_db: name=mediawiki state=present
+
+- name: Add database user for the wiki
+  mysql_user: name=wikiuser password=wikipass priv=*.*:ALL host=localhost state=present
+
+- name: Create rewrite rules
+  copy: src=.htaccess dest=/www/{{webdomain}}/docroot/.htaccess
+
+- name: Install jobrunner
+  template: src=mw-jobrunner.service.j2 dest=/lib/systemd/system/mw-jobrunner.service
+
+- name: Enable jobrunner
+  service: name=mw-jobrunner state=started enabled=yes
