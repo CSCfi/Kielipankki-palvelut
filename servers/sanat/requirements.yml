@@ -1,3 +1,4 @@
 - src: geerlingguy.apache
 - src: geerlingguy.memcached
 - src: geerlingguy.composer
+- src: geerlingguy.repo-epel
