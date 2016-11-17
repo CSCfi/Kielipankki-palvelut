@@ -39,7 +39,7 @@
   command: /usr/bin/php /srv/mediawiki/workdir/maintenance/rebuildLocalisationCache.php --threads=8
 
 - name: Create docroot
-  file: path={{item}} state=directory
+  file: path={{item}} state=directory owner=hhvm mode=755
   with_items:
     - /www/{{webdomain}}/docroot
     - /www/{{webdomain}}/logs
