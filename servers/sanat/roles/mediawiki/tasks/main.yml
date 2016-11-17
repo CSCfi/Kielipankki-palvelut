@@ -1,7 +1,6 @@
 - name: Create oregano directories
   file: path={{item}} state=directory
   with_items:
-    - /srv/mediawiki/workdir
     - /srv/mediawiki/tags
     - /srv/mediawiki/targets
 
@@ -22,6 +21,8 @@
 
 - name: Clone repos
   command: /srv/mediawiki/co_repos
+  args:
+    chdir: /srv/mediawiki/
 
 - name: Install composer.local.json
   copy: src=composer.local.json dest=/srv/mediawiki/workdir/composer.local.json
@@ -30,7 +31,7 @@
   template: src=LocalSettings.php.j2 dest=/srv/mediawiki/workdir/LocalSettings.php
 
 - name: Run composer update
-  command: /usr/local/bin/composer --no-dev
+  command: /usr/local/bin/composer update --no-dev
   args:
     chdir: /srv/mediawiki/workdir
 
