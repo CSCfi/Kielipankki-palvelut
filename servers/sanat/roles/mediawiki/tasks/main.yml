@@ -12,7 +12,7 @@
 
 - name: Install oregano
   get_url:
-    url: https://raw.githubusercontent.com/wikimedia/translatewiki/61adeb16b9f6c7ef0e44fb671af29d0de28769af/bin/oregano
+    url: https://raw.githubusercontent.com/wikimedia/translatewiki/6e0f899392e89e85961f1778847009183442c9ab/bin/oregano
     dest: /srv/mediawiki/oregano
     mode: a+x
 
@@ -38,12 +38,23 @@
 - name: Update l10n cache
   command: /usr/bin/php /srv/mediawiki/workdir/maintenance/rebuildLocalisationCache.php --threads=8
 
+
+- name: Setup oregano
+  command: /srv/mediawiki/oregano {{item}} 
+  args:
+    chdir: /srv/mediawiki
+  with_items:
+    - tag
+    - deploy
+
 - name: Create docroot
   file: path={{item}} state=directory owner=hhvm mode=755
   with_items:
+    - /www/
+    - /www/{{webdomain}}/
     - /www/{{webdomain}}/docroot
     - /www/{{webdomain}}/logs
-    - /www/{{webdomain}}/cache
+    - /www/{{webdomain}}/cache  
 
 - name: Install logo
   copy: src=logo.png dest=/www/{{webdomain}}/docroot/logo.png
