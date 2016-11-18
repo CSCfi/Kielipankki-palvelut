@@ -12,9 +12,9 @@
     - role: geerlingguy.repo-epel
     - role: hhvm
       tags: hhvm
-    - role: geerlingguy.apache
-      tags: apache
     - role: apache_ssl
+      tags: apache
+    - role: geerlingguy.apache
       tags: apache
     - role: geerlingguy.memcached
     - role: geerlingguy.composer

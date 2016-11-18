@@ -1,4 +1,8 @@
 # You should place the proper certs on the server directly. This wont replace it.
+
+- name: Install Apache (will be properly configured later)
+  yum: name=httpd state=present
+
 - name: Create self-signed SSL certificate
   command: openssl req -new -nodes -x509 -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN={{webdomain}}" -days 365 -keyout /etc/pki/tls/private/{{webdomain}}.key -out /etc/pki/tls/certs/{{webdomain}}.crt -extensions v3_ca creates=/etc/pki/tls/private/{{webdomain}}.key
   notify: restart apache

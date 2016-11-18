@@ -68,18 +68,23 @@
     - mariadb
     - mariadb-server
     - MySQL-python
+  tags: db
 
 - name: Install sql config
   copy: src=my.cnf dest=/etc/my.cnf.d/custom.cnf
+  tags: db
 
 - name: Ensure sql is running
   service: name=mariadb state=started enabled=yes
-
+  tags: db
+ 
 - name: Add database for wiki
   mysql_db: name=mediawiki state=present
+  tags: db
 
 - name: Add database user for the wiki
   mysql_user: name=wikiuser password=wikipass priv=*.*:ALL host=localhost state=present
+  tags: db
 
 - name: Create rewrite rules
   copy: src=.htaccess dest=/www/{{webdomain}}/docroot/.htaccess
