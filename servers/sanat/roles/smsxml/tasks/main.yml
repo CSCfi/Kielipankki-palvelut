@@ -1,0 +1,30 @@
+- name: Install pip package from yum
+  yum: name={{ item }} state=present
+  with_items:
+  - python-pip
+  - python-setuptools
+
+- name: Install python dependencies using pip
+  pip: name={{ item }} state=present
+  with_items:
+    - django
+    - pymongo
+    - requests
+    - PyExecJS
+
+- name: Add mongodb repo
+  copy:
+    src: mongodb-org-3.2.repo
+    dest: /etc/yum.repos.d/mongodb-org-3.2.repo
+
+- name: Install mongodb
+  yum: name=mongodb-org
+
+- name: Start mongodb
+  service: name=mongod state=started enabled=yes
+
+- name: Set SELinux to permissive mode (required by mongodb)
+  selinux: policy=targeted state=permissive
+
+- name: Install JavaScript interpret
+  yum: name=nodejs state=present

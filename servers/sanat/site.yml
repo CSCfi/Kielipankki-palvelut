@@ -8,6 +8,7 @@
     - apache_vhosts_ssl:
       - "{{ site_vhost | combine(site_ssl_params) }}"
   roles:
+    - role: smsxml
     - role: selinux
     - role: geerlingguy.repo-epel
     - role: hhvm
