@@ -6,17 +6,15 @@ declare -a REPOS
 REPOS=(
 	"workdir https://github.com/wikimedia/mediawiki.git master"
 	"workdir/skins/Vector https://github.com/wikimedia/mediawiki-skins-Vector.git REL1_28"
-	"workdir/extensions/CSS https://github.com/wikimedia/mediawiki-extensions-CSS.git REL1_28"
 	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git REL1_28"
-	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.4.2"
+	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.4.3"
 	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git REL1_28"
 	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git REL1_28"
-	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2016.08"
-	"workdir/extensions/SemanticForms https://github.com/wikimedia/mediawiki-extensions-SemanticForms.git 3.7"
+	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2016.10"
+	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.0.2"
+	"workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git master"
+	"workdir/extensions/WordNet https://github.com/Nikerabbit/mediawiki-extensions-WordNet.git master"
 )
-
-#       "workdir/extensions/Sanat
-#       "workdir/extensions/wordnet
 
 for LINE in "${REPOS[@]}"
 do
