@@ -4,6 +4,7 @@ site_vhost:
   documentroot: /www/{{ webdomain }}/docroot
   extra_parameters: |
     ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:{{ hhvm_port }}/www/{{ webdomain }}/docroot/"
+    LoadModule uwsgi_module /usr/lib64/httpd/modules/mod_uwsgi.so
     <Location /smsxml/>
         Options FollowSymLinks Indexes
         SetHandler uwsgi-handler

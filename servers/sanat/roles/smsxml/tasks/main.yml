@@ -3,6 +3,7 @@
   with_items:
   - python-pip
   - python-setuptools
+  - httpd-devel
 
 - name: Install python dependencies using pip
   pip: name={{ item }} state=present
@@ -71,3 +72,12 @@
     dest: /www/smsxml/xmls/izh
     clone: yes
     accept_hostkey: yes
+
+- name: Copy mod_uwsgi sources
+  copy: src=mod_uwsgi.c dest=/www/smsxml/mod_uwsgi.c
+
+- name: Build mod_uwsgi
+  command: apxs -c -i mod_uwsgi.c
+  args:
+    chdir: /www/smsxml/
+    creates: /usr/lib64/httpd/modules/mod_uwsgi.so
