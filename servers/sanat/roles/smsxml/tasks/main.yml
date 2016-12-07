@@ -11,6 +11,7 @@
     - pymongo
     - requests
     - PyExecJS
+    - uwsgi
 
 - name: Add mongodb repo
   copy:
@@ -28,3 +29,45 @@
 
 - name: Install JavaScript interpret
   yum: name=nodejs state=present
+
+- name: Create smsxml directory
+  file: path=/www/smsxml state=directory
+
+- name: Download smsxml
+  get_url: url=http://mikakalevi.com/downloads/sms_xml.zip dest=/www/smsxml/sms_xml.zip
+
+- name: Extract archive
+  unarchive: src=/www/smsxml/sms_xml.zip dest=/www/smsxml/ copy=no
+
+- name: Copy smsxml configuration
+  template: src=settings.py dest=/www/smsxml/saame/settings.py
+
+- name: Create uwsgi configuration directory
+  file: path=/etc/uwsgi/apps-available/ state=directory
+
+- name: Install uwsgi configuration
+  copy: src=smsxml.ini dest=/etc/uwsgi/apps-available/smsxml.ini
+
+- name: Install uwsgi upstart configuration
+  copy: src=smsxml.service dest=/etc/systemd/system/smsxml.service
+
+- name: Start uwsgi
+  service: name=smsxml state=started enabled=yes
+
+- name: Create xml directory
+  file: path=/www/smsxml/xmls state=directory
+
+- name: Setup git for SMS files
+  git:
+    repo: https://github.com/mikahama/saame_testi.git
+    dest: /www/smsxml/xmls/sms
+    clone: yes
+    accept_hostkey: yes
+
+
+- name: Setup git for IHZ files
+  git:
+    repo: https://github.com/mikahama/inkeroinen.git
+    dest: /www/smsxml/xmls/izh
+    clone: yes
+    accept_hostkey: yes

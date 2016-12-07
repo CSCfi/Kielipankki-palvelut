@@ -4,6 +4,23 @@ site_vhost:
   documentroot: /www/{{ webdomain }}/docroot
   extra_parameters: |
     ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:{{ hhvm_port }}/www/{{ webdomain }}/docroot/"
+    <Location /smsxml/>
+        Options FollowSymLinks Indexes
+        SetHandler uwsgi-handler
+        uWSGISocket 127.0.0.1:3031
+    </Location>
+    Alias /static/ /www/smsxml/tietokanta/static/
+    <Directory /www/smsxml/tietokanta/static>
+        Require all granted
+    </Directory>
+    Alias /js/ /www/smsxml/js/
+    <Directory /www/smsxml/js>
+        Require all granted
+    </Directory>
 php_enable_php_fpm: true
 memcached_memory_limit: 4G
 omposer_keep_updated: true
+sms_xml:
+  wiki_username: "SyncBot"
+  wiki_password: "SyncBot12"
+  debug: "True"
