@@ -81,3 +81,11 @@
   args:
     chdir: /www/smsxml/
     creates: /usr/lib64/httpd/modules/mod_uwsgi.so
+
+- name: Copy mediawiki user script
+  template: src=add_wikiuser.sh dest=/www/smsxml/add_wikiuser.sh
+
+- name: Add mediawiki user for smsxml
+  command: /www/smsxml/add_wikiuser.sh
+  args:
+    creates: /srv/mediawiki/workdir/maintenance/smsxml_user_added
