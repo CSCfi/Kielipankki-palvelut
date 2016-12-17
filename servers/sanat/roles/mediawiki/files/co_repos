@@ -5,15 +5,18 @@ declare -a REPOS
 
 REPOS=(
 	"workdir https://github.com/wikimedia/mediawiki.git master"
-	"workdir/skins/Vector https://github.com/wikimedia/mediawiki-skins-Vector.git REL1_28"
-	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git REL1_28"
-	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.4.3"
-	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git REL1_28"
-	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git REL1_28"
-	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2016.10"
-	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.0.2"
+	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git origin/REL1_28"
+	"workdir/extensions/InputBox https://github.com/wikimedia/mediawiki-extensions-InputBox.git origin/REL1_28"
+	"workdir/extensions/Kotus https://github.com/Nikerabbit/mediawiki-extensions-Kotus.git master"
 	"workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git master"
+	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git origin/REL1_28"
+	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.0.2"
+	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git origin/REL1_28"
+	"workdir/extensions/Sanat https://github.com/Nikerabbit/mediawiki-extensions-Sanat.git master"
+	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.4.4"
+	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2016.10"
 	"workdir/extensions/WordNet https://github.com/Nikerabbit/mediawiki-extensions-WordNet.git master"
+	"workdir/skins/Vector https://github.com/wikimedia/mediawiki-skins-Vector.git origin/REL1_28"
 )
 
 for LINE in "${REPOS[@]}"
@@ -23,13 +26,22 @@ do
 	URL="${LINE[1]}"
 	VER="${LINE[2]}"
 
+	echo $DIR
 	if [ -d "$DIR" ]
-	then
-		pushd "$DIR"
+	then (
+		cd "$DIR" || exit
 		git fetch origin --tags
-		git checkout "$VER"
-		popd
-	else
-		git clone -b "$VER" "$URL" "$DIR"
+		if [ "$VER" == "master" ]
+		then
+			git pull --rebase
+		else
+			git checkout "$VER"
+		fi
+	) else
+		git clone "$URL" "$DIR"
+		if [ "$VER" != "master" ]
+		then
+			git checkout "$VER"
+		fi
 	fi
 done

@@ -4,6 +4,6 @@ After=network.target
 Requires=mariadb.service
 
 [Service]
-ExecStart=/usr/bin/php /srv/mediawiki/targets/production/maintenance/runJobs.php --wait --maxjobs=1000 >> /www/{{webdomain}}/logs/jobqueue
-Restart=on-failure
+ExecStart=/usr/bin/php /srv/mediawiki/targets/production/maintenance/runJobs.php --wait --maxjobs=1000
+Restart=always
 RestartSec=15

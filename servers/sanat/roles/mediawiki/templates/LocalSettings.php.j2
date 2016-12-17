@@ -91,7 +91,7 @@ require "$IP/extensions/ParserFunctions/ParserFunctions.php";
 require "$IP/extensions/DeleteBatch/DeleteBatch.php";
 
 require "$IP/extensions/Translate/Translate.php";
-wfLoadExtension( 'UniversalLanguageSelector' );
+wfLoadExtensions( [ 'UniversalLanguageSelector', 'InputBox', 'Sanat' ] );
 
 function lfAddNamespace( $id, $name ) {
 	global $wgExtraNamespaces, $wgContentNamespaces, $wgNamespacesToBeSearchedDefault,
@@ -130,6 +130,7 @@ lfAddNamespace( 1206, 'Izh' );
 
 wfLoadExtension( 'Kotus' );
 lfAddNamespace( 1210, 'Vepsä' );
+lfAddNamespace( 1212, 'Slangipaikannimet' );
 
 
 $wgHooks['GetLocalURL'][] = function ( &$title, &$url, $query ) {
