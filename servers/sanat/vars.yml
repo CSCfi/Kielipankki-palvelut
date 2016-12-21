@@ -14,8 +14,8 @@ site_vhost:
     <Directory /www/smsxml/tietokanta/static>
         Require all granted
     </Directory>
-    Alias /js/ /www/smsxml/js/
-    <Directory /www/smsxml/js>
+    Alias /js/ /www/smsxml/wiki/js/
+    <Directory /www/smsxml/wiki/js>
         Require all granted
     </Directory>
 php_enable_php_fpm: true

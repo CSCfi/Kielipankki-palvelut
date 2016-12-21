@@ -37,8 +37,17 @@
 - name: Download smsxml
   get_url: url=http://mikakalevi.com/downloads/sms_xml.zip dest=/www/smsxml/sms_xml.zip
 
-- name: Extract archive
+- name: Extract smsxml
   unarchive: src=/www/smsxml/sms_xml.zip dest=/www/smsxml/ copy=no
+
+- name: Download smsxml mediawiki extension
+  get_url: url=http://mikakalevi.com/downloads/sms_xml_wiki_extensions.zip dest=/www/smsxml/sms_xml_wiki_extensions.zip
+
+- name: Create smsxml mediawiki extension directory
+  file: path=/www/smsxml/wiki state=directory
+
+- name: Extract smsxml mediawiki extension
+  unarchive: src=/www/smsxml/sms_xml_wiki_extensions.zip dest=/www/smsxml/wiki/ copy=no
 
 - name: Copy smsxml configuration
   template: src=settings.py dest=/www/smsxml/saame/settings.py
@@ -89,3 +98,6 @@
   command: /www/smsxml/add_wikiuser.sh
   args:
     creates: /srv/mediawiki/workdir/maintenance/smsxml_user_added
+
+- name: Create symlink to MediaWiki code
+  file: src=/www/smsxml/wiki/extensions/Saame dest=/www/{{webdomain}}/docroot/w/extensions/Saame state=link force=yes
