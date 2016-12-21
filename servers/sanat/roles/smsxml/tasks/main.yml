@@ -13,6 +13,13 @@
     - requests
     - PyExecJS
     - uwsgi
+    - gcc
+    - php-pear
+    - php-devel
+
+- name: Install php dependencies
+  pear:
+    name: mongo
 
 - name: Add mongodb repo
   copy:
