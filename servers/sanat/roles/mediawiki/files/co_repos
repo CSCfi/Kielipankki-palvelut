@@ -6,6 +6,7 @@ declare -a REPOS
 REPOS=(
 	"workdir https://github.com/wikimedia/mediawiki.git master"
 	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git origin/REL1_28"
+	"workdir/extensions/FinnFrameNet https://github.com/Nikerabbit/mediawiki-extensions-FinnFrameNet.git master"
 	"workdir/extensions/InputBox https://github.com/wikimedia/mediawiki-extensions-InputBox.git origin/REL1_28"
 	"workdir/extensions/Kotus https://github.com/Nikerabbit/mediawiki-extensions-Kotus.git master"
 	"workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git master"

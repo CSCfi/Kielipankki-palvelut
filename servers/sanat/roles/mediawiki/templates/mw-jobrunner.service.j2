@@ -7,3 +7,9 @@ Requires=mariadb.service
 ExecStart=/usr/bin/php /srv/mediawiki/targets/production/maintenance/runJobs.php --wait --maxjobs=1000
 Restart=always
 RestartSec=15
+PrivateDevices=true
+PrivateTmp=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectSystem="full"
