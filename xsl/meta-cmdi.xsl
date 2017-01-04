@@ -3,6 +3,12 @@
 xmlns:ms="http://www.ilsp.gr/META-XMLSchema" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xalan="http://xml.apache.org/xslt"  xmlns:date="http://exslt.org/dates-and-times" 
 exclude-result-prefixes="ms xalan date" >
+<!--
+Metashare-CMDI transformation
+Original author(s): ILSP, Athens, Greece
+Adapted by Jussi Piitulainen, HY and Martin Matthiesen, CSC
+Note: Adapt meta-cmdj.xsl if you introduce tags with attributes here.
+-->
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" xalan:indent-amount="4"/>
 	<xsl:strip-space elements="*"/>
 	<xsl:template match="/">
@@ -656,6 +662,15 @@ exclude-result-prefixes="ms xalan date" >
 				<MdCreationDate>
 					<xsl:value-of select="substring(date:date(), 1, 10)"/>
 				</MdCreationDate>
+				<!--normalise URNs and Handles, at least Kielipankki's -->
+                                <xsl:for-each select="//ms:resourceInfo/ms:identificationInfo/ms:identifier">
+                                  <xsl:if test="contains(.,'urn:nbn:fi')">
+                                    <MdSelfLink><xsl:value-of select="concat('http://urn.fi/urn:nbn:fi', substring-after(.,'urn:nbn:fi'))" /></MdSelfLink>
+                                  </xsl:if>
+                                  <xsl:if test="contains(.,'11113/')">
+                                    <MdSelfLink><xsl:value-of select="concat('http://hdl.handle.net/11113/', substring-after(.,'11113/'))" /></MdSelfLink>
+                                  </xsl:if>
+                                </xsl:for-each>
 				<MdProfile>
 					<xsl:choose>
 						<xsl:when test="ms:resourceComponentType/ms:corpusInfo">
@@ -672,22 +687,13 @@ exclude-result-prefixes="ms xalan date" >
 						</xsl:otherwise>
 					</xsl:choose>
 				</MdProfile>
-				<!--normalise URNs and Handles, at least Kielipankki's -->
-                                <xsl:for-each select="//ms:resourceInfo/ms:identificationInfo/ms:identifier">
-                                  <xsl:if test="contains(.,'urn:nbn:fi')">
-                                    <MDSelfLink><xsl:value-of select="concat('http://urn.fi/urn:nbn:fi', substring-after(.,'urn:nbn:fi'))" /></MDSelfLink>
-                                  </xsl:if>
-                                  <xsl:if test="contains(.,'11113/')">
-                                    <MDSelfLink><xsl:value-of select="concat('http://hdl.handle.net/11113/', substring-after(.,'11113/'))" /></MDSelfLink>
-                                  </xsl:if>
-                                </xsl:for-each>
 			</Header>
 			<Resources>
 			  <ResourceProxyList>
                             <!--transform Metashare URL to Resource Proxy references -->
                             <xsl:for-each select="//ms:resourceInfo/ms:identificationInfo/ms:url">
                               <ResourceProxy>
-                                <xsl:attribute name="id"><xsl:value-of select="position()"/></xsl:attribute>
+                                <xsl:attribute name="id"><xsl:value-of select="concat('_',position())"/></xsl:attribute>
                                 <ResourceType>Resource</ResourceType>
                                 <ResourceRef><xsl:value-of select="." /></ResourceRef>
                               </ResourceProxy>
