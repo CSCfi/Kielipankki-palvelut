@@ -1,0 +1,81 @@
+When the path to ./data/current in ./cgi/que is misconfigured, the
+result is a server error (good) with garbage HTTP headers (really
+Python stacktrace).
+
+works: mongoose/mongoose -r ./www -C '**/cgi/que' &
+below: mongoose/mongoose -r www -C '**/que' &
+Why should that be?
+[1026] hippu3$ curl http://localhost:8080/que\?verb=ListSets
+Error 500: Internal Server Error
+CGI program sent malformed or too big (>16384 bytes) HTTP headers: [python3: error while loading shared libraries: libpython3.3m.so.1.0: cannot open shared object file: No such file or directory
+
+[2013-08-10] Should work out why this happens and what to do if the
+three attempts are ever insufficient. There are usually a few of
+these but a simple retry, as coded, has always succeeded so far:
+jpiitula@Naali2:~/proj/Meta$ ./syncmeta 
+fail: attempt 1 <urlopen error [Errno -2] Name or service not known>
+fail: attempt 1 <urlopen error [Errno -2] Name or service not known>
+fail: attempt 2 <urlopen error [Errno -2] Name or service not known>
+
+
+2013-06-03 turned out that the resumption mechanism has gone bad:
+http://metalb.csc.fi/cgi-bin/que?verb=ListRecords&resumptionToken=TG
+| Internal Server Error
+| 
+| The server encountered an internal error or misconfiguration and was
+| unable to complete your request.
+| 
+| Please contact the server administrator, pid@listat.csc.fi and inform
+| them of the time the error occurred, and anything you might have done
+| that may have caused the error.
+| 
+| More information about this error may be available in the server error
+| log.
+| 
+| Apache/2.2.15 (Red Hat) Server at metalb.csc.fi Port 80
+.
+
+Made badResumptionToken() add also a badArgument, since write_result
+checks for badVerb and badArgument only before it tries to access
+'state'. Should make sure that a badArgument is allowed there, or else
+make write_result also check for badResumptionToken. (Also is
+badArgument allowed to be empty? No checking for such anyway and not a
+whole start tag as before. Subtle.)
+
+in resume_state in www/que it says crash if database is not there - is
+this all right or all wrong?
+
+meta-cmdi.xsl is metashareToCmdi.xsl from Penny Labropoulos
+meta-cmdj.xsl is remove_metashare_namespace.xsl ditto
+on-meta-cmdi.docx is a report on the use of these --
+These are to be replaced with a single transform I think,
+but for now run them in sequence I think -- get in touch.
+
+2013-06-09 Getting an exception from
+"verb=ListIdentifiers&resumptionToken=" when should get OAI-PMH
+response with badArgument and badResumptionToken error elements.
+
+2013-06-10 Trying to use cmdjtransform(cmditransform(doc)) in
+syncmeta, getting document tree not initialized missing root but those
+two transforms were meant to be run in sequence what now?
+
+2013-06-12 OAI identifiers MUST be URL-encoded - we must use the
+colons but then we must encode them because they must not be there
+even though the whole query must or must it be URL-encoded - sigh
+(Encode a colon as %3A.) Except curl at least seems to do the right
+thing either way - oai%3Akielipankki.fi%3Ash9e580 works the same as
+oai:kielipankki.fi:sh9e580 - write tests for this anyway.
+
+2013-06-13 Hide diagnostic output (invalidity reports) behind an
+option because otherwise cron sends email every time. Martin said so.
+
+2013-06-19 ListRecords with oai_dc produces META-SHARE format!? (from
+the current http://metalb...quetest) - oh yes, syncmeta was coded to
+do that - fixed but not yet live - meta-core.xsl needs replaced anyway
+
+2013-06-20 Should follow all manner of guidelines for OLAC and then
+for DC like so <http://www.language-archives.org/NOTE/usage.html>
+
+2013-06-20 Needs to remove authentication information from the Git
+repository aka lose all history probably - create a separate
+configuration file or two after all

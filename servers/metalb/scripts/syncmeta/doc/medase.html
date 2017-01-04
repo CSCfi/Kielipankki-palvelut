@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>Language Bank of Finland OAI-PMH server to mirror META-SHARE</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-06-03 21:06:58 EEST"/>
+<meta name="author" content="Jussi Piitulainen (UHEL), Martin Matthiesen (CSC)"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+
+<h1 class="title">Language Bank of Finland OAI-PMH server to mirror META-SHARE</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Two scripts </a></li>
+<li><a href="#sec-2">2 The server script </a></li>
+<li><a href="#sec-3">3 The update script </a></li>
+<li><a href="#sec-4">4 Some issues </a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Two scripts </h2>
+<div class="outline-text-2" id="text-1">
+
+
+<ul>
+<li>
+An OAI-PMH server implements a harvesting protocol over HTTP
+
+</li>
+<li>
+We have a CGI-script for this, written in Python3
+
+</li>
+<li>
+Metadata is served from a static SQLite3 database file
+
+</li>
+<li>
+An update is done by replacing the database file with a new version
+
+</li>
+<li>
+The old database can still be accessed through a resumption token
+for a limited time.
+
+</li>
+<li>
+We have another script to update the database file from our
+META-SHARE node, written in Python3/lxml, to be run as a cron job
+
+</li>
+<li>
+<b>Almost</b> done!
+
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> The server script </h2>
+<div class="outline-text-2" id="text-2">
+
+
+<ul>
+<li>
+The OAI-PMH server is a CGI script written in Python3
+
+</li>
+<li>
+Metadata is served from a static SQLite3 database file
+
+</li>
+<li>
+Resumption tokens contain the information needed to resume the
+service
+
+</li>
+<li>
+There are so few records that the resumption mechanism is not even
+used (yet?)
+
+</li>
+<li>
+Updates are atomic: create a new database file, make it current
+
+</li>
+<li>
+Advertised as transient - not sure of our ability to track all
+deletions yet
+
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> The update script </h2>
+<div class="outline-text-2" id="text-3">
+
+
+<ul>
+<li>
+The server database remembers META-SHARE storage identifiers and
+checksums
+
+</li>
+<li>
+New OAI identifiers for META-SHARE records are based on their
+storage identifiers but shorter
+
+</li>
+<li>
+Checksum change indicates an update
+
+</li>
+<li>
+META-SHARE's harvesting protocol requires login credentials, then
+provides access to metadata that may not be public in the node
+
+</li>
+<li>
+We serve published META-SHARE records as such, others as deleted
+
+</li>
+<li>
+We serve META-SHARE resourceInfo, minimal Dublin Core (because
+OAI-PMH), and (minimal?) OLAC
+
+</li>
+<li>
+waiting the ability to derive corresponding CMDI directly
+
+
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Some issues </h2>
+<div class="outline-text-2" id="text-4">
+
+
+<ul>
+<li>
+not yet validating the META-SHARE records - needs done
+
+</li>
+<li>
+DC and OLAC are flat, resourceInfo is a component architecture
+
+</li>
+<li>
+a "managing node" would have all META-SHARE records - not sure of
+the issues there
+
+</li>
+<li>
+lack of resource identifiers as opposed to record identifiers
+</li>
+</ul>
+</div>
+</div>
+<div id="postamble">
+<p class="author"> Author: Jussi Piitulainen (UHEL), Martin Matthiesen (CSC)
+<a href="mailto:jpiitula@ling.helsinki.fi">&lt;jpiitula@ling.helsinki.fi&gt;</a>
+<a href="mailto:martin.matthiesen@csc.fi">&lt;martin.matthiesen@csc.fi&gt;</a>
+</p>
+<p class="date"> Date: 2013-06-03 21:06:58 EEST</p>
+<p class="creator">HTML generated by org-mode 6.33x in emacs 23</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+#! /usr/bin/env python3
+# -*- mode: Python; -*-
+
+import sqlite3
+
+base = '/fs/proj1/kieli/Server/medase/data/current'
+
+metasharenode = 'http://metashare.csc.fi'
+
+def main(sixes):
+    connection = sqlite3.connect(base)
+    cursor = connection.cursor()
+    cursor.execute('''
+        select identifier, sourceid from origin
+        where sourcename = :source
+    ''', dict(source = metasharenode))
+    seen = [ identifier for identifier, sourceid in cursor.fetchall()
+             if any(sourceid.endswith(six) for six in sixes) ]
+    for identifier in seen:
+        cursor.execute('''
+            update condition
+            set code = code || 'xxx'
+            where identifier = :identifier
+        ''', dict(identifier = identifier))
+    connection.commit()
+    cursor.close()
+    
+
+if __name__ == '__main__':
+    from optparse import OptionParser
+    parser = OptionParser()
+    parser.add_option('--see', action = 'store', default = '', # see all
+                      help = 'suffixes of seen storage ids, comma-separated')
+    opts, args = parser.parse_args()
+    main(opts.see.split(','))

@@ -1,0 +1,63 @@
+#! /usr/bin/env python3
+# -*- mode: Python; -*-
+
+# report on the validity of each non-deleted record in the current
+# database
+
+import sqlite3
+from io import StringIO
+from lxml import etree
+
+def infotext(cursor):
+    cursor.execute('''
+        select identifier, metadata from ix natural join record
+        where metadataPrefix = 'info'
+          and header not like '%deleted%';
+    ''')
+    return map((lambda identifier, data :
+                    (identifier,
+                     data[len('<metadata>'):-len('</metadata>')])),
+               *zip(*cursor.fetchall()))
+
+def report(identifier, metadata):
+    doc = etree.parse(StringIO(metadata))
+    if not METASchema.validate(doc):
+        print('=======', identifier, 'does not validate')
+        # print(METASchema.error_log)
+        return
+
+    # META validates, what about CMDI?
+
+    cmd = RIPNS(META2CMD(doc))
+    loc, = cmd.xpath('attribute::xsi:schemaLocation',
+                     namespaces = dict(xsi = ( 'http://www.w3.org/2001/'
+                                               'XMLSchema-instance' )))
+    if loc.endswith('0571/xsd'):
+        CMDSchema, tag = CMDSchema0571, '0571'
+    elif loc.endswith('2312/xsd'):
+        CMDSchema, tag = CMDSchema2312, '2312'
+    elif loc.endswith('9836/xsd'):
+        CMDSchema, tag = CMDSchema9836, '9836'
+    else:
+        raise Exception(loc)
+    if not CMDSchema(cmd):
+        print('=======', identifier, 'META validates, CMDI', tag, 'not')
+
+if __name__ == '__main__':
+    METASchema = etree.XMLSchema(etree.parse('xsd/META-XMLSchema/UHEL/'
+                                             # UHEL be a v3.0 copy
+                                             'META-SHARE-Resource.xsd'))
+    META2CMD = etree.XSLT(etree.parse('meta-cmdi.xsl'))
+    RIPNS = etree.XSLT(etree.parse('meta-cmdi1.xsl'))
+    print('parse 0571 schema')
+    CMDSchema0571 = etree.XMLSchema(etree.parse('xsd/CMD0571.xsd'))
+    print('parse 2312 schema')
+    CMDSchema2312 = etree.XMLSchema(etree.parse('xsd/CMD2312.xsd'))
+    print('parse 9836 schema')
+    CMDSchema9836 = etree.XMLSchema(etree.parse('xsd/CMD9836.xsd'))
+    connection = sqlite3.connect('data/current')
+    cursor = connection.cursor()
+    for identifier, metadata in infotext(cursor):
+        report(identifier, metadata)
+
+    connection.close()

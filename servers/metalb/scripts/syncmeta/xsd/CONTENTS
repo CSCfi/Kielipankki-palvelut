@@ -1,0 +1,127 @@
+# META-SHARE CMDI profile schema documents named using the last four
+# digits in the official names. (And modified to be able to use the
+# email pattern in xsltproc, removing a trailing vertical bar in that
+# regex.)
+
+CLARIN=http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/
+curl -o xsd/CMD0554.xsd $CLARIN/clarin.eu:cr1:p_1361876010554/xsd
+...
+
+xmlcatalog --noout --add rewriteURI \
+  $CLARIN/clarin.eu:cr1:p_1361876010554/xsd \
+  CMD0554.xsd \
+  xsd/catalog
+xmlcatalog --noout --add rewriteURI \
+  $CLARIN/clarin.eu:cr1:p_1361876010571/xsd \
+  CMD0571.xsd \
+  xsd/catalog
+xmlcatalog --noout --add rewriteURI \
+  $CLARIN/clarin.eu:cr1:p_1355150532312/xsd \
+  CMD2312.xsd \
+  xsd/catalog
+xmlcatalog --noout --add rewriteURI \
+  $CLARIN/clarin.eu:cr1:p_1360931019836/xsd \
+  CMD9836.xsd \
+  xsd/catalog
+
+# The META-SHARE schema document tree downloaded recursively from the
+# official schema location. (And copied as UHEL and modified to be
+# able to use the email pattern in xsltproc.)
+
+# imported by META-SHARE CMDI schemas to define xml:lang
+# this is a living version of the schema
+( cd xsd/w3/2001
+  curl -O http://www.w3.org/2001/xml.xsd )
+xmlcatalog --noout --add rewriteURI \
+  http://www.w3.org/2001/xml.xsd \
+  w3/2001/xml.xsd \
+  xsd/catalog
+
+# imported by Dublin Core to define xml:lang
+# this is a persistent version of the schema
+( cd xsd/w3/2001/03
+  curl -O http://www.w3.org/2001/03/xml.xsd )
+xmlcatalog --noout --add rewriteURI \
+  http://www.w3.org/2001/03/xml.xsd \
+  w3/2001/03/xml.xsd \
+  xsd/catalog
+
+curl -o xsd/oai/OAI-PMH.xsd http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd
+( cd xsd/oai
+  curl -O http://www.openarchives.org/OAI/2.0/oai_dc.xsd )
+xmlcatalog --noout --add rewriteURI \
+  http://www.openarchives.org/OAI/2.0/oai_dc.xsd \
+  oai/oai_dc.xsd \
+  xsd/catalog
+
+( cd xsd/dc # imported by oai_dc.xsd
+  curl -O http://dublincore.org/schemas/xmls/simpledc20021212.xsd )
+xmlcatalog --noout --add rewriteURI \
+  http://dublincore.org/schemas/xmls/simpledc20021212.xsd \
+  dc/simpledc20021212.xsd \
+  xsd/catalog
+
+( cd xsd/oai
+  curl -O http://www.openarchives.org/OAI/2.0/oai-identifier.xsd )
+xmlcatalog --noout --add rewriteURI \
+  http://www.openarchives.org/OAI/2.0/oai-identifier.xsd \
+  oai/oai-identifier.xsd \
+  xsd/catalog
+
+# dc, dcmitype, olac-extension added validating a record required them
+curl -o xsd/olac/olac.xsd http://www.language-archives.org/OLAC/1.1/olac.xsd
+( cd xsd/olac # imported by olac.xsd
+  for f in dc \
+           dcterms \
+           dcmitype \
+           olac-discourse-type \
+	   olac-extension \
+           olac-language \
+           olac-linguistic-field \
+           olac-linguistic-type \
+           olac-role
+  do
+     curl -O http://www.language-archives.org/OLAC/1.1/$f.xsd
+  done )
+
+# This required mongoose (or something) and a local que;
+# the resulting schema is intended to be OAI-PMH/OLAC.
+curl 'http://localhost:31415/que?verb=ListMetadataFormats' |
+xsltproc --stringparam prefix olac xsl/oaize.xsl - |
+xmllint --format - > xsd/oai/PMH-olac.xsd
+# (Renamed it later as shown - was xsd/OAI-olac.xsd first.)
+
+# Similarly, xsd/oai/PMH-{cmdi0554,...,info,oai_dc}.xsd,
+# with a local web server running at port 31415 and serving
+# these formats:
+for prefix in cmdi0554 cmdi0571 cmdi2312 cmdi9836 info oai_dc
+do
+  curl 'http://localhost:31415/que?verb=ListMetadataFormats' |
+  xsltproc --stringparam prefix $prefix xsl/oaize.xsl - |
+  xmllint --format - > xsd/oai/PMH-$prefix.xsd
+done
+
+xmlcatalog --noout --add rewriteURI \
+http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd \
+oai/OAI-PMH.xsd \
+xsd/catalog
+
+xmlcatalog --noout --add rewriteURI \
+http://www.language-archives.org/OLAC/1.1/olac.xsd \
+olac/olac.xsd \
+xsd/catalog
+
+xmlcatalog --noout --add rewriteURI \
+http://metashare.ilsp.gr/META-XMLSchema/v3.0/META-SHARE-Resource.xsd \
+xsd/META-XMLSchema/UHEL/META-SHARE-Resource.xsd \
+xsd/catalog
+
+# xsd/multi.skel is a template to work around xmllint limitation when
+# multiple schemas are needed ("No matching global element declaration
+# available but demanded by the strict wildcard");
+
+# xsd/oai/PMH-identifier.xsd is an instance of xsd/multi.skel that
+# imports both OAI-PMH.xsd and oai-identifier.xsd so that our Identify
+# element can be validated with the combined schema.
+
+# Hm, xsd/OAI/PMH-olac.xsd seems to achieve the same!

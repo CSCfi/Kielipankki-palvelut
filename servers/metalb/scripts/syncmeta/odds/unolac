@@ -1,0 +1,46 @@
+#! /usr/bin/env python3
+# -*- mode: Python; -*-
+
+# The purpose is to be able to test the synchmeta code path in update
+# where a record type is missing in the database, for whatever reason.
+
+# An assumption is that at least one non-'olac' record exists for
+# every item, because OAI-PMH requires at least an 'oai_dc' record.
+# Therefore, the removal of all 'olac' records does not require the
+# removal of the item.
+
+import sqlite3
+
+base = '/fs/proj1/kieli/Server/medase/data/current'
+
+metasharenode = 'http://metashare.csc.fi'
+
+def main(sixes):
+    connection = sqlite3.connect(base)
+    cursor = connection.cursor()
+    cursor.execute('''
+        select recno, sourceid from origin natural join ix
+        where sourcename = :source and
+              metadataPrefix = 'olac'
+    ''', dict(source = metasharenode))
+    seen = [ recno for recno, sourceid in cursor.fetchall()
+             if any(sourceid.endswith(six) for six in sixes) ]
+    for recno in seen:
+        cursor.execute('''
+            delete from record where recno = :recno
+        ''', dict(recno = recno))
+        cursor.execute('''
+            delete from ix where recno = :recno
+        ''', dict(recno = recno))
+
+    connection.commit()
+    cursor.close()
+    
+
+if __name__ == '__main__':
+    from optparse import OptionParser
+    parser = OptionParser()
+    parser.add_option('--see', action = 'store', default = '', # see all
+                      help = 'suffixes of seen storage ids, comma-separated')
+    opts, args = parser.parse_args()
+    main(opts.see.split(','))

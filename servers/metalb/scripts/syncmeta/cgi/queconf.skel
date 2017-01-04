@@ -1,0 +1,26 @@
+# queconf.skel is tracked by Git. A copy is meant to be named
+# queconf.py and edited to match the local requirements. This way,
+# development and testing can happen in different environments, each
+# using their own configuration while fetching new implementations
+# from a shared repository.
+
+# queconf.py is imported in the OAI-PMH provider script, ./que.
+
+# "current" is a symbolic link to an sqlite database named NAME.db,
+# sibling to "current". NAME is included in a resumption token. On
+# resumption, path is found in the real path to "current".
+
+currentLink = '/path/current'
+
+# At most this many records are sent in one response. The OAI-PMH
+# specification suggests that it is all right to send a thousand
+# (1000) - they probably do not expect multigigabyte records. Much
+# smaller values are mainly useful during testing.
+
+maxRecords = 100
+
+# The URL of the server, as a bytes object. This is returned in
+# OAI-PMH responses in request elements. It doesn't otherwise affect
+# the behaviour of the script, so usually just let it be.
+
+base = b'http://metalb.csc.fi/cgi-bin/que'
