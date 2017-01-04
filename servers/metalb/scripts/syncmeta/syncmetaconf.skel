@@ -15,6 +15,9 @@ dbparent = '/home/jpiitula/proj/Meta/data/'
 # node. (Also used in database to indicate the origin of each item.)
 metasharenode = 'http://metashare.csc.fi'
 
+# The username/password as defined in metashare/local_settings.py
+# (on metashare.csc.fi)
+#
 syncuser = dict(username = 'REDACTED',
                 password = 'REDACTED')
 
