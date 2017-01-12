@@ -1,0 +1,25 @@
+(Preliminary instructions 2013-06-27)
+
+(1) Edit
+
+    * cgi/queconf.py (initially copy cgi/queconf.skel)
+    * ./fresh
+    * ./syncmeta
+
+    to point to the same data directory. (TODO: implement a single
+    step for this.)
+
+(2) $ ./fresh
+
+(3) Copy (or move) cgi/que (with cgi/queconf.py) to be run as a CGI
+    script.
+
+Later:
+
+(4) ./syncmeta can be run again to update the current database in the
+    data directory.
+
+cgi/que needs only read access to the data directory when run by a web
+server, ./syncmeta and ./fresh need also write access.
+
+./syncmeta uses lxml's XML, XSL, and now XSD machinery.

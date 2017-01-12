@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:oai="http://www.openarchives.org/OAI/2.0/" targetNamespace="http://www.openarchives.org/OAI/2.0/" elementFormDefault="qualified">
+  <xsd:include schemaLocation="http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd"/>
+  <xsd:import namespace="http://www.clarin.eu/cmd/" schemaLocation="http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1361876010554/xsd"/>
+</xsd:schema>

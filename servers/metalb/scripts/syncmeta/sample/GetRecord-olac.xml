@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/             http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+  <responseDate>2013-06-23T15:05:36Z</responseDate>
+  <request verb="GetRecord" identifier="oai:kielipankki.fi:sh042f0" metadataPrefix="olac">http://metalb.csc.fi/cgi-bin/que</request>
+  <GetRecord>
+    <record>
+      <header>
+        <identifier>oai:kielipankki.fi:sh042f0</identifier>
+        <datestamp>2013-06-22T09:24:00Z</datestamp>
+      </header>
+      <metadata>
+        <olac:olac xmlns:olac="http://www.language-archives.org/OLAC/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.openarchives.org/OAI/2.0/static-repository" xmlns:oai="http://www.openarchives.org/OAI/2.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:ms="http://www.ilsp.gr/META-XMLSchema" xsi:schemaLocation="http://www.language-archives.org/OLAC/1.1/          http://www.language-archives.org/OLAC/1.1/olac.xsd">
+          <dc:title>Argumentation in studying problem-solving skills in social work education in Finnish Polytechnics </dc:title>
+          <dc:description>This study aims at developing and investigating argumentative and collaborative study methods for social work education in polytechnics in order to scaffold social work students’ argumentative problem-solving skills. These skills are needed in social work when various complicated social problems should be solved through argumentative discussions. The study focuses, first, on pedagogical online and face-to-face macro-scripts in order to support argumentation in studying social issues, and second, on effects of argumentative online and face-to-face role play methods on learning argumentative problem-solving skills. 75 essays, 216 online discussion turns, 260 minutes of video and audio recordings; 2-3 months. </dc:description>
+          <dc:rights>This resource is licensed under a 'underNegotiation'. The availability status of the resource is: 'underNegotiation'.</dc:rights>
+          <dc:date>2012-10-11</dc:date>
+          <dc:subject>'language resources', 'monolingual corpus'</dc:subject>
+          <dc:type xsi:type="olac:linguistic-type" olac:code="primary_text"/>
+          <dc:language xsi:type="olac:language" olac:code="fi"/>
+        </olac:olac>
+      </metadata>
+    </record>
+  </GetRecord>
+</OAI-PMH>

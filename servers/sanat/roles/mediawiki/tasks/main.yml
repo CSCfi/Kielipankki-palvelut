@@ -12,8 +12,9 @@
 
 - name: Install oregano
   get_url:
-    url: https://raw.githubusercontent.com/wikimedia/translatewiki/6e0f899392e89e85961f1778847009183442c9ab/bin/oregano
+    url: https://raw.githubusercontent.com/wikimedia/translatewiki/340394a9eb459e5477f98da6ed82d9cc156f79c5/bin/oregano
     dest: /srv/mediawiki/oregano
+    checksum: sha1:a6a9028352d72b45cd1dc07113ea659ff0d4cd57
     mode: a+x
 
 - name: Install MediaWiki repository clone script

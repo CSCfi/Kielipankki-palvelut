@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN" "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <rewriteURI uriStartString="http://www.w3.org/2001/xml.xsd" rewritePrefix="w3/2001/xml.xsd"/>
+  <rewriteURI uriStartString="http://dublincore.org/schemas/xmls/simpledc20021212.xsd" rewritePrefix="dc/simpledc20021212.xsd"/>
+  <rewriteURI uriStartString="http://www.w3.org/2001/03/xml.xsd" rewritePrefix="w3/2001/03/xml.xsd"/>
+  <rewriteURI uriStartString="http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" rewritePrefix="oai/OAI-PMH.xsd"/>
+  <rewriteURI uriStartString="http://www.language-archives.org/OLAC/1.1/olac.xsd" rewritePrefix="olac/olac.xsd"/>
+  <rewriteURI uriStartString="http://www.openarchives.org/OAI/2.0/oai-identifier.xsd" rewritePrefix="oai/oai-identifier.xsd"/>
+  <rewriteURI uriStartString="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" rewritePrefix="oai/oai_dc.xsd"/>
+  <rewriteURI uriStartString="http://metashare.ilsp.gr/META-XMLSchema/v3.0/META-SHARE-Resource.xsd" rewritePrefix="META-XMLSchema/UHEL/META-SHARE-Resource.xsd"/>
+  <rewriteURI uriStartString="http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1361876010554/xsd" rewritePrefix="CMD0554.xsd"/>
+  <rewriteURI uriStartString="http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1361876010571/xsd" rewritePrefix="CMD0571.xsd"/>
+  <rewriteURI uriStartString="http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1355150532312/xsd" rewritePrefix="CMD2312.xsd"/>
+  <rewriteURI uriStartString="http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1360931019836/xsd" rewritePrefix="CMD9836.xsd"/>
+</catalog>

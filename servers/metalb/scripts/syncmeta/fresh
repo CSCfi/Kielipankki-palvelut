@@ -1,0 +1,25 @@
+#! /bin/sh -ex
+
+# This creates (if it doesn't exist) a data directory
+# and a fresh database
+# $DATA/current -> $DATA/mdfirst.db
+
+# Then run ./syncmeta to get content from mirrored META-SHARE node.
+
+#DATA=/fs/proj1/kieli/Next/Meta/data
+DATA=./data
+
+mkdir --parents $DATA
+
+( cd $DATA
+  rm -f mdfirst.db
+  sqlite3 mdfirst.db < ../schema.sql
+  ln -sf mdfirst.db current )
+
+#./syncmeta --see=53
+#./syncmeta --see=73
+#./syncmeta --see=53,73
+
+# ./syncmeta
+# ./syncmeta --verbose
+# ./syncmeta --validate

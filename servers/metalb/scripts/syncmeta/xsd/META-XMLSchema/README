@@ -1,0 +1,14 @@
+Established own UHEL copy of v3.0 (downloaded with wget from ilsp.gr
+where the records point as the schema location) because lxml insists
+that the published version contains errors:
+
+   lxml.etree.XMLSchemaParseError:
+   Element '{http://www.w3.org/2001/XMLSchema}pattern':
+   The value '[^@]+@[^\.]+\..+|' of the facet 'pattern'
+   is not a valid regular expression., line 24
+
+That pattern is in v3.0/META-SHARE-SimpleTypes.xsd and can only be
+wrong (reading http://www.w3.org/TR/xmlschema-2/#regexs) in [^\.], so
+trying to replace that with [^.]. FAILED - still "not valid". Try to
+remove the trailing '|' even though the TR is clear that it's fine.
+THEN THE SCHEMA IS PARSED BUT IT'S ALSO DIFFERENT!

@@ -1,0 +1,31 @@
+# syncmetaconf.skel is tracked (do not put user authentication
+# information there) while synchmetaconf.py is imported by synchmeta
+# and ignored by Git (not tracked, so user authentication information
+# in particular is not stored in the shared repository)
+
+# There must be a current database here for ./syncmeta to update.
+# ./fresh makes an initial (empty but current) database.
+
+dbparent = '/home/jpiitula/proj/Meta/data/'
+# dbparent/current -> dbparent/mdxxxxxx.db (before)
+# dbparent/current -> dbparent/mdyyyyyy.db (after)
+
+# The META-SHARE synch protocol is appended to this URI, using this
+# authentication information. The syncuser must of course exist in the
+# node. (Also used in database to indicate the origin of each item.)
+metasharenode = 'http://metashare.csc.fi'
+
+# The username/password as defined in metashare/local_settings.py
+# (on metashare.csc.fi)
+#
+syncuser = dict(username = 'REDACTED',
+                password = 'REDACTED')
+
+# protocol, plus "sh" for "share"; a stem of stemsize hex digits from
+# a metashare storage identifier is appended to this prefix. In place
+# of kielipankki.fi, use a domain you own.
+oaiprefix = 'oai:kielipankki.fi:sh'
+
+# a new oai identifier uses this many characters from the end of the
+# storage identifier, with a counter to solve collisions.
+stemsize = 5
