@@ -20,12 +20,11 @@ site_vhost:
     </Directory>
 php_enable_php_fpm: true
 memcached_memory_limit: 4G
-<<<<<<< HEAD
+
 omposer_keep_updated: true
 sms_xml:
   wiki_username: "SyncBot"
   wiki_password: "SyncBot12"
   debug: "True"
-=======
+
 composer_keep_updated: true
->>>>>>> 717847fdce3af3ab950ffc3413342dec26044ee3
