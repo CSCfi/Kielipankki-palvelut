@@ -8,6 +8,7 @@
   - gcc
   - php-pear
   - php-devel
+  - php-mongodb
   - openssl-devel.x86_64
 
 - name: Install python dependencies using pip
@@ -33,9 +34,9 @@
 - name: Set SELinux to permissive mode (required by mongodb)
   selinux: policy=targeted state=permissive
 
-- name: Install php dependencies
-  pear:
-    name: mongo
+#- name: Install php dependencies
+#  pear:
+#    name: pecl/mongodb
 
 - name: Install JavaScript interpret
   yum: name=nodejs state=present
