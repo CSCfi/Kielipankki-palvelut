@@ -42,6 +42,7 @@ do
 		git clone "$URL" "$DIR"
 		if [ "$VER" != "master" ]
 		then
+		        cd "$DIR" || exit
 			git checkout "$VER"
 		fi
 	fi
