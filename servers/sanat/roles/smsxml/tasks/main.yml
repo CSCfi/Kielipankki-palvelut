@@ -107,6 +107,7 @@
   command: /www/smsxml/add_wikiuser.sh
   args:
     creates: /srv/mediawiki/workdir/maintenance/smsxml_user_added
+  become: true
 
 - name: Create symlink to MediaWiki code
   file: src=/www/smsxml/wiki/extensions/Saame dest=/www/{{webdomain}}/docroot/w/extensions/Saame state=link force=yes
