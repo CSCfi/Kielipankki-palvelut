@@ -1,0 +1,9 @@
+---
+# defaults file for hfst
+
+release_url: https://github.com/hfst/hfst/releases/download/
+#hfst_version: (see site.yml)
+compile_dir: /tmp/{{ ansible_user }}/ansible
+hfst_tarball: hfst-{{ hfst_version }}.tar.gz
+hfst_compile_dir: "{{ compile_dir }}/hfst-{{ hfst_version }}"
+hfst_install_dir: "{{ hfst_install_prefix }}/{{ hfst_version }}"

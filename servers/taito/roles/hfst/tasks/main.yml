@@ -1,0 +1,109 @@
+---
+# tasks file for hfst
+
+- name: Install list of packages
+  apt: name={{item}} state=installed
+  with_items:
+       - libreadline-dev
+       - automake
+       - flex
+       - build-essential
+       - swig
+       - python3-dev
+  when:
+    - ansible_os_family == "Debian"
+    - is_admin
+
+- name: Install list of packages
+  yum: name={{item}} state=installed
+  with_items:
+       - libreadline-dev
+       - automake
+       - flex
+       - gcc-c++
+       - swig
+       - python3-dev
+  when:
+    - ansible_os_family == "RedHat"
+    - is_admin
+
+- name: compile_dir directory exists with 0777 permission
+  become: no
+  file: path={{ compile_dir }}
+    mode=0777
+    recurse=no
+    state=directory
+
+- name: Download and extract tarball
+  unarchive:
+    src={{ release_url }}/v{{ hfst_version }}/{{ hfst_tarball }}
+    dest={{ compile_dir }}
+    creates={{ hfst_compile_dir }}
+    remote_src=yes
+
+- name: Fix xglib bug in configure
+  lineinfile:
+    regexp: ^:\)| +\[AC_SUBST\(\[GLIB_CFLAGS\]\)\]\)$
+    line: ':)'
+    dest: "{{ hfst_compile_dir }}/configure.ac"
+
+- name: Running ./autoreconf -i 
+  command: "autoreconf -i"
+  args:
+    chdir: "{{ hfst_compile_dir }}"
+    creates: libtool
+
+- name: Running ./configure 
+  command: "./configure --enable-all-tools --with-readline --enable-fsmbook-tests"
+  args:
+    chdir: "{{ hfst_compile_dir }}"
+    creates: config.log
+
+- name: Running make 
+  shell: "make > MAKE.log"
+  args:
+    chdir: "{{ hfst_compile_dir }}"
+    creates: MAKE.log
+
+- name: Running  make check 
+  shell: "make check -j 4 > MAKE_CHECK.log"
+  args:
+    chdir: "{{ hfst_compile_dir }}"
+    creates: MAKE_CHECK.log
+
+- name: Fix missing "bin" dir bug in Makefile
+  become: no
+  file:
+    path={{ hfst_install_dir }}/bin
+    mode=0775
+    recurse=no
+    state=directory
+
+- name: Running make install
+  shell: "make install prefix={{ hfst_install_dir }} > MAKE_INSTALL.log"
+  args:
+    chdir: "{{ hfst_compile_dir }}"
+    creates: "{{ hfst_install_dir }}/bin/hfst-lookup"
+
+- name: "Python module: Set LIBRARY PATH to fresh compile"
+  lineinfile:
+    regexp: '^extra_link_arguments = (\[\]|\["-Wl,-rpath=" \+ absolute_libhfst_src_path \+ "/.libs"\])$'
+    line: 'extra_link_arguments = ["-Wl,-rpath=" + absolute_libhfst_src_path + "/.libs"]'
+    dest: "{{ hfst_compile_dir }}/python/setup.py"  
+
+- name: Building python module
+  shell: "module load swig/3.0 && python3 setup.py build_ext --inplace"
+  args:
+    chdir: "{{ hfst_compile_dir }}/python"
+
+- name: Installing python module
+  shell: "module load swig/3.0 && python3 setup.py install --prefix={{ hfst_install_dir }} "
+  args:
+    chdir: "{{ hfst_compile_dir }}/python"
+
+- name: Fix permissions
+  file:
+    path={{ hfst_install_dir }}
+    group=csc
+    mode="g+rwX,o+rX"
+    recurse=yes

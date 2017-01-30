@@ -1,0 +1,44 @@
+---
+# tasks file for hfst-morphologies
+
+- name: Download and extract tarball
+  unarchive:
+    src={{ release_url }}/hfst-{{item}}-installable.tar.gz
+    dest={{ temp_dir }}
+    creates={{ temp_dir }}/hfst-{{item}}-installable/Makefile
+    remote_src=yes
+    validate_certs=false
+  with_items:
+    - omorfi
+    - english
+    - finnish
+    - french
+    - german
+    - italian
+    - swedish
+    - turkish
+
+- name: Running make install
+  shell: "make install prefix={{ hfst_install_dir }} > MAKE_INSTALL.log"
+  args:
+    chdir: "{{ temp_dir }}/hfst-{{item}}-installable"
+    creates: MAKE_INSTALL.log
+  with_items:
+    - omorfi
+    - english
+    - finnish
+    - french
+    - german
+    - italian
+    - swedish
+    - turkish
+
+- name: Fix permissions (again)
+  file:
+    path={{ hfst_install_dir }}
+    group=csc
+    mode="g+rwX,o+rX"
+    recurse=yes
+
+
+

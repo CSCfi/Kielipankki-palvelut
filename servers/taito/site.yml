@@ -1,0 +1,17 @@
+---
+# Basic demo of using Ansible 
+#
+
+- hosts: "{{ target_host }}"
+  vars:
+   - hfst_version: 3.12.1
+  remote_user: matthies
+  become: no
+  roles:
+   #- hfst
+   - hfst-morphologies
+
+   
+
+
+     

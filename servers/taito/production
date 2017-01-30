@@ -1,0 +1,5 @@
+[localhost]
+127.0.0.1  ansible_connection=local
+
+[taito]
+taito-login4.csc.fi ansible_user=ling hfst_install_prefix=/appl/ling/hfst/
