@@ -1,6 +1,6 @@
 # Do not install for everyone
 [localhost]
-127.0.0.1  ansible_connection=local hfst_install_prefix=/tmp/matthies/ansible/hfst_install
+127.0.0.1  ansible_connection=local install_prefix=/tmp/matthies/ansible/install
 
 [taito]
-taito-login4.csc.fi hfst_install_prefix=/tmp/matthies/ansible/hfst_install
+taito-login4.csc.fi install_prefix=/tmp/matthies/ansible/install
