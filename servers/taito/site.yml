@@ -5,13 +5,13 @@
 - hosts: "{{ target_host }}"
   vars:
    - hfst_version: 3.12.1
-   - hfst_ospell_version: 0.4.4
+   - hfst_ospell_version: 0.4.5
   remote_user: matthies
   become: no
   roles:
-   - hfst
-   - hfst-morphologies
-   - hfst-ospell
+   - { role: hfst, tags: hfst }
+   - { role: hfst-morphologies, tags: hfst-morphologies }
+   - { role: hfst-ospell, tags: hfst-ospell }
 
 
 
