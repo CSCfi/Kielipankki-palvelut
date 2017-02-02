@@ -1,0 +1,9 @@
+---
+# defaults file for hfst
+
+release_url: https://github.com/hfst/hfst-ospell/releases/download/
+version: "{{ hfst_ospell_version }}"
+compile_root: /tmp/{{ ansible_user }}/ansible
+tarball: hfstospell-{{ version }}.tar.gz
+compile_dir: "{{ compile_root }}/hfstospell-{{ version }}"
+install_dir: "{{ install_prefix }}/{{ version }}"

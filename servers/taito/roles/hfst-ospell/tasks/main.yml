@@ -1,0 +1,53 @@
+---
+# tasks file for hfst-ospell
+
+- name: compile_root directory exists with 0777 permission
+  become: no
+  file: path={{ compile_root }}
+    mode=0777
+    recurse=no
+    state=directory
+
+- name: Download and extract tarball
+  unarchive:
+    src={{ release_url }}/v{{ version }}/{{ tarball }}
+    dest={{ compile_root }}
+    creates={{ compile_dir }}
+    remote_src=yes
+
+- name: Running ./autoreconf -i 
+  command: "autoreconf -i"
+  args:
+    chdir: "{{ compile_dir }}"
+    creates: libtool
+
+- name: Running ./configure 
+  command: "./configure --enable-hfst-ospell-office=no "
+  args:
+    chdir: "{{ compile_dir }}"
+    creates: config.log
+
+- name: Running make 
+  shell: "make > MAKE.log"
+  args:
+    chdir: "{{ compile_dir }}"
+    creates: MAKE.log
+
+- name: Running  make check 
+  shell: "make check -j 4 > MAKE_CHECK.log"
+  args:
+    chdir: "{{ compile_dir }}"
+    creates: MAKE_CHECK.log
+
+- name: Running make install
+  shell: "make install prefix={{ install_dir }} > MAKE_INSTALL.log"
+  args:
+    chdir: "{{ compile_dir }}"
+    creates: "{{ install_dir }}/bin/hfst-ospell"
+
+- name: Fix permissions
+  file:
+    path={{ install_dir }}
+    group=csc
+    mode="g+rwX,o+rX"
+    recurse=yes
