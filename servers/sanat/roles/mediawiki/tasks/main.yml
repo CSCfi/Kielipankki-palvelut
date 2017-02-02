@@ -36,8 +36,8 @@
   args:
     chdir: /srv/mediawiki/workdir
 
-- name: Update l10n cache
-  command: /usr/bin/php /srv/mediawiki/workdir/maintenance/rebuildLocalisationCache.php --threads=8
+#- name: Update l10n cache
+#  command: /usr/bin/php /srv/mediawiki/workdir/maintenance/rebuildLocalisationCache.php --threads=8
 
 
 - name: Setup oregano
@@ -49,7 +49,7 @@
     - deploy
 
 - name: Create docroot
-  file: path={{item}} state=directory owner=hhvm mode=755
+  file: path={{item}} state=directory owner=apache mode=755
   with_items:
     - /www/
     - /www/{{webdomain}}/
