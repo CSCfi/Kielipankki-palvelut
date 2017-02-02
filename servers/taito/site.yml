@@ -5,15 +5,14 @@
 - hosts: "{{ target_host }}"
   vars:
    - hfst_version: 3.12.1
-   - hfst_ospell_version: 0.4.3
-   - foma_version: 0.9.18
+   - hfst_ospell_version: 0.4.4
   remote_user: matthies
   become: no
   roles:
    - hfst
    - hfst-morphologies
-   #- hfst-ospell
-   - foma
+   - hfst-ospell
+
 
 
      
