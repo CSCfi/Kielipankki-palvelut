@@ -1,2 +1,2 @@
 [sanat]
-sanat.dev ansible_port=3022 ansible_user=root webdomain=sanat.dev
+sanat.dev webdomain=sanat.dev

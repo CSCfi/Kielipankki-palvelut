@@ -39,7 +39,10 @@
     state: present
 
 - name: Install JavaScript interpret
-  yum: name=nodejs state=present
+  yum:
+    name: nodejs
+    state: present
+    disablerepo: hhvm-repo
 
 - name: Create smsxml directory
   file: path=/www/smsxml state=directory

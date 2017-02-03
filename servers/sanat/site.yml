@@ -13,8 +13,8 @@
     - role: smsxml
     - role: selinux
     - role: geerlingguy.repo-epel
-    #- role: hhvm
-    #  tags: hhvm
+    - role: hhvm
+      tags: hhvm
     - role: apache_ssl
       tags: apache
     - role: geerlingguy.apache
