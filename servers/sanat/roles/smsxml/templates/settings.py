@@ -24,7 +24,7 @@ DEBUG = {{sms_xml.debug}}
 
 TEMPLATE_DEBUG = {{sms_xml.debug}}
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [u'{{ webdomain }}']
 
 
 # Application definition

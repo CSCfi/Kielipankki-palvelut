@@ -8,19 +8,21 @@
     - apache_vhosts_ssl:
       - "{{ site_vhost | combine(site_ssl_params) }}"
   roles:
+    - role: mediawiki
+      tags: mediawiki
+    - role: smsxml
     - role: selinux
     - role: geerlingguy.repo-epel
-    - role: smsxml
-    #- role: hhvm
-    #  tags: hhvm
+    - role: hhvm
+      tags: hhvm
     - role: apache_ssl
       tags: apache
     - role: geerlingguy.apache
       tags: apache
     - role: geerlingguy.memcached
     - role: geerlingguy.composer
-    - role: mediawiki
-      tags: mediawiki
+
+
   tasks:
     - name: Install admin tools
       yum: name={{ item }} state=present

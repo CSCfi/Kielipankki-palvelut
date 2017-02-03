@@ -34,12 +34,16 @@
 - name: Set SELinux to permissive mode (required by mongodb)
   selinux: policy=targeted state=permissive
 
-#- name: Install php dependencies
-#  pear:
-#    name: pecl/mongodb
+- name: Install php dependencies
+  pear:
+    name: pecl/mongodb
+    state: present
 
 - name: Install JavaScript interpret
-  yum: name=nodejs state=present
+  yum:
+    name: nodejs
+    state: present
+    disablerepo: hhvm-repo
 
 - name: Create smsxml directory
   file: path=/www/smsxml state=directory
@@ -102,12 +106,20 @@
     creates: /usr/lib64/httpd/modules/mod_uwsgi.so
 
 - name: Copy mediawiki user script
-  template: src=add_wikiuser.sh dest=/www/smsxml/add_wikiuser.sh
+  template: src=add_wikiuser.sh dest=/www/smsxml/add_wikiuser.sh mode="u=rwx"
 
 - name: Add mediawiki user for smsxml
   command: /www/smsxml/add_wikiuser.sh
   args:
     creates: /srv/mediawiki/workdir/maintenance/smsxml_user_added
+  become: true
+
+- name: Copy migrate script
+  template: src=migrate.sh dest=/www/smsxml/migrate.sh mode="u=rwx"
+
+- name: Make django migrations
+  command: /www/smsxml/migrate.sh
+  become: true
 
 - name: Create symlink to MediaWiki code
   file: src=/www/smsxml/wiki/extensions/Saame dest=/www/{{webdomain}}/docroot/w/extensions/Saame state=link force=yes
