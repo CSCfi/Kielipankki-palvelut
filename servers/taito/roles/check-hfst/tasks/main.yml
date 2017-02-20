@@ -1,0 +1,26 @@
+---
+# tasks file for check-hfst
+
+- name: compile_root directory exists with 0777 permission
+  become: no
+  file: path={{ compile_root }}
+    mode=0777
+    recurse=no
+    state=directory
+
+- name: Download and extract tarball
+  unarchive:
+    src={{ release_url }}/{{ tarball }}
+    dest={{ compile_root }}
+    creates={{ compile_dir }}
+    remote_src=yes
+
+# TODO: Make tests run against compile dir, not assume them to be installed and default (with next HFST update) -- mma 20.2.2017
+- name: Run tests
+  command: "{{ item }} > {{ item }}.LOG"
+  args:
+    chdir: "{{ compile_dir }}"
+  with_items:
+   - ./check-morphologies.sh
+   - ./check-ospell.sh
+   - ./check-ospell.sh

@@ -12,6 +12,7 @@
    - { role: hfst, tags: hfst }
    - { role: hfst-morphologies, tags: hfst-morphologies }
    - { role: hfst-ospell, tags: hfst-ospell }
+   - { role: check-hfst, tags: check-hfst }
 
 
 
