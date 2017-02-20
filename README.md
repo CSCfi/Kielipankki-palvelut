@@ -16,3 +16,4 @@ Kielipankin työkalut Taito-laskentaympäristössä
 - hfst
 - hfst-morphologies
 - hfst-ospell
+- check-hfst
