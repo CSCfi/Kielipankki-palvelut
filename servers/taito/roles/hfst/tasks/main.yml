@@ -53,8 +53,9 @@
     chdir: "{{ hfst_compile_dir }}"
     creates: libtool
 
+# Setting prefix explicitly to be able to replace it later in scripts
 - name: Running ./configure 
-  command: "./configure --enable-all-tools --with-readline --enable-fsmbook-tests"
+  command: "./configure --enable-all-tools --with-readline --enable-fsmbook-tests --prefix=/usr/local"
   args:
     chdir: "{{ hfst_compile_dir }}"
     creates: config.log
@@ -100,6 +101,20 @@
   shell: "module load swig/3.0 && python3 setup.py install --prefix={{ hfst_install_dir }} "
   args:
     chdir: "{{ hfst_compile_dir }}/python"
+
+# This is a workaround to be able to compile everything just once
+# And install to multiple places
+
+- name: Fix paths in some scripts
+  replace:
+     dest: "{{ hfst_install_dir }}/bin/{{ item }}"
+     regexp: \/usr\/local\/bin\/
+     replace: "{{ hfst_install_dir }}/bin/"
+  with_items:
+    - hfst-foma
+    - hfst-foma-wrapper.sh
+    - hfst-train-tagger
+    - hfst-twolc
 
 - name: Fix permissions
   file:
