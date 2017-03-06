@@ -6,6 +6,7 @@
   vars:
    - hfst_version: 3.12.1
    - hfst_ospell_version: 0.4.5
+   - finnish_parse_version: 1.0
   remote_user: matthies
   become: no
   roles:
@@ -13,6 +14,7 @@
    - { role: hfst-morphologies, tags: hfst-morphologies }
    - { role: hfst-ospell, tags: hfst-ospell }
    - { role: check-hfst, tags: check-hfst }
+   - { role: finnish-parse, tags: finnish-parse }
 
 
 
