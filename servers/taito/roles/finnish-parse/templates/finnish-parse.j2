@@ -4,7 +4,7 @@
 
 set -o pipefail
 
-resourcedir="{{ install_dir }}/share/Finnish-dep-parser/"
+resourcedir="{{ install_dir }}/share/Finnish-dep-parser/{{ branch }}"
 verbose=0
 if [ ! -d "$resourcedir" ] ; then
     echo "Resources not found in $resourcedir"

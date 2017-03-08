@@ -16,12 +16,6 @@
     depth: 1
     version: "{{ branch }}"
 
-- name: fix install script
-  replace:
-    dest: "{{ compile_dir }}/install.sh"
-    regexp: "http://mate-tools.googlecode.com/files/anna-3-1.jar"
-    replace: "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/mate-tools/anna-3-1.jar"
-
 - name: Running install script
   command: "./install.sh"
   args:
@@ -62,11 +56,11 @@
     recurse=no
     state=directory
   with_items:
-    - "share/{{ branch }}"
+    - share
     - bin
 
 - name: Copy parser to install_dir
-  command: rsync -a --exclude=-git "{{ compile_dir }}" "{{ install_dir }}/share/{{ branch }}"
+  command: rsync -a --delete --exclude=-git "{{ compile_dir }}" "{{ install_dir }}/share/Finnish-dep-parser/"
 
 - name: install finnish-parse script
   template:
