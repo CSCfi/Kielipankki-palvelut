@@ -1,5 +1,4 @@
 Role Name
 =========
 
-Installing finnish-parse, the Turku Depedency Parser to Taito.
-
+Installing finnish-parse, the Turku Depedency Parser
