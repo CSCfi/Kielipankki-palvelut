@@ -14,7 +14,7 @@
    - { role: hfst-morphologies, tags: hfst-morphologies }
    - { role: hfst-ospell, tags: hfst-ospell }
    - { role: check-hfst, tags: check-hfst }
-   - { role: finnish-parse, tags: finnish-parse }
+   - { role: finnish-parse, branch: master, tags: finnish-parse }
 
 
 

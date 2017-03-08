@@ -21,7 +21,7 @@ function run_dep()
 	exit 1
     fi
     cd "$dep_path"
-    "./$dep_command" 2> /dev/null | cut -f 1,2,4,6,8,10,12
+    "./$dep_command" 2> /dev/null 
     cd "$orig_dir"
     exit 0
 }

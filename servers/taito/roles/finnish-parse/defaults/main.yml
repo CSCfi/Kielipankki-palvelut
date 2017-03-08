@@ -5,5 +5,5 @@ package_name: finnish-parse
 release_url: https://github.com/TurkuNLP/Finnish-dep-parser.git
 version: "{{ finnish_parse_version }}"
 compile_root: /tmp/{{ ansible_user }}/ansible
-compile_dir: "{{ compile_root }}/Finnish-dep-parser"
+compile_dir: "{{ compile_root }}/Finnish-dep-parser/{{ branch }}"
 install_dir: "{{ install_prefix }}/{{ package_name }}/{{ version }}"
