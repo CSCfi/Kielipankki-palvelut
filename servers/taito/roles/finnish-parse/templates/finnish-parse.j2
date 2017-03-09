@@ -4,7 +4,7 @@
 
 set -o pipefail
 
-resourcedir="{{ install_dir }}/share/Finnish-dep-parser/{{ branch }}"
+resourcedir="{{ install_dir }}/share/Finnish-dep-parser/"
 verbose=0
 if [ ! -d "$resourcedir" ] ; then
     echo "Resources not found in $resourcedir"
@@ -14,14 +14,18 @@ fi
 function run_dep()
 {
     orig_dir="$PWD"
-    dep_path="$resourcedir"
+    dep_path="$resourcedir"$1
     dep_command=parser_wrapper.sh
     if [ ! -x "$dep_path/$dep_command" ] ; then
-	echo Parser not found in "$dep_path"
-	exit 1
+        echo Parser not found in "$dep_path"
+        exit 1
     fi
     cd "$dep_path"
-    "./$dep_command" 2> /dev/null 
+    if [ $1 == "alpha-custom" ]; then
+       "./$dep_command" 2> /dev/null | cut -f 1,2,4,6,8,10,12
+    else
+    "./$dep_command" 2> /dev/null
+    fi
     cd "$orig_dir"
     exit 0
 }
@@ -30,21 +34,31 @@ function print_help()
 {
     echo "Usage: finnish-parse input.txt > output.tsv"
     echo "Usage: finnish-parse < input.txt > output.tsv"
-    echo "Usage: echo 'Näin meillä, mites teillä?' | finnish-parse"
+    echo "Usage: echo 'Kielipankki palvelee.' | finnish-parse"
     echo "Usage: finnish-parse --help"
     echo
     echo "Parse running Finnish text in standard input or in files."
     echo "Write to standard output."
     echo "Input should be plain UTF-8."
+    echo
+    echo "Options"
+    echo "--stanford  The Standford tagset"
+    echo "--ud1       Universal Dependencies tagset version 1 (default)"
+    echo "--help      This help"
 
     exit 0
 }
 
 case $1 in
     --help)
-	print_help ;;
+        print_help ;;
     "")
-	run_dep ;;
+        run_dep master;;
+    --ud1)
+        run_dep master;;
+    --stanford)
+        run_dep alpha-custom;;
     *)
-	cat -- "$@" | run_dep ;;
+        cat -- "$@" | run_dep master;;
 esac
+
