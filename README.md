@@ -17,3 +17,4 @@ Kielipankin työkalut Taito-laskentaympäristössä
 - hfst-morphologies
 - hfst-ospell
 - check-hfst
+- finnish-parse (Turku Dependency Parser)
