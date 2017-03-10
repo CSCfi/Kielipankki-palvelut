@@ -1,0 +1,35 @@
+# CMD=./finnish-parse-fix bash test-finnish-parse
+# CMD=finnish-parse bash test-finnish-parse
+
+echo "File 'rivit yks':  Se ylös alas ..."
+echo "File 'rivit kaks': Iloisin mielin ..."
+echo "Standard input:    En millään enää ..."
+echo
+
+echo "Should be default from files:"
+echo 'En millään enää mitään tahdo jaksaa.' |
+"$CMD" 'rivit yks' 'rivit kaks'
+
+echo "Should be stanford from files:"
+echo 'En millään enää mitään tahdo jaksaa.' |
+"$CMD" --stanford 'rivit yks' 'rivit kaks'
+
+echo "Should be ud1 from files:"
+echo 'En millään enää mitään tahdo jaksaa.' |
+"$CMD" --ud1 'rivit yks' 'rivit kaks'
+
+echo "Should be default from stdin:"
+echo 'En millään enää mitään tahdo jaksaa.' |
+"$CMD"
+
+echo "Should be stanford from stdin:"
+echo 'En millään enää mitään tahdo jaksaa.' |
+"$CMD" --stanford
+
+echo "Should be ud1 from stdin:"
+echo 'En millään enää mitään tahdo jaksaa.' |
+"$CMD" --ud1
+
+echo "Should crash with no such file:"
+echo 'En millään enää mitään tahdo jaksaa.' |
+"$CMD" ""
