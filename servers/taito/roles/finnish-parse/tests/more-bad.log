@@ -1,0 +1,92 @@
+Kurantti finnish-parse -ehdokas ei lue tiedostoja, jos on optio ja tiedostoja.
+(Myös ei silloin tule virhettä, jos on ensimmäinen argumentti mutta tyhjä.)
+
+[jpiitula@c306 ~]$ CMD=finnish-parse bash test-finnish-parse
+File 'rivit yks':  Se ylös alas ...
+File 'rivit kaks': Iloisin mielin ...
+Standard input:    En millään enää ...
+
+Should be default from files:
+1	Se	se	PRON	_	Case=Nom|Number=Sing|PronType=Dem	4	nsubj:cop	_	_
+2	ylös	ylös	ADV	_	_	4	advmod	_	_
+3	alas	alkaa	ADP	_	AdpType=Prep	4	case	_	_
+4	mäkeä	mäki	NOUN	_	Case=Par|Number=Sing	0	root	_	_
+
+1	kiskoi	kiskoa	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+2	sekuntiväkeä	sekunti#väki	NOUN	_	Case=Par|Number=Sing	1	dobj	_	_
+3	,	,	PUNCT	_	_	1	punct	_	_
+
+1	joka	joka	PRON	_	Case=Nom|Number=Sing|PronType=Rel	2	nsubj	_	_
+2	painoi	painaa	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+3	kuin	kuin	SCONJ	_	_	4	mark	_	_
+4	kivireki	kivi#reki	NOUN	_	Case=Nom|Number=Sing	2	advcl	_	_
+5	.	.	PUNCT	_	_	2	punct	_	_
+
+1	Iloisin	iloinen	ADJ	_	Case=Ins|Degree=Pos|Number=Plur	2	amod	_	_
+2	mielin	mieli	NOUN	_	Case=Ins|Number=Plur	3	nmod	_	_
+3	kärsi	kärsiä	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+4	vaan	vaan	ADV	_	_	3	advmod	_	_
+
+1	hän	hän	PRON	_	Case=Nom|Number=Sing|Person=3|PronType=Prs	2	nsubj:cop	_	_
+2	kylmää	kylmä	ADJ	_	Case=Par|Degree=Pos|Number=Sing	4	amod	_	_
+3	,	,	PUNCT	_	_	4	punct	_	_
+4	nälkää	nälkä	NOUN	_	Case=Par|Number=Sing	0	root	_	_
+5	,	,	PUNCT	_	_	4	punct	_	_
+6	haavojaan	haava	NOUN	_	Case=Par|Number=Plur|Person[psor]=3	4	conj	_	_
+7	.	.	PUNCT	_	_	4	punct	_	_
+
+Should be stanford from files:
+1	En	ei	V	SUBCAT_Neg|PRS_Sg1|VOICE_Act|CASECHANGE_Up	5	neg
+2	millään	mikään	Pron	SUBCAT_Qnt|NUM_Sg|CASE_Ade	6	nommod
+3	enää	enää	Adv	_	4	advmod
+4	mitään	mikään	Pron	SUBCAT_Qnt|NUM_Sg|CASE_Par	5	nsubj
+5	tahdo	tahtoa	V	TENSE_Prs|MOOD_Ind|NEG_ConNeg	0	ROOT
+6	jaksaa	jaksaa	V	NUM_Sg|CASE_Lat|VOICE_Act|INF_Inf1	5	xcomp
+7	.	.	Punct	_	5	punct
+
+Should be ud1 from files:
+1	En	ei	VERB	_	Negative=Yes|Number=Sing|Person=1|VerbForm=Fin|Voice=Act	5	neg	_	_
+2	millään	mikään	PRON	_	Case=Ade|Number=Sing|PronType=Ind	5	nmod	_	_
+3	enää	enää	ADV	_	_	4	advmod	_	_
+4	mitään	mikään	PRON	_	Case=Par|Number=Sing|PronType=Ind	6	dobj	_	_
+5	tahdo	tahtoa	VERB	_	Connegative=Yes|Mood=Ind|Tense=Pres|VerbForm=Fin	0	root	_	_
+6	jaksaa	jaksaa	VERB	_	InfForm=1|Number=Sing|VerbForm=Inf|Voice=Act	5	xcomp	_	_
+7	.	.	PUNCT	_	_	5	punct	_	_
+
+Should be default from stdin:
+1	En	ei	VERB	_	Negative=Yes|Number=Sing|Person=1|VerbForm=Fin|Voice=Act	5	neg	_	_
+2	millään	mikään	PRON	_	Case=Ade|Number=Sing|PronType=Ind	5	nmod	_	_
+3	enää	enää	ADV	_	_	4	advmod	_	_
+4	mitään	mikään	PRON	_	Case=Par|Number=Sing|PronType=Ind	6	dobj	_	_
+5	tahdo	tahtoa	VERB	_	Connegative=Yes|Mood=Ind|Tense=Pres|VerbForm=Fin	0	root	_	_
+6	jaksaa	jaksaa	VERB	_	InfForm=1|Number=Sing|VerbForm=Inf|Voice=Act	5	xcomp	_	_
+7	.	.	PUNCT	_	_	5	punct	_	_
+
+Should be stanford from stdin:
+1	En	ei	V	SUBCAT_Neg|PRS_Sg1|VOICE_Act|CASECHANGE_Up	5	neg
+2	millään	mikään	Pron	SUBCAT_Qnt|NUM_Sg|CASE_Ade	6	nommod
+3	enää	enää	Adv	_	4	advmod
+4	mitään	mikään	Pron	SUBCAT_Qnt|NUM_Sg|CASE_Par	5	nsubj
+5	tahdo	tahtoa	V	TENSE_Prs|MOOD_Ind|NEG_ConNeg	0	ROOT
+6	jaksaa	jaksaa	V	NUM_Sg|CASE_Lat|VOICE_Act|INF_Inf1	5	xcomp
+7	.	.	Punct	_	5	punct
+
+Should be ud1 from stdin:
+1	En	ei	VERB	_	Negative=Yes|Number=Sing|Person=1|VerbForm=Fin|Voice=Act	5	neg	_	_
+2	millään	mikään	PRON	_	Case=Ade|Number=Sing|PronType=Ind	5	nmod	_	_
+3	enää	enää	ADV	_	_	4	advmod	_	_
+4	mitään	mikään	PRON	_	Case=Par|Number=Sing|PronType=Ind	6	dobj	_	_
+5	tahdo	tahtoa	VERB	_	Connegative=Yes|Mood=Ind|Tense=Pres|VerbForm=Fin	0	root	_	_
+6	jaksaa	jaksaa	VERB	_	InfForm=1|Number=Sing|VerbForm=Inf|Voice=Act	5	xcomp	_	_
+7	.	.	PUNCT	_	_	5	punct	_	_
+
+Should crash with no such file:
+1	En	ei	VERB	_	Negative=Yes|Number=Sing|Person=1|VerbForm=Fin|Voice=Act	5	neg	_	_
+2	millään	mikään	PRON	_	Case=Ade|Number=Sing|PronType=Ind	5	nmod	_	_
+3	enää	enää	ADV	_	_	4	advmod	_	_
+4	mitään	mikään	PRON	_	Case=Par|Number=Sing|PronType=Ind	6	dobj	_	_
+5	tahdo	tahtoa	VERB	_	Connegative=Yes|Mood=Ind|Tense=Pres|VerbForm=Fin	0	root	_	_
+6	jaksaa	jaksaa	VERB	_	InfForm=1|Number=Sing|VerbForm=Inf|Voice=Act	5	xcomp	_	_
+7	.	.	PUNCT	_	_	5	punct	_	_
+
+[jpiitula@c306 ~]$
