@@ -2,7 +2,7 @@
 
 set -o pipefail
 
-resourcedir="{{ install-dir }}/share/Finnish-dep-parser"
+resourcedir="{{ install_dir }}/share/Finnish-dep-parser"
 verbose=0
 if [ ! -d "$resourcedir" ] ; then
     echo "Resources not found in $resourcedir"
@@ -30,20 +30,26 @@ function run_dep()
 
 function print_help()
 {
-    echo "Usage: finnish-parse input.txt > output.tsv"
-    echo "Usage: finnish-parse < input.txt > output.tsv"
-    echo "Usage: echo 'Kielipankki palvelee.' | finnish-parse"
-    echo "Usage: finnish-parse --help"
+    echo 
+    echo "finnish-parse {{ version }}"
     echo
     echo "Parse Finnish text in standard input or in files."
     echo "Write to standard output."
     echo "Input should be plain UTF-8."
     echo
+    echo "Examples:"
+    echo "  finnish-parse input.txt > output.tsv"
+    echo "  finnish-parse < input.txt > output.tsv"
+    echo "  echo 'Kielipankki palvelee.' | finnish-parse"
+    echo
     echo "Options"
     echo "--stanford  The Standford tagset"
     echo "--ud1       Universal Dependencies tagset version 1 (default)"
     echo "--help      This help"
-    echo "--version   Version of this script"
+    echo "--version   Version information"
+    echo
+    echo "More information: http://urn.fi/urn:nbn:fi:lb-2017030801"
+    echo
 
     exit 0
 }
@@ -53,8 +59,10 @@ case "$1" in
 	print_help
 	exit 0 ;;
     --version)
-	echo "finnish-parse 1.0 (2017-03)"
-	echo "using Turku dependency parser"
+	echo
+	echo "finnish-parse {{ version }}"
+	echo "Based on the Turku dependency parser"
+	echo
 	exit 0 ;;
     --ud1)
 	mode=master

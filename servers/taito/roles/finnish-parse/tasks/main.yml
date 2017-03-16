@@ -34,7 +34,6 @@
   shell: "echo saunoja |./parser_wrapper.sh|grep sauna"
   args:
     chdir: "{{ compile_dir }}"
-  tags: xx
     
 - name: Outcomment static TMPDIR
   lineinfile:
