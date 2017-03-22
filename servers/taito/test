@@ -3,7 +3,7 @@
 127.0.0.1  ansible_connection=local install_prefix=/tmp/matthies/ansible/install
 
 [taito]
-taito-login4.csc.fi install_prefix=/tmp/matthies/ansible/install
+taito-login4.csc.fi install_prefix=/tmp/{{ansible_user_id}}/ansible/install
 
 [abel]
-abel.uio.no install_prefix=/tmp/matthies/ansible/install
+abel.uio.no install_prefix=/tmp/matthies/{{ansible_user_id}}/install
