@@ -1,7 +1,7 @@
 ---
 # tasks file for hfst
 
-- name: Install list of packages
+- name: "Debian/Ubuntu: Install list of packages"
   apt: name={{item}} state=installed
   with_items:
        - libreadline-dev
@@ -14,7 +14,7 @@
     - ansible_os_family == "Debian"
     - is_admin
 
-- name: Install list of packages
+- name: "RHEL/CentOS: Install list of packages"
   yum: name={{item}} state=installed
   with_items:
        - libreadline-dev
@@ -26,6 +26,7 @@
   when:
     - ansible_os_family == "RedHat"
     - is_admin
+
 
 - name: compile_dir directory exists with 0777 permission
   become: no
@@ -61,13 +62,13 @@
     creates: config.log
 
 - name: Running make 
-  shell: "make > MAKE.log"
+  shell: bash --login -c "module load gcc/4.8.2 && make > MAKE.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
-    creates: MAKE.log
+    #creates: MAKE.log
 
 - name: Running  make check 
-  shell: "make check -j 4 > MAKE_CHECK.log"
+  shell: bash --login -c "module load gcc/4.8.2 && make check -j 4 > MAKE_CHECK.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
     creates: MAKE_CHECK.log
@@ -93,12 +94,12 @@
     dest: "{{ hfst_compile_dir }}/python/setup.py"  
 
 - name: Building python module
-  shell: "module load swig/3.0 && python3 setup.py build_ext --inplace"
+  shell: bash --login -c  "module load swig && module load python3 python3 setup.py build_ext --inplace"
   args:
     chdir: "{{ hfst_compile_dir }}/python"
 
 - name: Installing python module
-  shell: "module load swig/3.0 && python3 setup.py install --prefix={{ hfst_install_dir }} "
+  shell: bash --login -c  "module load swig && module load python3 python3 setup.py install --prefix={{ hfst_install_dir }} "
   args:
     chdir: "{{ hfst_compile_dir }}/python"
 
@@ -116,9 +117,10 @@
     - hfst-train-tagger
     - hfst-twolc
 
-- name: Fix permissions
+- name: Fix permissions (if shared group is set)
   file:
     path={{ hfst_install_dir }}
-    group=csc
+    group={{ shared_group }}
     mode="g+rwX,o+rX"
     recurse=yes
+  when: shared_group is defined

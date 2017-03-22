@@ -4,3 +4,6 @@
 
 [taito]
 taito-login4.csc.fi install_prefix=/tmp/matthies/ansible/install
+
+[abel]
+abel.uio.no install_prefix=/tmp/matthies/ansible/install
