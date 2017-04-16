@@ -33,7 +33,7 @@ $wgLocalisationCacheConf['store'] = 'file';
 $wgLocalisationCacheConf['manualRecache'] = true;
 $wgLocalisationCacheConf['storeDirectory'] = "$IP/cache";
 
-$wgSecretKey = "something womsethina woemgwego";
+$wgSecretKey = file_get_contents( "/www/$VHOST/secretkey" );
 
 $wgLogo = "/logo.png";
 

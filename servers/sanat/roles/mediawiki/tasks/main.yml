@@ -55,7 +55,12 @@
     - /www/{{webdomain}}/
     - /www/{{webdomain}}/docroot
     - /www/{{webdomain}}/logs
-    - /www/{{webdomain}}/cache  
+    - /www/{{webdomain}}/cache
+
+- name: Create a secret key
+  command: openssl rand -base64 64 -out {{item}} creates={{item}}
+  with_items:
+    - /www/{{webdomain}}/secretkey
 
 - name: Install logo
   copy: src=logo.png dest=/www/{{webdomain}}/docroot/logo.png
