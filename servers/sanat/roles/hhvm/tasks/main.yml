@@ -32,4 +32,4 @@
   copy: dest=/www/{{ webdomain }}/logs/error_php owner=hhvm mode=0644 content="" force=no
 
 - name: Symlink hhvm as php
-  file: src=/usr/bin/hhvm dest=/usr/bin/php state=link
+  file: src=/usr/bin/hhvm dest=/usr/bin/php state=link force=yes
