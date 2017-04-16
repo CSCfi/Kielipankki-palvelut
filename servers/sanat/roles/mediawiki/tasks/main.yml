@@ -36,10 +36,6 @@
   args:
     chdir: /srv/mediawiki/workdir
 
-#- name: Update l10n cache
-#  command: /usr/bin/php /srv/mediawiki/workdir/maintenance/rebuildLocalisationCache.php --threads=8
-
-
 - name: Setup oregano
   command: /srv/mediawiki/oregano {{item}} 
   args:
@@ -100,3 +96,11 @@
 
 - name: Enable jobrunner
   service: name=mw-jobrunner state=started enabled=yes
+
+- name: Upgrade database schema
+  command: /usr/bin/php maintenance/update.php --quick
+  args:
+    chdir: /srv/mediawiki/workdir
+
+- name: Update l10n cache
+  command: /usr/bin/php /srv/mediawiki/workdir/maintenance/rebuildLocalisationCache.php --threads=8
