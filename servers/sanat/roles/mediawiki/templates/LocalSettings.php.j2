@@ -150,3 +150,7 @@ $wgHooks['TestCanonicalRedirect'][] = function ( $request ) {
 	return $request->getRequestURL() !== '/';
 };
 require_once "$IP/extensions/Saame/Saame.php";
+
+if ( file_exists( 'LocalLocalSettings.php' ) ) {
+	require "LocalLocalSettings.php";
+};
