@@ -33,7 +33,7 @@ $wgLocalisationCacheConf['store'] = 'file';
 $wgLocalisationCacheConf['manualRecache'] = true;
 $wgLocalisationCacheConf['storeDirectory'] = "$IP/cache";
 
-$wgSecretKey = "something womsethina woemgwego";
+$wgSecretKey = file_get_contents( "/www/$VHOST/secretkey" );
 
 $wgLogo = "/logo.png";
 
@@ -149,4 +149,11 @@ $wgHooks['GetLocalURL'][] = function ( &$title, &$url, $query ) {
 $wgHooks['TestCanonicalRedirect'][] = function ( $request ) {
 	return $request->getRequestURL() !== '/';
 };
-require_once "$IP/extensions/Saame/Saame.php";
+
+// XXX: this is broken. This is not present when MediaWiki runs scripts.
+// The extensions should be installed with co_repos.
+include_once "$IP/extensions/Saame/Saame.php";
+
+if ( file_exists( 'LocalLocalSettings.php' ) ) {
+	require "LocalLocalSettings.php";
+};

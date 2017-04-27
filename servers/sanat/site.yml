@@ -8,13 +8,13 @@
     - apache_vhosts_ssl:
       - "{{ site_vhost | combine(site_ssl_params) }}"
   roles:
+    - role: hhvm
+      tags: hhvm
     - role: mediawiki
       tags: mediawiki
     - role: smsxml
     - role: selinux
     - role: geerlingguy.repo-epel
-    - role: hhvm
-      tags: hhvm
     - role: apache_ssl
       tags: apache
     - role: geerlingguy.apache
