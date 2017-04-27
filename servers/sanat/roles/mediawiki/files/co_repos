@@ -38,12 +38,13 @@ do
 		else
 			git checkout "$VER"
 		fi
-	) else
+	) else (
 		git clone "$URL" "$DIR"
 		if [ "$VER" != "master" ]
 		then
 			cd "$DIR" || exit
 			git checkout "$VER"
 		fi
+	)
 	fi
 done
