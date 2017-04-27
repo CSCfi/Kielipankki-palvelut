@@ -36,13 +36,6 @@
   args:
     chdir: /srv/mediawiki/workdir
 
-- name: Setup oregano
-  command: /srv/mediawiki/oregano {{item}} 
-  args:
-    chdir: /srv/mediawiki
-  with_items:
-    - tag
-    - deploy
 
 - name: Create docroot
   file: path={{item}} state=directory owner=apache mode=755
@@ -103,4 +96,14 @@
     chdir: /srv/mediawiki/workdir
 
 - name: Update l10n cache
-  command: /usr/bin/php /srv/mediawiki/workdir/maintenance/rebuildLocalisationCache.php --threads=8
+  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8
+  args:
+    chdir: /srv/mediawiki/workdir
+
+- name: Setup oregano
+  command: /srv/mediawiki/oregano {{item}} 
+  args:
+    chdir: /srv/mediawiki
+  with_items:
+    - tag
+    - deploy
