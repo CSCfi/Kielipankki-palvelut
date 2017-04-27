@@ -4,3 +4,11 @@ apache_ssl_cipher_suite: "AES256+EECDH:AES256+EDH"
 site_ssl_params:
   certificate_file: "/etc/pki/tls/certs/{{webdomain}}.crt"
   certificate_key_file: "/etc/pki/tls/private/{{webdomain}}.key"
+hfst_tmp: /tmp/hfst
+hfst_url: http://apertium.projectjj.com/apt/release/pool/main/h/hfst/
+hfst_bin: hfst_3.12.2~r3258-0ubuntu1~trusty1_amd64
+hfst_lib: libhfst48_3.12.2~r3258-0ubuntu1~trusty1_amd64
+hfst_components:
+ - [ '{{ hfst_bin }}' , 'sha256:367adc40590d5bfc4ec503174b248d315cc1f45915b0e829cc348e3cc8ab5fe9' ]
+ - [ '{{ hfst_lib }}' , 'sha256:4baff8adf64de4079b1e79506d2bf5ae4ed6a9272ee55526660e2739e4f7886e' ]
+
