@@ -10,6 +10,9 @@
     repo_gpgcheck: no
     enabled: yes
 
+- name: Enable Epel repository
+  yum: name=epel-release state=present
+
 - name: Install hhvm
   yum: name=hhvm state=present
 
