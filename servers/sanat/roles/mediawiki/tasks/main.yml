@@ -31,15 +31,6 @@
 - name: Install LocalSettings.php
   template: src=LocalSettings.php.j2 dest=/srv/mediawiki/workdir/LocalSettings.php
 
-- name: Copy Composer installer
-  copy: src=composer_installer.sh dest=/tmp/composer_installer.sh mode="u=rwx"
-
-- name: Install Composer
-  command: /tmp/composer_installer.sh
-  args:
-    creates: /usr/local/bin/composer
-  become: true
-
 - name: Run composer update
   command: /usr/local/bin/composer update --no-dev
   args:
