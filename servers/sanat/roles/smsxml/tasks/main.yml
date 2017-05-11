@@ -10,15 +10,16 @@
   - php-devel
   - php-mongodb
   - openssl-devel.x86_64
+  - mod_wsgi
 
 - name: Install python dependencies using pip
-  pip: name={{ item }} state=present
+  pip: name={{ item.name }} version={{ item.version | default(omit) }}  state=present
   with_items:
-    - django
-    - pymongo
-    - requests
-    - PyExecJS
-    - uwsgi
+    - name: django
+      version: 1.9
+    - name: pymongo
+    - name: requests
+    - name: PyExecJS
 
 - name: Add mongodb repo
   copy:
@@ -49,13 +50,19 @@
   file: path=/www/smsxml state=directory
 
 - name: Download smsxml
-  get_url: url=http://mikakalevi.com/downloads/sms_xml.zip dest=/www/smsxml/sms_xml.zip
+  get_url: url=http://mikakalevi.com/downloads/sms_xml.zip dest=/www/smsxml/sms_xml.zip force=yes
 
 - name: Extract smsxml
   unarchive: src=/www/smsxml/sms_xml.zip dest=/www/smsxml/ copy=no
 
+- name: Make update script executable
+  file: path=/www/smsxml/update_smsxml.sh mode="u=rwx"
+
+- name: symlink update script
+  file: src=/www/smsxml/update_smsxml.sh dest=/bin/update_smsxml state=link force=yes
+
 - name: Download smsxml mediawiki extension
-  get_url: url=http://mikakalevi.com/downloads/sms_xml_wiki_extensions.zip dest=/www/smsxml/sms_xml_wiki_extensions.zip
+  get_url: url=http://mikakalevi.com/downloads/sms_xml_wiki_extensions.zip dest=/www/smsxml/sms_xml_wiki_extensions.zip force=yes
 
 - name: Create smsxml mediawiki extension directory
   file: path=/www/smsxml/wiki state=directory
@@ -66,17 +73,17 @@
 - name: Copy smsxml configuration
   template: src=settings.py dest=/www/smsxml/saame/settings.py
 
-- name: Create uwsgi configuration directory
-  file: path=/etc/uwsgi/apps-available/ state=directory
+- name: Copy smsxml apache configuration
+  template: src=smsxml.conf dest=/etc/httpd/conf.d/smsxml.conf
 
-- name: Install uwsgi configuration
-  copy: src=smsxml.ini dest=/etc/uwsgi/apps-available/smsxml.ini
+- name: Copy iptables script
+  template: src=modify_firewall.sh dest=/www/smsxml/modify_firewall.sh mode="u=rwx"
 
-- name: Install uwsgi upstart configuration
-  copy: src=smsxml.service dest=/etc/systemd/system/smsxml.service
-
-- name: Start uwsgi
-  service: name=smsxml state=started enabled=yes
+- name: Open port 8000
+  command: /www/smsxml/modify_firewall.sh
+  args:
+    creates: /www/smsxml/firewall_configured
+  become: true
 
 - name: Create xml directory
   file: path=/www/smsxml/xmls state=directory
@@ -126,3 +133,4 @@
 
 - name: Copy smsxml wiki configuration
   template: src=SaameConfig.ini dest=/www/smsxml/wiki/extensions/Saame/SaameConfig.ini
+

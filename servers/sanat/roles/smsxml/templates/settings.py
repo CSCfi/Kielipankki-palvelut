@@ -91,11 +91,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+URL_PREFIX = ""
 
-WIKI_URL = "http://{{ webdomain }}/"
+WIKI_URL = "http://{{ webdomain }}/w/"
 WIKI_JS_URL = "http://{{ webdomain }}/js/sms_edit.js"
 WIKI_USERNAME = "{{sms_xml.wiki_username}}"
 WIKI_PASSWORD = "{{sms_xml.wiki_password}}"
 GIT_DIR_SMS = "/www/smsxml/xmls/sms/"
 GIT_DIR_IZH = "/www/smsxml/xmls/izh/"
-CURRENT_URL = "http://{{ webdomain }}/smsxml/"
+CURRENT_URL = "http://{{ webdomain }}:8000/smsxml/"
