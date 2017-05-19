@@ -1,0 +1,15 @@
+# Set firewall in CSC compatible way
+
+- name: copy IP4/6 local settings
+  template:
+    src: firewall.local.j2
+    dest: "/etc/rc.d/{{ item }}"
+  with_items:
+    - rc.firewall.local
+    - rc6.firewall.local
+
+- name: execute firewall
+  command: /etc/rc.d/{{ item }} restart
+  with_items:
+    - rc.firewall
+    - rc6.firewall

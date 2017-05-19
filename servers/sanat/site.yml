@@ -23,6 +23,8 @@
       tags: apache
     - role: geerlingguy.apache
       tags: apache
+    - role: firewall
+      tags: firewall
 
 
   tasks:
