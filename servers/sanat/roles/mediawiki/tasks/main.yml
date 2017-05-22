@@ -31,6 +31,7 @@
 - name: Install LocalSettings.php
   template: src=LocalSettings.php.j2 dest=/srv/mediawiki/workdir/LocalSettings.php
 
+
 - name: Run composer update
   command: /usr/local/bin/composer update --no-dev
   args:
