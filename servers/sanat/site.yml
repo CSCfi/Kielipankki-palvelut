@@ -12,6 +12,8 @@
       tags: hfst
     - role: hhvm
       tags: hhvm
+    - role: geerlingguy.composer
+    - role: geerlingguy.memcached
     - role: mediawiki
       tags: mediawiki
     - role: smsxml
@@ -22,8 +24,8 @@
       tags: apache
     - role: geerlingguy.apache
       tags: apache
-    - role: geerlingguy.memcached
-    - role: geerlingguy.composer
+    - role: firewall
+      tags: firewall
 
 
   tasks:

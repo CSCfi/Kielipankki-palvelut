@@ -76,15 +76,6 @@
 - name: Copy smsxml apache configuration
   template: src=smsxml.conf dest=/etc/httpd/conf.d/smsxml.conf
 
-- name: Copy iptables script
-  template: src=modify_firewall.sh dest=/www/smsxml/modify_firewall.sh mode="u=rwx"
-
-- name: Open port 8000
-  command: /www/smsxml/modify_firewall.sh
-  args:
-    creates: /www/smsxml/firewall_configured
-  become: true
-
 - name: Create xml directory
   file: path=/www/smsxml/xmls state=directory
 

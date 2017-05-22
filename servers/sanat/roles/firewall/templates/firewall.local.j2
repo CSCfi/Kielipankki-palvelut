@@ -1,0 +1,21 @@
+{# generates firewall rules, assumes filename in item #}
+
+{% if item == "rc.firewall.local" %}
+# IP4 settings
+
+# Load new rules by running /etc/rc.d/rc.firewall
+
+iptables -I INPUT -m tcp -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment "HTTP & HTTPS access from everywhere"
+
+iptables -I INPUT -m tcp -p tcp -m multiport --dports 8000 -j ACCEPT -m comment --comment "SMSXML Port"
+  
+{% else %}
+# IP6 settings
+
+# Load new rules by running /etc/rc.d/rc6.firewall
+
+ip6tables -I INPUT -m tcp -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment "HTTP & HTTPS access from everywhere"
+ip6tables -I INPUT -m tcp -p tcp -m multiport --dports 8000 -j ACCEPT -m comment --comment "SMSXML Port"
+
+
+{% endif %}
