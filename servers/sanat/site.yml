@@ -15,6 +15,7 @@
     - role: mediawiki
       tags: mediawiki
     - role: smsxml
+      tags: smsxml
     - role: selinux
     - role: geerlingguy.repo-epel
     - role: apache_ssl
