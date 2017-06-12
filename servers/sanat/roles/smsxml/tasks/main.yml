@@ -20,6 +20,7 @@
     - name: pymongo
     - name: requests
     - name: PyExecJS
+    - name: hfst
 
 - name: Add mongodb repo
   copy:
