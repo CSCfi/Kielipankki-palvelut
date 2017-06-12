@@ -1,0 +1,60 @@
+---
+# tasks file for praat
+
+- name: compile_root directory exists with 0777 permission
+  become: no
+  file: path={{ compile_root }}
+    mode=0777
+    recurse=no
+    state=directory
+
+- name: Clone repo
+  git:
+    repo: "{{ release_url }}"
+    dest: "{{ compile_dir }}"
+    force: yes
+    depth: 1
+    version: "{{ branch }}"
+
+- name: Prepare barren compilation
+  copy:
+    remote_src: true
+    src:  "{{ compile_dir }}/makefiles/makefile.defs.linux.barren"
+    dest: "{{ compile_dir }}/makefile.defs"
+
+- name: Remove static linking (experimental)
+  lineinfile:
+    path: "{{ compile_dir }}/makefile.defs"
+    regexp: "^LIBS = -lm -lpthread( -static -static-libgcc -static-libstdc\\+\\+)?$"
+    line: "LIBS = -lm -lpthread"
+
+- name: Running make 
+  shell: bash --login -c "module load gcc/4.8.2 && make -j8 > MAKE.log"
+  args:
+    chdir: "{{ compile_dir }}"
+    #creates: MAKE.log
+
+- name: create install_dir subtree
+  become: no
+  file:
+    path: "{{ install_dir }}/{{ item }}"
+    mode: 0775
+    recurse: no
+    state: directory
+  with_items:
+    - bin
+
+- name: Copy praat to install_dir
+  copy:
+    remote_src: true
+    src: "{{ compile_dir }}/praat"
+    dest: "{{ install_dir }}/bin"
+    mode: 0755
+
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ install_dir }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  when: shared_group is defined

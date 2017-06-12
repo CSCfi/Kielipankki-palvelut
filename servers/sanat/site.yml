@@ -14,16 +14,16 @@
       tags: hhvm
     - role: geerlingguy.composer
     - role: geerlingguy.memcached
+    - role: apache_ssl
+      tags: apache
+    - role: geerlingguy.apache
+      tags: apache
     - role: mediawiki
       tags: mediawiki
     - role: smsxml
       tags: smsxml
     - role: selinux
     - role: geerlingguy.repo-epel
-    - role: apache_ssl
-      tags: apache
-    - role: geerlingguy.apache
-      tags: apache
     - role: firewall
       tags: firewall
 
