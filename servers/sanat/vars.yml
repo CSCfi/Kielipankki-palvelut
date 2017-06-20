@@ -9,13 +9,14 @@ site_vhost:
         Require all granted
     </Directory>
 
+nodejs_version: "7.10.0"
+
 php_enable_php_fpm: true
 memcached_memory_limit: 4G
 
-omposer_keep_updated: true
+composer_keep_updated: true
 sms_xml:
   wiki_username: "SyncBot"
   wiki_password: "SyncBot12"
   debug: "True"
 
-composer_keep_updated: true

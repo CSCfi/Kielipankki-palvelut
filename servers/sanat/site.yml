@@ -12,6 +12,8 @@
       tags: hfst
     - role: hhvm
       tags: hhvm
+    - role: advertine.nodejs
+      tags: nodejs
     - role: geerlingguy.composer
     - role: geerlingguy.memcached
     - role: apache_ssl

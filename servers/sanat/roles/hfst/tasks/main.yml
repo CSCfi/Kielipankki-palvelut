@@ -1,3 +1,17 @@
+- name: Install packages from yum
+  yum: name={{ item }} state=present
+  with_items:
+  - gcc
+  - gcc-c++
+  - readline-devel
+  - python-pip
+  - swig
+
+- name: Install python dependencies using pip
+  pip: name={{ item.name }} version={{ item.version | default(omit) }}  state=present
+  with_items:
+    - name: hfst
+
 - name: Create tmpdirs hfst
   file:
     path: "{{ hfst_tmp }}/{{ item.0 }}"
