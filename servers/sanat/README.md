@@ -7,7 +7,7 @@
 
 ## Usage
 
- - `ansible-playbook -i development site.yml`
+ - `ansible-playbook -i inventories/development site.yml`
  - After completed setup, initialize the database and update, eg:
   - gzip -dc mw.sql.gz| mysql -u wikiuser -p  mediawiki
   - php /srv/mediawiki/targets/production/maintenance/update.php
@@ -19,3 +19,9 @@
  - Cloning the wiki can take a long time, depending on network speed
  - Set Selinux to at least permissive, this script does not yet support it
  
+## Example for bootstrapping an empty wiki database
+
+  - `cd /srv/mediawiki/workdir`
+  - `rm LocalSettings.php`
+  - `php maintenance/install.php --wiki=nimiarkisto.fi --pass=... --dbname=nimiarkisto --dbuser=wikiuser --dbpass=wikipass MediaWiki WikiSysop`
+  - Then run ansible-playbook again

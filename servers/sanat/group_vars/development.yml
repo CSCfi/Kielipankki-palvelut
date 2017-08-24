@@ -1,0 +1,5 @@
+webdomain_sanat: sanat.nikerabb.it
+webdomain_nimiarkisto: nimiarkisto.nikerabb.it
+webaliases_nimiarkisto:
+  - namnarkivet.nikerabb.it
+ansible_user: root

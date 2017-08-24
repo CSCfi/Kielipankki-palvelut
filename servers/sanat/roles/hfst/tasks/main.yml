@@ -1,4 +1,4 @@
-- name: Install packages from yum
+- name: Install packages required for hfst
   yum: name={{ item }} state=present
   with_items:
   - gcc

@@ -28,11 +28,5 @@
 - name: Run hhvm
   service: name=hhvm state=started enabled=yes
 
-- name: Create log dir
-  file: path=/www/{{ webdomain }}/logs/ state=directory owner=hhvm mode=0644
-
-- name: Create log file
-  copy: dest=/www/{{ webdomain }}/logs/error_php owner=hhvm mode=0644 content="" force=no
-
 - name: Symlink hhvm as php
   file: src=/usr/bin/hhvm dest=/usr/bin/php state=link force=yes

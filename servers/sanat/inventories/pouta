@@ -1,0 +1,5 @@
+[web]
+vm0623.kaj.pouta.csc.fi webdomain_sanat=vm0623.kaj.pouta.csc.fi ansible_user=cloud-user
+
+[pouta:children]
+web

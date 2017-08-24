@@ -117,9 +117,6 @@
   command: /www/smsxml/migrate.sh
   become: true
 
-- name: Create symlink to MediaWiki code
-  file: src=/www/smsxml/wiki/extensions/Saame dest=/www/{{webdomain}}/docroot/w/extensions/Saame state=link force=yes
-
 - name: Copy smsxml wiki configuration
   template: src=SaameConfig.ini dest=/www/smsxml/wiki/extensions/Saame/SaameConfig.ini
 

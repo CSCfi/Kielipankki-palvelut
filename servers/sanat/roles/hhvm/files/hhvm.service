@@ -5,12 +5,14 @@ Description=hhvm
 ExecStart=/usr/bin/hhvm -m daemon -u hhvm -c /etc/hhvm/php.ini -c /etc/hhvm/server.ini
 ExecStop=/usr/bin/rm /run/hhvm.pid
 PIDFile=/run/hhvm.pid
+Restart=always
+RestartSec=5
 PrivateDevices=true
 PrivateTmp=true
 ProtectControlGroups=true
 ProtectHome=true
 ProtectKernelTunables=true
-ProtectSystem="full"
+ProtectSystem=full
 
 [Install]
 WantedBy=multi-user.target

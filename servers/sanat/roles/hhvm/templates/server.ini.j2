@@ -5,8 +5,6 @@ pid = /run/hhvm/hhvm.pid
 display_errors = 0
 memory_limit = 400M
 max_execution_time = 30s
-hhvm.log.file = /www/{{ webdomain }}/logs/error_php
-error_log = /www/{{ webdomain }}/logs/error_php
 
 ; hhvm specific
 hhvm.server.ip = 127.0.0.1
@@ -19,3 +17,5 @@ hhvm.server.stat_cache = 1
 hhvm.repo.central.path = /run/hhvm/hhvm.hhbc
 
 hhvm.jit = 1
+
+hhvm.log.header = true
