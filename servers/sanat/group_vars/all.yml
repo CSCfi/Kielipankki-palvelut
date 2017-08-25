@@ -16,11 +16,11 @@ ssl_params_nimiarkisto:
 
 hfst_tmp: /tmp/hfst
 hfst_url: http://apertium.projectjj.com/apt/release/pool/main/h/hfst/
-hfst_bin: hfst_3.12.2~r3258-0ubuntu1~trusty1_amd64
-hfst_lib: libhfst48_3.12.2~r3258-0ubuntu1~trusty1_amd64
+hfst_bin: hfst_3.12.2~r3289-0ubuntu1~trusty1_amd64
+hfst_lib: libhfst49_3.12.2~r3289-0ubuntu1~trusty1_amd64
 hfst_components:
- - [ '{{ hfst_bin }}' , 'sha256:367adc40590d5bfc4ec503174b248d315cc1f45915b0e829cc348e3cc8ab5fe9' ]
- - [ '{{ hfst_lib }}' , 'sha256:4baff8adf64de4079b1e79506d2bf5ae4ed6a9272ee55526660e2739e4f7886e' ]
+ - [ '{{ hfst_bin }}' , 'sha256:3b97482d4836975d0edf38daf670d9289310a6f0e5d6a605c9129433bf16cf5d' ]
+ - [ '{{ hfst_lib }}' , 'sha256:9c462762f8af66712a15bd88953df0a1f24e852b93da7cd3e4a751fb30e4421b' ]
 
 
 hhvm_port: 9000

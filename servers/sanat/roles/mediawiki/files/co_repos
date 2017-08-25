@@ -50,6 +50,6 @@ do
 
 	(
 		cd "$DIR" || exit
-		git fetch -q --tags && git reset -q --hard "$VER" && git clean -q -f -d -e /extensions -e /skins 2>&1 >&-
+		git fetch -q && git fetch -q --tags && git reset -q --hard "$VER" && git clean -q -f -d -e /extensions -e /skins 2>&1 >&-
 	)
 done
