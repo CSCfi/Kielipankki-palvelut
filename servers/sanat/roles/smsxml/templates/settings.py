@@ -17,14 +17,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '{{ webdomain | to_uuid }}'
+SECRET_KEY = '{{ webdomain_sanat | to_uuid }}'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = {{sms_xml.debug}}
 
 TEMPLATE_DEBUG = {{sms_xml.debug}}
 
-ALLOWED_HOSTS = [u'{{ webdomain }}']
+ALLOWED_HOSTS = [u'{{ webdomain_sanat }}']
 
 
 # Application definition
@@ -120,10 +120,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 URL_PREFIX = ""
 
-WIKI_URL = "http://{{ webdomain }}/w/"
-WIKI_JS_URL = "http://{{ webdomain }}/js/sms_edit.js"
+WIKI_URL = "http://{{ webdomain_sanat }}/w/"
+WIKI_JS_URL = "http://{{ webdomain_sanat }}/js/sms_edit.js"
 WIKI_USERNAME = "{{sms_xml.wiki_username}}"
 WIKI_PASSWORD = "{{sms_xml.wiki_password}}"
 GIT_DIR_SMS = "/www/smsxml/xmls/sms/"
 GIT_DIR_IZH = "/www/smsxml/xmls/izh/"
-CURRENT_URL = "http://{{ webdomain }}:8000/smsxml/"
+CURRENT_URL = "http://{{ webdomain_sanat }}:8000/smsxml/"

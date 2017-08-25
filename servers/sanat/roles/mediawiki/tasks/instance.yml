@@ -1,0 +1,41 @@
+- name: Create docroot for {{ instance }}
+  file: path={{item}} state=directory owner=apache mode=755
+  with_items:
+    - /www/
+    - /www/{{ instance }}/
+    - /www/{{ instance }}/docroot
+    - /www/{{ instance }}/logs
+    - /www/{{ instance }}/cache
+
+- name: Create log file hhvm for {{ instance }}
+  copy: dest=/www/{{ instance }}/logs/error_php owner=hhvm mode=0644 content="" force=no
+
+- name: Create a secret key for {{ instance }}
+  command: openssl rand -base64 64 -out {{item}} creates={{item}}
+  with_items:
+    - /www/{{ instance }}/secretkey
+
+- name: Install logo for {{ instance }}
+  copy: src=logo.png dest=/www/{{ instance }}/docroot/logo.png
+
+- name: Create symlink to MediaWiki code for {{ instance }}
+  file: src=/srv/mediawiki/targets/production dest=/www/{{ instance }}/docroot/w state=link force=yes
+
+- name: Create rewrite rules for {{ instance }}
+  copy: src=.htaccess dest=/www/{{ instance }}/docroot/.htaccess
+
+- name: Install jobrunner for {{ instance }}
+  template: src=mw-jobrunner.service.j2 dest=/etc/systemd/system/mw-jobrunner-{{ instance }}.service
+
+- name: Enable jobrunner for {{ instance }}
+  service: name=mw-jobrunner-{{ instance }} state=started enabled=yes
+
+- name: Upgrade database schema for {{ instance }}
+  command: /usr/bin/php maintenance/update.php --quick --wiki="{{ instance }}"
+  args:
+    chdir: /srv/mediawiki/workdir
+
+- name: Update l10n cache for {{ instance }}
+  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8 --wiki="{{ instance }}"
+  args:
+    chdir: /srv/mediawiki/workdir

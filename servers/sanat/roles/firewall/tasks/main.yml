@@ -1,12 +1,50 @@
 # Set firewall in CSC compatible way
 
+- name: test for PATA VM
+  stat: path=/etc/csc/host.info
+  register: pata_host
+
+- name: uninstall firewalld
+  yum:
+    name: firewalld
+    state: absent
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+  
+- name: install iptables-services
+  yum:
+    name: iptables-services
+    state: present
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+
+- name: copy IP4/6 firewall statup scripts (if not already present)
+  template:
+    src: firewall.j2
+    dest: "/etc/rc.d/rc{{ item }}.firewall"
+    mode: 0750
+    force: no
+  with_items:
+    - ""
+    - 6
+
 - name: copy IP4/6 local settings
   template:
     src: firewall.local.j2
-    dest: "/etc/rc.d/{{ item }}"
+    dest: "/etc/rc.d/rc{{ item }}.firewall.local"
+    mode: 0750
   with_items:
-    - rc.firewall.local
-    - rc6.firewall.local
+    - ""
+    - 6
+
+- name: update rc.local
+  lineinfile:
+    dest: /etc/rc.d/rc.local
+    line: "sleep 1m ; /bin/sh /etc/rc.d/rc.firewall; /bin/sh /etc/rc.d/rc6.firewall"
+    regexp: "^sleep 1m"
+    owner: root
+    state: present
+    insertafter: EOF
+    create: True
+  when: pata_host.stat.exists == False
 
 - name: execute firewall
   command: /etc/rc.d/{{ item }} restart

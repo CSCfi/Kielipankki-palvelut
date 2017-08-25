@@ -1,22 +1,30 @@
-hhvm_port: 9000
-site_vhost:
-  servername: "{{ webdomain }}"
-  documentroot: /www/{{ webdomain }}/docroot
+# Build some more complex structures from the basic definitions here
+wiki_instances:
+  - "{{ webdomain_sanat }}"
+  - "{{ webdomain_nimiarkisto }}"
+
+vhost_sanat:
+  servername: "{{ webdomain_sanat }}"
+  serveralias: "{{ webaliases_sanat | join(' ') }}"
+  documentroot: /www/{{ webdomain_sanat }}/docroot
   extra_parameters: |
-    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:{{ hhvm_port }}/www/{{ webdomain }}/docroot/"
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:{{ hhvm_port }}/www/{{ webdomain_sanat }}/docroot/"
     Alias /js/ /www/smsxml/wiki/js/
     <Directory /www/smsxml/wiki/js>
         Require all granted
     </Directory>
 
-nodejs_version: "7.10.0"
+vhost_nimiarkisto:
+  servername: "{{ webdomain_nimiarkisto }}"
+  serveralias: "{{ webaliases_nimiarkisto | join(' ') }}"
+  documentroot: /www/{{ webdomain_nimiarkisto }}/docroot
+  extra_parameters: |
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:{{ hhvm_port }}/www/{{ webdomain_nimiarkisto }}/docroot/"
 
-php_enable_php_fpm: true
-memcached_memory_limit: 4G
+apache_vhosts:
+  - "{{ vhost_sanat }}"
+  - "{{ vhost_nimiarkisto }}"
 
-composer_keep_updated: true
-sms_xml:
-  wiki_username: "SyncBot"
-  wiki_password: "SyncBot12"
-  debug: "True"
-
+apache_vhosts_ssl:
+  - "{{ vhost_sanat | combine(ssl_params_sanat) }}"
+  - "{{ vhost_nimiarkisto | combine(ssl_params_nimiarkisto) }}"

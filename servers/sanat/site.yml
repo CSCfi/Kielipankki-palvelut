@@ -1,12 +1,7 @@
-- hosts: sanat
+- hosts: web
   become: yes
   vars_files:
     - vars.yml
-  vars:
-    - apache_vhosts:
-      - "{{ site_vhost }}"
-    - apache_vhosts_ssl:
-      - "{{ site_vhost | combine(site_ssl_params) }}"
   roles:
     - role: hfst
       tags: hfst
@@ -28,7 +23,6 @@
     - role: geerlingguy.repo-epel
     - role: firewall
       tags: firewall
-
 
   tasks:
     - name: Install admin tools

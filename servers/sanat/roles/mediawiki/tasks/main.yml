@@ -1,14 +1,14 @@
 - name: Create oregano directories
-  file: path={{item}} state=directory
+  file: path={{ item }} state=directory
   with_items:
     - /srv/mediawiki/tags
     - /srv/mediawiki/targets
 
-- name: Install git
-  yum: name=git state=present
-
-- name: Install rsync for oregano
-  yum: name=rsync state=present
+- name: Install packages required for wiki setup
+  yum: name={{ item }} state=present
+  with_items:
+    - git
+    - rsync
 
 - name: Install oregano
   get_url:
@@ -31,35 +31,13 @@
 - name: Install LocalSettings.php
   template: src=LocalSettings.php.j2 dest=/srv/mediawiki/workdir/LocalSettings.php
 
-
 - name: Run composer update
   command: /usr/local/bin/composer update --no-dev
   args:
     chdir: /srv/mediawiki/workdir
 
-
-- name: Create docroot
-  file: path={{item}} state=directory owner=apache mode=755
-  with_items:
-    - /www/
-    - /www/{{webdomain}}/
-    - /www/{{webdomain}}/docroot
-    - /www/{{webdomain}}/logs
-    - /www/{{webdomain}}/cache
-
-- name: Create a secret key
-  command: openssl rand -base64 64 -out {{item}} creates={{item}}
-  with_items:
-    - /www/{{webdomain}}/secretkey
-
-- name: Install logo
-  copy: src=logo.png dest=/www/{{webdomain}}/docroot/logo.png
-
-- name: Create symlink to MediaWiki code
-  file: src=/srv/mediawiki/targets/production dest=/www/{{webdomain}}/docroot/w state=link force=yes
-
 - name: Install sql database
-  yum: name={{item}} state=present
+  yum: name={{ item }} state=present
   with_items:
     - mariadb
     - mariadb-server
@@ -82,27 +60,24 @@
   mysql_user: name=wikiuser password=wikipass priv=*.*:ALL host=localhost state=present
   tags: db
 
-- name: Create rewrite rules
-  copy: src=.htaccess dest=/www/{{webdomain}}/docroot/.htaccess
+- name: Disable old jobrunner
+  service: name=mw-jobrunner state=stopped enabled=no
+  ignore_errors: yes
 
-- name: Install jobrunner
-  template: src=mw-jobrunner.service.j2 dest=/lib/systemd/system/mw-jobrunner.service
+- name: Remove old jobrunner
+  file: path=/lib/systemd/system/mw-jobrunner.service state=absent
 
-- name: Enable jobrunner
-  service: name=mw-jobrunner state=started enabled=yes
+- name: Create symlink from smsxml
+  file: src=/www/smsxml/wiki/extensions/Saame dest=/srv/mediawiki/workdir/extensions/Saame state=link force=yes
 
-- name: Upgrade database schema
-  command: /usr/bin/php maintenance/update.php --quick
-  args:
-    chdir: /srv/mediawiki/workdir
+- name: Configure all wiki instances
+  include: instance.yml
+  with_items: "{{ wiki_instances }}"
+  loop_control:
+    loop_var: instance
 
-- name: Update l10n cache
-  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8
-  args:
-    chdir: /srv/mediawiki/workdir
-
-- name: Setup oregano
-  command: /srv/mediawiki/oregano {{item}} 
+- name: Deploy latest code with oregano
+  command: /srv/mediawiki/oregano {{ item }}
   args:
     chdir: /srv/mediawiki
   with_items:
