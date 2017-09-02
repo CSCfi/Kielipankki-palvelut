@@ -1,6 +1,7 @@
 - name: Create oregano directories
   file: path={{ item }} state=directory
   with_items:
+    - /srv/mediawiki/hooks
     - /srv/mediawiki/tags
     - /srv/mediawiki/targets
 
@@ -10,12 +11,18 @@
     - git
     - rsync
 
+- name: Install HHVM warmup script
+  copy: src=warmup.sh dest=/srv/mediawiki/warmup.sh mode=0755
+
 - name: Install oregano
   get_url:
     url: https://raw.githubusercontent.com/wikimedia/translatewiki/340394a9eb459e5477f98da6ed82d9cc156f79c5/bin/oregano
     dest: /srv/mediawiki/oregano
     checksum: sha1:a6a9028352d72b45cd1dc07113ea659ff0d4cd57
     mode: a+x
+
+- name: Install oregano hooks
+  copy: src=oregano_hook_deploy dest=/srv/mediawiki/hooks/deploy mode=0755
 
 - name: Install MediaWiki repository clone script
   copy: src=co_repos dest=/srv/mediawiki/co_repos mode=0755
@@ -83,3 +90,11 @@
   with_items:
     - tag
     - deploy
+
+- name: Create warmup URL list
+  template: src=warmup-urls.txt.j2 dest=/srv/mediawiki/warmup-urls.txt
+
+- name: Warm up all instances
+  command: /srv/mediawiki/warmup.sh /srv/mediawiki/warmup-urls.txt
+  args:
+    chdir: /srv/mediawiki
