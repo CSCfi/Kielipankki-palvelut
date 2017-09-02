@@ -17,7 +17,7 @@ REPOS=(
 	"workdir/extensions/Sanat https://github.com/Nikerabbit/mediawiki-extensions-Sanat.git origin/master"
 	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.5.4"
 	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2017.07"
-	"workdir/extensions/Wikibase https://github.com/wikimedia/mediawiki-extensions-Wikibase.git origin/master"
+	"workdir/extensions/Wikibase https://github.com/wikimedia/mediawiki-extensions-Wikibase.git c5627dce^"
 	"workdir/extensions/WordNet https://github.com/Nikerabbit/mediawiki-extensions-WordNet.git origin/master"
 	"workdir/skins/Vector https://github.com/wikimedia/mediawiki-skins-Vector.git origin/REL1_29"
 	"workdir/skins/Timeless https://github.com/wikimedia/mediawiki-skins-Timeless.git origin/REL1_29"
