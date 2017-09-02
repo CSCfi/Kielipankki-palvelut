@@ -1,10 +1,10 @@
 [Unit]
-Description=hhvm
+Description=Runs PHP code for web requests
 
 [Service]
 ExecStart=/usr/bin/hhvm -m daemon -u hhvm -c /etc/hhvm/php.ini -c /etc/hhvm/server.ini
 ExecStop=/usr/bin/rm /run/hhvm.pid
-PIDFile=/run/hhvm.pid
+RuntimeDirectory=hhvm
 Restart=always
 RestartSec=5
 PrivateDevices=true

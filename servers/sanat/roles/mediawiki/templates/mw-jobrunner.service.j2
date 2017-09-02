@@ -1,7 +1,7 @@
 [Unit]
 Description=MediaWiki jobrunner for {{ instance }}
 After=network.target
-Requires=mariadb.service
+Requires=mariadb.service hhvm.service
 
 [Service]
 user=hhvm
