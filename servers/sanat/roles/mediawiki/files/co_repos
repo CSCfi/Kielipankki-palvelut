@@ -38,7 +38,7 @@ do
 		if [ "$URL" != "$ACTUALURL" ]
 		then
 			echo "Re-cloning repository $DIR";
-			cd ..
+			cd -
 			rm -rf "$DIR"
 		fi
 	) fi
