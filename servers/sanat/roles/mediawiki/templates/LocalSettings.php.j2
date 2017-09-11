@@ -57,8 +57,6 @@ $wgLocalisationCacheConf['storeDirectory'] = "$IP/cache/$VHOST";
 
 $wgSecretKey = file_get_contents( "/www/$VHOST/secretkey" );
 
-$wgLogo = "/logo.png";
-
 $wgArticlePath = "/wiki/$1";
 $wgScriptPath = "/w";
 
@@ -125,6 +123,7 @@ if ( $VHOST === '{{ webdomain_sanat }}' ) {
 	$wgSitename = 'Sanat';
 	$wgDBprefix = '';
 	$wgDBname = 'mediawiki';
+	$wgLogo = "/logo.png";
 
 	wfLoadSkin( 'Vector' );
 
@@ -174,6 +173,7 @@ if ( $VHOST === '{{ webdomain_nimiarkisto }}' ) {
 	$wgSitename = 'Nimiarkisto';
 	$wgDBname = 'nimiarkisto';
 	$wgDefaultSkin = 'Timeless';
+	$wgLogo = null;
 
 	wfLoadSkin( 'Timeless' );
 	wfLoadExtensions( [ 'UniversalLanguageSelector', 'Nimiarkisto' ] );
