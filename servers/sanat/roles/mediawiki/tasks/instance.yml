@@ -7,6 +7,11 @@
     - /www/{{ instance }}/logs
     - /www/{{ instance }}/cache
 
+- name: Create upload directory for {{ instance }}
+  file: path={{item}} state=directory owner=hhvm mode=755
+  with_items:
+    - /www/{{ instance }}/docroot/uploads
+
 - name: Create log file hhvm for {{ instance }}
   copy: dest=/www/{{ instance }}/logs/error_php owner=hhvm mode=0644 content="" force=no
 

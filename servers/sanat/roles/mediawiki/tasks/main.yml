@@ -83,6 +83,12 @@
   loop_control:
     loop_var: instance
 
+- name: Add sites sql table entry for Nimiarkisto
+  command: /usr/bin/php maintenance/addSite.php --language=fi --pagepath="https://{{ webdomain_nimiarkisto }}/wiki/$1" --wiki="{{ webdomain_nimiarkisto }}" nimiarkisto main
+  args:
+    chdir: /srv/mediawiki/workdir
+  ignore_errors: yes
+
 - name: Deploy latest code with oregano
   command: /srv/mediawiki/oregano {{ item }}
   args:

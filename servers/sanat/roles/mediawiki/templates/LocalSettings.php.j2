@@ -95,6 +95,11 @@ $wgGroupPermissions['*']['createpage'] = true;
 $wgUseRCPatrol = false;
 $wgUseNPPatrol = false;
 
+$wgEnableUploads = true;
+$wgUploadPath = "/uploads";
+$wgUploadDirectory = "/www/$VHOST/docroot/uploads";
+$wgMaxImageArea = 75e6; // 75MP
+
 function lfAddNamespace( $id, $name ) {
 	global $wgExtraNamespaces, $wgContentNamespaces, $wgNamespacesToBeSearchedDefault,
 		$wgCapitalLinkOverrides, $smwgNamespacesWithSemanticLinks;
@@ -171,7 +176,7 @@ if ( $VHOST === '{{ webdomain_nimiarkisto }}' ) {
 	$wgDefaultSkin = 'Timeless';
 
 	wfLoadSkin( 'Timeless' );
-	wfLoadExtensions( [ 'UniversalLanguageSelector' ] );
+	wfLoadExtensions( [ 'UniversalLanguageSelector', 'Nimiarkisto' ] );
 
 	$wgEnableWikibaseRepo = true;
 	$wgEnableWikibaseClient = true;
@@ -214,16 +219,29 @@ if ( $VHOST === '{{ webdomain_nimiarkisto }}' ) {
 
 		// the special group includes all the sites in the specialSiteLinkGroups,
 		// grouped together in a 'Pages linked to other sites' section.
-		$wgWBRepoSettings['siteLinkGroups'] = [];
+		$wgWBRepoSettings['siteLinkGroups'] = [ 'special' ];
 
 		// these are the site_group codes as listed in the sites table
-		$wgWBRepoSettings['specialSiteLinkGroups'] = [];
+		$wgWBRepoSettings['specialSiteLinkGroups'] = [ 'nimiarkisto' ];
 	} );
+
+	$wgLocalInterwikis[] = 'nimiarkisto';
 
 	require_once "$IP/extensions/Wikibase/client/WikibaseClient.php";
 
 	require_once "$IP/extensions/Maps/Maps.php";
 	$wgPFEnableStringFunctions = true;
+
+	require_once "$IP/extensions/Scribunto/Scribunto.php";
+	require_once "$IP/extensions/ParserFunctions/ParserFunctions.php";
+
+	enableSemantics( $VHOST );
+	$smwgQMaxInlineLimit = 10000;
+	$smwgQUpperbound = 10000;
+
+	$wgAllowDisplayTitle = true;
+	$wgRestrictDisplayTitle = false;
+
 }
 
 # Some non-configurable changes to MediaWiki
