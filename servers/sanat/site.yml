@@ -1,3 +1,24 @@
+- hosts: db
+  become: yes
+  roles:
+    - role: wikidb
+      tags: db
+  tasks:
+    - name: Add database for {{ item.key }}
+      tags: db
+      mysql_db:
+        name: "{{ item.value.db.database }}"
+        state: present
+      with_dict: "{{ mediawikis }}"
+    - name: Add database user for the wiki
+      mysql_user:
+        name: "{{ item.value.db.user }}"
+        password: "{{ item.value.db.password }}"
+        priv: "*.*:ALL"
+        host: "{{ item.value.db.server_client }}"
+        state: present
+      with_dict: "{{ mediawikis }}"
+
 - hosts: web
   become: yes
   vars_files:
@@ -24,6 +45,8 @@
     - role: firewall
       tags: firewall
 
+- hosts: all
+  become: yes
   tasks:
     - name: Install admin tools
       yum: name={{ item }} state=present
