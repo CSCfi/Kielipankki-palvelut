@@ -4,7 +4,7 @@
     - role: wikidb
       tags: db
   tasks:
-    - name: Add database for {{ item.key }}
+    - name: Add database for each wiki
       tags: db
       mysql_db:
         name: "{{ item.value.db.database }}"
