@@ -6,6 +6,8 @@ $wgDBserver = '{{ instance.value.db.server_host }}';
 $wgDBuser = '{{ instance.value.db.user }}';
 $wgDBpassword = '{{ instance.value.db.password }}';
 $wgDBname = '{{ instance.value.db.database }}';
+$wgDBadminuser = '{{ instance.value.db.admin_user | default( instance.value.db.user ) }}'
+$wgDBadminpassowrd = '{{ instance.value.db.admin_password | default( instance.value.db.password ) }}'
 
 $wgDefaultSkin = 'Timeless';
 $wgLogo = null;
