@@ -4,6 +4,24 @@ webdomain_nimiarkisto: nimiarkisto.fi
 webaliases_nimiarkisto: []
 
 
+mediawikis:
+  sanat.csc.fi:
+    conf: sanat
+    db:
+      server_host: localhost
+      server_client: localhost
+      user: wikiuser
+      password: wikipass
+      database: mediawiki
+  nimiarkisto.fi:
+    conf: nimiarkisto
+    db:
+      server_host: localhost
+      server_client: localhost
+      user: wikiuser
+      password: wikipass
+      database: mediawiki
+
 apache_ssl_protocol: "All -SSLv2 -SSLv3"
 apache_ssl_cipher_suite: "AES256+EECDH:AES256+EDH"
 ssl_params_sanat:

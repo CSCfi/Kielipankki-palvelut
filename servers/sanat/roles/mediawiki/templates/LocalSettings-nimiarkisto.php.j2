@@ -1,0 +1,78 @@
+<?php
+
+$wgSitename = 'Nimiarkisto';
+
+$wgDBserver = '{{ instance.value.db.server_host }}';
+$wgDBuser = '{{ instance.value.db.user }}';
+$wgDBpassword = '{{ instance.value.db.password }}';
+$wgDBname = '{{ instance.value.db.database }}';
+
+$wgDefaultSkin = 'Timeless';
+$wgLogo = null;
+
+wfLoadSkin( 'Timeless' );
+wfLoadExtensions( [ 'UniversalLanguageSelector', 'Nimiarkisto' ] );
+
+$wgEnableWikibaseRepo = true;
+$wgEnableWikibaseClient = true;
+require_once "$IP/extensions/Wikibase/repo/Wikibase.php";
+
+call_user_func( function() {
+	global $wgContentHandlerUseDB,
+		$wgDBname,
+		$wgExtraNamespaces,
+		$wgNamespacesToBeSearchedDefault,
+		$wgWBRepoSettings;
+
+	$wgContentHandlerUseDB = true;
+
+	$baseNs = 120;
+
+	// Define custom namespaces. Use these exact constant names.
+	define( 'WB_NS_ITEM', $baseNs );
+	define( 'WB_NS_ITEM_TALK', $baseNs + 1 );
+	define( 'WB_NS_PROPERTY', $baseNs + 2 );
+	define( 'WB_NS_PROPERTY_TALK', $baseNs + 3 );
+
+	// Register extra namespaces.
+	$wgExtraNamespaces[WB_NS_ITEM] = 'Item';
+	$wgExtraNamespaces[WB_NS_ITEM_TALK] = 'Item_talk';
+	$wgExtraNamespaces[WB_NS_PROPERTY] = 'Wikibase_property';
+	$wgExtraNamespaces[WB_NS_PROPERTY_TALK] = 'Wikibase_property_talk';
+
+	// Tell Wikibase which namespace to use for which kind of entity
+	$wgWBRepoSettings['entityNamespaces']['item'] = WB_NS_ITEM;
+	$wgWBRepoSettings['entityNamespaces']['property'] = WB_NS_PROPERTY;
+
+	// Make sure we use the same keys on repo and clients, so we can share cached objects.
+	$wgWBRepoSettings['sharedCacheKeyPrefix'] = $wgDBname . ':WBL/' . rawurlencode( WBL_VERSION );
+
+	// NOTE: no need to set up $wgNamespaceContentModels, Wikibase will do that automatically based on $wgWBRepoSettings
+
+	// Tell MediaWiki to search the item namespace
+	$wgNamespacesToBeSearchedDefault[WB_NS_ITEM] = true;
+
+	// the special group includes all the sites in the specialSiteLinkGroups,
+	// grouped together in a 'Pages linked to other sites' section.
+	$wgWBRepoSettings['siteLinkGroups'] = [ 'special' ];
+
+	// these are the site_group codes as listed in the sites table
+	$wgWBRepoSettings['specialSiteLinkGroups'] = [ 'nimiarkisto' ];
+} );
+
+$wgLocalInterwikis[] = 'nimiarkisto';
+
+require_once "$IP/extensions/Wikibase/client/WikibaseClient.php";
+
+require_once "$IP/extensions/Maps/Maps.php";
+$wgPFEnableStringFunctions = true;
+
+require_once "$IP/extensions/Scribunto/Scribunto.php";
+require_once "$IP/extensions/ParserFunctions/ParserFunctions.php";
+
+enableSemantics( $VHOST );
+$smwgQMaxInlineLimit = 10000;
+$smwgQUpperbound = 10000;
+
+$wgAllowDisplayTitle = true;
+$wgRestrictDisplayTitle = false;

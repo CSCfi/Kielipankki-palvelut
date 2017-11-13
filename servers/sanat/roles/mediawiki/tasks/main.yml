@@ -43,43 +43,12 @@
   args:
     chdir: /srv/mediawiki/workdir
 
-- name: Install sql database
-  yum: name={{ item }} state=present
-  with_items:
-    - mariadb
-    - mariadb-server
-    - MySQL-python
-  tags: db
-
-- name: Install sql config
-  copy: src=my.cnf dest=/etc/my.cnf.d/custom.cnf
-  tags: db
-
-- name: Ensure sql is running
-  service: name=mariadb state=started enabled=yes
-  tags: db
- 
-- name: Add database for wiki
-  mysql_db: name=mediawiki state=present
-  tags: db
-
-- name: Add database user for the wiki
-  mysql_user: name=wikiuser password=wikipass priv=*.*:ALL host=localhost state=present
-  tags: db
-
-- name: Disable old jobrunner
-  service: name=mw-jobrunner state=stopped enabled=no
-  ignore_errors: yes
-
-- name: Remove old jobrunner
-  file: path=/lib/systemd/system/mw-jobrunner.service state=absent
-
 - name: Create symlink from smsxml
   file: src=/www/smsxml/wiki/extensions/Saame dest=/srv/mediawiki/workdir/extensions/Saame state=link force=yes
 
 - name: Configure all wiki instances
   include: instance.yml
-  with_items: "{{ wiki_instances }}"
+  with_dict: "{{ mediawikis }}"
   loop_control:
     loop_var: instance
 

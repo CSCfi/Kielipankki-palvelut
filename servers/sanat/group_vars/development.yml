@@ -3,3 +3,21 @@ webdomain_nimiarkisto: nimiarkisto.nikerabb.it
 webaliases_nimiarkisto:
   - namnarkivet.nikerabb.it
 ansible_user: root
+
+mediawikis:
+  sanat.nikerabb.it:
+    conf: sanat
+    db:
+      server_host: localhost
+      server_client: localhost
+      user: wikiuser
+      password: wikipass
+      database: mediawiki
+  nimiarkisto.nikerabb.it:
+    conf: nimiarkisto
+    db:
+      server_host: localhost
+      server_client: localhost
+      user: wikiuser
+      password: wikipass
+      database: nimiarkisto
