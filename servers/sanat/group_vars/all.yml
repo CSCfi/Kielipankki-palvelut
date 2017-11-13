@@ -2,6 +2,8 @@ webdomain_sanat: sanat.csc.fi
 webaliases_sanat: []
 webdomain_nimiarkisto: nimiarkisto.fi
 webaliases_nimiarkisto: []
+webdomain_termipankki: tieteentermipankki.fi
+webaliases_termipankki: []
 
 
 mediawikis:
@@ -20,16 +22,28 @@ mediawikis:
       server_client: localhost
       user: wikiuser
       password: wikipass
-      database: mediawiki
+      database: nimiarkisto
+  #tieteentermipankki.fi:
+    #conf: termipankki
+    #db:
+      #server_host: localhost
+      #server_client: localhost
+      #user: wikiuser
+      #password: wikipass
+      #database: termipankki
 
-apache_ssl_protocol: "All -SSLv2 -SSLv3"
-apache_ssl_cipher_suite: "AES256+EECDH:AES256+EDH"
+apache_ssl_protocol: "all -SSLv3"
+apache_ssl_cipher_suite: "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS"
+
 ssl_params_sanat:
   certificate_file: "/etc/pki/tls/certs/{{ webdomain_sanat }}.crt"
   certificate_key_file: "/etc/pki/tls/private/{{ webdomain_sanat }}.key"
 ssl_params_nimiarkisto:
   certificate_file: "/etc/pki/tls/certs/{{ webdomain_nimiarkisto }}.crt"
   certificate_key_file: "/etc/pki/tls/private/{{ webdomain_nimiarkisto }}.key"
+ssl_params_termipankki:
+  certificate_file: "/etc/pki/tls/certs/{{ webdomain_termipankki }}.crt"
+  certificate_key_file: "/etc/pki/tls/private/{{ webdomain_termipankki }}.key"
 
 
 hfst_tmp: /tmp/hfst

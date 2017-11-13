@@ -64,11 +64,14 @@ $wgLocalInterwikis[] = 'nimiarkisto';
 
 require_once "$IP/extensions/Wikibase/client/WikibaseClient.php";
 
+wfLoadExtension( 'Flow' );
+$wgNamespaceContentModels[NS_TALK] = 'flow-board';
+
 require_once "$IP/extensions/Maps/Maps.php";
-$wgPFEnableStringFunctions = true;
 
 require_once "$IP/extensions/Scribunto/Scribunto.php";
 require_once "$IP/extensions/ParserFunctions/ParserFunctions.php";
+$wgPFEnableStringFunctions = true;
 
 enableSemantics( $VHOST );
 $smwgQMaxInlineLimit = 10000;
@@ -76,3 +79,6 @@ $smwgQUpperbound = 10000;
 
 $wgAllowDisplayTitle = true;
 $wgRestrictDisplayTitle = false;
+
+wfLoadExtension( 'Nimiarkisto' );
+wfLoadExtension( 'PageForms' );

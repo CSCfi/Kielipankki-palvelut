@@ -36,6 +36,10 @@
       tags: apache
     - role: geerlingguy.apache
       tags: apache
+    #- role: elastic.elasticsearch
+      #tags: elasticsearch
+      #es_instance_name: wikis
+      #es_heap_size: 4G
     - role: mediawiki
       tags: mediawiki
     - role: smsxml
