@@ -20,14 +20,14 @@
   with_items:
     - /www/{{ instance.key }}/secretkey
 
-- name: Install logo for {{ instance.key }}
-  copy: src=logo.png dest=/www/{{ instance.key }}/docroot/logo.png
+- name: Install custom docroot files for {{ instance.key }}
+  synchronize: src=docroot/{{ instance.value.conf }}/ dest=/www/{{ instance.key }}/docroot/
 
 - name: Create symlink to MediaWiki code for {{ instance.key }}
   file: src=/srv/mediawiki/targets/production dest=/www/{{ instance.key }}/docroot/w state=link force=yes
 
 - name: Create rewrite rules for {{ instance.key }}
-  copy: src=.htaccess dest=/www/{{ instance.key }}/docroot/.htaccess
+  copy: src=.htaccess dest=/www/{{ instance.key }}/docroot/.htaccess owner=apache mode=755
 
 - name: Create LocalSettings file for {{ instance.key }}
   template: src=LocalSettings-{{ instance.value.conf }}.php.j2 dest=/srv/mediawiki/workdir/LocalSettings-{{ instance.key }}.php
@@ -43,7 +43,7 @@
   args:
     chdir: /srv/mediawiki/workdir
 
-- name: Update l10n cache for {{ instance.key }}
-  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8 --wiki="{{ instance.key }}"
-  args:
-    chdir: /srv/mediawiki/workdir
+#- name: Setup ElasticSearch for {{ instance.key }}
+  #command: /usr/bin/php extensions/CirrusSearch/maintenance/updateSearchIndexConfig.php --wiki="{{ instance.key }}"
+  #args:
+    #chdir: /srv/mediawiki/workdir

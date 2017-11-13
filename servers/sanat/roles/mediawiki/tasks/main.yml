@@ -1,18 +1,27 @@
+- include_vars: secrets.yml
+
 - name: Create oregano directories
-  file: path={{ item }} state=directory
+  file:
+    path: "{{ item }}"
+    state: directory
   with_items:
     - /srv/mediawiki/hooks
     - /srv/mediawiki/tags
     - /srv/mediawiki/targets
 
 - name: Install packages required for wiki setup
-  yum: name={{ item }} state=present
+  yum:
+    name: "{{ item }}"
+    state: present
   with_items:
     - git
     - rsync
 
 - name: Install HHVM warmup script
-  copy: src=warmup.sh dest=/srv/mediawiki/warmup.sh mode=0755
+  copy:
+    src: warmup.sh
+    dest: /srv/mediawiki/warmup.sh
+    mode: 0755
 
 - name: Install oregano
   get_url:
@@ -57,6 +66,31 @@
   args:
     chdir: /srv/mediawiki/workdir
   ignore_errors: yes
+
+- name: Add Flow for Nimiarkisto
+  command: /usr/bin/php maintenance/populateContentModel.php --wiki="{{ webdomain_nimiarkisto }}" --ns=1 --table="{{ table }}"
+  args:
+    chdir: /srv/mediawiki/workdir
+  with_items:
+    - revision
+    - archive
+    - page
+  loop_control:
+    loop_var: table
+
+- name: Update l10n cache for all wikis 1/2
+  command: /usr/bin/php maintenance/mergeMessageFileList.php --extensions-dir skins:extensions --output /srv/mediawiki/MessagesSettings.php
+  args:
+    chdir: /srv/mediawiki/workdir
+  environment:
+    FORLC: 1
+
+- name: Update l10n cache for all wikis 2/2
+  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8
+  args:
+    chdir: /srv/mediawiki/workdir
+  environment:
+    FORLC: 1
 
 - name: Deploy latest code with oregano
   command: /srv/mediawiki/oregano {{ item }}
