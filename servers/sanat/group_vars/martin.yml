@@ -1,11 +1,11 @@
-webdomain_sanat: sanat.csc.fi
+webdomain_sanat: sanat.dev
 webaliases_sanat: []
-webdomain_nimiarkisto: nimiarkisto.fi
+webdomain_nimiarkisto: nimiarkisto.dev
 webaliases_nimiarkisto: []
 
 
 mediawikis:
-  sanat.csc.fi:
+  sanat.dev:
     conf: sanat
     db:
       server_host: localhost
@@ -13,7 +13,7 @@ mediawikis:
       user: wikiuser
       password: wikipass
       database: mediawiki
-  nimiarkisto.fi:
+  nimiarkisto.dev:
     conf: nimiarkisto
     db:
       server_host: localhost

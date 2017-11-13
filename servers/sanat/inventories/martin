@@ -1,0 +1,10 @@
+[web]
+sanat.dev
+
+[db]
+sanat.dev
+
+[martin:children]
+web
+db
+
