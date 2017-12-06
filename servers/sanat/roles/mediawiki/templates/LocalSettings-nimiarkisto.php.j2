@@ -74,11 +74,25 @@ require_once "$IP/extensions/ParserFunctions/ParserFunctions.php";
 $wgPFEnableStringFunctions = true;
 
 enableSemantics( $VHOST );
-$smwgQMaxInlineLimit = 10000;
+$smwgQMaxInlineLimit = 2500;
 $smwgQUpperbound = 10000;
+$smwgValueLookupCacheType = CACHE_ANYTHING;
+$smwgQueryResultCacheType = CACHE_ANYTHING;
 
 $wgAllowDisplayTitle = true;
 $wgRestrictDisplayTitle = false;
 
 wfLoadExtension( 'Nimiarkisto' );
 wfLoadExtension( 'PageForms' );
+$wgPageFormsCacheFormDefinitions = true;
+
+$wgGroupPermissions['user']['edit'] = false;
+$wgGroupPermissions['*']['edit'] = false;
+$wgGroupPermissions['*']['createaccount'] = false;
+$wgGroupPermissions['editor']['edit'] = true;
+$wgGroupPermissions['sysop']['edit'] = true;
+
+wfLoadExtension( 'WikiEditor' );
+$wgDefaultUserOptions['usebetatoolbar'] = 1;
+wfLoadExtension( 'CodeEditor' );
+

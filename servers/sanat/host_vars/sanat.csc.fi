@@ -3,4 +3,7 @@ ssl_params_sanat:
   certificate_key_file: "/etc/pki/tls/private/sanat.csc.fi.key"
   certificate_chain_file: "/etc/pki/tls/certs/terenasslca3-chain.crt"
 
-# TODO: ssl_params_nimiarkisto
+ssl_params_nimiarkisto:
+  certificate_file: "/etc/pki/tls/certs/nimiarkisto2.crt"
+  certificate_key_file: "/etc/pki/tls/private/nimiarkisto2.key"
+  certificate_chain_file: "/etc/pki/tls/certs/DigiCertCA.crt"
