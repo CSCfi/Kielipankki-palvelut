@@ -7,7 +7,8 @@ $wgDBuser = '{{ instance.value.db.user }}';
 $wgDBpassword = '{{ instance.value.db.password }}';
 $wgDBname = '{{ instance.value.db.database }}';
 
-$wgLogo = "/logo.png";
+$wgLogo = '/logo.png';
+$wgGroupPermissions['*']['createaccount'] = false;
 
 wfLoadSkin( 'Vector' );
 
@@ -18,17 +19,38 @@ $sfgRenameEditTabs = true;
 $smwgQMaxInlineLimit = $wgCategoryPagingLimit = 250;
 
 require "$IP/extensions/MixedNamespaceSearchSuggestions/MixedNamespaceSearchSuggestions.php";
-require "$IP/extensions/ParserFunctions/ParserFunctions.php";
+wfLoadExtension( 'ParserFunctions' );
 require "$IP/extensions/DeleteBatch/DeleteBatch.php";
 
 require "$IP/extensions/Translate/Translate.php";
 wfLoadExtensions( [ 'UniversalLanguageSelector', 'InputBox', 'Sanat' ] );
 
+function lfAddNamespace( $id, $name ) {
+	global $wgExtraNamespaces, $wgContentNamespaces, $wgNamespacesToBeSearchedDefault,
+		$wgCapitalLinkOverrides, $smwgNamespacesWithSemanticLinks;
+
+	$constant = strtoupper( "NS_$name" );
+
+	define( $constant, $id );
+	define( $constant . '_TALK', $id + 1 );
+
+	$wgExtraNamespaces[$id] = $name;
+	$wgExtraNamespaces[$id + 1] = $name . '_talk';
+
+	$wgContentNamespaces[] = $id;
+
+	$wgNamespacesToBeSearchedDefault[$id] = true;
+	$wgCapitalLinkOverrides[$id] = false;
+	$wgCapitalLinkOverrides[$id + 1] = false;
+
+	$smwgNamespacesWithSemanticLinks[$id] = true;
+}
+
 lfAddNamespace( 1200, 'Lud' );
 require "$IP/extensions/Lud/Lud.php";
 
 lfAddNamespace( 1202, 'WordNet' );
-require_once( "$IP/extensions/WordNet/WordNet.php" );
+require "$IP/extensions/WordNet/WordNet.php";
 $wgNamespacesWithSubpages[NS_WORDNET] = true;
 $wgAllowDisplayTitle = true;
 $wgRestrictDisplayTitle = false;

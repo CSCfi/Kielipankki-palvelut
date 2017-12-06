@@ -3,3 +3,4 @@
 - src: geerlingguy.composer
 - src: geerlingguy.repo-epel
 - src: advertine.nodejs
+- src: elastic.elasticsearch
