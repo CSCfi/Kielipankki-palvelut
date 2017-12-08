@@ -1,0 +1,5 @@
+[web]
+sanat2.csc.fi webdomain_sanat=sanat2.csc.fi
+
+[pre-production:children]
+web

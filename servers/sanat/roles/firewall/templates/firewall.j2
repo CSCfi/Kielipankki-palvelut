@@ -1,0 +1,13 @@
+{# generates firewall rules, assumes ""/6  in item #}
+#!/bin/sh
+
+# This script is only for restarting the firewall when local changes has been added to the /etc/rc.d/rc{{ item }}.firewall.local file.
+
+# Reload iptables
+/sbin/service ip{{ item }}tables restart
+
+# Load central firewall rules (if present)
+[ -x /etc/rc.d/rc{{ item }}.fw ] && /bin/sh /etc/rc.d/rc{{ item }}.fw
+
+# Load local firewall rules
+/bin/sh /etc/rc.d/rc{{ item }}.firewall.local

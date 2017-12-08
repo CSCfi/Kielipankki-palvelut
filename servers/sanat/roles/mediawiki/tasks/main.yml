@@ -1,14 +1,18 @@
 - name: Create oregano directories
-  file: path={{item}} state=directory
+  file: path={{ item }} state=directory
   with_items:
+    - /srv/mediawiki/hooks
     - /srv/mediawiki/tags
     - /srv/mediawiki/targets
 
-- name: Install git
-  yum: name=git state=present
+- name: Install packages required for wiki setup
+  yum: name={{ item }} state=present
+  with_items:
+    - git
+    - rsync
 
-- name: Install rsync for oregano
-  yum: name=rsync state=present
+- name: Install HHVM warmup script
+  copy: src=warmup.sh dest=/srv/mediawiki/warmup.sh mode=0755
 
 - name: Install oregano
   get_url:
@@ -16,6 +20,9 @@
     dest: /srv/mediawiki/oregano
     checksum: sha1:a6a9028352d72b45cd1dc07113ea659ff0d4cd57
     mode: a+x
+
+- name: Install oregano hooks
+  copy: src=oregano_hook_deploy dest=/srv/mediawiki/hooks/deploy mode=0755
 
 - name: Install MediaWiki repository clone script
   copy: src=co_repos dest=/srv/mediawiki/co_repos mode=0755
@@ -31,80 +38,38 @@
 - name: Install LocalSettings.php
   template: src=LocalSettings.php.j2 dest=/srv/mediawiki/workdir/LocalSettings.php
 
-
 - name: Run composer update
   command: /usr/local/bin/composer update --no-dev
   args:
     chdir: /srv/mediawiki/workdir
 
+- name: Create symlink from smsxml
+  file: src=/www/smsxml/wiki/extensions/Saame dest=/srv/mediawiki/workdir/extensions/Saame state=link force=yes
 
-- name: Create docroot
-  file: path={{item}} state=directory owner=apache mode=755
-  with_items:
-    - /www/
-    - /www/{{webdomain}}/
-    - /www/{{webdomain}}/docroot
-    - /www/{{webdomain}}/logs
-    - /www/{{webdomain}}/cache
+- name: Configure all wiki instances
+  include: instance.yml
+  with_dict: "{{ mediawikis }}"
+  loop_control:
+    loop_var: instance
 
-- name: Create a secret key
-  command: openssl rand -base64 64 -out {{item}} creates={{item}}
-  with_items:
-    - /www/{{webdomain}}/secretkey
-
-- name: Install logo
-  copy: src=logo.png dest=/www/{{webdomain}}/docroot/logo.png
-
-- name: Create symlink to MediaWiki code
-  file: src=/srv/mediawiki/targets/production dest=/www/{{webdomain}}/docroot/w state=link force=yes
-
-- name: Install sql database
-  yum: name={{item}} state=present
-  with_items:
-    - mariadb
-    - mariadb-server
-    - MySQL-python
-  tags: db
-
-- name: Install sql config
-  copy: src=my.cnf dest=/etc/my.cnf.d/custom.cnf
-  tags: db
-
-- name: Ensure sql is running
-  service: name=mariadb state=started enabled=yes
-  tags: db
- 
-- name: Add database for wiki
-  mysql_db: name=mediawiki state=present
-  tags: db
-
-- name: Add database user for the wiki
-  mysql_user: name=wikiuser password=wikipass priv=*.*:ALL host=localhost state=present
-  tags: db
-
-- name: Create rewrite rules
-  copy: src=.htaccess dest=/www/{{webdomain}}/docroot/.htaccess
-
-- name: Install jobrunner
-  template: src=mw-jobrunner.service.j2 dest=/lib/systemd/system/mw-jobrunner.service
-
-- name: Enable jobrunner
-  service: name=mw-jobrunner state=started enabled=yes
-
-- name: Upgrade database schema
-  command: /usr/bin/php maintenance/update.php --quick
+- name: Add sites sql table entry for Nimiarkisto
+  command: /usr/bin/php maintenance/addSite.php --language=fi --pagepath="https://{{ webdomain_nimiarkisto }}/wiki/$1" --wiki="{{ webdomain_nimiarkisto }}" nimiarkisto main
   args:
     chdir: /srv/mediawiki/workdir
+  ignore_errors: yes
 
-- name: Update l10n cache
-  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8
-  args:
-    chdir: /srv/mediawiki/workdir
-
-- name: Setup oregano
-  command: /srv/mediawiki/oregano {{item}} 
+- name: Deploy latest code with oregano
+  command: /srv/mediawiki/oregano {{ item }}
   args:
     chdir: /srv/mediawiki
   with_items:
     - tag
     - deploy
+
+- name: Create warmup URL list
+  template: src=warmup-urls.txt.j2 dest=/srv/mediawiki/warmup-urls.txt
+
+- name: Warm up all instances
+  command: /srv/mediawiki/warmup.sh /srv/mediawiki/warmup-urls.txt
+  args:
+    chdir: /srv/mediawiki

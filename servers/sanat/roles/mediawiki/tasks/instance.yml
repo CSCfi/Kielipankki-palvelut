@@ -1,0 +1,49 @@
+- name: Create docroot for {{ instance.key }}
+  file: path={{item}} state=directory owner=apache mode=755
+  with_items:
+    - /www/
+    - /www/{{ instance.key }}/
+    - /www/{{ instance.key }}/docroot
+    - /www/{{ instance.key }}/logs
+    - /www/{{ instance.key }}/cache
+
+- name: Create upload directory for {{ instance.key }}
+  file: path={{item}} state=directory owner=hhvm mode=755
+  with_items:
+    - /www/{{ instance.key }}/docroot/uploads
+
+- name: Create log file hhvm for {{ instance.key }}
+  copy: dest=/www/{{ instance.key }}/logs/error_php owner=hhvm mode=0644 content="" force=no
+
+- name: Create a secret key for {{ instance.key }}
+  command: openssl rand -base64 64 -out {{ item }} creates={{ item }}
+  with_items:
+    - /www/{{ instance.key }}/secretkey
+
+- name: Install logo for {{ instance.key }}
+  copy: src=logo.png dest=/www/{{ instance.key }}/docroot/logo.png
+
+- name: Create symlink to MediaWiki code for {{ instance.key }}
+  file: src=/srv/mediawiki/targets/production dest=/www/{{ instance.key }}/docroot/w state=link force=yes
+
+- name: Create rewrite rules for {{ instance.key }}
+  copy: src=.htaccess dest=/www/{{ instance.key }}/docroot/.htaccess
+
+- name: Create LocalSettings file for {{ instance.key }}
+  template: src=LocalSettings-{{ instance.value.conf }}.php.j2 dest=/srv/mediawiki/workdir/LocalSettings-{{ instance.key }}.php
+
+- name: Install jobrunner for {{ instance.key }}
+  template: src=mw-jobrunner.service.j2 dest=/etc/systemd/system/mw-jobrunner-{{ instance.key }}.service
+
+- name: Enable jobrunner for {{ instance.key }}
+  service: name=mw-jobrunner-{{ instance.key }} state=started enabled=yes
+
+- name: Upgrade database schema for {{ instance.key }}
+  command: /usr/bin/php maintenance/update.php --quick --wiki="{{ instance.key }}"
+  args:
+    chdir: /srv/mediawiki/workdir
+
+- name: Update l10n cache for {{ instance.key }}
+  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8 --wiki="{{ instance.key }}"
+  args:
+    chdir: /srv/mediawiki/workdir

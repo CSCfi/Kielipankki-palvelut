@@ -4,20 +4,25 @@ set -e
 declare -a REPOS
 
 REPOS=(
-	"workdir https://github.com/wikimedia/mediawiki.git master"
-	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git origin/REL1_28"
-	"workdir/extensions/FinnFrameNet https://github.com/Nikerabbit/mediawiki-extensions-FinnFrameNet.git master"
-	"workdir/extensions/InputBox https://github.com/wikimedia/mediawiki-extensions-InputBox.git origin/REL1_28"
-	"workdir/extensions/Kotus https://github.com/Nikerabbit/mediawiki-extensions-Kotus.git master"
-	"workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git master"
-	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git origin/REL1_28"
-	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.0.2"
-	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git origin/REL1_28"
-	"workdir/extensions/Sanat https://github.com/Nikerabbit/mediawiki-extensions-Sanat.git master"
-	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.4.4"
-	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2016.10"
-	"workdir/extensions/WordNet https://github.com/Nikerabbit/mediawiki-extensions-WordNet.git master"
-	"workdir/skins/Vector https://github.com/wikimedia/mediawiki-skins-Vector.git origin/REL1_28"
+	"workdir https://github.com/wikimedia/mediawiki.git origin/master"
+	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git origin/REL1_29"
+	"workdir/extensions/FinnFrameNet https://github.com/Nikerabbit/mediawiki-extensions-FinnFrameNet.git origin/master"
+	"workdir/extensions/InputBox https://github.com/wikimedia/mediawiki-extensions-InputBox.git origin/REL1_29"
+	"workdir/extensions/Kotus https://github.com/Nikerabbit/mediawiki-extensions-Kotus.git origin/master"
+	"workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git origin/master"
+	"workdir/extensions/Nimiarkisto https://github.com/Nikerabbit/mediawiki-extensions-Nimiarkisto.git origin/master"
+	"workdir/extensions/Maps https://github.com/JeroenDeDauw/Maps.git 4.3.0"
+	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git origin/REL1_29"
+	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.1.2"
+	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git origin/REL1_29"
+	"workdir/extensions/Sanat https://github.com/Nikerabbit/mediawiki-extensions-Sanat.git origin/master"
+	"workdir/extensions/Scribunto https://github.com/wikimedia/mediawiki-extensions-Scribunto.git origin/REL1_29"
+	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.5.4"
+	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2017.07"
+	"workdir/extensions/Wikibase https://github.com/wikimedia/mediawiki-extensions-Wikibase.git origin/master"
+	"workdir/extensions/WordNet https://github.com/Nikerabbit/mediawiki-extensions-WordNet.git origin/master"
+	"workdir/skins/Vector https://github.com/wikimedia/mediawiki-skins-Vector.git origin/REL1_29"
+	"workdir/skins/Timeless https://github.com/wikimedia/mediawiki-skins-Timeless.git origin/REL1_29"
 )
 
 for LINE in "${REPOS[@]}"
@@ -27,24 +32,26 @@ do
 	URL="${LINE[1]}"
 	VER="${LINE[2]}"
 
-	echo $DIR
+	echo "$DIR"
 	if [ -d "$DIR" ]
 	then (
 		cd "$DIR" || exit
-		git fetch origin --tags
-		if [ "$VER" == "master" ]
+		ACTUALURL="$(git config --get remote.origin.url)"
+		if [ "$URL" != "$ACTUALURL" ]
 		then
-			git pull --rebase
-		else
-			git checkout "$VER"
+			echo "Re-cloning repository $DIR";
+			cd -
+			rm -rf "$DIR"
 		fi
-	) else (
-		git clone "$URL" "$DIR"
-		if [ "$VER" != "master" ]
-		then
-			cd "$DIR" || exit
-			git checkout "$VER"
-		fi
-	)
+	) fi
+
+	if [ ! -d "$DIR" ]
+	then
+		git clone "$URL" "$DIR" || exit
 	fi
+
+	(
+		cd "$DIR" || exit
+		git fetch -q && git fetch -q --tags && git reset -q --hard "$VER" && git clean -q -f -d -e /extensions -e /skins 2>&1 >&- && git submodule update --init
+	)
 done

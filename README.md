@@ -9,7 +9,7 @@ Kehittäjät: Jussi Piitulainen, Martin Matthiesen
 ## Sanat
 Wiki-pohjainen sanakirjapalvelu
 
-Kehittäjät: Niklas Laxtröm (Wiki); Mika Hämäläinen (päivtysrajapinta)
+Kehittäjät: Niklas Laxström (Wiki); Mika Hämäläinen (päivtysrajapinta)
 
 ## Taito
 Kielipankin työkalut Taito-laskentaympäristössä

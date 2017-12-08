@@ -1,3 +1,7 @@
+# SMSXML Setup
+
+# Depends on nodejs installed.
+
 - name: Install packages from yum
   yum: name={{ item }} state=present
   with_items:
@@ -20,7 +24,6 @@
     - name: pymongo
     - name: requests
     - name: PyExecJS
-    - name: hfst
 
 - name: Add mongodb repo
   copy:
@@ -40,12 +43,6 @@
   pear:
     name: pecl/mongodb
     state: present
-
-- name: Install JavaScript interpret
-  yum:
-    name: nodejs
-    state: present
-    disablerepo: hhvm-repo
 
 - name: Create smsxml directory
   file: path=/www/smsxml state=directory
@@ -119,9 +116,6 @@
 - name: Make django migrations
   command: /www/smsxml/migrate.sh
   become: true
-
-- name: Create symlink to MediaWiki code
-  file: src=/www/smsxml/wiki/extensions/Saame dest=/www/{{webdomain}}/docroot/w/extensions/Saame state=link force=yes
 
 - name: Copy smsxml wiki configuration
   template: src=SaameConfig.ini dest=/www/smsxml/wiki/extensions/Saame/SaameConfig.ini

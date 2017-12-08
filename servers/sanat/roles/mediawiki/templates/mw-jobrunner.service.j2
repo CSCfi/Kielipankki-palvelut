@@ -1,15 +1,21 @@
 [Unit]
-Description=MediaWiki jobrunner
+Description=MediaWiki jobrunner for {{ instance.key }}
 After=network.target
-Requires=mariadb.service
+Requires=mariadb.service hhvm.service
 
 [Service]
-ExecStart=/usr/bin/php /srv/mediawiki/targets/production/maintenance/runJobs.php --wait --maxjobs=1000
+User=hhvm
+Environment=HHVM_REPO_CENTRAL_PATH=/run/hhvm/hhvm.hhbc
+ExecStart=/usr/bin/php /srv/mediawiki/targets/production/maintenance/runJobs.php --wait --maxjobs=10000 --wiki={{ instance.key }}
 Restart=always
-RestartSec=15
+RestartSec=5
 PrivateDevices=true
 PrivateTmp=true
 ProtectControlGroups=true
 ProtectHome=true
 ProtectKernelTunables=true
-ProtectSystem="full"
+ProtectSystem=full
+Nice=15
+
+[Install]
+WantedBy=multi-user.target

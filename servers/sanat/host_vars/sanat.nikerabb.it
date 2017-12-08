@@ -1,0 +1,9 @@
+ssl_params_sanat:
+  certificate_file: "/etc/letsencrypt/live/sanat.nikerabb.it/cert.pem"
+  certificate_key_file: "/etc/letsencrypt/live/sanat.nikerabb.it/privkey.pem"
+  certificate_chain_file: "/etc/letsencrypt/live/sanat.nikerabb.it/chain.pem"
+
+ssl_params_nimiarkisto:
+  certificate_file: "/etc/letsencrypt/live/sanat.nikerabb.it/cert.pem"
+  certificate_key_file: "/etc/letsencrypt/live/sanat.nikerabb.it/privkey.pem"
+  certificate_chain_file: "/etc/letsencrypt/live/sanat.nikerabb.it/chain.pem"
