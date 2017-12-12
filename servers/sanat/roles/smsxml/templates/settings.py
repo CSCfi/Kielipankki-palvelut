@@ -120,10 +120,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 URL_PREFIX = ""
 
-WIKI_URL = "http://{{ webdomain_sanat }}/w/"
-WIKI_JS_URL = "http://{{ webdomain_sanat }}/js/sms_edit.js"
+WIKI_URL = "https://{{ webdomain_sanat }}/w/"
+WIKI_JS_URL = "https://{{ webdomain_sanat }}/js/sms_edit.js"
 WIKI_USERNAME = "{{sms_xml.wiki_username}}"
 WIKI_PASSWORD = "{{sms_xml.wiki_password}}"
 GIT_DIR_SMS = "/www/smsxml/xmls/sms/"
 GIT_DIR_IZH = "/www/smsxml/xmls/izh/"
-CURRENT_URL = "http://{{ webdomain_sanat }}:8000/smsxml/"
+CURRENT_URL = "https://{{ webdomain_sanat }}/smsxml/"
