@@ -8,6 +8,8 @@
    - hfst_ospell_version: 0.4.5
    - finnish_parse_version: 1.0
    - praat_version: 6.0.29
+   - nasm_version: 2.13.02
+
   become: no
   roles:
    - { role: hfst, tags: hfst }
@@ -16,6 +18,8 @@
    - { role: check-hfst, tags: check-hfst }
    - { role: finnish-parse, branch: master, tags: finnish-parse }
    - { role: praat, branch: master, tags: praat }
+   - { role: nasm, branch: master, tags: nasm }
+   - { role: ffmpeg, branch: master, tags: ffmpeg }
 
 
 

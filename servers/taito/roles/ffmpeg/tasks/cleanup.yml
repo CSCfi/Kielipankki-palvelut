@@ -1,0 +1,6 @@
+---
+ 
+- name: cleanup
+  command: |
+    rm -rf {{ ffmpeg_source_dir }}
+        

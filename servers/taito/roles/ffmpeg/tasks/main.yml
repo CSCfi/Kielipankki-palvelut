@@ -1,0 +1,34 @@
+---
+
+- name: create compile dir
+  file:
+    path: "{{ ffmpeg_source_dir }}"
+    state: directory
+
+- debug: var=ffmpeg_features
+- include: dependencies.yml
+
+- include: x265.yml
+  when: ffmpeg_x265
+  
+- include: rtmp.yml
+  when: ffmpeg_rtmp
+  
+- include: fdk-aac.yml
+  when: ffmpeg_fdkaac
+  
+- include: x264.yml
+  when: ffmpeg_x264
+  
+- include: opus.yml
+  when: ffmpeg_opus
+  
+- include: vpx.yml
+  when: ffmpeg_vpx
+
+  
+- include: ffmpeg.yml
+
+    
+- include: cleanup.yml
+  when: ffmpeg_cleanup

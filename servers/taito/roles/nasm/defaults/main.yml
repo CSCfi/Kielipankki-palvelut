@@ -1,0 +1,2 @@
+compile_dir: "{{ compile_root }}/nasm"
+install_dir: "{{ install_prefix }}/opt/nasm/{{ nasm_version }}"

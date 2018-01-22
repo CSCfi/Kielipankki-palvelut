@@ -7,4 +7,4 @@ version: "{{hfst_version}}"
 compile_dir: /tmp/{{ ansible_user_id }}/ansible
 hfst_tarball: "{{package_name}}-{{ version }}.tar.gz"
 hfst_compile_dir: "{{ compile_dir }}/{{package_name}}-{{ version }}"
-hfst_install_dir: "{{ install_prefix }}/{{package_name}}/{{ version }}"
+hfst_install_dir: "{{ install_prefix }}/ling/{{package_name}}/{{ version }}"

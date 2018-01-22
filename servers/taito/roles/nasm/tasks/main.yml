@@ -1,0 +1,34 @@
+---
+# install dependencies
+
+- name: create dir
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+   - "{{ compile_dir }}"
+   - "{{ install_dir }}"
+
+- name: get nasm
+  unarchive:
+    remote_src: yes
+    src: "http://www.nasm.us/pub/nasm/releasebuilds/{{ nasm_version }}/nasm-{{ nasm_version }}.tar.xz"
+    dest: "{{ compile_dir }}"     
+
+- name: compile nasm 
+  command: "{{ item }}"
+  args:
+    chdir: "{{ compile_dir }}/nasm-{{ nasm_version }}" 
+    creates: "{{ install_dir }}/bin/nasm"
+  with_items:
+    - ./configure --prefix={{ install_dir }}
+    - make -j5
+    - make install
+
+- name: Fix permissions (if shared group is set)
+  file:
+    path={{ nasm_install_dir }}
+    group={{ shared_group }}
+    mode="g+rwX,o+rX"
+    recurse=yes
+  when: shared_group is defined

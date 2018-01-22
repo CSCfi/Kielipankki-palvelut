@@ -1,0 +1,16 @@
+- name: clone latest x264
+  git: repo=git://git.videolan.org/x264.git
+       dest={{ ffmpeg_source_dir }}/x264
+       accept_hostkey=yes
+       version={{ ffmpeg_x264_version }}
+
+- name: compile x264
+  shell: "{{ item }}" 
+  args:
+    chdir: "{{ ffmpeg_source_dir }}/x264" 
+    #creates: "{{ ffmpeg_bin_dir }}/x264"
+  with_items:
+    - module load nasm && ./configure --prefix={{ install_dir }} --enable-static
+    - module load nasm && make {{ ffmpeg_cpu_flag }}
+    - make install
+    - make distclean

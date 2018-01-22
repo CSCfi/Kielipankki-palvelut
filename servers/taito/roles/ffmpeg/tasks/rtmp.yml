@@ -1,0 +1,15 @@
+- name: clone latest librtmp
+  git: repo=git://git.ffmpeg.org/rtmpdump.git
+       dest={{ ffmpeg_source_dir }}/librtmp
+       accept_hostkey=yes
+       version={{ ffmpeg_rtmp_version }}
+       
+- name: compile librtmp
+  command: "{{ item }}"
+  args:
+    chdir: "{{ ffmpeg_source_dir }}/librtmp"
+#    creates: "{{ ffmpeg_lib_dir }}/librtmp.a"
+  with_items:
+    - make {{ ffmpeg_cpu_flag }}
+    - make install
+    - make clean               
