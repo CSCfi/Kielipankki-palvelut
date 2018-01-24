@@ -1,6 +1,6 @@
 ---
 - name: clone latest opus
-  git: repo=git://git.opus-codec.org/opus.git
+  git: repo=https://git.xiph.org/opus.git
        dest={{ ffmpeg_source_dir }}/opus
        accept_hostkey=yes
        version={{ ffmpeg_opus_version }}
@@ -9,10 +9,10 @@
   command: "{{ item }}" 
   args:
     chdir: "{{ ffmpeg_source_dir }}/opus" 
-    creates: "{{ install_dir }}/lib/libopus.a"
+    creates: "{{ build_dir }}/lib/libopus.a"
   with_items:
     - ./autogen.sh
-    - ./configure --disable-shared --prefix="{{ install_dir }}"
+    - ./configure --disable-shared --prefix="{{ build_dir }}"
     - make {{ ffmpeg_cpu_flag }}
     - make install
     - make distclean       

@@ -6,29 +6,32 @@
     state: directory
 
 - debug: var=ffmpeg_features
-- include: dependencies.yml
+- import_tasks: dependencies.yml
 
-- include: x265.yml
+- import_tasks: mp3lame.yml
+  when: ffmpeg_mp3lame
+
+- import_tasks: x265.yml
   when: ffmpeg_x265
   
-- include: rtmp.yml
+- import_tasks: rtmp.yml
   when: ffmpeg_rtmp
   
-- include: fdk-aac.yml
+- import_tasks: fdk-aac.yml
   when: ffmpeg_fdkaac
   
-- include: x264.yml
+- import_tasks: x264.yml
   when: ffmpeg_x264
   
-- include: opus.yml
+- import_tasks: opus.yml
   when: ffmpeg_opus
   
-- include: vpx.yml
+- import_tasks: vpx.yml
   when: ffmpeg_vpx
 
   
-- include: ffmpeg.yml
+- import_tasks: ffmpeg.yml
 
     
-- include: cleanup.yml
+- import_tasks: cleanup.yml
   when: ffmpeg_cleanup

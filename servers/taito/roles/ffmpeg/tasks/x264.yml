@@ -10,7 +10,7 @@
     chdir: "{{ ffmpeg_source_dir }}/x264" 
     #creates: "{{ ffmpeg_bin_dir }}/x264"
   with_items:
-    - module load nasm && ./configure --prefix={{ install_dir }} --enable-static
+    - module load nasm && ./configure --prefix={{ build_dir }} --enable-static
     - module load nasm && make {{ ffmpeg_cpu_flag }}
     - make install
     - make distclean

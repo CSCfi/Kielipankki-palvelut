@@ -9,9 +9,9 @@
   command: "{{ item }}" 
   args:
     chdir: "{{ ffmpeg_source_dir }}/libvpx" 
-    creates: "{{ install_dir }}/lib/libvpx.a"
+    creates: "{{ build_dir }}/lib/libvpx.a"
   with_items:
-    - ./configure --disable-shared --prefix={{ install_dir }}
+    - ./configure --disable-shared --prefix={{ build_dir }}
     - make {{ ffmpeg_cpu_flag }}
     - make install
     - make clean         

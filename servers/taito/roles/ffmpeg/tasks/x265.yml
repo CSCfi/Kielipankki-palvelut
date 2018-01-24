@@ -9,6 +9,6 @@
   args:
     chdir: "{{  ffmpeg_source_dir }}/x265/build"
   with_items:
-   - cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="{{ install_dir }}" -DENABLE_SHARED:bool=off ../source
+   - cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="{{ build_dir }}" -DENABLE_SHARED:bool=off ../source
    - make {{ ffmpeg_cpu_flag }}
    - make install 
