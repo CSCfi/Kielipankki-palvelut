@@ -9,6 +9,7 @@
    - finnish_parse_version: 1.0
    - praat_version: 6.0.29
    - nasm_version: 2.13.02
+   - finnish_tagtools_version: 1.0
 
   become: no
   roles:
@@ -20,6 +21,7 @@
    - { role: praat, branch: master, tags: praat }
    - { role: nasm, branch: master, tags: nasm }
    - { role: ffmpeg, branch: master, tags: ffmpeg }
+   - { role: finnish-tagtools, tags: finnish-tagtools }
 
 
 
