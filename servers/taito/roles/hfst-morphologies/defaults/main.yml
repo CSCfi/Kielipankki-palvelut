@@ -5,4 +5,4 @@ package_name: hfst
 release_url: http://sourceforge.net/projects/hfst/files/resources/morphological-transducers/
 version: "{{ hfst_version }}"
 temp_dir: /tmp/{{ ansible_user_id }}/ansible
-hfst_install_dir: "{{ install_prefix }}/{{ package_name }}/{{ version }}"
+hfst_install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"

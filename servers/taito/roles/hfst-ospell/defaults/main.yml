@@ -7,4 +7,4 @@ version: "{{ hfst_ospell_version }}"
 compile_root: /tmp/{{ ansible_user }}/ansible
 tarball: "{{ package_name }}-{{ version }}.tar.gz"
 compile_dir: "{{ compile_root }}/{{ package_name }}-{{ version }}"
-install_dir: "{{ install_prefix }}/{{ package_name }}/{{ version }}"
+install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"

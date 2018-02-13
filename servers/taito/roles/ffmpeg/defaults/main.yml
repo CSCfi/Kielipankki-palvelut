@@ -1,0 +1,65 @@
+---
+
+ffmpeg_source_dir: "{{ compile_root }}/ffmpeg/"
+build_dir: "{{ ffmpeg_source_dir }}/build"
+install_dir: "{{ install_prefix }}/ling/ffmpeg/{{ ffmpeg_version }}"
+
+# allows add additional flags to ffmpeg eg --enable-v4l2
+ffmpeg_compile_options_custom:  
+
+
+# enable features and configure options
+
+ffmpeg_version: "release/3.4"
+
+ffmpeg_mp3lame: True
+ffmpeg_mp3lame_version: "3.100"
+
+ffmpeg_x265: True
+ffmpeg_x265_revision: "2.6"
+
+ffmpeg_x264: True
+ffmpeg_x264_version: "7d0ff22e8c96de126be9d3de4952edd6d1b75a8c"
+
+ffmpeg_fdkaac: True
+ffmpeg_fdkaac_version: "v0.1.5"
+
+ffmpeg_opus: True
+ffmpeg_opus_version: "v1.2.1"
+
+ffmpeg_vpx: True
+ffmpeg_vpx_version: "v1.6.1"
+
+ffmpeg_rtmp: False
+
+ffmpeg_cleanup: True
+
+# some default ffmpeg configure options
+
+ffmpeg_compile_options: >
+   --enable-nonfree
+   --enable-gpl
+   --extra-libs="-ldl -lm -lstdc++ -lpthread -lnuma"
+   --enable-libmp3lame
+   --enable-openssl
+   --extra-cflags="-I {{ build_dir }}/include"
+   --extra-ldflags="-L {{ build_dir }}/lib"
+
+# not yet supported: --enable-libass
+
+# calculation of enabled features
+ffmpeg_x265_flag: "{% if ffmpeg_x265 %}--enable-libx265 {% endif %}"
+ffmpeg_rtmp_flag: "{% if ffmpeg_rtmp %}--enable-librtmp {% endif %}"
+ffmpeg_x264_flag: "{% if ffmpeg_x264 %}--enable-libx264 {% endif %}"
+ffmpeg_opus_flag: "{% if ffmpeg_opus %}--enable-libopus {% endif %}"
+ffmpeg_vpx_flag: "{% if ffmpeg_vpx %}--enable-libvpx {% endif %}"
+ffmpeg_fdkaac_flag: "{% if ffmpeg_fdkaac %}--enable-libfdk-aac {% endif %}"
+
+
+
+ffmpeg_features: "{{ ffmpeg_x265_flag }} {{ ffmpeg_rtmp_flag }} {{ ffmpeg_x264_flag }} {{ ffmpeg_opus_flag }} {{ ffmpeg_vpx_flag }} {{ ffmpeg_fdkaac_flag }}"
+
+
+# additional compiler flags
+ffmpeg_cpu_flag: "-j6"
+
