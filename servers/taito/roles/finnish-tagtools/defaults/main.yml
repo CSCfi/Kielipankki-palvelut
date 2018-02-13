@@ -1,2 +1,2 @@
 tagtools_tar: /homeappl/home/hardwick/tmp/finnish-tagtools.tar.bz2
-tagtools_install_dir: "{{ install_prefix }}/finnish-tagtools/{{ finnish_tagtools_version }}"
+tagtools_install_dir: "{{ install_prefix }}/ling/finnish-tagtools/{{ finnish_tagtools_version }}"
