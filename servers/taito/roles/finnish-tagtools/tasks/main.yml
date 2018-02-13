@@ -1,0 +1,11 @@
+
+- name: ensure directory exists
+  file:
+    path: "{{ tagtools_install_dir }}"
+    state: directory
+    
+- name: Unpack from tar
+  unarchive:
+    src: "{{ tagtools_tar}}"
+    dest: "{{ tagtools_install_dir }}"
+    remote_src: yes
