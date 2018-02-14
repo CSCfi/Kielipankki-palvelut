@@ -24,7 +24,7 @@
 
 - name: Fix permissions (if shared group is set)
   file:
-    path="{{ tagtools_install_dir }}"
+    path="{{ tagtools_install_dir }}/.."
     group={{ shared_group }}
     mode="g+rwX,o+rX"
     recurse=yes
