@@ -1,5 +1,5 @@
 # Kielipankki-palvelut
-Hajautetusti ylläpidetyt palvelut, ylläpito: CSC
+Hajautetusti ylläpidetyt palvelut, ylläpito: CSC.
 
 ## Metalb
 XML-rajapinta Metashare-dataan
