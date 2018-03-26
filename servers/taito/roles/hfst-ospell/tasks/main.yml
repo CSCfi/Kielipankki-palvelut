@@ -48,6 +48,7 @@
 - name: Fix permissions
   file:
     path={{ install_dir }}
-    group=csc
+    group={{ shared_group }}
     mode="g+rwX,o+rX"
     recurse=yes
+  when: shared_group is defined
