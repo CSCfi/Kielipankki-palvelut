@@ -2,7 +2,7 @@
 # defaults file for hfst-morphologies
 
 package_name: hfst
-release_url: http://sourceforge.net/projects/hfst/files/resources/morphological-transducers/
+release_url: http://hfst.github.io/downloads/
 version: "{{ hfst_version }}"
 temp_dir: /tmp/{{ ansible_user_id }}/ansible
 hfst_install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
