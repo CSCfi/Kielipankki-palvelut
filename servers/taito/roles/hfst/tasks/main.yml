@@ -87,12 +87,6 @@
     chdir: "{{ hfst_compile_dir }}"
     creates: "{{ hfst_install_dir }}/bin/hfst-lookup"
 
-- name: "Python module: Set LIBRARY PATH to fresh compile"
-  lineinfile:
-    regexp: '^extra_link_arguments = (\[\]|\["-Wl,-rpath=" \+ absolute_libhfst_src_path \+ "/.libs"\])$'
-    line: 'extra_link_arguments = ["-Wl,-rpath=" + absolute_libhfst_src_path + "/.libs"]'
-    dest: "{{ hfst_compile_dir }}/python/setup.py"  
-
 - name: Building python module
   shell: bash --login -c  "module load swig && module load {{python3_module}} && python3 setup.py build_ext --inplace"
   args:
@@ -103,19 +97,15 @@
   args:
     chdir: "{{ hfst_compile_dir }}/python"
 
+- name: Checking python module
+  shell: bash --login -c  "./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python3.4/site-packages"
+  args:
+    chdir: "{{ hfst_compile_dir }}/python/test"
+  environment:
+    LD_LIBRARY_PATH: "{{ hfst_install_dir }}/lib/:{{ ansible_env.LD_LIBRARY_PATH }}"
+
 # This is a workaround to be able to compile everything just once
 # And install to multiple places
-
-- name: Fix paths in some scripts
-  replace:
-     dest: "{{ hfst_install_dir }}/bin/{{ item }}"
-     regexp: \/usr\/local\/bin\/
-     replace: "{{ hfst_install_dir }}/bin/"
-  with_items:
-    - hfst-foma
-    - hfst-foma-wrapper.sh
-    - hfst-train-tagger
-    - hfst-twolc
 
 - name: Fix permissions (if shared group is set)
   file:
