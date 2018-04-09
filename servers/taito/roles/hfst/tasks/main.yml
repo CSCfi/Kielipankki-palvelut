@@ -102,7 +102,7 @@
   args:
     chdir: "{{ hfst_compile_dir }}/python/test"
   environment:
-    LD_LIBRARY_PATH: "{{ hfst_install_dir }}:{{ ansible_env.LD_LIBRARY_PATH }}"
+    LD_LIBRARY_PATH: "{{ hfst_install_dir }}/lib/:{{ ansible_env.LD_LIBRARY_PATH }}"
 
 # This is a workaround to be able to compile everything just once
 # And install to multiple places
