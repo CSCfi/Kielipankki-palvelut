@@ -8,12 +8,12 @@
     - /www/{{ instance.key }}/cache
 
 - name: Create upload directory for {{ instance.key }}
-  file: path={{item}} state=directory owner=hhvm mode=755
+  file: path={{item}} state=directory owner=apache mode=755
   with_items:
     - /www/{{ instance.key }}/docroot/uploads
 
-- name: Create log file hhvm for {{ instance.key }}
-  copy: dest=/www/{{ instance.key }}/logs/error_php owner=hhvm mode=0644 content="" force=no
+- name: Create php log file for {{ instance.key }}
+  copy: dest=/www/{{ instance.key }}/logs/error_php owner=apache mode=0644 content="" force=no
 
 - name: Create a secret key for {{ instance.key }}
   command: openssl rand -base64 64 -out {{ item }} creates={{ item }}

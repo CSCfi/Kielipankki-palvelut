@@ -1,0 +1,42 @@
+webaliases_nimiarkisto:
+  - namnarkivet.fi
+  - nammaarkiiva.fi
+  - xn--nommarkkdh-64aeb.fi
+  - nommaarkkadah.fi
+  - xn--nmmarkiiv-q7a.fi
+  - nommarkiiv.fi
+  - www.nimiarkisto.fi
+  - www.namnarkivet.fi
+  - www.nammaarkiiva.fi
+  - www.xn--nommarkkdh-64aeb.fi
+  - www.nommaarkkadah.fi
+  - www.xn--nmmarkiiv-q7a.fi
+  - www.nommarkiiv.fi
+
+mediawikis:
+  sanat.csc.fi:
+    conf: sanat
+    db:
+      database: mediawiki
+      server_host: localhost
+      user: '{{ vault_sanat_db_user }}'
+      password: '{{ vault_sanat_db_password }}'
+  nimiarkisto.fi:
+    conf: nimiarkisto
+    db:
+      database: kielipankki_nadigi_m
+      server_host: '{{ vault_nimiarkisto_db_server }}'
+      user: '{{ vault_nimiarkisto_db_user }}'
+      password: '{{ vault_nimiarkisto_db_password }}'
+
+ssl_params_sanat:
+  certificate_file: "/etc/pki/tls/certs/sanat.csc.fi.crt"
+  certificate_key_file: "/etc/pki/tls/private/sanat.csc.fi.key"
+  certificate_chain_file: "/etc/pki/tls/certs/terenasslca3-chain.crt"
+
+ssl_params_nimiarkisto:
+  certificate_file: "/etc/pki/tls/certs/nimiarkisto2.crt"
+  certificate_key_file: "/etc/pki/tls/private/nimiarkisto2.key"
+  certificate_chain_file: "/etc/pki/tls/certs/DigiCertCA.crt"
+
+memcached_memory_limit: 1G

@@ -1,0 +1,59 @@
+- name: Enable Epel repository
+  yum: name=epel-release state=present
+
+- name: Install Webtatic Repo
+  yum:
+    name: https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+    state: installed
+
+- name: Install PHP packages
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - php71w-common
+    - php71w-cli
+    - php71w-fpm
+    - php71w-opcache
+    - php71w-mbstring
+    - php71w-intl
+    - php71w-mysql
+    - php71w-mcrypt
+    - php71w-pecl-mongodb
+    - php71w-pecl-memcached
+    - php71w-gd
+- name: Install php.ini
+  copy:
+    src: php.ini
+    dest: /etc/php.ini
+    mode: 0644
+  notify:
+    - Reload php-fpm
+
+- name: Configure php-fpm
+  template:
+    src: php-fpm.conf.j2
+    dest: /etc/php-fpm.conf
+    owner: root
+    group: root
+  notify:
+    - Reload php-fpm
+
+- name: Configure php-fpm Pools
+  template:
+    src: php-fpm.d/www.conf.j2
+    dest: /etc/php-fpm.d/www.conf
+    owner: root
+    group: root
+  notify:
+    - Reload php-fpm
+
+- name: Start php-fpm on boot
+  service:
+    name: php-fpm
+    enabled: yes
+
+- name: Launch php-fpm
+  service:
+    name: php-fpm
+    state: started

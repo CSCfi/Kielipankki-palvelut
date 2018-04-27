@@ -5,7 +5,7 @@ declare -a REPOS
 
 REPOS=(
 	"workdir https://github.com/wikimedia/mediawiki.git 9bb94b0" # 1.31-pre
-	"workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2017.10"
+	"workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2018.04"
 	"workdir/extensions/CategoryTree https://github.com/wikimedia/mediawiki-extensions-CategoryTree.git origin/REL1_30"
 	"workdir/extensions/CirrusSearch https://github.com/wikimedia/mediawiki-extensions-CirrusSearch.git 87f3edb" # 1.31-pre
 	"workdir/extensions/Cite https://github.com/wikimedia/mediawiki-extensions-Cite.git origin/REL1_30"
@@ -20,11 +20,11 @@ REPOS=(
 	"workdir/extensions/Kotus https://github.com/Nikerabbit/mediawiki-extensions-Kotus.git origin/master"
 	"workdir/extensions/LiquidThreads https://github.com/wikimedia/mediawiki-extensions-LiquidThreads.git origin/REL1_30"
 	"workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git origin/master"
-	"workdir/extensions/Maps https://github.com/JeroenDeDauw/Maps.git 4.3.0"
+	"workdir/extensions/Maps https://github.com/JeroenDeDauw/Maps.git 5.2.0"
 	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git origin/master" #REL1_30 broken
 	"workdir/extensions/Nimiarkisto https://github.com/Nikerabbit/mediawiki-extensions-Nimiarkisto.git origin/master"
 	"workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git origin/REL1_30"
-	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git bf6ee85" # 1.31-pre
+	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.3"
 	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git origin/REL1_30"
 	"workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git origin/REL1_30"
 	"workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git origin/REL1_30"
@@ -35,7 +35,7 @@ REPOS=(
 	"workdir/extensions/ShortUrl https://github.com/wikimedia/mediawiki-extensions-ShortUrl.git 63c5d80" #REL1_30 broken
 	"workdir/extensions/SimpleMathJax https://github.com/jmnote/SimpleMathJax.git 65f9814" # 1.31-pre
 	"workdir/extensions/Termbank https://github.com/Nikerabbit/mediawiki-extensions-Termbank.git origin/master"
-	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2017.10"
+	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2018.04"
 	"workdir/extensions/UserMerge https://github.com/wikimedia/mediawiki-extensions-UserMerge.git origin/REL1_30"
 	"workdir/extensions/WikiEditor https://github.com/wikimedia/mediawiki-extensions-WikiEditor.git origin/REL1_30"
 	"workdir/extensions/Wikibase https://github.com/wikimedia/mediawiki-extensions-Wikibase.git b8ab2c9" # 1.31-pre
@@ -71,6 +71,6 @@ do
 
 	(
 		cd "$DIR" || exit
-		git fetch -q && git fetch -q --tags && git reset -q --hard "$VER" && git clean -q -f -d -e /extensions -e /skins 2>&1 >&- && git submodule update --init
+		git fetch -q && git fetch -q --tags && git reset -q --hard "$VER" && git clean -q -f -d -e /extensions -e /skins -e "LocalSettings*" 2>&1 >&- && git submodule update --init
 	)
 done

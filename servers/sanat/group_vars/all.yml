@@ -6,31 +6,7 @@ webdomain_termipankki: tieteentermipankki.fi
 webaliases_termipankki: []
 
 
-mediawikis:
-  sanat.csc.fi:
-    conf: sanat
-    db:
-      server_host: localhost
-      server_client: localhost
-      user: wikiuser
-      password: wikipass
-      database: mediawiki
-  nimiarkisto.fi:
-    conf: nimiarkisto
-    db:
-      server_host: localhost
-      server_client: localhost
-      user: wikiuser
-      password: wikipass
-      database: nimiarkisto
-  #tieteentermipankki.fi:
-    #conf: termipankki
-    #db:
-      #server_host: localhost
-      #server_client: localhost
-      #user: wikiuser
-      #password: wikipass
-      #database: termipankki
+mediawikis: []
 
 apache_ssl_protocol: "all -SSLv3"
 apache_ssl_cipher_suite: "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS"
@@ -55,7 +31,6 @@ hfst_components:
  - [ '{{ hfst_lib }}' , 'sha256:f2abc2a4f5afef82ad005f31d660cbdb99ca0afcb4e9acf09574f2932e106c26' ]
 
 
-hhvm_port: 9000
 memcached_memory_limit: 4G
 composer_keep_updated: true
 

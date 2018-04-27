@@ -47,7 +47,7 @@ if ( !file_exists( __DIR__ . "/LocalSettings-$VHOST.php" ) ) {
 $wgServer = $wgCanonicalServer = "https://$VHOST";
 
 ini_set( 'error_log', "/www/$VHOST/logs/error_php" );
-ini_set( 'display_errors',         1 );
+ini_set( 'display_errors',         0 );
 ini_set( 'ignore_repeated_errors', 1 );
 ini_set( 'log_errors',             1 );
 ini_set( 'expose_php',             0 );
@@ -74,7 +74,7 @@ $wgDBtype = "mysql";
 $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 
 ## Shared memory settings
-$wgMainCacheType = 'memcached-pecl';
+$wgMainCacheType = CACHE_MEMCACHED;
 $wgMemCachedServers = [ 'localhost:11211' ];
 
 $wgShellLocale = "en_US.utf8";

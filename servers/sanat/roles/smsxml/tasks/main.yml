@@ -10,9 +10,6 @@
   - httpd-devel
   - python-devel.x86_64
   - gcc
-  - php-pear
-  - php-devel
-  - php-mongodb
   - openssl-devel.x86_64
   - mod_wsgi
 
@@ -39,10 +36,7 @@
 - name: Set SELinux to permissive mode (required by mongodb)
   selinux: policy=targeted state=permissive
 
-- name: Install php dependencies
-  pear:
-    name: pecl/mongodb
-    state: present
+# PHP mongodb extension is installed in the php role
 
 - name: Create smsxml directory
   file: path=/www/smsxml state=directory

@@ -82,9 +82,11 @@ $smwgQueryResultCacheType = CACHE_ANYTHING;
 $wgAllowDisplayTitle = true;
 $wgRestrictDisplayTitle = false;
 
-wfLoadExtension( 'Nimiarkisto' );
 wfLoadExtension( 'PageForms' );
 $wgPageFormsCacheFormDefinitions = true;
+$wgPageFormsCacheAutocompleteValues = true;
+$wgPageFormsAutocompleteCacheTimeout = 30 * 60 * 60 * 24; // 30 days
+$wgPageFormsMaxAutocompleteValues = 20;
 
 $wgGroupPermissions['user']['edit'] = false;
 $wgGroupPermissions['*']['edit'] = false;
@@ -96,3 +98,7 @@ wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
 wfLoadExtension( 'CodeEditor' );
 
+$wgHooks['SkinTemplateOutputPageBeforeExec'][] = function( $sk, &$tpl ) {
+	$tpl->set( 'kotus', '<a href="https://www.kotus.fi">Kotimaisten kielten keskus</a>' );
+	$tpl->data['footerlinks']['places'][] = 'kotus';
+};

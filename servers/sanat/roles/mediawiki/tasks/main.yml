@@ -17,12 +17,6 @@
     - git
     - rsync
 
-- name: Install HHVM warmup script
-  copy:
-    src: warmup.sh
-    dest: /srv/mediawiki/warmup.sh
-    mode: 0755
-
 - name: Install oregano
   get_url:
     url: https://raw.githubusercontent.com/wikimedia/translatewiki/340394a9eb459e5477f98da6ed82d9cc156f79c5/bin/oregano
@@ -61,23 +55,6 @@
   loop_control:
     loop_var: instance
 
-- name: Add sites sql table entry for Nimiarkisto
-  command: /usr/bin/php maintenance/addSite.php --language=fi --pagepath="https://{{ webdomain_nimiarkisto }}/wiki/$1" --wiki="{{ webdomain_nimiarkisto }}" nimiarkisto main
-  args:
-    chdir: /srv/mediawiki/workdir
-  ignore_errors: yes
-
-- name: Add Flow for Nimiarkisto
-  command: /usr/bin/php maintenance/populateContentModel.php --wiki="{{ webdomain_nimiarkisto }}" --ns=1 --table="{{ table }}"
-  args:
-    chdir: /srv/mediawiki/workdir
-  with_items:
-    - revision
-    - archive
-    - page
-  loop_control:
-    loop_var: table
-
 - name: Update l10n cache for all wikis 1/2
   command: /usr/bin/php maintenance/mergeMessageFileList.php --extensions-dir skins:extensions --output /srv/mediawiki/MessagesSettings.php
   args:
@@ -100,10 +77,5 @@
     - tag
     - deploy
 
-- name: Create warmup URL list
-  template: src=warmup-urls.txt.j2 dest=/srv/mediawiki/warmup-urls.txt
-
-- name: Warm up all instances
-  command: /srv/mediawiki/warmup.sh /srv/mediawiki/warmup-urls.txt
-  args:
-    chdir: /srv/mediawiki
+- name: Reload php-fpm to pick up latest code changes
+  command: /sbin/service php-fpm reload

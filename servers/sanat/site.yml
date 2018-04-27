@@ -26,8 +26,8 @@
   roles:
     - role: hfst
       tags: hfst
-    - role: hhvm
-      tags: hhvm
+    - role: php
+      tags: php
     - role: advertine.nodejs
       tags: nodejs
     - role: geerlingguy.composer
@@ -57,3 +57,4 @@
       with_items:
         - nano
         - htop
+        - mytop

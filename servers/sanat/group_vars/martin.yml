@@ -41,7 +41,6 @@ hfst_components:
  - [ '{{ hfst_lib }}' , 'sha256:f2abc2a4f5afef82ad005f31d660cbdb99ca0afcb4e9acf09574f2932e106c26' ]
 
 
-hhvm_port: 9000
 memcached_memory_limit: 4G
 composer_keep_updated: true
 
