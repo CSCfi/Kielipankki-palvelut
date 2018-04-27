@@ -57,12 +57,6 @@ ini_set( 'max_execution_time', '60s' );
 error_reporting( E_ALL | E_STRICT );
 date_default_timezone_set( 'UTC' );
 
-$wgShowExceptionDetails  = true;
-$wgDebugComments         = true;
-$wgDevelopmentWarnings   = true;
-$wgDebugTimestamps       = true;
-$wgDebugPrintHttpHeaders = false;
-
 $wgSecretKey = file_get_contents( "/www/$VHOST/secretkey" );
 
 $wgArticlePath = "/wiki/$1";
@@ -72,6 +66,7 @@ $wgScriptPath = "/w";
 $wgDBtype = "mysql";
 
 $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
+$wgSQLMode = 'TRADITIONAL';
 
 ## Shared memory settings
 $wgMainCacheType = CACHE_MEMCACHED;

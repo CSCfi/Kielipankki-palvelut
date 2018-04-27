@@ -76,8 +76,6 @@ $wgPFEnableStringFunctions = true;
 enableSemantics( $VHOST );
 $smwgQMaxInlineLimit = 2500;
 $smwgQUpperbound = 10000;
-$smwgValueLookupCacheType = CACHE_ANYTHING;
-$smwgQueryResultCacheType = CACHE_ANYTHING;
 
 $wgAllowDisplayTitle = true;
 $wgRestrictDisplayTitle = false;
@@ -85,7 +83,7 @@ $wgRestrictDisplayTitle = false;
 wfLoadExtension( 'PageForms' );
 $wgPageFormsCacheFormDefinitions = true;
 $wgPageFormsCacheAutocompleteValues = true;
-$wgPageFormsAutocompleteCacheTimeout = 30 * 60 * 60 * 24; // 30 days
+$wgPageFormsAutocompleteCacheTimeout = 60 * 60 * 24; // 1 day
 $wgPageFormsMaxAutocompleteValues = 20;
 
 $wgGroupPermissions['user']['edit'] = false;
@@ -102,3 +100,7 @@ $wgHooks['SkinTemplateOutputPageBeforeExec'][] = function( $sk, &$tpl ) {
 	$tpl->set( 'kotus', '<a href="https://www.kotus.fi">Kotimaisten kielten keskus</a>' );
 	$tpl->data['footerlinks']['places'][] = 'kotus';
 };
+
+// https://phabricator.wikimedia.org/T193246
+$wgUpdateRowsPerJob = 20000;
+$wgUpdateRowsPerQuery = 5000;
