@@ -73,3 +73,12 @@ lfAddNamespace( 1222, 'Namnledslexikon' );
 wfLoadExtension( 'FinnFrameNet' );
 lfAddNamespace( 1214, 'FinnFrameNet' );
 lfAddNamespace( 1220, 'TransFrameNet' );
+
+/* Etymologia-projekti */
+lfAddNamespace( 1222, 'Etymologiadata' );
+$wgNamespaceProtection[ NS_ETYMOLOGIADATA ] = [ 'etymologi' ];
+$wgGroupPermissions[ 'etymologiatoimittaja' ][ 'delete' ] = true;
+$wgGroupPermissions[ 'etymologiatoimittaja' ][ 'move' ] = true;
+$wgGroupPermissions[ 'etymologiatoimittaja' ][ 'etymologi' ] = true;
+$wgGroupPermissions[ 'etymologi' ][ 'etymologi' ] = true;
+$wgAddGroups[ 'etymologiatoimittaja' ] = [ 'etymologiatoimittaja', 'etymologi' ];
