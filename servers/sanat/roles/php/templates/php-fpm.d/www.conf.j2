@@ -13,9 +13,10 @@ request_slowlog_timeout = 0s
 catch_workers_output = yes
 
 pm = dynamic
+; each worker uses around 50M of memory or more
 pm.max_children = 20
-pm.start_servers = 2
-pm.min_spare_servers = 2
-pm.max_spare_servers = 10
+pm.start_servers = 1
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
 pm.max_requests = 500
 ;pm.status_path = /php_status
