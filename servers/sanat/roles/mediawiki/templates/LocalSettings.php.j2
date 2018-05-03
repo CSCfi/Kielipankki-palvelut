@@ -112,6 +112,11 @@ wfLoadExtensions( [ 'ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha' ] );
 $wgReCaptchaSiteKey = '{{ nocaptcha.site }}';
 $wgReCaptchaSecretKey = '{{ nocaptcha.secret }}';
 $wgReCaptchaSendRemoteIP = true;
+$wgCaptchaTriggers['edit'] = false;
+$wgCaptchaTriggers['create'] = false;
+$wgCaptchaTriggers['addurl'] = false;
+$wgCaptchaTriggers['createaccount'] = true;
+$wgCaptchaTriggers['badlogin'] = false;
 
 # Some non-configurable changes to MediaWiki
 $wgHooks['GetLocalURL'][] = function ( &$title, &$url, $query ) {
