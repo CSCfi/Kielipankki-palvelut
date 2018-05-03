@@ -36,7 +36,10 @@
   template: src=mw-jobrunner.service.j2 dest=/etc/systemd/system/mw-jobrunner-{{ instance.key }}.service
 
 - name: Enable jobrunner for {{ instance.key }}
-  service: name=mw-jobrunner-{{ instance.key }} state=started enabled=yes
+  systemd:
+    name: 'mw-jobrunner-{{ instance.key }}'
+    enabled: yes
+    daemon_reload: yes
 
 - name: Upgrade database schema for {{ instance.key }}
   command: /usr/bin/php maintenance/update.php --quick --wiki="{{ instance.key }}"

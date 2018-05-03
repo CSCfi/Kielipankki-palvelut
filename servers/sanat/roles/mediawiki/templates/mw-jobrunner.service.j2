@@ -1,7 +1,5 @@
 [Unit]
 Description=MediaWiki jobrunner for {{ instance.key }}
-After=network.target
-Requires=mariadb.service
 
 [Service]
 User=apache
@@ -10,9 +8,11 @@ Restart=always
 RestartSec=5
 PrivateDevices=true
 PrivateTmp=true
-ProtectControlGroups=true
+# Not supported in Centos 7
+#ProtectControlGroups=true
 ProtectHome=true
-ProtectKernelTunables=true
+# Not supported in Centos 7
+#ProtectKernelTunables=true
 ProtectSystem=full
 Nice=15
 

@@ -16,6 +16,8 @@
   with_items:
     - git
     - rsync
+    - mariadb # For importing/exporting database dumps
+    - parallel
 
 - name: Install oregano
   get_url:
@@ -76,6 +78,3 @@
   with_items:
     - tag
     - deploy
-
-- name: Reload php-fpm to pick up latest code changes
-  command: /sbin/service php-fpm reload
