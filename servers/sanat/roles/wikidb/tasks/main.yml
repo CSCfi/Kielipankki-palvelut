@@ -4,12 +4,11 @@
     - mariadb
     - mariadb-server
     - MySQL-python
-  tags: db
 
-- name: Install sql config
-  copy: src=my.cnf dest=/etc/my.cnf.d/custom.cnf
-  tags: db
+- name: Install database server config
+  template:
+    src: my.cnf.j2
+    dest: /etc/my.cnf.d/custom.cnf
 
 - name: Ensure sql is running
   service: name=mariadb state=started enabled=yes
-  tags: db

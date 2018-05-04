@@ -1,0 +1,12 @@
+[client]
+default-character-set = utf8
+
+[mysqld]
+character-set-server = utf8
+innodb_additional_mem_pool_size = {{ wikidb_innodb_additional_mem_pool_size }}
+innodb_buffer_pool_instances = {{ wikidb_innodb_buffer_pool_instances }}
+innodb_buffer_pool_size = {{ wikidb_innodb_buffer_pool_size }}
+innodb_file_per_table = 1
+innodb_log_file_size = {{ wikidb_innodb_log_file_size }}
+key_buffer_size = {{ wikidb_key_buffer_size }}
+max_allowed_packet = 16M
