@@ -14,3 +14,5 @@ php_packages:
 php_ini_file: /etc/php.ini
 php_fpm_conf_file: /etc/php-fpm.conf
 php_fpm_pool_file: /etc/php-fpm.d/www.conf
+
+php_fpm_service: php-fpm

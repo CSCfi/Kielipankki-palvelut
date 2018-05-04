@@ -1,6 +1,6 @@
 ; {{ ansible_managed }}
 
-include = /etc/php-fpm.d/*.conf
+include = {{ php_fpm_pool_file }}
 
 [global]
 pid = /var/run/php-fpm/php-fpm.pid
