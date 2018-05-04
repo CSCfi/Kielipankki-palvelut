@@ -4,15 +4,10 @@
     state: installed
   with_items: "{{ wikidb_packages }}"
 
-- name: Install MySQL-python
-  package:
-    name: MySQL-python
-    state: present
-
 - name: Install database server config
   template:
     src: my.cnf.j2
-    dest: "{{ wikidb_mysql_conf_dir }}/custom.cnf"
+    dest: "{{ wikidb_mysql_conf_file }}"
 
 - name: Ensure database server is running
   service:
