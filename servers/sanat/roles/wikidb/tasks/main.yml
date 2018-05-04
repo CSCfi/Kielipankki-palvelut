@@ -1,6 +1,12 @@
 - name: Install database server
   package:
-    name: mariadb-server
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ wikidb_packages }}"
+
+- name: Install MySQL-python
+  package:
+    name: MySQL-python
     state: present
 
 - name: Install database server config
@@ -13,3 +19,19 @@
     name: mariadb
     state: started
     enabled: yes
+
+- name: Add database for each wiki
+  tags: db
+  mysql_db:
+    name: "{{ item.value.db.database }}"
+    state: present
+  with_dict: "{{ mediawikis }}"
+
+- name: Add database user for the wiki
+  mysql_user:
+    name: "{{ item.value.db.user }}"
+    password: "{{ item.value.db.password }}"
+    priv: "*.*:ALL"
+    host: "{{ item.value.db.server_client }}"
+    state: present
+  with_dict: "{{ mediawikis }}"

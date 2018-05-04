@@ -3,4 +3,3 @@ mediawiki_packages:
   - rsync
   - mariadb # For importing/exporting database dumps
   - parallel
-  - MySQL-python

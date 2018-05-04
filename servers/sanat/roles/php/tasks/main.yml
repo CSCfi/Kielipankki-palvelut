@@ -5,7 +5,7 @@
   when: ansible_distribution == 'CentOS'
 
 - name: Install PHP packages
-  yum:
+  package:
     name: "{{ item }}"
     state: installed
   with_items: "{{ php_packages }}"
