@@ -1,6 +1,3 @@
-- name: Enable Epel repository
-  yum: name=epel-release state=present
-
 - name: Install Webtatic Repo
   yum:
     name: https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
@@ -22,6 +19,7 @@
     - php71w-pecl-mongodb
     - php71w-pecl-memcached
     - php71w-gd
+
 - name: Install php.ini
   copy:
     src: php.ini

@@ -24,6 +24,7 @@
   vars_files:
     - vars.yml
   roles:
+    - role: geerlingguy.repo-epel
     - role: hfst
       tags: hfst
     - role: php
@@ -45,7 +46,6 @@
     - role: smsxml
       tags: smsxml
     - role: selinux
-    - role: geerlingguy.repo-epel
     - role: firewall
       tags: firewall
 
