@@ -1,7 +1,4 @@
 {
-	"require": {
-		"jeroen/simple-geocoder": "1.1.0"
-	},
 	"extra": {
 		"merge-plugin": {
 			"include": [
