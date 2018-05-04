@@ -108,6 +108,7 @@ require __DIR__ . "/LocalSettings-$VHOST.php";
 // $wgSearchType = 'CirrusSearch';
 // $wgCirrusSearchExtraIndexSettings['index.mapping.total_fields.limit'] = 5000;
 
+{% if nocaptcha is defined %}
 wfLoadExtensions( [ 'ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha' ] );
 $wgReCaptchaSiteKey = '{{ nocaptcha.site }}';
 $wgReCaptchaSecretKey = '{{ nocaptcha.secret }}';
@@ -117,6 +118,7 @@ $wgCaptchaTriggers['create'] = false;
 $wgCaptchaTriggers['addurl'] = false;
 $wgCaptchaTriggers['createaccount'] = true;
 $wgCaptchaTriggers['badlogin'] = false;
+{% endif %}
 
 # Some non-configurable changes to MediaWiki
 $wgHooks['GetLocalURL'][] = function ( &$title, &$url, $query ) {
