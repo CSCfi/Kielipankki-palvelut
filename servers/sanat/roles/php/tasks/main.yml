@@ -13,7 +13,7 @@
 - name: Install php.ini
   copy:
     src: php.ini
-    dest: /etc/php.ini
+    dest: "{{ php_ini_file }}"
     mode: 0644
   notify:
     - Reload php-fpm
@@ -21,7 +21,7 @@
 - name: Configure php-fpm
   template:
     src: php-fpm.conf.j2
-    dest: /etc/php-fpm.conf
+    dest: "{{ php_fpm_conf_file }}"
     owner: root
     group: root
   notify:
@@ -30,7 +30,7 @@
 - name: Configure php-fpm Pools
   template:
     src: php-fpm.d/www.conf.j2
-    dest: /etc/php-fpm.d/www.conf
+    dest: "{{ php_fpm_pool_file }}"
     owner: root
     group: root
   notify:
