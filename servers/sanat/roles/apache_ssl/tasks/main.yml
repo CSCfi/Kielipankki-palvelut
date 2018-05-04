@@ -1,5 +1,9 @@
 # You should place the proper certs on the server directly. This wont replace it.
 
+- package:
+    name: openssl
+    state: present
+
 - name: Create self-signed SSL certificate
   command: openssl req -new -nodes -x509 -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN={{ item }}" -days 365 -keyout /etc/pki/tls/private/{{ item }}.key -out /etc/pki/tls/certs/{{ item }}.crt -extensions v3_ca creates=/etc/pki/tls/private/{{ item }}.key
   notify: restart apache
