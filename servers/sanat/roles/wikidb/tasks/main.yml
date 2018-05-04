@@ -1,4 +1,4 @@
-- name: Install sql database
+- name: Install database server
   yum: name={{ item }} state=present
   with_items:
     - mariadb
