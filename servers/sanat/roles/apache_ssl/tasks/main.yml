@@ -1,6 +1,7 @@
 # You should place the proper certs on the server directly. This wont replace it.
 
-- package:
+- name: Install openssl
+  package:
     name: openssl
     state: present
 
