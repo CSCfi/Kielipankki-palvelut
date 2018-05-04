@@ -6,7 +6,7 @@
 - name: Install database server config
   template:
     src: my.cnf.j2
-    dest: /etc/my.cnf.d/custom.cnf
+    dest: "{{ wikidb_mysql_conf_dir }}/custom.cnf"
 
 - name: Ensure database server is running
   service:
