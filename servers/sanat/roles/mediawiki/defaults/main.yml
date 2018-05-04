@@ -1,0 +1,6 @@
+mediawiki_packages:
+  - git
+  - rsync
+  - mariadb # For importing/exporting database dumps
+  - parallel
+  - MySQL-python

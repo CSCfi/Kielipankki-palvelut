@@ -8,14 +8,11 @@
     - /srv/mediawiki/targets
 
 - name: Install packages required for wiki setup
-  yum:
+  package:
     name: "{{ item }}"
     state: present
-  with_items:
-    - git
-    - rsync
-    - mariadb # For importing/exporting database dumps
-    - parallel
+  with_items: "{{ mediawiki_packages }}"
+
 
 - name: Install oregano
   get_url:

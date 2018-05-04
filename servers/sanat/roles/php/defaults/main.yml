@@ -1,0 +1,12 @@
+php_packages:
+  - php71w-common
+  - php71w-cli
+  - php71w-fpm
+  - php71w-opcache
+  - php71w-mbstring
+  - php71w-intl
+  - php71w-mysql
+  - php71w-mcrypt
+  - php71w-pecl-mongodb
+  - php71w-pecl-memcached
+  - php71w-gd

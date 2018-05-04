@@ -1,14 +1,15 @@
 - name: Install database server
-  yum: name={{ item }} state=present
-  with_items:
-    - mariadb
-    - mariadb-server
-    - MySQL-python
+  package:
+    name: mariadb-server
+    state: present
 
 - name: Install database server config
   template:
     src: my.cnf.j2
     dest: /etc/my.cnf.d/custom.cnf
 
-- name: Ensure sql is running
-  service: name=mariadb state=started enabled=yes
+- name: Ensure database server is running
+  service:
+    name: mariadb
+    state: started
+    enabled: yes

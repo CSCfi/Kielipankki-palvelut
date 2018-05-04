@@ -2,23 +2,13 @@
   yum:
     name: https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
     state: installed
+  when: ansible_distribution == 'CentOS'
 
 - name: Install PHP packages
   yum:
     name: "{{ item }}"
     state: installed
-  with_items:
-    - php71w-common
-    - php71w-cli
-    - php71w-fpm
-    - php71w-opcache
-    - php71w-mbstring
-    - php71w-intl
-    - php71w-mysql
-    - php71w-mcrypt
-    - php71w-pecl-mongodb
-    - php71w-pecl-memcached
-    - php71w-gd
+  with_items: "{{ php_packages }}"
 
 - name: Install php.ini
   copy:
