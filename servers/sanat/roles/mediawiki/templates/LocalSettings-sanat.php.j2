@@ -82,3 +82,9 @@ $wgGroupPermissions[ 'etymologiatoimittaja' ][ 'move' ] = true;
 $wgGroupPermissions[ 'etymologiatoimittaja' ][ 'etymologi' ] = true;
 $wgGroupPermissions[ 'etymologi' ][ 'etymologi' ] = true;
 $wgAddGroups[ 'etymologiatoimittaja' ] = [ 'etymologiatoimittaja', 'etymologi' ];
+
+foreach ( $wgUrlProtocols as $index => $value ) {
+	if ( $value === 'sms:' ) {
+		unset( $wgUrlProtocols[ $index ] );
+	}
+}
