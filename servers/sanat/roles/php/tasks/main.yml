@@ -38,10 +38,10 @@
 
 - name: Start php-fpm on boot
   service:
-    name: php-fpm
+    name: "{{ php_fpm_service }}"
     enabled: yes
 
 - name: Launch php-fpm
   service:
-    name: php-fpm
+    name: "{{ php_fpm_service }}"
     state: started
