@@ -2,7 +2,7 @@
 Description=MediaWiki jobrunner for {{ instance.key }}
 
 [Service]
-User=apache
+User={{ mediawiki_apache_user }}
 ExecStart=/usr/bin/php /srv/mediawiki/targets/production/maintenance/runJobs.php --wait --maxjobs=10000 --wiki={{ instance.key }} --memory-limit=400M
 Restart=always
 RestartSec=5

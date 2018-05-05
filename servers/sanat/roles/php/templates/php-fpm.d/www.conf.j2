@@ -3,12 +3,12 @@
 [www]
 listen = 127.0.0.1:9000
 listen.allowed_clients = 127.0.0.1
-listen.owner = apache
-listen.group = apache
+listen.owner = {{ php_fpm_user }}
+listen.group = {{ php_fpm_group }}
 listen.mode = 0666
 listen.backlog = 65536
-user = apache
-group = apache
+user = {{ php_fpm_user }}
+group = {{ php_fpm_group }}
 request_terminate_timeout = 70s
 catch_workers_output = yes
 

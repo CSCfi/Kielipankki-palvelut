@@ -5,7 +5,8 @@
     name: openssl
     state: present
 
+# TODO: This does not handle aliases
 - name: Create self-signed SSL certificate
-  command: openssl req -new -nodes -x509 -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN={{ item }}" -days 365 -keyout /etc/pki/tls/private/{{ item }}.key -out /etc/pki/tls/certs/{{ item }}.crt -extensions v3_ca creates=/etc/pki/tls/private/{{ item }}.key
+  command: openssl req -new -nodes -x509 -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN={{ item.servername }}" -days 365 -keyout {{ item.certificate_key_file }} -out {{ item.certificate_file }} -extensions v3_ca creates={{ item.certificate_key_file }}
   notify: restart apache
-  with_items: "{{ wiki_instances }}"
+  with_items: "{{ apache_vhosts_ssl }}"

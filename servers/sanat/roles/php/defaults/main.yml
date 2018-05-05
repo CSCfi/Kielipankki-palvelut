@@ -10,9 +10,13 @@ php_packages:
   - php71w-pecl-mongodb
   - php71w-pecl-memcached
   - php71w-gd
+  - php71w-xml
 
 php_ini_file: /etc/php.ini
 php_fpm_conf_file: /etc/php-fpm.conf
 php_fpm_pool_file: /etc/php-fpm.d/www.conf
 
 php_fpm_service: php-fpm
+
+php_fpm_user: apache
+php_fpm_group: apache

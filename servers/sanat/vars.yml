@@ -1,9 +1,3 @@
-# Build some more complex structures from the basic definitions here
-wiki_instances:
-  - "{{ webdomain_sanat }}"
-  - "{{ webdomain_nimiarkisto }}"
-  - "{{ webdomain_termipankki }}"
-
 vhost_sanat:
   servername: "{{ webdomain_sanat }}"
   serveralias: "{{ webaliases_sanat | join(' ') }}"

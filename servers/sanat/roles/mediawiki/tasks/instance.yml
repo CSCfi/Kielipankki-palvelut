@@ -1,5 +1,5 @@
 - name: Create docroot for {{ instance.key }}
-  file: path={{item}} state=directory owner=apache mode=755
+  file: path={{item}} state=directory owner={{ mediawiki_apache_user }} mode=755
   with_items:
     - /www/
     - /www/{{ instance.key }}/
@@ -8,15 +8,17 @@
     - /www/{{ instance.key }}/cache
 
 - name: Create upload directory for {{ instance.key }}
-  file: path={{item}} state=directory owner=apache mode=755
+  file: path={{item}} state=directory owner={{ mediawiki_apache_user }} mode=755
   with_items:
     - /www/{{ instance.key }}/docroot/uploads
 
 - name: Create php log file for {{ instance.key }}
-  copy: dest=/www/{{ instance.key }}/logs/error_php owner=apache mode=0644 content="" force=no
+  copy: dest=/www/{{ instance.key }}/logs/error_php owner={{ mediawiki_apache_user }} mode=0644 content="" force=no
 
 - name: Create a secret key for {{ instance.key }}
-  command: openssl rand -base64 64 -out {{ item }} creates={{ item }}
+  command: openssl rand -hex -out "{{ item }}" 64
+  args:
+    creates: "{{ item }}"
   with_items:
     - /www/{{ instance.key }}/secretkey
 
@@ -27,7 +29,7 @@
   file: src=/srv/mediawiki/targets/production dest=/www/{{ instance.key }}/docroot/w state=link force=yes
 
 - name: Create rewrite rules for {{ instance.key }}
-  copy: src=.htaccess dest=/www/{{ instance.key }}/docroot/.htaccess owner=apache mode=755
+  copy: src=.htaccess dest=/www/{{ instance.key }}/docroot/.htaccess owner={{ mediawiki_apache_user }} mode=755
 
 - name: Create LocalSettings file for {{ instance.key }}
   template: src=LocalSettings-{{ instance.value.conf }}.php.j2 dest=/srv/mediawiki/workdir/LocalSettings-{{ instance.key }}.php
