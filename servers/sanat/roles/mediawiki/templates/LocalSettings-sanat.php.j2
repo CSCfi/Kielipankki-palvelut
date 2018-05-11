@@ -62,6 +62,11 @@ if ( file_exists( "$IP/extensions/Saame/Saame.php" ) ) {
 }
 lfAddNamespace( 1204, 'Sms' );
 lfAddNamespace( 1206, 'Izh' );
+foreach ( $wgUrlProtocols as $index => $value ) {
+	if ( $value === 'sms:' ) {
+		unset( $wgUrlProtocols[ $index ] );
+	}
+}
 
 wfLoadExtension( 'Kotus' );
 lfAddNamespace( 1210, 'Vepsä' );
@@ -83,8 +88,6 @@ $wgGroupPermissions[ 'etymologiatoimittaja' ][ 'etymologi' ] = true;
 $wgGroupPermissions[ 'etymologi' ][ 'etymologi' ] = true;
 $wgAddGroups[ 'etymologiatoimittaja' ] = [ 'etymologiatoimittaja', 'etymologi' ];
 
-foreach ( $wgUrlProtocols as $index => $value ) {
-	if ( $value === 'sms:' ) {
-		unset( $wgUrlProtocols[ $index ] );
-	}
-}
+lfAddNamespace( 1226, 'Tsilari' );
+$wgNamespaceProtection[ NS_TSILARI ] = [ 'tsilari' ];
+$wgGroupPermissions[ 'tsilari' ][ 'tsilari' ] = true;
