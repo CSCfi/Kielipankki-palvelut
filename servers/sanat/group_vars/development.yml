@@ -6,6 +6,10 @@ webdomain_termipankki: termipankki.nikerabb.it
 
 ansible_user: root
 
+wikidb_innodb_additional_mem_pool_size: 800M
+wikidb_innodb_buffer_pool_instances: 4
+wikidb_innodb_buffer_pool_size: 8G
+
 mediawikis:
   sanat.nikerabb.it:
     conf: sanat
@@ -14,7 +18,7 @@ mediawikis:
       server_client: localhost
       user: wikiuser
       password: wikipass
-      database: mediawiki
+      database: sanat
   nimiarkisto.nikerabb.it:
     conf: nimiarkisto
     db:
