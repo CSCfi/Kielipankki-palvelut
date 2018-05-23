@@ -5,22 +5,13 @@
     state: directory
   with_items:
     - "{{ tagtools_install_dir }}"
+    - "{{ tagtools_compile_dir }}"
     
 - name: Unpack from tar
   unarchive:
     src: "{{ tagtools_tar}}"
-    dest: "{{ tagtools_install_dir }}"
+    dest: "{{ tagtools_compile_dir }}"
     remote_src: yes
-    creates: "{{ tagtools_install_dir }}/bin"
-
-- name: Stat dir
-  stat:
-    path: "{{ tagtools_install_dir }}/finnish-tagtools/"
-  register: tagtools_stat
-
-- name: Rename tagtools to bin
-  command: mv "{{ tagtools_install_dir }}/finnish-tagtools/" "{{ tagtools_install_dir }}/bin/"
-  when: tagtools_stat.stat.exists
 
 - name: Fix permissions (if shared group is set)
   file:

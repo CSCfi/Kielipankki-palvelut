@@ -1,2 +1,7 @@
-tagtools_tar: /homeappl/home/hardwick/tmp/finnish-tagtools.tar.bz2
+
+tagtools_tar: /homeappl/home/hardwick/tmp/finnish-tagtools-{{ finnish_tagtools_version }}-installer.tar.bz2
+
+compile_dir: /tmp/{{ ansible_user_id }}/ansible
+tagtools_compile_dir: "{{ compile_dir }}/finnish-tagtools-{{ finnish_tagtools_version }}"
+
 tagtools_install_dir: "{{ install_prefix }}/ling/finnish-tagtools/{{ finnish_tagtools_version }}"
