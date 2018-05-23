@@ -17,7 +17,7 @@ In testing mode the script "installs" the tools to
 /tmp/<username>/ansible/install/. target_host needs to be specified to
 remind that installs are targeted at Taito.
 
-ansible-playbook -i test site.yml -e "target_host=taito"
+ansible-playbook -i test site.yml 
 
 # Production
 
@@ -25,7 +25,7 @@ In production the installation target is Kielipankki's software
 environment below /appl/ling/. The ling user needs to accept your
 certificate for passwordless login.
 
-ansible-playbook -i production site.yml -e "target_host=taito"
+ansible-playbook -i production site.yml 
 
 # Partial installation
 
