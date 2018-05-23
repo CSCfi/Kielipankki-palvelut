@@ -1,0 +1,10 @@
+---
+# defaults file for kaldi
+
+# Check http://kaldi-asr.org/doc/versions.html
+release_url: https://github.com/kaldi-asr/kaldi.git
+kaldi_version:
+ number: 5.2.5
+ githash: 3e57783
+temp_dir: /tmp/{{ ansible_user }}/ansible
+install_dir: "{{ install_prefix }}/kaldi/{{ kaldi_version.number }}"

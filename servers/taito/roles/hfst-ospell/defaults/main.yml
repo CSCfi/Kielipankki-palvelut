@@ -4,7 +4,7 @@
 package_name: hfstospell
 release_url: https://github.com/hfst/hfst-ospell/releases/download/
 version: "{{ hfst_ospell_version }}"
-compile_root: /tmp/{{ ansible_user }}/ansible
+compile_root: /tmp/{{ ansible_user_id }}/ansible
 tarball: "{{ package_name }}-{{ version }}.tar.gz"
 compile_dir: "{{ compile_root }}/{{ package_name }}-{{ version }}"
 install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"

@@ -22,6 +22,7 @@
    - { role: nasm, branch: master, tags: nasm }
    - { role: ffmpeg, branch: master, tags: ffmpeg }
    - { role: finnish-tagtools, tags: finnish-tagtools }
+   - { role: kaldi, tags: kaldi }
 
 
 
