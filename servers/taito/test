@@ -3,6 +3,7 @@
 127.0.0.1  ansible_connection=local install_prefix=/tmp/matthies/ansible/install
 
 [taito]
+# define test installation directory
 taito-login4.csc.fi install_prefix=/tmp/{{ansible_user_id}}/ansible/install
 
 [abel]
