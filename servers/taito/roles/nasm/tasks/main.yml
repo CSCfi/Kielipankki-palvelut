@@ -10,9 +10,16 @@
    - "{{ install_dir }}"
 
 - name: get nasm
+  # workaround missing SNI support in Taito's python 2.6
+  command: wget "https://www.zytor.com/pub/nasm/releasebuilds/{{ nasm_version }}/nasm-{{ nasm_version }}.tar.bz2"
+  args:
+    chdir: "{{ compile_dir }}"
+    creates: "nasm-{{ nasm_version }}.tar.bz2"
+
+- name: unpack nasm
   unarchive:
     remote_src: yes
-    src: "http://www.nasm.us/pub/nasm/releasebuilds/{{ nasm_version }}/nasm-{{ nasm_version }}.tar.xz"
+    src: "{{ compile_dir }}/nasm-{{ nasm_version }}.tar.bz2"
     dest: "{{ compile_dir }}"     
 
 - name: compile nasm 
