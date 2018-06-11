@@ -10,6 +10,10 @@
    - praat_version: 6.0.29
    - nasm_version: 2.13.02
    - finnish_tagtools_version: 1.1
+   - kaldi_version:
+      number: 5.2.5
+      githash: 3e57783
+
 
   become: no
   roles:
