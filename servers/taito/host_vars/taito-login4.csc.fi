@@ -4,7 +4,5 @@ python3_module: python-env/3.4.0
 #use half the cpus on taito-login4
 ffmpeg_cpu_flag: "-j8"
 
-# compile in fast /tmp
-compile_root: /tmp/{{ ansible_user_id }}/ansible
 
 
