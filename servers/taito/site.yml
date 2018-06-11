@@ -1,5 +1,5 @@
 ---
-# Basic demo of using Ansible 
+# The Language Bank of Finland Software Stack on CSC's Taito-cluster
 #
 
 - hosts: taito

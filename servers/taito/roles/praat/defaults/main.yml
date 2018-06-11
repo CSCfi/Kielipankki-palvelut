@@ -4,6 +4,5 @@
 package_name: praat
 release_url: https://github.com/praat/praat.git
 version: "{{ praat_version }}"
-compile_root: /tmp/{{ ansible_user_id }}/ansible
 compile_dir: "{{ compile_root }}/praat/{{ branch }}"
 install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
