@@ -23,7 +23,7 @@
     src: "{{ compile_dir }}/nasm-{{ nasm_version }}.tar.bz2"
     dest: "{{ compile_dir }}"     
 
-- name: compile nasm 
+- name: compile and install nasm 
   command: "{{ item }}"
   args:
     chdir: "{{ compile_dir }}/nasm-{{ nasm_version }}" 
