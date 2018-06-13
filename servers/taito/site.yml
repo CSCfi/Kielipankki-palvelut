@@ -13,7 +13,8 @@
    - kaldi_version:
       number: 5.2.5
       githash: 3e57783
-
+#  - ffmpeg_version: see roles/ffmpeg/defaults/main.yml
+      
 
   become: no
   roles:
