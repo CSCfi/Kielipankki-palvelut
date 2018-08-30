@@ -5,7 +5,7 @@ declare -a REPOS
 
 REPOS=(
 	"workdir https://github.com/wikimedia/mediawiki.git 9bb94b0" # 1.31-pre
-	"workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2018.04"
+	"workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2018.07"
 	"workdir/extensions/CategoryTree https://github.com/wikimedia/mediawiki-extensions-CategoryTree.git origin/REL1_30"
 	"workdir/extensions/CirrusSearch https://github.com/wikimedia/mediawiki-extensions-CirrusSearch.git 87f3edb" # 1.31-pre
 	"workdir/extensions/Cite https://github.com/wikimedia/mediawiki-extensions-Cite.git origin/REL1_30"
@@ -13,6 +13,7 @@ REPOS=(
 	"workdir/extensions/ConfirmEdit https://github.com/wikimedia/mediawiki-extensions-ConfirmEdit.git 16f452a" #REL1_30 broken
 	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git origin/REL1_30"
 	"workdir/extensions/Elastica https://github.com/wikimedia/mediawiki-extensions-Elastica.git 8443c1d" # 1.31-pre
+	"workdir/extensions/FileSystemImageServer https://github.com/Nikerabbit/mediawiki-extensions-FileSystemImageServer.git origin/master"
 	"workdir/extensions/FinnFrameNet https://github.com/Nikerabbit/mediawiki-extensions-FinnFrameNet.git origin/master"
 	"workdir/extensions/Flow https://github.com/wikimedia/mediawiki-extensions-Flow.git origin/REL1_30"
 	"workdir/extensions/HeaderTabs https://github.com/wikimedia/mediawiki-extensions-HeaderTabs.git origin/REL1_30"
@@ -24,18 +25,19 @@ REPOS=(
 	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git origin/master" #REL1_30 broken
 	"workdir/extensions/Nimiarkisto https://github.com/Nikerabbit/mediawiki-extensions-Nimiarkisto.git origin/master"
 	"workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git origin/REL1_30"
-	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.3"
+	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.3.1"
 	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git origin/REL1_30"
 	"workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git origin/REL1_30"
 	"workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git origin/REL1_30"
 	"workdir/extensions/Sanat https://github.com/Nikerabbit/mediawiki-extensions-Sanat.git origin/master"
 	"workdir/extensions/Scribunto https://github.com/wikimedia/mediawiki-extensions-Scribunto.git origin/REL1_30"
 	"workdir/extensions/SemanticDrilldown https://github.com/wikimedia/mediawiki-extensions-SemanticDrilldown.git origin/REL1_30"
-	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.5.5"
+	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.5.7"
 	"workdir/extensions/ShortUrl https://github.com/wikimedia/mediawiki-extensions-ShortUrl.git 63c5d80" #REL1_30 broken
 	"workdir/extensions/SimpleMathJax https://github.com/jmnote/SimpleMathJax.git 65f9814" # 1.31-pre
+	"workdir/extensions/SmiteSpam https://github.com/wikimedia/mediawiki-extensions-SmiteSpam.git origin/REL1_30"
 	"workdir/extensions/Termbank https://github.com/Nikerabbit/mediawiki-extensions-Termbank.git origin/master"
-	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2018.04"
+	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2018.07"
 	"workdir/extensions/UserMerge https://github.com/wikimedia/mediawiki-extensions-UserMerge.git origin/REL1_30"
 	"workdir/extensions/WikiEditor https://github.com/wikimedia/mediawiki-extensions-WikiEditor.git origin/REL1_30"
 	"workdir/extensions/Wikibase https://github.com/wikimedia/mediawiki-extensions-Wikibase.git b8ab2c9" # 1.31-pre

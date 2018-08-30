@@ -25,6 +25,13 @@ require "$IP/extensions/DeleteBatch/DeleteBatch.php";
 require "$IP/extensions/Translate/Translate.php";
 wfLoadExtensions( [ 'UniversalLanguageSelector', 'InputBox', 'Sanat' ] );
 
+
+foreach ( $wgUrlProtocols as $index => $value ) {
+	if ( $value === 'sms:' ) {
+		unset( $wgUrlProtocols[ $index ] );
+	}
+}
+
 function lfAddNamespace( $id, $name ) {
 	global $wgExtraNamespaces, $wgContentNamespaces, $wgNamespacesToBeSearchedDefault,
 		$wgCapitalLinkOverrides, $smwgNamespacesWithSemanticLinks;
@@ -81,7 +88,9 @@ lfAddNamespace( 1220, 'TransFrameNet' );
 
 /* Etymologia-projekti */
 lfAddNamespace( 1224, 'Etymologiadata' );
+lfAddNamespace( 1228, 'EVE' );
 $wgNamespaceProtection[ NS_ETYMOLOGIADATA ] = [ 'etymologi' ];
+$wgNamespaceProtection[ NS_EVE ] = [ 'etymologiatoimittaja' ];
 $wgGroupPermissions[ 'etymologiatoimittaja' ][ 'delete' ] = true;
 $wgGroupPermissions[ 'etymologiatoimittaja' ][ 'move' ] = true;
 $wgGroupPermissions[ 'etymologiatoimittaja' ][ 'etymologi' ] = true;
@@ -91,3 +100,5 @@ $wgAddGroups[ 'etymologiatoimittaja' ] = [ 'etymologiatoimittaja', 'etymologi' ]
 lfAddNamespace( 1226, 'Tsilari' );
 $wgNamespaceProtection[ NS_TSILARI ] = [ 'tsilari' ];
 $wgGroupPermissions[ 'tsilari' ][ 'tsilari' ] = true;
+
+# Next free namespace 1230
