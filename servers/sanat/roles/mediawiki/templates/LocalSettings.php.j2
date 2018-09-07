@@ -101,6 +101,19 @@ $wgShowIPinHeader = false;
 
 $wgCacheDirectory = "/www/$VHOST/cache";
 
+
+$wgPageFormsMaxAutocompleteValues = 15;
+$wgPageFormsMaxLocalAutocompleteValues = 10;
+$smwgValueLookupCacheType = CACHE_MEMCACHED;
+$smwgValueLookupCacheLifetime = 60 * 60 * 2; // Default week
+$smwgQueryResultCacheType = CACHE_MEMCACHED;
+$smwgQueryResultCacheLifetime = 60 * 60 * 2; // Default week
+$smwgQueryResultNonEmbeddedCacheLifetime = 60 * 10; // Default ten minutes
+$smwgEnabledQueryDependencyLinksStore = true;
+$wgUpdateRowsPerJob = 2000;
+$wgUpdateRowsPerQuery = 500;
+
+
 require __DIR__ . "/LocalSettings-$VHOST.php";
 
 // wfLoadExtension( 'Elastica' );
@@ -117,7 +130,7 @@ $wgCaptchaTriggers['edit'] = false;
 $wgCaptchaTriggers['create'] = false;
 $wgCaptchaTriggers['addurl'] = false;
 $wgCaptchaTriggers['createaccount'] = true;
-$wgCaptchaTriggers['badlogin'] = false;
+$wgCaptchaTriggers['badlogin'] = true;
 {% endif %}
 
 # Some non-configurable changes to MediaWiki
