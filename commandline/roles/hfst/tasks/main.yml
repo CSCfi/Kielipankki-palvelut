@@ -2,9 +2,13 @@
 # tasks file for hfst
 
 - name: "Debian/Ubuntu: Install list of packages"
-  apt: name={{item}} state=installed
+  apt:
+    name: "{{ item }}"
+    state: present
+  become: yes
   with_items:
        - libreadline-dev
+       - libtool
        - automake
        - flex
        - build-essential
@@ -15,9 +19,13 @@
     - is_admin
 
 - name: "RHEL/CentOS: Install list of packages"
-  yum: name={{item}} state=installed
+  yum: 
+    name: " {{item}} "
+    state: present
+  become: yes
   with_items:
        - libreadline-dev
+       - libtool
        - automake
        - flex
        - gcc-c++
@@ -27,20 +35,36 @@
     - ansible_os_family == "RedHat"
     - is_admin
 
+- name: Ensure finnish locale
+  become: yes
+  locale_gen:
+    name: fi_FI.UTF-8
+    state: present
+  when: is_admin
 
 - name: compile_dir directory exists with 0777 permission
   become: no
-  file: path={{ compile_dir }}
-    mode=0777
-    recurse=no
-    state=directory
+  file:
+    path: "{{ compile_dir }}"
+    mode: 0777
+    recurse: no
+    state: directory
+
+- name: Create install root
+  become: yes
+  file:
+    path: "{{ install_prefix }}"
+    mode: 0777
+    owner: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
 
 - name: Download and extract tarball
   unarchive:
-    src={{ release_url }}/v{{ hfst_version }}/{{ hfst_tarball }}
-    dest={{ compile_dir }}
-    creates={{ hfst_compile_dir }}
-    remote_src=yes
+    src: "{{ release_url }}/v{{ hfst_version }}/{{ hfst_tarball }}"
+    dest: "{{ compile_dir }}"
+    creates: "{{ hfst_compile_dir }}"
+    remote_src: yes
 
 - name: Fix xglib bug in configure
   lineinfile:
@@ -61,14 +85,18 @@
     chdir: "{{ hfst_compile_dir }}"
     creates: config.log
 
+- name: Set gcc module call
+  set_fact:
+    gcc_modcall: "{{ 'module load gcc/4.8.2 &&' if env_csc_hpc is defined else '' }}"
+    
 - name: Running make 
-  shell: bash --login -c "module load gcc/4.8.2 && make > MAKE.log"
+  shell: bash --login -c "{{ gcc_modcall }} make > MAKE.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
     #creates: MAKE.log
-
+    
 - name: Running  make check 
-  shell: bash --login -c "module load gcc/4.8.2 && make check -j 4 > MAKE_CHECK.log"
+  shell: bash --login -c "{{ gcc_modcall }} make check > MAKE_CHECK.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
     creates: MAKE_CHECK.log
@@ -76,10 +104,14 @@
 - name: Fix missing "bin" dir bug in Makefile
   become: no
   file:
-    path={{ hfst_install_dir }}/bin
-    mode=0775
-    recurse=no
-    state=directory
+    path: "{{ hfst_install_dir }}/bin"
+    mode: 0775
+    recurse: no
+    state: directory
+
+- name: Set python module call
+  set_fact:
+    python_modcall: "{{ 'module load swig && module load {{python3_module}} &&' if env_csc_hpc is defined else '' }}"
 
 - name: Running make install
   shell: "make install prefix={{ hfst_install_dir }} > MAKE_INSTALL.log"
@@ -88,12 +120,12 @@
     creates: "{{ hfst_install_dir }}/bin/hfst-lookup"
 
 - name: Building python module
-  shell: bash --login -c  "module load swig && module load {{python3_module}} && python3 setup.py build_ext --inplace"
+  shell: bash --login -c  "{{ python_modcall }}python3 setup.py build_ext --inplace"
   args:
     chdir: "{{ hfst_compile_dir }}/python"
 
 - name: Installing python module
-  shell: bash --login -c  "module load swig && module load {{python3_module}} && python3 setup.py install --prefix={{ hfst_install_dir }} "
+  shell: bash --login -c  "{{ python_modcall }}python3 setup.py install --prefix={{ hfst_install_dir }} "
   args:
     chdir: "{{ hfst_compile_dir }}/python"
 
@@ -103,6 +135,7 @@
     chdir: "{{ hfst_compile_dir }}/python/test"
   environment:
     LD_LIBRARY_PATH: "{{ hfst_install_dir }}/lib/:{{ ansible_env.LD_LIBRARY_PATH }}"
+  when: false # disable for now
 
 # This is a workaround to be able to compile everything just once
 # And install to multiple places

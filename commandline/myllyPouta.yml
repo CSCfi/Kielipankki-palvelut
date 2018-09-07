@@ -10,7 +10,6 @@
     project_key: kielipouta
     project_sg: kielipouta-sg
     project_security_groups: default,{{ project_sg }} # don't add spaces here!
-    is_admin: true
 
   tasks:
     - name: Create security group
@@ -75,6 +74,11 @@
   hosts: new_openstack_vm
   remote_user: cloud-user
   become: no  # sudo to root
+  vars:
+    - hfst_version: 3.14.0
+    - is_admin: true
+    - swig3_as_module: no
+    - install_prefix: /appl/ling/
 
   pre_tasks:
     - name: Copy public ssh keys
