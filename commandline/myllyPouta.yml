@@ -1,0 +1,94 @@
+# You'll need to download and source your credentials before this will work:
+#  https://research.csc.fi/pouta-credentials
+#
+- name: Create virtual machine on cPouta
+  hosts: localhost # The OpenStack Shade modules run by Shade on your local machine.
+  connection: local
+
+  vars:
+    # These will need changing based on your project
+    project_key: kielipouta
+    project_sg: kielipouta-sg
+    project_security_groups: default,{{ project_sg }} # don't add spaces here!
+    is_admin: true
+
+  tasks:
+    - name: Create security group
+      os_security_group: name={{ project_sg }}
+
+    - name: Add rule to security group to allow http acess from the internet
+      os_security_group_rule:
+        security_group: "{{ project_sg }}"
+        protocol: tcp
+        port_range_min: 80
+        port_range_max: 80
+        remote_ip_prefix: 0.0.0.0/0
+
+    - name: Add rule to security group to allow https access from the internet
+      os_security_group_rule:
+        security_group: "{{ project_sg }}"
+        protocol: tcp
+        port_range_min: 443
+        port_range_max: 443
+        remote_ip_prefix: 0.0.0.0/0
+
+
+    - name: Add rule to security group to all ssh from current system
+      os_security_group_rule:
+        security_group: "{{ project_sg }}"
+        protocol: tcp
+        port_range_min: 22
+        port_range_max: 22
+        # roughly CSC, U Helsinki, Taito
+        remote_ip_prefix: "{{ item }}"
+      with_items:
+        - "193.166.0.0/16"
+        - "128.214.0.0/16"
+        - "86.50.166.0/24"
+
+
+    - name: Create a virtual machine
+      register: new_vm
+      os_server:
+        name: mylly-tools
+        image: Ubuntu-16.04
+        flavor: standard.small
+        key_name: "{{ project_key }}"
+        security_groups: "{{ project_security_groups }}"
+
+    - name: Add VM to inventory
+      add_host:
+        name: new_openstack_vm
+        groups: openstack_vms
+        ansible_host: "{{ new_vm.server.public_v4 }}"
+
+    - name: wait for SSH connection
+      wait_for:
+        host: "{{ ansible_host }}"
+        state: started
+        port: 22
+        delay: 10
+      delegate_to: localhost
+      become: no
+
+- name: Install Language Bank tools
+  hosts: new_openstack_vm
+  remote_user: cloud-user
+  become: no  # sudo to root
+
+  pre_tasks:
+    - name: Copy public ssh keys
+      assemble:
+        src: keys
+        dest: ~/.ssh/authorized_keys
+        remote_src: false
+        mode: 0600
+        regexp: \.pub$
+        validate: '/usr/bin/ssh-keygen -l -f %s'
+      become: no
+
+  roles:
+    - role: hfst
+      tags: hfst
+    - role: hfst-morphologies
+      tags: hfst-morphologies

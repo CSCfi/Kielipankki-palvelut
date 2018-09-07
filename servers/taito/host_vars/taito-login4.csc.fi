@@ -1,8 +1,0 @@
-is_admin: false
-python3_module: python-env/3.4.0
-
-#use half the cpus on taito-login4
-ffmpeg_cpu_flag: "-j8"
-
-
-
