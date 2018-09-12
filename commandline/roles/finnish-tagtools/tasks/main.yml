@@ -1,26 +1,26 @@
 
-- name: Ensure directories exists
+- name: Ensure directories exist
   file:
     path: "{{ item }}"
     state: directory
   with_items:
     - "{{ tagtools_install_dir }}"
+    - "{{ tagtools_install_dir }}/bin"
+    - "{{ tagtools_compile_dir }}"
     
 - name: Unpack from tar
   unarchive:
     src: "{{ tagtools_tar}}"
-    dest: "{{ tagtools_install_dir }}"
+    dest: "{{ tagtools_compile_dir }}"
     remote_src: yes
-    creates: "{{ tagtools_install_dir }}/bin"
 
-- name: Stat dir
-  stat:
-    path: "{{ tagtools_install_dir }}/finnish-tagtools/"
-  register: tagtools_stat
-
-- name: Rename tagtools to bin
-  command: mv "{{ tagtools_install_dir }}/finnish-tagtools/" "{{ tagtools_install_dir }}/bin/"
-  when: tagtools_stat.stat.exists
+- name: Run make install
+  make:
+    chdir: "{{ tagtools_compile_dir }}/finnish-tagtools"
+    target: install
+    params:
+      prefix: "{{ tagtools_install_dir }}"
+    
 
 - name: Fix permissions (if shared group is set)
   file:

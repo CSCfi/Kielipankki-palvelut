@@ -5,12 +5,13 @@
   - gcc-c++
   - readline-devel
   - python-pip
+  - python-devel
   - swig
 
 - name: Install python dependencies using pip
-  pip: name={{ item.name }} version={{ item.version | default(omit) }}  state=present
-  with_items:
-    - name: hfst
+  pip:
+    name: hfst
+    state: present
 
 - name: Create tmpdirs hfst
   file:

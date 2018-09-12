@@ -1,2 +1,5 @@
+# compile root is defined in host_vars
 compile_dir: "{{ compile_root }}/nasm"
+
+# Install prefix is defined in inventory
 install_dir: "{{ install_prefix }}/opt/nasm/{{ nasm_version }}"

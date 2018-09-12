@@ -1,30 +1,57 @@
-# Build some more complex structures from the basic definitions here
-wiki_instances:
-  - "{{ webdomain_sanat }}"
-  - "{{ webdomain_nimiarkisto }}"
-
 vhost_sanat:
   servername: "{{ webdomain_sanat }}"
   serveralias: "{{ webaliases_sanat | join(' ') }}"
   documentroot: /www/{{ webdomain_sanat }}/docroot
   extra_parameters: |
-    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:{{ hhvm_port }}/www/{{ webdomain_sanat }}/docroot/"
-    ProxyPass /smsxml/ http://{{ webdomain }}:8000/smsxml/
-    ProxyPassReverse /smsxml/ http://{{ webdomain }}:8000/smsxml/
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_sanat }}/docroot/"
+    ProxyPass /smsxml/ http://{{ webdomain_sanat }}:8000/smsxml/
+    ProxyPassReverse /smsxml/ http://{{ webdomain_sanat }}:8000/smsxml/
+    Header always set Strict-Transport-Security "max-age=15768000"
     Alias /js/ /www/smsxml/wiki/js/
     <Directory /www/smsxml/wiki/js>
         Require all granted
     </Directory>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+    ProxyPass /smsxml/ http://{{ webdomain_sanat }}:8000/smsxml/
+    ProxyPassReverse /smsxml/ http://{{ webdomain_sanat }}:8000/smsxml/
+
 vhost_nimiarkisto:
   servername: "{{ webdomain_nimiarkisto }}"
   serveralias: "{{ webaliases_nimiarkisto | join(' ') }}"
   documentroot: /www/{{ webdomain_nimiarkisto }}/docroot
   extra_parameters: |
-    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:{{ hhvm_port }}/www/{{ webdomain_nimiarkisto }}/docroot/"
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_nimiarkisto }}/docroot/"
+    Header always set Strict-Transport-Security "max-age=15768000"
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+    # Drop www prefix
+    RewriteCond %{HTTPS} on
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+vhost_termipankki:
+  servername: "{{ webdomain_termipankki }}"
+  serveralias: "{{ webaliases_termipankki | join(' ') }}"
+  documentroot: /www/{{ webdomain_termipankki }}/docroot
+  extra_parameters: |
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_termipankki }}/docroot/"
+    Header always set Strict-Transport-Security "max-age=15768000"
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+    # This will redirect anyway, so use internal redirect
+    RewriteRule ^/!(.*) /wiki/Special:ShortUrl/$1 [PT]
+
+
 apache_vhosts:
   - "{{ vhost_sanat }}"
   - "{{ vhost_nimiarkisto }}"
+  - "{{ vhost_termipankki }}"
 
 apache_vhosts_ssl:
   - "{{ vhost_sanat | combine(ssl_params_sanat) }}"
   - "{{ vhost_nimiarkisto | combine(ssl_params_nimiarkisto) }}"
+  - "{{ vhost_termipankki | combine(ssl_params_termipankki) }}"

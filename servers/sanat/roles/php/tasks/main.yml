@@ -1,0 +1,47 @@
+- name: Install Webtatic Repo
+  yum:
+    name: https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+    state: installed
+  when: ansible_distribution == 'CentOS'
+
+- name: Install PHP packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ php_packages }}"
+
+- name: Install php.ini
+  copy:
+    src: php.ini
+    dest: "{{ php_ini_file }}"
+    mode: 0644
+  notify:
+    - Reload php-fpm
+
+- name: Configure php-fpm
+  template:
+    src: php-fpm.conf.j2
+    dest: "{{ php_fpm_conf_file }}"
+    owner: root
+    group: root
+  notify:
+    - Reload php-fpm
+
+- name: Configure php-fpm Pools
+  template:
+    src: php-fpm.d/www.conf.j2
+    dest: "{{ php_fpm_pool_file }}"
+    owner: root
+    group: root
+  notify:
+    - Reload php-fpm
+
+- name: Start php-fpm on boot
+  service:
+    name: "{{ php_fpm_service }}"
+    enabled: yes
+
+- name: Launch php-fpm
+  service:
+    name: "{{ php_fpm_service }}"
+    state: started

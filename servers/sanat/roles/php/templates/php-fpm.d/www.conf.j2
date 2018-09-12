@@ -1,0 +1,22 @@
+; {{ ansible_managed }}
+
+[www]
+listen = 127.0.0.1:9000
+listen.allowed_clients = 127.0.0.1
+listen.owner = {{ php_fpm_user }}
+listen.group = {{ php_fpm_group }}
+listen.mode = 0666
+listen.backlog = 65536
+user = {{ php_fpm_user }}
+group = {{ php_fpm_group }}
+request_terminate_timeout = 70s
+catch_workers_output = yes
+
+pm = dynamic
+; each worker uses around 50M of memory or more
+pm.max_children = 20
+pm.start_servers = 1
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+pm.max_requests = 500
+;pm.status_path = /php_status

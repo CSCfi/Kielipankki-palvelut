@@ -3,31 +3,17 @@
   roles:
     - role: wikidb
       tags: db
-  tasks:
-    - name: Add database for each wiki
-      tags: db
-      mysql_db:
-        name: "{{ item.value.db.database }}"
-        state: present
-      with_dict: "{{ mediawikis }}"
-    - name: Add database user for the wiki
-      mysql_user:
-        name: "{{ item.value.db.user }}"
-        password: "{{ item.value.db.password }}"
-        priv: "*.*:ALL"
-        host: "{{ item.value.db.server_client }}"
-        state: present
-      with_dict: "{{ mediawikis }}"
 
 - hosts: web
   become: yes
   vars_files:
     - vars.yml
   roles:
+    - role: geerlingguy.repo-epel
     - role: hfst
       tags: hfst
-    - role: hhvm
-      tags: hhvm
+    - role: php
+      tags: php
     - role: advertine.nodejs
       tags: nodejs
     - role: geerlingguy.composer
@@ -36,12 +22,15 @@
       tags: apache
     - role: geerlingguy.apache
       tags: apache
+    #- role: elastic.elasticsearch
+      #tags: elasticsearch
+      #es_instance_name: wikis
+      #es_heap_size: 4G
     - role: mediawiki
       tags: mediawiki
     - role: smsxml
       tags: smsxml
     - role: selinux
-    - role: geerlingguy.repo-epel
     - role: firewall
       tags: firewall
 
@@ -53,3 +42,4 @@
       with_items:
         - nano
         - htop
+        - mytop

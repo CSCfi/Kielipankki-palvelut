@@ -12,11 +12,9 @@
   - gzip -dc mw.sql.gz| mysql -u wikiuser -p  mediawiki
   - php /srv/mediawiki/targets/production/maintenance/update.php
 
-
 ## Notes
 
- - "Run composer update" is not very stable, 2-3 reruns should get you further
- - Cloning the wiki can take a long time, depending on network speed
+ - Cloning the MediaWiki code can take a long time, depending on network speed
  - Set Selinux to at least permissive, this script does not yet support it
  
 ## Example for bootstrapping an empty wiki database

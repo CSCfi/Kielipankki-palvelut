@@ -1,19 +1,18 @@
 [Unit]
 Description=MediaWiki jobrunner for {{ instance.key }}
-After=network.target
-Requires=mariadb.service hhvm.service
 
 [Service]
-User=hhvm
-Environment=HHVM_REPO_CENTRAL_PATH=/run/hhvm/hhvm.hhbc
-ExecStart=/usr/bin/php /srv/mediawiki/targets/production/maintenance/runJobs.php --wait --maxjobs=10000 --wiki={{ instance.key }}
+User={{ mediawiki_apache_user }}
+ExecStart=/usr/bin/php /srv/mediawiki/targets/production/maintenance/runJobs.php --wait --maxjobs=10000 --wiki={{ instance.key }} --memory-limit=400M
 Restart=always
 RestartSec=5
 PrivateDevices=true
 PrivateTmp=true
-ProtectControlGroups=true
+# Not supported in Centos 7
+#ProtectControlGroups=true
 ProtectHome=true
-ProtectKernelTunables=true
+# Not supported in Centos 7
+#ProtectKernelTunables=true
 ProtectSystem=full
 Nice=15
 

@@ -1,6 +1,0 @@
-ssl_params_sanat:
-  certificate_file: "/etc/pki/tls/certs/sanat.csc.fi.crt"
-  certificate_key_file: "/etc/pki/tls/private/sanat.csc.fi.key"
-  certificate_chain_file: "/etc/pki/tls/certs/terenasslca3-chain.crt"
-
-# TODO: ssl_params_nimiarkisto

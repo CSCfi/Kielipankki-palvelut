@@ -1,0 +1,380 @@
+<?php
+
+$wgDBserver = '{{ instance.value.db.server_host }}';
+$wgDBuser = '{{ instance.value.db.user }}';
+$wgDBpassword = '{{ instance.value.db.password }}';
+$wgDBname = '{{ instance.value.db.database }}';
+
+$wgSitename = 'Tieteen termipankki';
+$wgMetaNamespace = 'Termipankki';
+$wgGrammarForms['fi']['genitive']['Termipankki']  = 'Termipankin';
+$wgGrammarForms['fi']['inessive']['Termipankki']  = 'Termipankissa';
+$wgGrammarForms['fi']['illative']['Termipankki']  = 'Termipankkiin';
+$wgGrammarForms['fi']['elative' ]['Termipankki']  = 'Termipankista';
+$wgGrammarForms['fi']['partitive']['Termipankki']  = 'Termipankkia';
+
+wfLoadSkin( 'Vector' );
+$wgDefaultSkin = "vector";
+
+$wgLogo = null;
+$wgFavicon = '/favicon.png';
+$wgFooterIcons['poweredby']['myicon'] = [
+	'src' => '/finclarinlogo.png',
+	'url' => 'https://kitwiki.csc.fi/twiki/bin/view/FinCLARIN/FinClarinEsittely',
+	'alt' => 'FIN-CLARIN',
+	'height' => '21',
+	'width' => '88',
+];
+
+$wgEnableEmail      = true;
+$wgEnableUserEmail  = true;
+
+$wgEnableUploads  = true;
+$wgUseImageMagick = true;
+$wgFileExtensions[] = 'ppt';
+$wgFileExtensions[] = 'pdf';
+
+$wgRightsPage = 'Käyttöehdot'; # Set to the title of a wiki page that describes your license/copyright
+$wgRightsUrl  = 'https://creativecommons.org/licences/by-sa/3.0/deed.fi';
+$wgRightsText = 'Creative Commons Nimeä-Tarttuva 3.0 Muokkaamaton';
+$wgRightsIcon = 'https://i.creativecommons.org/l/by-sa/3.0/88x31.png';
+
+// Turhat pois
+$wgHiddenPrefs[] = 'stubthreshold';
+$wgHiddenPrefs[] = 'userid';
+$wgHiddenPrefs[] = 'math';
+$wgHiddenPrefs[] = 'imagesize';
+$wgHiddenPrefs[] = 'thumbsize';
+$wgHiddenPrefs[] = 'highlightbroken';
+$wgHiddenPrefs[] = 'nocache';
+$wgHiddenPrefs[] = 'showtoc';
+$wgHiddenPrefs[] = 'showjumplinks';
+$wgHiddenPrefs[] = 'justify';
+$wgHiddenPrefs[] = 'numberheadings';
+$wgHiddenPrefs[] = 'uselivepreview';
+$wgHiddenPrefs[] = 'editondblclick';
+$wgHiddenPrefs[] = 'watchmoves';
+$wgHiddenPrefs[] = 'watchdeletion';
+$wgHiddenPrefs[] = 'disablesuggest';
+$wgHiddenPrefs[] = 'searchlimit';
+$wgHiddenPrefs[] = 'contextlines';
+$wgHiddenPrefs[] = 'contextchars';
+$wgHiddenPrefs[] = 'diffonly';
+$wgHiddenPrefs[] = 'norollbackdiff';
+$wgHiddenPrefs[] = 'cols';
+$wgHiddenPrefs[] = 'rows';
+$wgHiddenPrefs[] = 'realname';
+$wgHiddenPrefs[] = 'gender';
+$wgHiddenPrefs[] = 'vector-collapsiblenav';
+$wgHiddenPrefs[] = 'vector-noexperiments';
+$wgHiddenPrefs[] = 'showhiddencats';
+$wgHiddenPrefs[] = 'underline';
+$wgHiddenPrefs[] = 'minordefault';
+$wgHiddenPrefs[] = 'showtoolbar';
+$wgHiddenPrefs[] = 'hideminor';
+$wgHiddenPrefs[] = 'hidepatrolled';
+$wgHiddenPrefs[] = 'newpageshidepatrolled';
+$wgHiddenPrefs[] = 'usebetatoolbar';
+
+
+$wgUseAutomaticEditSummaries = false;
+$wgLocaltimezone = 'Europe/Helsinki';
+/*$oldtz = getenv( 'TZ' );
+putenv( "TZ=$wgLocaltimezone");
+$wgLocalTZoffset = date( 'Z' ) / 60;
+putenv( "TZ=$oldtz" );*/
+
+// Erinäiset rajoitukset
+$wgGroupPermissions['*']['edit'] = false;
+
+$wgNamespaceRobotPolicies[NS_USER_TALK] = [ 'noindex' ];
+$wgNamespaceProtection[NS_MAIN] = [ 'edit-main' ];
+$wgNamespaceProtection[NS_USER] = [ 'expert' ];
+$wgGroupPermissions['sysop']['edit-main'] = true;
+
+$wgAllowExternalImages = true;
+$wgRestrictDisplayTitle = false;
+
+# Extension config
+wfLoadExtension( 'Babel' );
+wfLoadExtension( 'CategoryTree' );
+$wgCategoryPagingLimit  = 1000;
+$wgCategoryTreeMaxDepth['categories'] = 5;
+
+wfLoadExtension( 'Cite' );
+wfLoadExtension( 'CodeEditor' );
+wfLoadExtension( 'HeaderTabs' );
+wfLoadExtension( 'InputBox' );
+wfLoadExtension( 'LiquidThreads' );
+wfLoadExtension( 'MixedNamespaceSearchSuggestions' );
+wfLoadExtension( 'Nuke' );
+wfLoadExtension( 'PageForms' );
+$sfgRenameEditTabs = true;
+$sfgAutocompleteOnAllChars = true;
+$sfg24HourTime = true;
+$wgGroupPermissions['user']['createclass'] = false;
+$wgGroupPermissions['sysop']['createclass'] = true;
+$wgGroupPermissions['*']['viewedittab'] = false;
+$wgGroupPermissions['sysop']['viewedittab'] = true;
+// All experts should be allowed to edit wikitext to fix possible problems
+$wgGroupPermissions['expert']['viewedittab'] = true;
+
+wfLoadExtension( 'ParserFunctions' );
+$wgPFEnableStringFunctions = true;
+
+wfLoadExtension( 'Renameuser' );
+wfLoadExtension( 'ReplaceText' );
+require "$IP/extensions/SemanticDrilldown/SemanticDrilldown.php";
+// Semantic MediaWiki
+enableSemantics( $VHOST );
+$smwgPageSpecialProperties[] = '_CDAT';
+$smwgPageSpecialProperties[] = '_LEDT';
+$smwgPageSpecialProperties[] = '_NEWP';
+$smwgQMaxLimit = 35000;
+$smwgQMaxInlineLimit = 1500;
+$smwgQUpperbound = 30000;
+
+wfLoadExtension( 'SimpleMathJax' );
+$wgSimpleMathJaxUseCDN = false;
+
+wfLoadExtension( 'ShortUrl' );
+$wgShortUrlTemplate = '/!$1';
+
+wfLoadExtension( 'Termbank' );
+require "$IP/extensions/Translate/Translate.php";
+$wgGroupPermissions['sysop']['translate'] = true;
+$wgGroupPermissions['translator']['translate'] = true;
+$wgGroupPermissions['user']['translate-messagereview'] = true;
+$wgGroupPermissions['user']['translate-groupreview'] = true;
+$wgGroupPermissions['sysop']['pagetranslation'] = true;
+$wgTranslatePageTranslationULS = true;
+
+$wgHooks['TranslatePostInitGroups'][] = function ( &$list, &$deps, &$autoload ) {
+	$mg = new WikiMessageGroup( 'wiki-sidebar', 'project' );
+	$mg->setLabel( 'Termipankin käyttöliittymä' );
+	$mg->setDescription( 'Termipankin omat käyttöliittymäviestit' );
+	$list['wiki-sidebar'] = $mg;
+
+	$mg = new WikiMessageGroup( 'wiki-form-concept', 'project-form-concept' );
+	$mg->setLabel( 'Concept form' );
+	$list['wiki-form-concept'] = $mg;
+
+	$mg = new WikiMessageGroup( 'wiki-page-concept', 'project-page-concept' );
+	$mg->setLabel( 'Concept page' );
+	$list['wiki-page-concept'] = $mg;
+
+	$mg = new WikiMessageGroup( 'wiki-search-menu', 'project-search-menu' );
+	$mg->setLabel( 'Search menu' );
+	$list['wiki-search-menu'] = $mg;
+};
+
+wfLoadExtension( 'UniversalLanguageSelector' );
+wfLoadExtension( 'UserMerge' );
+$wgGroupPermissions['bureaucrat']['usermerge'] = true;
+
+wfLoadExtension( 'WikiEditor' );
+$wgDefaultUserOptions['usebetatoolbar'] = 1;
+
+// Q: Unused?
+// CURRENTUSER-muuttuja MyVariablesista
+#require_once "$IP/extensions/MyVariables/MyVariables.php";
+
+// Q: Unused?
+// Semantic Watchlist
+#require_once( "$IP/extensions/SemanticWatchlist/SemanticWatchlist.php" );
+
+// Q: Tarvitaanko näitä?
+/*$wgHooks['UserLoginComplete'][] = 'tUserLogin';
+function tUserLogin( &$user, &$_, &$query, &$params ) {
+	if ( !$query ) {
+		$query = 'Työryhmä X';
+		$params = '';
+	}
+	return true;
+}
+
+$wgHooks['LanguageGetNamespaces'][] = 'tNamespaces';
+function tNamespaces( &$list ) {
+
+	unset( $list[NS_HELP] );
+	unset( $list[NS_HELP_TALK] );
+
+	natcasesort( $list );
+	$basic =  $extra = array();
+	foreach ( $list as $key => $text ) {
+		if ( $key %2 === 1 ) continue;
+		if ( $key < 1000 ) {array(
+			$basic[$key] = $text;
+		} else {
+			$extra[$key] = $text;
+		}
+	}
+
+	foreach ( $list as $key => $text ) {
+		if ( $key %2 === 0 ) continue;
+		if ( $key < 1000 ) {
+			$basic[$key] = $text;
+		} else {
+			$extra[$key] = $text;
+		}
+	}
+
+	$list = $basic + $extra;
+	return true;
+}*/
+
+// Dynaaminen koodi
+$wgHooks['SkinAfterBottomScripts'][] = function ( $skin, &$text ) {
+	$text .= Html::inlineScript( <<<JS
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-27482119-1', 'tieteentermipankki.fi');
+  ga('send', 'pageview');
+
+JS
+	);
+};
+
+function wfAddTermNamespace( $id, $name ) {
+	global $wgExtraNamespaces, $wgContentNamespaces,
+		$wgNamespaceProtection,  $wgNamespacesToBeSearchedDefault,
+		$wgGroupPermissions, $smwgNamespacesWithSemanticLinks,
+		$wgCapitalLinkOverrides, $wgAddGroups;
+
+	$constant = strtoupper( "NS_$name" );
+	define( $constant, $id );
+	define( $constant . '_TALK', $id + 1 );
+	$wgExtraNamespaces[$id] = $name;
+	$wgExtraNamespaces[$id + 1] = "Keskustelu_$name";
+	$wgContentNamespaces[] = $id;
+	$wgNamespacesToBeSearchedDefault[$id] = true;
+	$wgCapitalLinkOverrides[$id] = false;
+
+	$right = strtolower( $name );
+	$wgNamespaceProtection[$id] = [ $right ];
+	$wgGroupPermissions['sysop'][$right] = true;
+
+	$wgGroupPermissions[$right]['expert'] = true;
+	//$wgGroupPermissions['fonetiikkakurssi2013']['kielitiede'] = true;
+	$wgGroupPermissions[$right][$right] = true;
+	$wgGroupPermissions[$right]['delete'] = true;
+	$wgGroupPermissions[$right]['edit-main'] = true;
+	$smwgNamespacesWithSemanticLinks[$id] = true;
+
+	// Make groups "viral" - if you are in a group, you can add users to it
+	$wgAddGroups[$right] = [ $right ];
+}
+
+// Nimitys
+define( 'NS_NIMITYS', 1098 );
+define( 'NS_NIMITYS_TALK', 1099 );
+$wgExtraNamespaces[NS_NIMITYS] = 'Nimitys';
+$wgNamespacesToBeSearchedDefault[NS_NIMITYS] = true;
+$wgExtraNamespaces[NS_NIMITYS_TALK] = 'Keskustelu_nimityksestä';
+$wgCapitalLinkOverrides[NS_NIMITYS] = false;
+$smwgNamespacesWithSemanticLinks[NS_NIMITYS] = true;
+
+
+// Lähde
+define( 'NS_LAHDE', 1118 );
+define( 'NS_LAHDE_TALK', 1119 );
+$wgExtraNamespaces[NS_LAHDE] = 'Lähde';
+$wgExtraNamespaces[NS_LAHDE_TALK] = 'Keskustelu_lähteestä';
+$wgCapitalLinkOverrides[NS_LAHDE] = false;
+$smwgNamespacesWithSemanticLinks[NS_LAHDE] = true;
+
+// Suomen romanikieli
+$wgExtraLanguageNames['rmf'] = 'kaalengo tšimb'; # Romani language spoken in Finland / Nike 2014-03-05
+
+wfAddTermNamespace( 1100, 'Kasvitiede' );
+wfAddTermNamespace( 1102, 'Kielitiede' );
+wfAddTermNamespace( 1104, 'Oikeustiede' );
+wfAddTermNamespace( 1106, 'Kieliteknologia' );
+wfAddTermNamespace( 1108, 'Epidemiologia' );
+wfAddTermNamespace( 1110, 'Sienitiede' );
+wfAddTermNamespace( 1112, 'Biologia' );
+wfAddTermNamespace( 1114, 'Mikrobiologia' );
+wfAddTermNamespace( 1116, 'Geofysiikka' );
+wfAddTermNamespace( 1120, 'Käännöstiede' );
+wfAddTermNamespace( 1122, 'Terminologiaoppi' );
+wfAddTermNamespace( 1124, 'Eläintiede' );
+wfAddTermNamespace( 1126, 'Politologi' );
+wfAddTermNamespace( 1128, 'Arkeologia' );
+wfAddTermNamespace( 1130, 'Eläinlääketiede' );
+wfAddTermNamespace( 1132, 'Språkvetenskap' );
+wfAddTermNamespace( 1134, 'Sähkötekniikka' );
+wfAddTermNamespace( 1136, 'Kirjallisuudentutkimus' );
+wfAddTermNamespace( 1138, 'Taiteentutkimus' );
+wfAddTermNamespace( 1140, 'Language_Technology' );
+wfAddTermNamespace( 1142, 'Sosiaalipsykologia' );
+wfAddTermNamespace( 1144, 'Kulttuurintutkimus' );
+wfAddTermNamespace( 1146, 'Tekstuaalitieteet' );
+wfAddTermNamespace( 1148, 'Terminologiako_bankos' );
+wfAddTermNamespace( 1150, 'Filosofia' );
+wfAddTermNamespace( 1152, 'Pelitutkimus' );
+wfAddTermNamespace( 1154, 'Esittävät_taiteet' );
+wfAddTermNamespace( 1156, 'Tähtitiede' );
+wfAddTermNamespace( 1158, 'Ilmatiede' );
+wfAddTermNamespace( 1160, 'Ympäristötieteet' );
+wfAddTermNamespace( 1162, 'Kasvatustieteet' );
+wfAddTermNamespace( 1164, 'Kosmologia' );
+wfAddTermNamespace( 1182, 'Tietojenkäsittelytiede' );
+wfAddTermNamespace( 1168, 'Folkloristiikka' );
+wfAddTermNamespace( 1170, 'Fysiikka' );
+wfAddTermNamespace( 1172, 'Estetiikka' );
+wfAddTermNamespace( 1174, 'Semiotiikka' );
+wfAddTermNamespace( 1176, 'Taloustiede' );
+wfAddTermNamespace( 1178, 'Etelä-Aasian_tutkimus' );
+wfAddTermNamespace( 1180, 'Elokuva-_ja_televisiotutkimus' );
+wfAddTermNamespace( 1184, 'Clean_Energy_Research' );
+wfAddTermNamespace( 1186, 'Kliininen_neurofysiologia' );
+wfAddTermNamespace( 1188, 'Biotekniikka' );
+wfAddTermNamespace( 1190, 'Avoin_tiede');
+wfAddTermNamespace( 1192, 'Teologia');
+
+$wgTermbankColors = [
+	'Kasvitiede' => '#27B600',
+	'Kielitiede' => '#3E7FDB',
+	'Oikeustiede' => '#5A2336',
+	'Kieliteknologia' => '#4C00BF',
+	'Language_Technology' => '#4C00BF',
+	'Epidemiologia' => '#408080',
+	'Biologia' => '#008000',
+	'Sienitiede' => '#55641C',
+	'Mikrobiologia' => '#656096',
+	'Geofysiikka' => '#025B5B',
+	'Käännöstiede' => '#4F7E8F',
+	'Terminologiaoppi'=> '#0000DF',
+	'Eläintiede'=> '#8B4513',
+	'Arkeologia'=> '#64261B',
+	'Eläinlääketiede'=> '#D1AB4D',
+	'Kirjallisuudentutkimus' => '#990033 ',
+	'Sosiaalipsykologia' => '#DC143C',
+	'Kulttuurintutkimus' => '#2B2370',
+	'Tekstuaalitieteet' => '#598243',
+	'Terminologiako_bankos' => '#3E7FDB',
+	'Språkvetenskap' => '#3E7FDB',
+	'Filosofia' => '#D765BB',
+	'Pelitutkimus' => '#CB5B1B',
+	'Esittävät_taiteet' => '#901999',
+	'Tähtitiede' => '#263058',
+	'Ilmatiede' => '#2859a8',
+	'Ympäristötieteet' => '#347B9A',
+	'Kasvatustieteet' => '#46176F',
+	'Kosmologia' => '#263058',
+	'Folkloristiikka' => '#4C825D',
+	'Fysiikka' => '#4C825D',
+	'Semiotiikka' => '#9900FF',
+	'Estetiikka' => '#FF0066',
+	'Etelä-Aasian_tutkimus' => '#660033',
+	'Elokuva-_ja_televisiotutkimus' => '#ec6406',
+	'Clean_Energy_Research' => '#3bc0c3',
+	'Taloustiede' => '#1f7fd0',
+];
+
+# TODO:
+# Lähikäsite ei näy https://termipankki.nikerabb.it/wiki/Kasvitiede:manto

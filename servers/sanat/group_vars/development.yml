@@ -2,7 +2,13 @@ webdomain_sanat: sanat.nikerabb.it
 webdomain_nimiarkisto: nimiarkisto.nikerabb.it
 webaliases_nimiarkisto:
   - namnarkivet.nikerabb.it
+webdomain_termipankki: termipankki.nikerabb.it
+
 ansible_user: root
+
+wikidb_innodb_additional_mem_pool_size: 800M
+wikidb_innodb_buffer_pool_instances: 4
+wikidb_innodb_buffer_pool_size: 8G
 
 mediawikis:
   sanat.nikerabb.it:
@@ -12,7 +18,7 @@ mediawikis:
       server_client: localhost
       user: wikiuser
       password: wikipass
-      database: mediawiki
+      database: sanat
   nimiarkisto.nikerabb.it:
     conf: nimiarkisto
     db:
@@ -21,3 +27,11 @@ mediawikis:
       user: wikiuser
       password: wikipass
       database: nimiarkisto
+  termipankki.nikerabb.it:
+    conf: termipankki
+    db:
+      server_host: localhost
+      server_client: localhost
+      user: wikiuser
+      password: wikipass
+      database: termipankki

@@ -1,7 +1,7 @@
 ---
-# install dependencies
+# Install the newest NASM Assember
 
-- name: create dir
+- name: create compilation and installation directories
   file:
     path: "{{ item }}"
     state: directory
@@ -10,12 +10,19 @@
    - "{{ install_dir }}"
 
 - name: get nasm
+  # should use get_url or even unpack directly. Workaround missing SNI support in Taito's python 2.6
+  command: wget "https://www.zytor.com/pub/nasm/releasebuilds/{{ nasm_version }}/nasm-{{ nasm_version }}.tar.xz"
+  args:
+    chdir: "{{ compile_dir }}"
+    creates: "nasm-{{ nasm_version }}.tar.xz"
+
+- name: unpack nasm
   unarchive:
     remote_src: yes
-    src: "http://www.nasm.us/pub/nasm/releasebuilds/{{ nasm_version }}/nasm-{{ nasm_version }}.tar.xz"
+    src: "{{ compile_dir }}/nasm-{{ nasm_version }}.tar.xz"
     dest: "{{ compile_dir }}"     
 
-- name: compile nasm 
+- name: compile and install nasm 
   command: "{{ item }}"
   args:
     chdir: "{{ compile_dir }}/nasm-{{ nasm_version }}" 

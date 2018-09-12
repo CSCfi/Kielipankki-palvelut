@@ -7,7 +7,8 @@ $wgDBuser = '{{ instance.value.db.user }}';
 $wgDBpassword = '{{ instance.value.db.password }}';
 $wgDBname = '{{ instance.value.db.database }}';
 
-$wgLogo = "/logo.png";
+$wgLogo = '/logo.png';
+$wgGroupPermissions['*']['createaccount'] = false;
 
 wfLoadSkin( 'Vector' );
 
@@ -18,17 +19,45 @@ $sfgRenameEditTabs = true;
 $smwgQMaxInlineLimit = $wgCategoryPagingLimit = 250;
 
 require "$IP/extensions/MixedNamespaceSearchSuggestions/MixedNamespaceSearchSuggestions.php";
-require "$IP/extensions/ParserFunctions/ParserFunctions.php";
+wfLoadExtension( 'ParserFunctions' );
 require "$IP/extensions/DeleteBatch/DeleteBatch.php";
 
 require "$IP/extensions/Translate/Translate.php";
 wfLoadExtensions( [ 'UniversalLanguageSelector', 'InputBox', 'Sanat' ] );
 
+
+foreach ( $wgUrlProtocols as $index => $value ) {
+	if ( $value === 'sms:' ) {
+		unset( $wgUrlProtocols[ $index ] );
+	}
+}
+
+function lfAddNamespace( $id, $name ) {
+	global $wgExtraNamespaces, $wgContentNamespaces, $wgNamespacesToBeSearchedDefault,
+		$wgCapitalLinkOverrides, $smwgNamespacesWithSemanticLinks;
+
+	$constant = strtoupper( "NS_$name" );
+
+	define( $constant, $id );
+	define( $constant . '_TALK', $id + 1 );
+
+	$wgExtraNamespaces[$id] = $name;
+	$wgExtraNamespaces[$id + 1] = $name . '_talk';
+
+	$wgContentNamespaces[] = $id;
+
+	$wgNamespacesToBeSearchedDefault[$id] = true;
+	$wgCapitalLinkOverrides[$id] = false;
+	$wgCapitalLinkOverrides[$id + 1] = false;
+
+	$smwgNamespacesWithSemanticLinks[$id] = true;
+}
+
 lfAddNamespace( 1200, 'Lud' );
 require "$IP/extensions/Lud/Lud.php";
 
 lfAddNamespace( 1202, 'WordNet' );
-require_once( "$IP/extensions/WordNet/WordNet.php" );
+require "$IP/extensions/WordNet/WordNet.php";
 $wgNamespacesWithSubpages[NS_WORDNET] = true;
 $wgAllowDisplayTitle = true;
 $wgRestrictDisplayTitle = false;
@@ -40,6 +69,11 @@ if ( file_exists( "$IP/extensions/Saame/Saame.php" ) ) {
 }
 lfAddNamespace( 1204, 'Sms' );
 lfAddNamespace( 1206, 'Izh' );
+foreach ( $wgUrlProtocols as $index => $value ) {
+	if ( $value === 'sms:' ) {
+		unset( $wgUrlProtocols[ $index ] );
+	}
+}
 
 wfLoadExtension( 'Kotus' );
 lfAddNamespace( 1210, 'Vepsä' );
@@ -51,3 +85,20 @@ lfAddNamespace( 1222, 'Namnledslexikon' );
 wfLoadExtension( 'FinnFrameNet' );
 lfAddNamespace( 1214, 'FinnFrameNet' );
 lfAddNamespace( 1220, 'TransFrameNet' );
+
+/* Etymologia-projekti */
+lfAddNamespace( 1224, 'Etymologiadata' );
+lfAddNamespace( 1228, 'EVE' );
+$wgNamespaceProtection[ NS_ETYMOLOGIADATA ] = [ 'etymologi' ];
+$wgNamespaceProtection[ NS_EVE ] = [ 'etymologiatoimittaja' ];
+$wgGroupPermissions[ 'etymologiatoimittaja' ][ 'delete' ] = true;
+$wgGroupPermissions[ 'etymologiatoimittaja' ][ 'move' ] = true;
+$wgGroupPermissions[ 'etymologiatoimittaja' ][ 'etymologi' ] = true;
+$wgGroupPermissions[ 'etymologi' ][ 'etymologi' ] = true;
+$wgAddGroups[ 'etymologiatoimittaja' ] = [ 'etymologiatoimittaja', 'etymologi' ];
+
+lfAddNamespace( 1226, 'Tsilari' );
+$wgNamespaceProtection[ NS_TSILARI ] = [ 'tsilari' ];
+$wgGroupPermissions[ 'tsilari' ][ 'tsilari' ] = true;
+
+# Next free namespace 1230

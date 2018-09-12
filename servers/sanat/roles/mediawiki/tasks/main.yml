@@ -1,18 +1,18 @@
 - name: Create oregano directories
-  file: path={{ item }} state=directory
+  file:
+    path: "{{ item }}"
+    state: directory
   with_items:
     - /srv/mediawiki/hooks
     - /srv/mediawiki/tags
     - /srv/mediawiki/targets
 
 - name: Install packages required for wiki setup
-  yum: name={{ item }} state=present
-  with_items:
-    - git
-    - rsync
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ mediawiki_packages }}"
 
-- name: Install HHVM warmup script
-  copy: src=warmup.sh dest=/srv/mediawiki/warmup.sh mode=0755
 
 - name: Install oregano
   get_url:
@@ -52,11 +52,19 @@
   loop_control:
     loop_var: instance
 
-- name: Add sites sql table entry for Nimiarkisto
-  command: /usr/bin/php maintenance/addSite.php --language=fi --pagepath="https://{{ webdomain_nimiarkisto }}/wiki/$1" --wiki="{{ webdomain_nimiarkisto }}" nimiarkisto main
+- name: Update l10n cache for all wikis 1/2
+  command: /usr/bin/php maintenance/mergeMessageFileList.php --extensions-dir skins:extensions --output /srv/mediawiki/MessagesSettings.php
   args:
     chdir: /srv/mediawiki/workdir
-  ignore_errors: yes
+  environment:
+    FORLC: 1
+
+- name: Update l10n cache for all wikis 2/2
+  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8
+  args:
+    chdir: /srv/mediawiki/workdir
+  environment:
+    FORLC: 1
 
 - name: Deploy latest code with oregano
   command: /srv/mediawiki/oregano {{ item }}
@@ -65,11 +73,3 @@
   with_items:
     - tag
     - deploy
-
-- name: Create warmup URL list
-  template: src=warmup-urls.txt.j2 dest=/srv/mediawiki/warmup-urls.txt
-
-- name: Warm up all instances
-  command: /srv/mediawiki/warmup.sh /srv/mediawiki/warmup-urls.txt
-  args:
-    chdir: /srv/mediawiki

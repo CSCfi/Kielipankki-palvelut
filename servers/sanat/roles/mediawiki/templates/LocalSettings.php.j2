@@ -8,6 +8,23 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 
 $IP = __DIR__;
 
+// Some hacks for rebuilding localisation cache only once for all instances
+$wgLocalisationCacheConf['store'] = 'file';
+$wgLocalisationCacheConf['manualRecache'] = true;
+$wgLocalisationCacheConf['storeDirectory'] = "$IP/cache";
+
+if ( isset( $_ENV['FORLC'] ) && $_ENV['FORLC'] ) {
+	$wgMessagesDirs['SemanticMediaWiki'] = "$IP/extensions/SemanticMediaWiki/i18n";
+	$wgMessagesDirs['ReCaptchaNoCaptcha'] = "$IP/extensions/ConfirmEdit/ReCaptchaNoCaptcha/i18n";
+	$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = "$IP/extensions/SemanticMediaWiki/i18n/extra/SemanticMediaWiki.alias.php";
+	$wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = "$IP/extensions/SemanticMediaWiki/i18n/extra/SemanticMediaWiki.magic.php";
+
+	if ( file_exists( '/srv/mediawiki/MessagesSettings.php' ) ) {
+		require '/srv/mediawiki/MessagesSettings.php';
+	}
+	return;
+}
+
 # The version of Apache on CENTOS is too old to set environment variables.
 # And it does not seem to provide the canonical domain name either. So
 # dig out the canonical name from the webroot.
@@ -30,26 +47,15 @@ if ( !file_exists( __DIR__ . "/LocalSettings-$VHOST.php" ) ) {
 $wgServer = $wgCanonicalServer = "https://$VHOST";
 
 ini_set( 'error_log', "/www/$VHOST/logs/error_php" );
-ini_set( 'display_errors',         1 );
+ini_set( 'display_errors',         0 );
 ini_set( 'ignore_repeated_errors', 1 );
 ini_set( 'log_errors',             1 );
 ini_set( 'expose_php',             0 );
-ini_set( 'memory_limit',      '350M' );
+ini_set( 'memory_limit',      '450M' );
 ini_set( 'max_execution_time', '60s' );
 
 error_reporting( E_ALL | E_STRICT );
 date_default_timezone_set( 'UTC' );
-
-$wgShowExceptionDetails  = true;
-$wgDebugComments         = true;
-$wgDevelopmentWarnings   = true;
-$wgDebugTimestamps       = true;
-$wgDebugPrintHttpHeaders = false;
-
-$wgCacheDirectory = "/www/$VHOST/cache";
-$wgLocalisationCacheConf['store'] = 'file';
-$wgLocalisationCacheConf['manualRecache'] = true;
-$wgLocalisationCacheConf['storeDirectory'] = "$IP/cache/$VHOST";
 
 $wgSecretKey = file_get_contents( "/www/$VHOST/secretkey" );
 
@@ -60,11 +66,11 @@ $wgScriptPath = "/w";
 $wgDBtype = "mysql";
 
 $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
+$wgSQLMode = 'TRADITIONAL';
 
 ## Shared memory settings
 $wgMainCacheType = CACHE_MEMCACHED;
-$wgMemCachedServers = array( 'localhost:11211' );
-$wgSessionsInObjectCache = true;
+$wgMemCachedServers = [ 'localhost:11211' ];
 
 $wgShellLocale = "en_US.utf8";
 $wgDiff3 = "/usr/bin/diff3";
@@ -74,13 +80,11 @@ $wgLanguageCode = 'fi';
 $wgDefaultUserOptions['usenewrc'] = 1;
 $wgIncludejQueryMigrate = true;
 
-$wgGroupPermissions['sysop']['invitesignup'] = true;
-$wgGroupPermissions['*']['edit'] = true;
-$wgGroupPermissions['*']['createaccount'] = false;
+$wgGroupPermissions['*']['edit'] = false;
 $wgGroupPermissions['sysop']['deletebatch'] = true;
 $wgGroupPermissions['*']['viewedittab'] = true;
 $wgGroupPermissions['sysop']['viewedittab'] = true;
-$wgDisableAnonEdit = false;
+$wgDisableAnonEdit = true;
 $wgGroupPermissions['*']['createpage'] = true;
 
 $wgUseRCPatrol = false;
@@ -91,29 +95,43 @@ $wgUploadPath = "/uploads";
 $wgUploadDirectory = "/www/$VHOST/docroot/uploads";
 $wgMaxImageArea = 75e6; // 75MP
 
-function lfAddNamespace( $id, $name ) {
-	global $wgExtraNamespaces, $wgContentNamespaces, $wgNamespacesToBeSearchedDefault,
-		$wgCapitalLinkOverrides, $smwgNamespacesWithSemanticLinks;
+$wgDefaultUserOptions['usenewrc'] = 1;
+$wgRCMaxAge = 5 * 365 * 24 * 3600; // 5 years
+$wgShowIPinHeader = false;
 
-	$constant = strtoupper( "NS_$name" );
+$wgCacheDirectory = "/www/$VHOST/cache";
 
-	define( $constant, $id );
-	define( $constant . '_TALK', $id + 1 );
 
-	$wgExtraNamespaces[$id] = $name;
-	$wgExtraNamespaces[$id + 1] = $name . '_talk';
+$wgPageFormsMaxAutocompleteValues = 15;
+$wgPageFormsMaxLocalAutocompleteValues = 10;
+$smwgValueLookupCacheType = CACHE_MEMCACHED;
+$smwgValueLookupCacheLifetime = 60 * 60 * 2; // Default week
+$smwgQueryResultCacheType = CACHE_MEMCACHED;
+$smwgQueryResultCacheLifetime = 60 * 60 * 2; // Default week
+$smwgQueryResultNonEmbeddedCacheLifetime = 60 * 10; // Default ten minutes
+$smwgEnabledQueryDependencyLinksStore = true;
+$wgUpdateRowsPerJob = 2000;
+$wgUpdateRowsPerQuery = 500;
 
-	$wgContentNamespaces[] = $id;
-
-	$wgNamespacesToBeSearchedDefault[$id] = true;
-	$wgCapitalLinkOverrides[$id] = false;
-	$wgCapitalLinkOverrides[$id + 1] = false;
-
-	$smwgNamespacesWithSemanticLinks[$id] = true;
-}
 
 require __DIR__ . "/LocalSettings-$VHOST.php";
 
+// wfLoadExtension( 'Elastica' );
+// require_once( "$IP/extensions/CirrusSearch/CirrusSearch.php" );
+// $wgSearchType = 'CirrusSearch';
+// $wgCirrusSearchExtraIndexSettings['index.mapping.total_fields.limit'] = 5000;
+
+{% if nocaptcha is defined %}
+wfLoadExtensions( [ 'ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha' ] );
+$wgReCaptchaSiteKey = '{{ nocaptcha.site }}';
+$wgReCaptchaSecretKey = '{{ nocaptcha.secret }}';
+$wgReCaptchaSendRemoteIP = true;
+$wgCaptchaTriggers['edit'] = false;
+$wgCaptchaTriggers['create'] = false;
+$wgCaptchaTriggers['addurl'] = false;
+$wgCaptchaTriggers['createaccount'] = true;
+$wgCaptchaTriggers['badlogin'] = true;
+{% endif %}
 
 # Some non-configurable changes to MediaWiki
 $wgHooks['GetLocalURL'][] = function ( &$title, &$url, $query ) {
@@ -130,5 +148,5 @@ $wgHooks['TestCanonicalRedirect'][] = function ( $request ) {
 # by the ansible scripts. This enables easier development by allowing changing stuff without
 # running the slow scripts, as well as keeping those changes.
 if ( file_exists( '/srv/mediawiki/LocalLocalSettings.php' ) ) {
-	require '/srv/mediawiki//LocalLocalSettings.php';
+	require '/srv/mediawiki/LocalLocalSettings.php';
 }

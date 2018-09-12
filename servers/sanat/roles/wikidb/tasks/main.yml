@@ -1,15 +1,32 @@
-- name: Install sql database
-  yum: name={{ item }} state=present
-  with_items:
-    - mariadb
-    - mariadb-server
-    - MySQL-python
-  tags: db
+- name: Install database server
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ wikidb_packages }}"
 
-- name: Install sql config
-  copy: src=my.cnf dest=/etc/my.cnf.d/custom.cnf
-  tags: db
+- name: Install database server config
+  template:
+    src: my.cnf.j2
+    dest: "{{ wikidb_mysql_conf_file }}"
 
-- name: Ensure sql is running
-  service: name=mariadb state=started enabled=yes
+- name: Ensure database server is running
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: Add database for each wiki
   tags: db
+  mysql_db:
+    name: "{{ item.value.db.database }}"
+    state: present
+  with_dict: "{{ mediawikis }}"
+
+- name: Add database user for the wiki
+  mysql_user:
+    name: "{{ item.value.db.user }}"
+    password: "{{ item.value.db.password }}"
+    priv: "*.*:ALL"
+    host: "{{ item.value.db.server_client }}"
+    state: present
+  with_dict: "{{ mediawikis }}"

@@ -1,0 +1,7 @@
+mediawiki_packages:
+  - git
+  - rsync
+  - mariadb # For importing/exporting database dumps
+  - parallel
+
+mediawiki_apache_user: apache

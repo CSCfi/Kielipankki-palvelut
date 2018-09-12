@@ -1,5 +1,4 @@
 ---
-
 - name: create compile dir
   file:
     path: "{{ ffmpeg_source_dir }}"
@@ -28,10 +27,8 @@
   
 - import_tasks: vpx.yml
   when: ffmpeg_vpx
-
   
 - import_tasks: ffmpeg.yml
-
     
 - import_tasks: cleanup.yml
   when: ffmpeg_cleanup

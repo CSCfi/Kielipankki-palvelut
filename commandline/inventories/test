@@ -1,0 +1,11 @@
+taito:
+  hosts:
+    taito-login4.csc.fi:
+      install_prefix: /tmp/{{ansible_user_id}}/ansible/install
+      swig3_as_module: yes
+
+abel:
+  hosts:
+    abel.uio.no:
+      install_prefix: /tmp/{{ansible_user_id}}/ansible/install
+      swig3_as_module: yes

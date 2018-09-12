@@ -1,0 +1,69 @@
+---
+# tasks file for Kaldi
+
+- name: Clone Kaldi
+  git:
+    repo:  "{{ release_url }}"
+    dest: "{{ compile_root }}/kaldi/"
+    remote: upstream
+    version: "{{ kaldi_version.githash }}"
+
+
+- name: Make Tools
+  shell: "module load python-env/2.7.10 && make  > MAKE_TOOLS.log"
+  args:
+    chdir: "{{ compile_root }}/kaldi/tools"
+    creates: MAKE_TOOLS.log
+
+- name: Run configure
+  shell: "module load python-env/2.7.10 && ./configure --shared > CONFIGURE.log"
+  args:
+    chdir: "{{ compile_root }}/kaldi/src"
+    creates: CONFIGURE.log
+
+- name: Run make depend
+  shell: "module load python-env/2.7.10 && make depend > MAKE_DEPEND.log"
+  args:
+    chdir: "{{ compile_root }}/kaldi/src"
+    creates: MAKE_DEPEND.log
+
+- name: "Run make (-j12)"
+  shell: "module load python-env/2.7.10 && make -j 12 > MAKE.log"
+  args:
+    chdir: "{{ compile_root }}/kaldi/src"
+    creates: MAKE.log
+
+- name: Create installdir structure
+  file:
+    path: "{{ install_dir }}/{{ item }}"
+    state: directory
+  with_items:
+   - bin
+   - lib
+
+- name: Install build dir
+  shell: rsync -av --exclude="*.o" --exclude="*.c" --exclude="*.cc" --exclude=".git*" --exclude=".deps/" --exclude="windows/" kaldi/ "{{ install_dir }}/build/"
+  args:
+    chdir: "{{ compile_root }}/"
+
+- name: Link executables to bin
+  shell: for I in `find ../build/src/ -type f -executable \( ! -iname *-egs -and ! -iname *-test -and ! -iname lib*.so \) -print`; do ln -sf $I .; done
+  args:
+    chdir : "{{ install_dir }}/bin"
+
+- name: Link libraries to lib
+  shell: for I in `find ../build/src/ -type f -executable \( -iname lib*.so \) -print` ../build/tools/openfst/lib/libfst.so.7 ; do ln -sf $I .; done
+  args:
+    chdir : "{{ install_dir }}/lib"
+
+
+
+- name: Fix permissions (again)
+  file:
+    path="{{ install_dir }}/.."
+    group=csc
+    mode="g+rwX,o+rX"
+    recurse=yes
+
+
+
