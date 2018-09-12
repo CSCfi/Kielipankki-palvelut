@@ -1,0 +1,16 @@
+---
+# vars file for python setup
+
+#
+pip_variants:
+  - pip
+  - pip3
+pip_modules:
+  - requests
+  - lxml
+  - openpyxl
+  - odfpy
+  - nltk
+  - datrie
+
+
