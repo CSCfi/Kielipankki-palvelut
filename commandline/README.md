@@ -1,45 +1,37 @@
-# The commandline tools of the Language Bank
+# The Language Bank Tool portfolio
 
-This set of Ansible roles installs all relevant command line tools to either CSC's HPC environment or virtual machines
+This script installs the following tools to Taito:
 
-## Getting Started
+ * HFST
+ * The HFST Morphologies for several languages
+ * HFST Ospell
+ * finnish-parse, based on the Turku Dependency Parser
 
-Use ansible-playbook myllyPouta.yml to create VM on Pouta and install hfst on it. (still work in progress)
+# Defaults
 
-Use ansible-playbook -i test site.yml to create a test installation to taito-login4.csc.fi:/tmp/<username>/ansible.
-Note that this will only compile, not set paths.
+The tools are installed via /tmp on taito-login4. /tmp is fast, but only visible locally, therefore the machine name had to be fixed.
 
-### Prerequisites
+# Testing
 
-So far some roles only work on Taito and assume gcc/python environments on Taito.
-Modulefiles need to be updated manually.
+In testing mode the script "installs" the tools to
+/tmp/<username>/ansible/install/. target_host needs to be specified to
+remind that installs are targeted at Taito.
 
-## Deployment
+ansible-playbook -i test site.yml -e "target_host=taito"
 
-ansible-playbook -i production site.yml
+# Production
 
-will install everything to Taito.
+In production the installation target is Kielipankki's software
+environment below /appl/ling/. The ling user needs to accept your
+certificate for passwordless login.
 
-## Built With
+ansible-playbook -i production site.yml -e "target_host=taito"
 
-* [Ansible](https://docs.ansible.com)
+# Partial installation
 
+The roles are tagged, you can run them individually with -t. See
+site.yml for details. 
 
-## Versioning
-
-We do not yet use [SemVer](http://semver.org/) for versioning.
-
-
-## Authors
-
-* **Martin Matthiesen** - *Initial work*
-* **João daSilva**
-
-## License
-
-This project is not yet licensed.
-
-## Acknowledgments
-
-* CSC Ansible experts
+# Modulefiles
+Note that module files are not created by these scripts.
 
