@@ -96,3 +96,5 @@
       tags: hfst
     - role: hfst-morphologies
       tags: hfst-morphologies
+    - role: python
+      tags: python
