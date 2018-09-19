@@ -1,0 +1,18 @@
+---
+# vars file for python setup
+
+#
+pip_executables:
+  - pip
+  - pip3
+pip_modules:
+  - pip
+  - setuptools
+  - requests
+  - lxml
+  - openpyxl
+  - odfpy
+  - nltk
+  - datrie
+
+

@@ -1,0 +1,45 @@
+---
+# Install PIP modules
+
+- name: "Debian/Ubuntu: Install list of packages"
+  apt:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - python3-pip
+    - python-pip
+    - python3-dev
+    - python-dev
+  when:
+    - ansible_os_family == "Debian"
+    - is_admin
+
+- name: "RHEL/CentOS: Install list of packages"
+  yum: 
+    name: " {{item}} "
+    state: present
+  become: yes
+  with_items:
+    - python3-pip
+    - python-pip
+    - python3-dev
+    - python-dev
+  when:
+    - ansible_os_family == "RedHat"
+    - is_admin
+
+- name: Install PIP3 modules
+  become: "{{ is_admin }}"
+  pip:
+    executable: "{{ item[0] }}"
+    name: "{{ item[1] }}"
+    state: latest
+  loop: "{{ query('nested', pip_executables, pip_modules ) }}"
+
+- name: Create root install script for Mylly
+  become: no
+  template:
+    src: kielipankki_local_root_install.sh.j2
+    dest: /tmp/kielipankki_local_root_install.sh
+  delegate_to: localhost
