@@ -6,6 +6,9 @@ This script installs the following tools to Taito:
  * The HFST Morphologies for several languages
  * HFST Ospell
  * finnish-parse, based on the Turku Dependency Parser
+ * ffmpeg
+ * libxml2, xslt1
+ * kaldi
 
 # Defaults
 
