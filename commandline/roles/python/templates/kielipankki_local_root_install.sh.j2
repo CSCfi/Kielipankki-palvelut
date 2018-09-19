@@ -1,0 +1,6 @@
+# generated install script for python 2/3 modules
+{% for tool in pip_executables %}
+{% for name in pip_modules %}
+{{ tool }} install -U {{ name }}
+{% endfor %}
+{% endfor %}

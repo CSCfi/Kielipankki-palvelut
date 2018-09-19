@@ -78,7 +78,7 @@
     - hfst_version: 3.14.0
     - is_admin: true
     - swig3_as_module: no
-    - install_prefix: /appl/ling/
+    - install_prefix: /appl/
 
   pre_tasks:
     - name: Copy public ssh keys
@@ -90,7 +90,7 @@
         regexp: \.pub$
         validate: '/usr/bin/ssh-keygen -l -f %s'
       become: no
-
+      
   roles:
     - role: hfst
       tags: hfst
@@ -98,3 +98,23 @@
       tags: hfst-morphologies
     - role: python
       tags: python
+
+  post_tasks:
+    - name: Pack tarball
+      archive:
+        path: /appl/
+        dest: /tmp/kielipankki_tools.tar.bz2
+        format: bz2
+
+    - name: Copy tarball to Download
+      command: "scp -3 cloud-user@{{ ansible_host }}:/tmp/kielipankki_tools.tar.bz2 korp.csc.fi:/var/www/html/download/.mylly/"
+      delegate_to: localhost
+
+    - name: Copy scripts to Download
+      command: "scp {{ item }} korp.csc.fi:/var/www/html/download/.mylly/"
+      delegate_to: localhost
+      with_items:
+        - files/mylly/kielipankki_shared_install.sh 
+        - /tmp/kielipankki_local_root_install.sh
+
+

@@ -2,10 +2,12 @@
 # vars file for python setup
 
 #
-pip_variants:
+pip_executables:
   - pip
   - pip3
 pip_modules:
+  - pip
+  - setuptools
   - requests
   - lxml
   - openpyxl
