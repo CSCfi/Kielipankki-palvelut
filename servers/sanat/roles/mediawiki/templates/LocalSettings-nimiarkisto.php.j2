@@ -91,6 +91,7 @@ $wgGroupPermissions['user']['view-nimilippu'] = true;
 $wgGroupPermissions['*']['edit'] = false;
 $wgGroupPermissions['sysop']['alledit'] = true;
 $wgGroupPermissions['editor']['alledit'] = true;
+$wgEmailConfirmToEdit = true;
 
 for ( $i = 0; $i < 100000; $i++ ) {
 	if ( in_array( $i, [ NS_TALK, NS_USER, NS_USER_TALK, NS_MEDIAWIKI, 2600 ] ) ) {
@@ -101,6 +102,7 @@ for ( $i = 0; $i < 100000; $i++ ) {
 
 wfLoadExtension( 'Nuke' );
 require_once "$IP/extensions/SmiteSpam/SmiteSpam.php";
+$wgDisplayPageSize = 10;
 
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
@@ -114,7 +116,6 @@ $wgFSISGroups['Kotus'] = [
 	'mimetypes' => 'image/jpeg',
 	'fallback' => '/www/nimiarkisto.fi/docroot/fallback.png',
 ];
-
 
 $wgHooks['SkinTemplateOutputPageBeforeExec'][] = function( $sk, &$tpl ) {
 	$tpl->set( 'kotus', '<a href="https://www.kotus.fi">Kotimaisten kielten keskus</a>' );

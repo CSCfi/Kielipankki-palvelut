@@ -26,7 +26,11 @@
   synchronize: src=docroot/{{ instance.value.conf }}/ dest=/www/{{ instance.key }}/docroot/
 
 - name: Create symlink to MediaWiki code for {{ instance.key }}
-  file: src=/srv/mediawiki/targets/production dest=/www/{{ instance.key }}/docroot/w state=link force=yes
+  file:
+    src: /srv/mediawiki/{{ instance.value.oregano_target | default('targets/production') }}
+    dest: /www/{{ instance.key }}/docroot/w
+    state: link
+    force: yes
 
 - name: Create rewrite rules for {{ instance.key }}
   copy: src=.htaccess dest=/www/{{ instance.key }}/docroot/.htaccess owner={{ mediawiki_apache_user }} mode=755

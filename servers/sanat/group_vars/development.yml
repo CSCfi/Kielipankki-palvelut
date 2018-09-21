@@ -13,6 +13,7 @@ wikidb_innodb_buffer_pool_size: 8G
 mediawikis:
   sanat.nikerabb.it:
     conf: sanat
+    oregano_target: workdir
     db:
       server_host: localhost
       server_client: localhost
@@ -21,6 +22,7 @@ mediawikis:
       database: sanat
   nimiarkisto.nikerabb.it:
     conf: nimiarkisto
+    oregano_target: workdir
     db:
       server_host: localhost
       server_client: localhost
@@ -29,6 +31,7 @@ mediawikis:
       database: nimiarkisto
   termipankki.nikerabb.it:
     conf: termipankki
+    oregano_target: workdir
     db:
       server_host: localhost
       server_client: localhost

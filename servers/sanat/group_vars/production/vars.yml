@@ -17,8 +17,8 @@ mediawikis:
   sanat.csc.fi:
     conf: sanat
     db:
-      database: mediawiki
-      server_host: localhost
+      database: sanatdb
+      server_host: '{{ vault_sanat_db_server }}'
       user: '{{ vault_sanat_db_user }}'
       password: '{{ vault_sanat_db_password }}'
   nimiarkisto.fi:
@@ -39,4 +39,4 @@ ssl_params_nimiarkisto:
   certificate_key_file: "/etc/pki/tls/private/nimiarkisto2.key"
   certificate_chain_file: "/etc/pki/tls/certs/DigiCertCA.crt"
 
-memcached_memory_limit: 1G
+memcached_memory_limit: 3G

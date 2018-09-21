@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /w/index.php?title=Special:
+Disallow: /wiki/Special:
+
+User-agent: SMW Registry:
+Allow: /wiki/Special:Version

@@ -4,46 +4,46 @@ set -e
 declare -a REPOS
 
 REPOS=(
-	"workdir https://github.com/wikimedia/mediawiki.git 9bb94b0" # 1.31-pre
+	"workdir https://github.com/wikimedia/mediawiki.git origin/REL1_31" #
 	"workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2018.07"
-	"workdir/extensions/CategoryTree https://github.com/wikimedia/mediawiki-extensions-CategoryTree.git origin/REL1_30"
-	"workdir/extensions/CirrusSearch https://github.com/wikimedia/mediawiki-extensions-CirrusSearch.git 87f3edb" # 1.31-pre
-	"workdir/extensions/Cite https://github.com/wikimedia/mediawiki-extensions-Cite.git origin/REL1_30"
-	"workdir/extensions/CodeEditor https://github.com/wikimedia/mediawiki-extensions-CodeEditor.git origin/REL1_30"
-	"workdir/extensions/ConfirmEdit https://github.com/wikimedia/mediawiki-extensions-ConfirmEdit.git 16f452a" #REL1_30 broken
-	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git origin/REL1_30"
-	"workdir/extensions/Elastica https://github.com/wikimedia/mediawiki-extensions-Elastica.git 8443c1d" # 1.31-pre
+	"workdir/extensions/CategoryTree https://github.com/wikimedia/mediawiki-extensions-CategoryTree.git origin/REL1_31"
+	"workdir/extensions/CirrusSearch https://github.com/wikimedia/mediawiki-extensions-CirrusSearch.git origin/REL1_31"
+	"workdir/extensions/Cite https://github.com/wikimedia/mediawiki-extensions-Cite.git origin/REL1_31"
+	"workdir/extensions/CodeEditor https://github.com/wikimedia/mediawiki-extensions-CodeEditor.git origin/REL1_31"
+	"workdir/extensions/ConfirmEdit https://github.com/wikimedia/mediawiki-extensions-ConfirmEdit.git origin/master" #REL1_30 broken
+	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git origin/REL1_31"
+	"workdir/extensions/Elastica https://github.com/wikimedia/mediawiki-extensions-Elastica.git origin/REL1_31"
 	"workdir/extensions/FileSystemImageServer https://github.com/Nikerabbit/mediawiki-extensions-FileSystemImageServer.git origin/master"
 	"workdir/extensions/FinnFrameNet https://github.com/Nikerabbit/mediawiki-extensions-FinnFrameNet.git origin/master"
-	"workdir/extensions/Flow https://github.com/wikimedia/mediawiki-extensions-Flow.git origin/REL1_30"
-	"workdir/extensions/HeaderTabs https://github.com/wikimedia/mediawiki-extensions-HeaderTabs.git origin/REL1_30"
-	"workdir/extensions/InputBox https://github.com/wikimedia/mediawiki-extensions-InputBox.git origin/REL1_30"
+	"workdir/extensions/Flow https://github.com/wikimedia/mediawiki-extensions-Flow.git origin/REL1_31"
+	"workdir/extensions/HeaderTabs https://github.com/wikimedia/mediawiki-extensions-HeaderTabs.git origin/REL1_31"
+	"workdir/extensions/InputBox https://github.com/wikimedia/mediawiki-extensions-InputBox.git origin/REL1_31"
 	"workdir/extensions/Kotus https://github.com/Nikerabbit/mediawiki-extensions-Kotus.git origin/master"
-	"workdir/extensions/LiquidThreads https://github.com/wikimedia/mediawiki-extensions-LiquidThreads.git origin/REL1_30"
+	"workdir/extensions/LiquidThreads https://github.com/wikimedia/mediawiki-extensions-LiquidThreads.git origin/REL1_31"
 	"workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git origin/master"
 	"workdir/extensions/Maps https://github.com/JeroenDeDauw/Maps.git 5.2.0"
-	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git origin/master" #REL1_30 broken
+	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git origin/REL1_31"
 	"workdir/extensions/Nimiarkisto https://github.com/Nikerabbit/mediawiki-extensions-Nimiarkisto.git origin/master"
-	"workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git origin/REL1_30"
+	"workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git origin/REL1_31"
 	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.3.1"
-	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git origin/REL1_30"
-	"workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git origin/REL1_30"
-	"workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git origin/REL1_30"
+	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git origin/REL1_31"
+	"workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git origin/REL1_31"
+	"workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git origin/REL1_31"
 	"workdir/extensions/Sanat https://github.com/Nikerabbit/mediawiki-extensions-Sanat.git origin/master"
-	"workdir/extensions/Scribunto https://github.com/wikimedia/mediawiki-extensions-Scribunto.git origin/REL1_30"
-	"workdir/extensions/SemanticDrilldown https://github.com/wikimedia/mediawiki-extensions-SemanticDrilldown.git origin/REL1_30"
+	"workdir/extensions/Scribunto https://github.com/wikimedia/mediawiki-extensions-Scribunto.git origin/REL1_31"
+	"workdir/extensions/SemanticDrilldown https://github.com/wikimedia/mediawiki-extensions-SemanticDrilldown.git origin/REL1_31"
 	"workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 2.5.7"
-	"workdir/extensions/ShortUrl https://github.com/wikimedia/mediawiki-extensions-ShortUrl.git 63c5d80" #REL1_30 broken
+	"workdir/extensions/ShortUrl https://github.com/wikimedia/mediawiki-extensions-ShortUrl.git origin/REL1_31"
 	"workdir/extensions/SimpleMathJax https://github.com/jmnote/SimpleMathJax.git 65f9814" # 1.31-pre
-	"workdir/extensions/SmiteSpam https://github.com/wikimedia/mediawiki-extensions-SmiteSpam.git origin/REL1_30"
+	"workdir/extensions/SmiteSpam https://github.com/wikimedia/mediawiki-extensions-SmiteSpam origin/master"
 	"workdir/extensions/Termbank https://github.com/Nikerabbit/mediawiki-extensions-Termbank.git origin/master"
 	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2018.07"
-	"workdir/extensions/UserMerge https://github.com/wikimedia/mediawiki-extensions-UserMerge.git origin/REL1_30"
-	"workdir/extensions/WikiEditor https://github.com/wikimedia/mediawiki-extensions-WikiEditor.git origin/REL1_30"
-	"workdir/extensions/Wikibase https://github.com/wikimedia/mediawiki-extensions-Wikibase.git b8ab2c9" # 1.31-pre
+	"workdir/extensions/UserMerge https://github.com/wikimedia/mediawiki-extensions-UserMerge.git origin/REL1_31"
+	"workdir/extensions/WikiEditor https://github.com/wikimedia/mediawiki-extensions-WikiEditor.git origin/REL1_31"
+	"workdir/extensions/Wikibase https://github.com/wikimedia/mediawiki-extensions-Wikibase.git origin/REL1_31"
 	"workdir/extensions/WordNet https://github.com/Nikerabbit/mediawiki-extensions-WordNet.git origin/master"
-	"workdir/skins/Timeless https://github.com/wikimedia/mediawiki-skins-Timeless.git origin/REL1_30"
-	"workdir/skins/Vector https://github.com/wikimedia/mediawiki-skins-Vector.git origin/REL1_30"
+	"workdir/skins/Timeless https://github.com/wikimedia/mediawiki-skins-Timeless.git origin/REL1_31"
+	"workdir/skins/Vector https://github.com/wikimedia/mediawiki-skins-Vector.git origin/REL1_31"
 )
 
 for LINE in "${REPOS[@]}"
@@ -73,6 +73,13 @@ do
 
 	(
 		cd "$DIR" || exit
-		git fetch -q && git fetch -q --tags && git reset -q --hard "$VER" && git clean -q -f -d -e /extensions -e /skins -e "LocalSettings*" 2>&1 >&- && git submodule update --init
+		git fetch -q &&
+		git fetch -q --tags &&
+		git reset -q --hard "$VER" &&
+		git clean -q -f -d -e /extensions -e /skins -e "LocalSettings*" 2>&1 >&-
+		if [ "$DIR" != 'workdir' ]
+		then
+			git submodule update --init
+		fi
 	)
 done
