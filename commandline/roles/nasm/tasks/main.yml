@@ -1,13 +1,19 @@
 ---
 # Install the newest NASM Assember
 
+- name: Set gcc module call
+  set_fact:
+    nasm_install_dir: "{{ '/usr/local' if is_admin else '{{ install_dir }}' }}"
+
+
 - name: create compilation and installation directories
+  become: "{{ is_admin }}"
   file:
     path: "{{ item }}"
     state: directory
   with_items:
    - "{{ compile_dir }}"
-   - "{{ install_dir }}"
+   - "{{ nasm_install_dir }}"
 
 - name: get nasm
   # should use get_url or even unpack directly. Workaround missing SNI support in Taito's python 2.6
@@ -20,18 +26,28 @@
   unarchive:
     remote_src: yes
     src: "{{ compile_dir }}/nasm-{{ nasm_version }}.tar.xz"
-    dest: "{{ compile_dir }}"     
+    dest: "{{ compile_dir }}"
 
-- name: compile and install nasm 
+- name: compile nasm
   command: "{{ item }}"
   args:
     chdir: "{{ compile_dir }}/nasm-{{ nasm_version }}" 
-    creates: "{{ install_dir }}/bin/nasm"
   with_items:
     - ./configure --prefix={{ install_dir }}
     - make -j5
+
+- name: install nasm
+  command: "{{ item }}"
+  become: "{{ is_admin }}"
+  args:
+    chdir: "{{ compile_dir }}/nasm-{{ nasm_version }}" 
+    creates: "{{ nasm_install_dir }}/bin/nasm"
+  with_items:
     - make install
 
+
+    
+    
 - name: Fix permissions (if shared group is set)
   file:
     path={{ nasm_install_dir }}

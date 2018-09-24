@@ -3,7 +3,7 @@
 
 #
 pip_executables:
-  - pip
+  - pip2
   - pip3
 pip_modules:
   - pip

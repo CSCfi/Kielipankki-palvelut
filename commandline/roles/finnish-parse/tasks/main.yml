@@ -1,6 +1,28 @@
 ---
 # tasks file for finnish-parse
 
+- name: "Debian/Ubuntu: Install list of packages"
+  apt:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+       - default-jre
+  when:
+    - ansible_os_family == "Debian"
+    - is_admin
+
+- name: "RHEL/CentOS: Install list of packages"
+  yum: 
+    name: " {{item}} "
+    state: present
+  become: yes
+  with_items:
+       - default-jre
+  when:
+    - ansible_os_family == "RedHat"
+    - is_admin
+
 - name: compile_root directory exists with 0777 permission
   become: no
   file: path={{ compile_root }}
@@ -20,7 +42,7 @@
   command: "./install.sh"
   args:
     chdir: "{{ compile_dir }}"
-    creates: model/fin_model.marmot
+#    creates: model/fin_model.marmot
 
 - name: Add module load python-env/2.7.10
   lineinfile:
@@ -29,6 +51,7 @@
     regexp: module load python-env/2.7.10
     line: module load python-env/2.7.10
     state: present
+  when: not is_admin
 
 - name: Run quick test, creates pyc as side effect
   shell: "echo saunoja |./parser_wrapper.sh|grep sauna"
@@ -70,6 +93,7 @@
 - name: Fix permissions
   file:
     path: "{{ install_dir }}"
-    group: csc
+    group: "{{ shared_group }}"
     mode: "g+rwX,o+rX"
     recurse: yes
+  when: shared_group is defined

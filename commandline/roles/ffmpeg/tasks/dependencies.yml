@@ -2,9 +2,11 @@
 # install dependencies
 
 - apt: update_cache=yes cache_valid_time=3600
+  become: yes
   when: is_admin
 
 - name: install dependencies
+  become: yes
   action: apt pkg={{ item }} state=present
   with_items:
     - git-core
@@ -15,7 +17,8 @@
     - libgpac-dev
     - libtheora-dev 
     - libtool 
-    - libvorbis-dev 
+    - libvorbis-dev
+    - libnuma-dev
     - pkg-config 
     - texi2html 
     - zlib1g-dev
@@ -25,5 +28,6 @@
     - cmake 
     - cmake-curses-gui
     - libssl-dev
+    - yasm
   when: is_admin
     
