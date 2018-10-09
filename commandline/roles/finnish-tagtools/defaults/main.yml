@@ -1,2 +1,3 @@
-tagtools_tar: /homeappl/home/hardwick/tmp/finnish-tagtools.tar.bz2
+tagtools_tar: https://korp.csc.fi/download/finnish-tagtools/v1.1/finnish-tagtools-1.1-installer.zip
 tagtools_install_dir: "{{ install_prefix }}/ling/finnish-tagtools/{{ finnish_tagtools_version }}"
+compile_dir: "{{ compile_root }}"

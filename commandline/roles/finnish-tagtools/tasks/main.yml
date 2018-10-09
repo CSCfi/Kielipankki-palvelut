@@ -6,21 +6,20 @@
   with_items:
     - "{{ tagtools_install_dir }}"
     - "{{ tagtools_install_dir }}/bin"
-    - "{{ tagtools_compile_dir }}"
+    - "{{ compile_dir }}"
     
 - name: Unpack from tar
   unarchive:
     src: "{{ tagtools_tar}}"
-    dest: "{{ tagtools_compile_dir }}"
+    dest: "{{ compile_dir }}"
     remote_src: yes
 
 - name: Run make install
   make:
-    chdir: "{{ tagtools_compile_dir }}/finnish-tagtools"
+    chdir: "{{ compile_dir }}/finnish-tagtools"
     target: install
     params:
       prefix: "{{ tagtools_install_dir }}"
-    
 
 - name: Fix permissions (if shared group is set)
   file:

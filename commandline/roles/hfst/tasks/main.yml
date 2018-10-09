@@ -51,11 +51,11 @@
     state: directory
 
 - name: Create install root
-  become: yes
+  become: "{{ is_admin }}"
   file:
     path: "{{ install_prefix }}"
     mode: 0777
-    owner: "{{ ansible_user }}"
+    owner: "{{ ansible_user_id }}"
     recurse: yes
     state: directory
 
@@ -63,7 +63,7 @@
   unarchive:
     src: "{{ release_url }}/v{{ hfst_version }}/{{ hfst_tarball }}"
     dest: "{{ compile_dir }}"
-    creates: "{{ hfst_compile_dir }}"
+    creates: "{{ hfst_compile_dir }}/configure.ac"
     remote_src: yes
 
 - name: Fix xglib bug in configure

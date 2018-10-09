@@ -4,13 +4,17 @@
        accept_hostkey=yes
        version={{ ffmpeg_x264_version }}
 
+- name: Set nasm module call
+  set_fact:
+    nasm_modcall: "{{ 'module load nasm &&' if env_csc_hpc is defined else '' }}"
+
 - name: compile x264
   shell: "{{ item }}" 
   args:
     chdir: "{{ ffmpeg_source_dir }}/x264" 
     #creates: "{{ ffmpeg_bin_dir }}/x264"
   with_items:
-    - module load nasm && ./configure --prefix={{ build_dir }} --enable-static
-    - module load nasm && make {{ ffmpeg_cpu_flag }}
+    - "{{ nasm_modcall }} ./configure --prefix={{ build_dir }} --enable-static"
+    - "{{ nasm_modcall }} make {{ ffmpeg_cpu_flag }}"
     - make install
     - make distclean
