@@ -4,8 +4,8 @@
 
 - hosts: taito
   vars:
-   - hfst_version: 3.14.0
-   - hfst_ospell_version: 0.5.0
+   - hfst_version: 3.15.0
+   - hfst_ospell_version: 0.5.1
    - finnish_parse_version: 1.0
    - praat_version: 6.0.29
    - nasm_version: 2.13.02
