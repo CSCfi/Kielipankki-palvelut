@@ -33,6 +33,8 @@ if ( isset( $_ENV['DOCUMENT_ROOT'] ) ) {
 } elseif ( defined( 'MW_DB' ) ) {
 	# Set by --wiki parameter for scripts
 	$VHOST = MW_DB;
+	$wgShowExceptionDetails = true;
+	$wgShowDBErrorBacktrace = true;
 } else {
 	echo "Wiki instance must be given. Use --wiki parameter for command line scripts.\n";
 	exit();
@@ -53,6 +55,9 @@ ini_set( 'log_errors',             1 );
 ini_set( 'expose_php',             0 );
 ini_set( 'memory_limit',      '450M' );
 ini_set( 'max_execution_time', '60s' );
+$wgDebugLogGroups['exception'] = ini_get( 'error_log' );
+$wgDebugLogGroups['error'] = ini_get( 'error_log' );
+$wgDebugLogGroups['fatal'] = ini_get( 'error_log' );
 
 error_reporting( E_ALL | E_STRICT );
 date_default_timezone_set( 'UTC' );
@@ -70,7 +75,7 @@ $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgSQLMode = 'TRADITIONAL';
 
 ## Shared memory settings
-$wgMainCacheType = CACHE_MEMCACHED;
+$wgMainCacheType = 'memcached-pecl';
 $wgParserCacheType = CACHE_DB;
 $wgMemCachedServers = [ 'localhost:11211' ];
 
@@ -104,16 +109,7 @@ $wgShowIPinHeader = false;
 $wgCacheDirectory = "/www/$VHOST/cache";
 
 
-$wgPageFormsMaxAutocompleteValues = 15;
-$wgPageFormsMaxLocalAutocompleteValues = 10;
-$smwgValueLookupCacheType = CACHE_MEMCACHED;
-$smwgValueLookupCacheLifetime = 60 * 60 * 2; // Default week
-$smwgQueryResultCacheType = CACHE_MEMCACHED;
-$smwgQueryResultCacheLifetime = 60 * 60 * 2; // Default week
-$smwgQueryResultNonEmbeddedCacheLifetime = 60 * 10; // Default ten minutes
-$smwgEnabledQueryDependencyLinksStore = true;
-$wgUpdateRowsPerJob = 2000;
-$wgUpdateRowsPerQuery = 500;
+$wgULSGeoService = false;
 
 
 require __DIR__ . "/LocalSettings-$VHOST.php";

@@ -33,7 +33,7 @@ hfst_components:
  - [ '{{ hfst_lib }}' , 'sha256:ad9cec6b8472d8d7568aac25cc09a4af8acbf341a06e755cf918839cf1d8b56e' ]
 
 
-memcached_memory_limit: 4G
+memcached_memory_limit: 4000
 composer_keep_updated: true
 
 nodejs_version: "7.10.0"

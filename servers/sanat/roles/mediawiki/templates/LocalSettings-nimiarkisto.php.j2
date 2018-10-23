@@ -122,6 +122,14 @@ $wgHooks['SkinTemplateOutputPageBeforeExec'][] = function( $sk, &$tpl ) {
 	$tpl->data['footerlinks']['places'][] = 'kotus';
 };
 
+$wgPageFormsMaxAutocompleteValues = 15;
+$wgPageFormsMaxLocalAutocompleteValues = 10;
+$smwgValueLookupCacheType = CACHE_MEMCACHED;
+$smwgValueLookupCacheLifetime = 60 * 60 * 2; // Default week
+$smwgQueryResultCacheType = CACHE_MEMCACHED;
+$smwgQueryResultCacheLifetime = 60 * 60 * 2; // Default week
+$smwgQueryResultNonEmbeddedCacheLifetime = 60 * 10; // Default ten minutes
+$smwgEnabledQueryDependencyLinksStore = true;
 // https://phabricator.wikimedia.org/T193246
-$wgUpdateRowsPerJob = 20000;
-$wgUpdateRowsPerQuery = 5000;
+$wgUpdateRowsPerJob = 2000;
+$wgUpdateRowsPerQuery = 500;

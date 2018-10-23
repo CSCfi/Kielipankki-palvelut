@@ -13,6 +13,8 @@ $wgGrammarForms['fi']['illative']['Termipankki']  = 'Termipankkiin';
 $wgGrammarForms['fi']['elative' ]['Termipankki']  = 'Termipankista';
 $wgGrammarForms['fi']['partitive']['Termipankki']  = 'Termipankkia';
 
+$wgServer = $wgCanonicalServer = "http://$VHOST";
+
 wfLoadSkin( 'Vector' );
 $wgDefaultSkin = "vector";
 
@@ -131,7 +133,7 @@ $smwgPageSpecialProperties[] = '_CDAT';
 $smwgPageSpecialProperties[] = '_LEDT';
 $smwgPageSpecialProperties[] = '_NEWP';
 $smwgQMaxLimit = 35000;
-$smwgQMaxInlineLimit = 1500;
+$smwgQMaxInlineLimit = 5000;
 $smwgQUpperbound = 30000;
 
 wfLoadExtension( 'SimpleMathJax' );
@@ -148,6 +150,7 @@ $wgGroupPermissions['user']['translate-messagereview'] = true;
 $wgGroupPermissions['user']['translate-groupreview'] = true;
 $wgGroupPermissions['sysop']['pagetranslation'] = true;
 $wgTranslatePageTranslationULS = true;
+$wgPageTranslationLanguageList = 'sidebar-always';
 
 $wgHooks['TranslatePostInitGroups'][] = function ( &$list, &$deps, &$autoload ) {
 	$mg = new WikiMessageGroup( 'wiki-sidebar', 'project' );
@@ -175,13 +178,6 @@ $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
 
-// Q: Unused?
-// CURRENTUSER-muuttuja MyVariablesista
-#require_once "$IP/extensions/MyVariables/MyVariables.php";
-
-// Q: Unused?
-// Semantic Watchlist
-#require_once( "$IP/extensions/SemanticWatchlist/SemanticWatchlist.php" );
 
 // Q: Tarvitaanko näitä?
 /*$wgHooks['UserLoginComplete'][] = 'tUserLogin';
@@ -335,46 +331,60 @@ wfAddTermNamespace( 1186, 'Kliininen_neurofysiologia' );
 wfAddTermNamespace( 1188, 'Biotekniikka' );
 wfAddTermNamespace( 1190, 'Avoin_tiede');
 wfAddTermNamespace( 1192, 'Teologia');
+wfAddTermNamespace( 1194, 'Perinnöntutkimus');
+wfAddTermNamespace( 1196, 'Geologia' );
+# 1198 is reserved
+wfAddTermNamespace( 1200, 'Taidehistoria' );
+wfAddTermNamespace( 1202, 'Yleinen_valtio-oppi' );
+wfAddTermNamespace( 1204, 'Arkkitehtuuri' );
+wfAddTermNamespace( 1206, 'Historia' );
+
 
 $wgTermbankColors = [
-	'Kasvitiede' => '#27B600',
-	'Kielitiede' => '#3E7FDB',
-	'Oikeustiede' => '#5A2336',
-	'Kieliteknologia' => '#4C00BF',
-	'Language_Technology' => '#4C00BF',
-	'Epidemiologia' => '#408080',
+#	'Avoin_tiede' => '#fff',
+	'Arkeologia' => '#8a3b2c', #64261B ???
+	'Arkkitehtuuri' => '#b90000',
 	'Biologia' => '#008000',
-	'Sienitiede' => '#55641C',
-	'Mikrobiologia' => '#656096',
-	'Geofysiikka' => '#025B5B',
-	'Käännöstiede' => '#4F7E8F',
-	'Terminologiaoppi'=> '#0000DF',
-	'Eläintiede'=> '#8B4513',
-	'Arkeologia'=> '#64261B',
-	'Eläinlääketiede'=> '#D1AB4D',
-	'Kirjallisuudentutkimus' => '#990033 ',
-	'Sosiaalipsykologia' => '#DC143C',
-	'Kulttuurintutkimus' => '#2B2370',
-	'Tekstuaalitieteet' => '#598243',
-	'Terminologiako_bankos' => '#3E7FDB',
-	'Språkvetenskap' => '#3E7FDB',
-	'Filosofia' => '#D765BB',
-	'Pelitutkimus' => '#CB5B1B',
-	'Esittävät_taiteet' => '#901999',
-	'Tähtitiede' => '#263058',
-	'Ilmatiede' => '#2859a8',
-	'Ympäristötieteet' => '#347B9A',
-	'Kasvatustieteet' => '#46176F',
-	'Kosmologia' => '#263058',
-	'Folkloristiikka' => '#4C825D',
-	'Fysiikka' => '#4C825D',
-	'Semiotiikka' => '#9900FF',
-	'Estetiikka' => '#FF0066',
-	'Etelä-Aasian_tutkimus' => '#660033',
-	'Elokuva-_ja_televisiotutkimus' => '#ec6406',
+	'Biotekniikka' => '#008000',
 	'Clean_Energy_Research' => '#3bc0c3',
-	'Taloustiede' => '#1f7fd0',
+	'Elokuva-_ja_televisiotutkimus' => '#ec6406',
+	'Eläinlääketiede'=> '#d1ab4d',
+	'Eläintiede'=> '#8b4513',
+	'Epidemiologia' => '#408080',
+	'Esittävät_taiteet' => '#901999',
+	'Estetiikka' => '#ff0066',
+	'Etelä-Aasian_tutkimus' => '#660033',
+	'Filosofia' => '#d765bb',
+	'Folkloristiikka' => '#4c825d',
+	'Fysiikka' => '#4c825d', #025B5B ???
+	'Geofysiikka' => '#025b5b',
+	'Geologia' => '#d27328',
+	'Historia' => '#db631f',
+	'Ilmatiede' => '#2859a8',
+	'Kasvatustieteet' => '#46176f',
+	'Kasvitiede' => '#27b600',
+	'Kieliteknologia' => '#4c00bf',
+	'Kielitiede' => '#3e7fdb',
+	'Kirjallisuudentutkimus' => '#990033',
+	'Kosmologia' => '#263058',
+	'Kulttuurintutkimus' => '#2b2370',
+	'Käännöstiede' => '#4f7e8f',
+	'Language_Technology' => '#4c00bf',
+	'Mikrobiologia' => '#656096', #D765BB ???
+	'Oikeustiede' => '#5a2336',
+	'Pelitutkimus' => '#cb5b1b',
+	'Perinnöntutkimus' => '#170d9c',
+	'Semiotiikka' => '#9900ff',
+	'Sienitiede' => '#55641c',
+	'Sosiaalipsykologia' => '#dc143c',
+	'Språkvetenskap' => '#3e7fdb',
+	'Taidehistoria' => '#cd1039',
+	'Taloustiede' => '#1f7fd0', #252525 ???
+	'Tekstuaalitieteet' => '#598243',
+	'Terminologiako_bankos' => '#3e7fdb',
+	'Terminologiaoppi'=> '#0000df',
+	'Tähtitiede' => '#263058',
+	'Yleinen_valtio-oppi' => '#853c3c',
+	'Ympäristötieteet' => '#347b9a',
+	#'Kliininen_neurofysiologia' => '#fff',
 ];
-
-# TODO:
-# Lähikäsite ei näy https://termipankki.nikerabb.it/wiki/Kasvitiede:manto

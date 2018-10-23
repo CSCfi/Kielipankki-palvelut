@@ -18,6 +18,7 @@
       tags: nodejs
     - role: geerlingguy.composer
     - role: geerlingguy.memcached
+      tags: memcached
     - role: apache_ssl
       tags: apache
     - role: geerlingguy.apache
