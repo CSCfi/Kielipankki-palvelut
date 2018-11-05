@@ -28,6 +28,13 @@ mediawikis:
       server_host: '{{ vault_nimiarkisto_db_server }}'
       user: '{{ vault_nimiarkisto_db_user }}'
       password: '{{ vault_nimiarkisto_db_password }}'
+  tieteentermipankki.fi:
+    conf: termipankki
+    db:
+      database: termipankki
+      server_host: '{{ vault_termipankki_db_server }}'
+      user: '{{ vault_termipankki_db_user }}'
+      password: '{{ vault_termipankki_db_password }}'
 
 ssl_params_sanat:
   certificate_file: "/etc/pki/tls/certs/sanat.csc.fi.crt"
@@ -39,4 +46,4 @@ ssl_params_nimiarkisto:
   certificate_key_file: "/etc/pki/tls/private/nimiarkisto2.key"
   certificate_chain_file: "/etc/pki/tls/certs/DigiCertCA.crt"
 
-memcached_memory_limit: 3G
+memcached_memory_limit: 3000

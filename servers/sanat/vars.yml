@@ -38,10 +38,10 @@ vhost_termipankki:
   documentroot: /www/{{ webdomain_termipankki }}/docroot
   extra_parameters: |
     ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_termipankki }}/docroot/"
-    Header always set Strict-Transport-Security "max-age=15768000"
-    RewriteEngine On
-    RewriteCond %{HTTPS} off
-    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+    #Header always set Strict-Transport-Security "max-age=15768000"
+    #RewriteEngine On
+    #RewriteCond %{HTTPS} off
+    #RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
     # This will redirect anyway, so use internal redirect
     RewriteRule ^/!(.*) /wiki/Special:ShortUrl/$1 [PT]
 
