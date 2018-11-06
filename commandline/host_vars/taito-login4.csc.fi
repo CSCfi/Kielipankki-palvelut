@@ -1,6 +1,7 @@
 is_admin: false
 python3_module: python-env/3.4.0
 env_csc_hpc: true
+shared_group: csc
 
 #use half the cpus on taito-login4
 ffmpeg_cpu_flag: "-j8"
