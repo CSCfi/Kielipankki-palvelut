@@ -7,11 +7,11 @@ $wgDBname = '{{ instance.value.db.database }}';
 
 $wgSitename = 'Tieteen termipankki';
 $wgMetaNamespace = 'Termipankki';
-$wgGrammarForms['fi']['genitive']['Termipankki']  = 'Termipankin';
-$wgGrammarForms['fi']['inessive']['Termipankki']  = 'Termipankissa';
-$wgGrammarForms['fi']['illative']['Termipankki']  = 'Termipankkiin';
-$wgGrammarForms['fi']['elative' ]['Termipankki']  = 'Termipankista';
-$wgGrammarForms['fi']['partitive']['Termipankki']  = 'Termipankkia';
+$wgGrammarForms['fi']['genitive']['Tieteen termipankki']  = 'Tieteen termipankin';
+$wgGrammarForms['fi']['inessive']['Tieteen termipankki']  = 'Tieteen termipankissa';
+$wgGrammarForms['fi']['illative']['Tieteen termipankki']  = 'Tieteen termipankkiin';
+$wgGrammarForms['fi']['elative' ]['Tieteen termipankki']  = 'Tieteen termipankista';
+$wgGrammarForms['fi']['partitive']['Tieteen termipankki']  = 'Tieteen termipankkia';
 
 $wgServer = $wgCanonicalServer = "http://$VHOST";
 
@@ -111,9 +111,8 @@ wfLoadExtension( 'LiquidThreads' );
 wfLoadExtension( 'MixedNamespaceSearchSuggestions' );
 wfLoadExtension( 'Nuke' );
 wfLoadExtension( 'PageForms' );
-$sfgRenameEditTabs = true;
-$sfgAutocompleteOnAllChars = true;
-$sfg24HourTime = true;
+$wgPageFormsRenameEditTabs = true;
+$wgPageForms24HourTime = true;
 $wgGroupPermissions['user']['createclass'] = false;
 $wgGroupPermissions['sysop']['createclass'] = true;
 $wgGroupPermissions['*']['viewedittab'] = false;
@@ -135,6 +134,7 @@ $smwgPageSpecialProperties[] = '_NEWP';
 $smwgQMaxLimit = 35000;
 $smwgQMaxInlineLimit = 5000;
 $smwgQUpperbound = 30000;
+$smwgEnabledQueryDependencyLinksStore = true;
 
 wfLoadExtension( 'SimpleMathJax' );
 $wgSimpleMathJaxUseCDN = false;

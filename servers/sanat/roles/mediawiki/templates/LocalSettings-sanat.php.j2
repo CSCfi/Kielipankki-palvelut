@@ -14,9 +14,10 @@ wfLoadSkin( 'Vector' );
 
 enableSemantics( $VHOST );
 wfLoadExtension( 'PageForms' );
-$sfgRedLinksCheckOnlyLocalProps = true;
-$sfgRenameEditTabs = true;
+$wgPageFormsRedLinksCheckOnlyLocalProps = true;
+$wgPageFormsRenameEditTabs = true;
 $smwgQMaxInlineLimit = $wgCategoryPagingLimit = 250;
+$smwgEnabledQueryDependencyLinksStore = true;
 
 require "$IP/extensions/MixedNamespaceSearchSuggestions/MixedNamespaceSearchSuggestions.php";
 wfLoadExtension( 'ParserFunctions' );
