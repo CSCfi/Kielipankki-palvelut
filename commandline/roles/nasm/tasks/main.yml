@@ -6,14 +6,16 @@
     nasm_install_dir: "{{ '/usr/local' if is_admin else '{{ install_dir }}' }}"
 
 
-- name: create compilation and installation directories
+- name: create compilation dir
+  file:
+    path: "{{ compile_dir }}"
+    state: directory
+
+- name: create installation dir
   become: "{{ is_admin }}"
   file:
-    path: "{{ item }}"
+    path: "{{ nasm_install_dir }}"
     state: directory
-  with_items:
-   - "{{ compile_dir }}"
-   - "{{ nasm_install_dir }}"
 
 - name: get nasm
   # should use get_url or even unpack directly. Workaround missing SNI support in Taito's python 2.6
@@ -33,7 +35,7 @@
   args:
     chdir: "{{ compile_dir }}/nasm-{{ nasm_version }}" 
   with_items:
-    - ./configure --prefix={{ install_dir }}
+    - ./configure --prefix={{ nasm_install_dir }}
     - make -j5
 
 - name: install nasm
@@ -44,8 +46,6 @@
     creates: "{{ nasm_install_dir }}/bin/nasm"
   with_items:
     - make install
-
-
     
     
 - name: Fix permissions (if shared group is set)

@@ -2,7 +2,8 @@
 # defaults
 
 package_name: praat
-release_url: https://github.com/praat/praat.git
 version: "{{ praat_version }}"
-compile_dir: "{{ compile_root }}/praat/{{ branch }}"
+release_url: https://github.com/praat/praat/archive/v{{ version }}.tar.gz
+src_root: "{{ compile_root }}"
+compile_dir: "{{ src_root }}/praat-{{ version }}"
 install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"

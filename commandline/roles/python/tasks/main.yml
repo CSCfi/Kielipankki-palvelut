@@ -11,6 +11,8 @@
     - python-pip
     - python3-dev
     - python-dev
+    - python3-setuptools
+    - python-setuptools
   when:
     - ansible_os_family == "Debian"
     - is_admin
@@ -25,6 +27,8 @@
     - python-pip
     - python3-dev
     - python-dev
+    - python3-setuptools
+    - python-setuptools
   when:
     - ansible_os_family == "RedHat"
     - is_admin

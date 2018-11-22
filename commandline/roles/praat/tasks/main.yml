@@ -1,20 +1,40 @@
 ---
 # tasks file for praat
+- name: "Debian/Ubuntu: Install list of packages"
+  apt:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+       - libjack-dev
+  when:
+    - ansible_os_family == "Debian"
+    - is_admin
 
-- name: compile_root directory exists with 0777 permission
+- name: "RHEL/CentOS: Install list of packages"
+  yum: 
+    name: " {{item}} "
+    state: present
+  become: yes
+  with_items:
+       - libjack-devel
+  when:
+    - ansible_os_family == "RedHat"
+    - is_admin
+
+- name: src_root directory exists with 0777 permission
   become: no
-  file: path={{ compile_root }}
-    mode=0777
-    recurse=no
-    state=directory
+  file:
+    path: "{{ src_root }}"
+    mode: 0777
+    recurse: yes
+    state: directory
 
-- name: Clone repo
-  git:
-    repo: "{{ release_url }}"
-    dest: "{{ compile_dir }}"
-    force: yes
-    depth: 1
-    version: "{{ branch }}"
+- name: Get source
+  unarchive:
+    src: "{{ release_url }}"
+    dest: "{{ src_root }}"
+    remote_src: yes
 
 - name: Prepare barren compilation
   copy:
@@ -28,8 +48,13 @@
     regexp: "^LIBS = -lm -lpthread( -static -static-libgcc -static-libstdc\\+\\+)?$"
     line: "LIBS = -lm -lpthread"
 
+- name: Set gcc module call
+  set_fact:
+    gcc_modcall: "{{ 'module load gcc/7.3.0 &&' if env_csc_hpc is defined else '' }}"
+    
+
 - name: Running make 
-  shell: bash --login -c "module load gcc/4.8.2 && make -j8 > MAKE.log"
+  shell: bash --login -c "{{ gcc_modcall }} make -j8 > MAKE.log"
   args:
     chdir: "{{ compile_dir }}"
     #creates: MAKE.log
@@ -47,8 +72,8 @@
 - name: Copy praat to install_dir
   copy:
     remote_src: true
-    src: "{{ compile_dir }}/praat"
-    dest: "{{ install_dir }}/bin"
+    src: "{{ compile_dir }}/praat_barren"
+    dest: "{{ install_dir }}/bin/praat"
     mode: 0755
 
 - name: Fix permissions (if shared group is set)
