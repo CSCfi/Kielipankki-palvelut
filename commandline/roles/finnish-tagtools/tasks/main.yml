@@ -16,7 +16,7 @@
 
 - name: Run make install
   make:
-    chdir: "{{ compile_dir }}/finnish-tagtools"
+    chdir: "{{ compile_dir }}"
     target: install
     params:
       prefix: "{{ tagtools_install_dir }}"

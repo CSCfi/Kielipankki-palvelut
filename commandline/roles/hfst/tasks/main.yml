@@ -96,16 +96,16 @@
     gcc_modcall: "{{ 'module load gcc/4.8.2 &&' if env_csc_hpc is defined else '' }}"
     
 - name: Running make 
-  shell: bash --login -c "{{ gcc_modcall }} make > MAKE.log"
+  shell: bash --login -c "{{ gcc_modcall }} make -j8 > MAKE.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
     #creates: MAKE.log
     
-- name: Running  make check 
-  shell: bash --login -c "{{ gcc_modcall }} make check > MAKE_CHECK.log"
+- name: Running make check 
+  shell: bash --login -c "{{ gcc_modcall }} make check  > MAKE_CHECK.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
-    creates: MAKE_CHECK.log
+    #creates: MAKE_CHECK.log
 
 - name: Fix missing "bin" dir bug in Makefile
   become: no
