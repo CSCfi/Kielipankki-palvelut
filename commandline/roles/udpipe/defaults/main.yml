@@ -1,0 +1,9 @@
+---
+# defaults
+
+package_name: udpipe
+version: "{{ udpipe_version }}"
+release_url: https://github.com/ufal/udpipe/archive/v{{ version }}.tar.gz
+src_root: "{{ compile_root }}"
+compile_dir: "{{ src_root }}/udpipe-{{ version }}/src"
+install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
