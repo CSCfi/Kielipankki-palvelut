@@ -2,22 +2,18 @@
 # tasks file for praat
 - name: "Debian/Ubuntu: Install list of packages"
   apt:
-    name: "{{ item }}"
+    name: []
     state: present
   become: yes
-  with_items:
-       - none
   when:
     - ansible_os_family == "Debian"
     - is_admin
 
 - name: "RHEL/CentOS: Install list of packages"
   yum: 
-    name: " {{item}} "
+    name: []
     state: present
   become: yes
-  with_items:
-       - none
   when:
     - ansible_os_family == "RedHat"
     - is_admin
@@ -40,17 +36,18 @@
   shell: bash --login -c "make -j8 > MAKE.log"
   args:
     chdir: "{{ compile_dir }}"
-    #creates: MAKE.log
+    creates: MAKE.log
 
 - name: create install_dir subtree
   become: no
   file:
-    path: "{{ install_dir }}/{{ item }}"
+    path: "{{ item }}"
     mode: 0775
-    recurse: no
+    recurse: yes
     state: directory
   with_items:
-    - bin
+    - "{{ install_dir }}/bin"
+    - "{{ model_package_install_dir }}"
 
 - name: Copy udpipe to install_dir
   copy:
@@ -59,10 +56,21 @@
     dest: "{{ install_dir }}/bin/udpipe"
     mode: 0755
 
+- name: Get and unpack models
+  unarchive:
+    src: "{{ model_package_release_url }}"
+    dest: "{{ model_package_install_dir }}"
+    remote_src: yes
+    exclude: udpipe # don't unpack the precompiled executable
+  
+    
 - name: Fix permissions (if shared group is set)
   file:
-    path: "{{ install_dir }}"
+    path: "{{ item }}"
     group: "{{ shared_group }}"
     mode: "g+rwX,o+rX"
     recurse: yes
+  with_items:
+    - "{{ install_dir }}"
+    - "{{ model_package_install_dir }}"
   when: shared_group is defined
