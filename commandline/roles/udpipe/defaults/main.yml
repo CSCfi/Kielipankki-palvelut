@@ -8,7 +8,7 @@ src_root: "{{ compile_root }}"
 compile_dir: "{{ src_root }}/udpipe-{{ version }}/src"
 install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
 
-model_package_name: udpipe-ud
 model_package_version: 2.3-181115
+model_package_name: "udpipe-ud-{{ model_package_version }}"
 model_package_install_dir: "{{ install_prefix }}/ling/{{ package_name }}/models/"
-model_package_release_url: https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-2898/{{ model_package_name }}-{{ model_package_version }}.zip
+model_package_release_url: https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-2898/{{ model_package_name }}.zip

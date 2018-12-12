@@ -61,7 +61,8 @@
     src: "{{ model_package_release_url }}"
     dest: "{{ model_package_install_dir }}"
     remote_src: yes
-    exclude: udpipe # don't unpack the precompiled executable
+    exclude:
+      - "{{ model_package_name }}/udpipe" # don't unpack the precompiled executable
   
     
 - name: Fix permissions (if shared group is set)
