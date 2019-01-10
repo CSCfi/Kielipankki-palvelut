@@ -9,7 +9,7 @@
    - finnish_parse_version: 1.0
    - praat_version: 6.0.43
    - nasm_version: 2.13.02
-   - finnish_tagtools_version: 1.3.0
+   - finnish_tagtools_version: 1.3.1
    - kaldi_version:
       number: 5.2.5
       githash: 3e57783
