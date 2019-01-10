@@ -6,12 +6,12 @@
   with_items:
     - "{{ tagtools_install_dir }}"
     - "{{ tagtools_install_dir }}/bin"
-    - "{{ compile_dir }}"
+    - "{{ compile_root }}"
     
 - name: Unpack from tar
   unarchive:
     src: "{{ tagtools_tar}}"
-    dest: "{{ compile_dir }}"
+    dest: "{{ compile_root }}"
     remote_src: yes
 
 - name: Run make install
