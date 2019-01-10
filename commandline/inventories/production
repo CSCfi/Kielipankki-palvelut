@@ -1,5 +1,5 @@
 taito:
   hosts:
     taito-login4.csc.fi:
-      install_prefix: /appl/ling/
+      install_prefix: /appl/
       swig3_as_module: yes

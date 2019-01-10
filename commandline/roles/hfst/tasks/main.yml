@@ -50,14 +50,20 @@
     recurse: no
     state: directory
 
+- name: check for install root
+  stat:
+    path: "{{ install_prefix }}"
+  register: check_install_root
+
 - name: Create install root
   become: "{{ is_admin }}"
   file:
     path: "{{ install_prefix }}"
     mode: 0777
     owner: "{{ ansible_user_id }}"
-    recurse: yes
+    recurse: false
     state: directory
+  when: not check_install_root.stat.exists
 
 - name: Download and extract tarball
   unarchive:
@@ -90,16 +96,16 @@
     gcc_modcall: "{{ 'module load gcc/4.8.2 &&' if env_csc_hpc is defined else '' }}"
     
 - name: Running make 
-  shell: bash --login -c "{{ gcc_modcall }} make > MAKE.log"
+  shell: bash --login -c "{{ gcc_modcall }} make -j8 > MAKE.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
     #creates: MAKE.log
     
-- name: Running  make check 
-  shell: bash --login -c "{{ gcc_modcall }} make check > MAKE_CHECK.log"
+- name: Running make check 
+  shell: bash --login -c "{{ gcc_modcall }} make check  > MAKE_CHECK.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
-    creates: MAKE_CHECK.log
+    #creates: MAKE_CHECK.log
 
 - name: Fix missing "bin" dir bug in Makefile
   become: no

@@ -2,22 +2,18 @@
 # tasks file for praat
 - name: "Debian/Ubuntu: Install list of packages"
   apt:
-    name: "{{ item }}"
+    name: []
     state: present
   become: yes
-  with_items:
-       - libjack-dev
   when:
     - ansible_os_family == "Debian"
     - is_admin
 
 - name: "RHEL/CentOS: Install list of packages"
   yum: 
-    name: " {{item}} "
+    name: []
     state: present
   become: yes
-  with_items:
-       - libjack-devel
   when:
     - ansible_os_family == "RedHat"
     - is_admin
@@ -36,50 +32,46 @@
     dest: "{{ src_root }}"
     remote_src: yes
 
-- name: Prepare barren compilation
-  copy:
-    remote_src: true
-    src:  "{{ compile_dir }}/makefiles/makefile.defs.linux.barren"
-    dest: "{{ compile_dir }}/makefile.defs"
-
-- name: Remove static linking (experimental)
-  lineinfile:
-    path: "{{ compile_dir }}/makefile.defs"
-    regexp: "^LIBS = -lm -lpthread( -static -static-libgcc -static-libstdc\\+\\+)?$"
-    line: "LIBS = -lm -lpthread"
-
-- name: Set gcc module call
-  set_fact:
-    gcc_modcall: "{{ 'module load gcc/7.3.0 &&' if env_csc_hpc is defined else '' }}"
-    
-
 - name: Running make 
-  shell: bash --login -c "{{ gcc_modcall }} make -j8 > MAKE.log"
+  shell: bash --login -c "make -j8 > MAKE.log"
   args:
     chdir: "{{ compile_dir }}"
-    #creates: MAKE.log
+    creates: MAKE.log
 
 - name: create install_dir subtree
   become: no
   file:
-    path: "{{ install_dir }}/{{ item }}"
+    path: "{{ item }}"
     mode: 0775
-    recurse: no
+    recurse: yes
     state: directory
   with_items:
-    - bin
+    - "{{ install_dir }}/bin"
+    - "{{ model_package_install_dir }}"
 
-- name: Copy praat to install_dir
+- name: Copy udpipe to install_dir
   copy:
     remote_src: true
-    src: "{{ compile_dir }}/praat_barren"
-    dest: "{{ install_dir }}/bin/praat"
+    src: "{{ compile_dir }}/udpipe"
+    dest: "{{ install_dir }}/bin/udpipe"
     mode: 0755
 
+- name: Get and unpack models
+  unarchive:
+    src: "{{ model_package_release_url }}"
+    dest: "{{ model_package_install_dir }}"
+    remote_src: yes
+    exclude:
+      - "{{ model_package_name }}/udpipe" # don't unpack the precompiled executable
+  
+    
 - name: Fix permissions (if shared group is set)
   file:
-    path: "{{ install_dir }}"
+    path: "{{ item }}"
     group: "{{ shared_group }}"
     mode: "g+rwX,o+rX"
     recurse: yes
+  with_items:
+    - "{{ install_dir }}"
+    - "{{ model_package_install_dir }}"
   when: shared_group is defined
