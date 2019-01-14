@@ -13,8 +13,6 @@ $wgGrammarForms['fi']['illative']['Tieteen termipankki']  = 'Tieteen termipankki
 $wgGrammarForms['fi']['elative' ]['Tieteen termipankki']  = 'Tieteen termipankista';
 $wgGrammarForms['fi']['partitive']['Tieteen termipankki']  = 'Tieteen termipankkia';
 
-$wgServer = $wgCanonicalServer = "http://$VHOST";
-
 wfLoadSkin( 'Vector' );
 $wgDefaultSkin = "vector";
 
@@ -134,7 +132,8 @@ $smwgPageSpecialProperties[] = '_NEWP';
 $smwgQMaxLimit = 35000;
 $smwgQMaxInlineLimit = 5000;
 $smwgQUpperbound = 30000;
-$smwgEnabledQueryDependencyLinksStore = true;
+// Causes performance issues
+$smwgEnabledQueryDependencyLinksStore = false;
 
 wfLoadExtension( 'SimpleMathJax' );
 $wgSimpleMathJaxUseCDN = false;
