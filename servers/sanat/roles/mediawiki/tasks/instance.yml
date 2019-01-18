@@ -48,7 +48,12 @@
     daemon_reload: yes
 
 - name: Upgrade database schema for {{ instance.key }}
-  command: /usr/bin/php maintenance/update.php --quick --wiki="{{ instance.key }}" --skip-optimize
+  command: >-
+    /usr/bin/php maintenance/update.php
+      --quick --skip-optimize
+      --wiki="{{ instance.key }}"
+      --dbuser="{{ instance.value.db.admin_user }}"
+      --dbpass="{{ instance.value.db.admin_password }}"
   args:
     chdir: /srv/mediawiki/workdir
 

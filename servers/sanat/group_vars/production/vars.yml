@@ -24,6 +24,8 @@ mediawikis:
       server_host: '{{ vault_sanat_db_server }}'
       user: '{{ vault_sanat_db_user }}'
       password: '{{ vault_sanat_db_password }}'
+      admin_user: "{{ vault_db_admin_user }}"
+      admin_password: "{{ vault_db_admin_password }}"
   nimiarkisto.fi:
     conf: nimiarkisto
     db:
@@ -31,6 +33,8 @@ mediawikis:
       server_host: '{{ vault_nimiarkisto_db_server }}'
       user: '{{ vault_nimiarkisto_db_user }}'
       password: '{{ vault_nimiarkisto_db_password }}'
+      admin_user: "{{ vault_db_admin_user }}"
+      admin_password: "{{ vault_db_admin_password }}"
   tieteentermipankki.fi:
     conf: termipankki
     db:
@@ -38,6 +42,8 @@ mediawikis:
       server_host: '{{ vault_termipankki_db_server }}'
       user: '{{ vault_termipankki_db_user }}'
       password: '{{ vault_termipankki_db_password }}'
+      admin_user: "{{ vault_db_admin_user }}"
+      admin_password: "{{ vault_db_admin_password }}"
 
 ssl_params_sanat:
   certificate_file: "/etc/pki/tls/certs/sanat.csc.fi.crt"
