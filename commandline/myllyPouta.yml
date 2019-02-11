@@ -51,7 +51,7 @@
       os_server:
         name: mylly-tools
         image: Ubuntu-16.04
-        flavor: standard.small
+        flavor: standard.medium
         key_name: "{{ project_key }}"
         security_groups: "{{ project_security_groups }}"
 
@@ -87,6 +87,7 @@
     - kaldi_version:
         number: 5.2.5
         githash: 3e57783
+    - udpipe_version: 1.2.0
 #  - ffmpeg_version: see roles/ffmpeg/defaults/main.yml
 
 
@@ -133,15 +134,16 @@
   roles:
     - { role: hfst, tags: hfst }
     - { role: hfst-morphologies, tags: hfst-morphologies }
-#    - { role: hfst-ospell, tags: hfst-ospell }
-#    - { role: check-hfst, tags: check-hfst }
+    - { role: hfst-ospell, tags: hfst-ospell }
+    - { role: check-hfst, tags: check-hfst }
     - { role: finnish-parse, branch: master, tags: finnish-parse }
     - { role: praat, branch: master, tags: praat }
     - { role: nasm, tags: nasm }
     - { role: ffmpeg, branch: master, tags: ffmpeg }
     - { role: finnish-tagtools, tags: finnish-tagtools }
-#    - { role: kaldi, tags: kaldi }
+    - { role: kaldi, tags: kaldi }
     - { role: python,  tags: python }
+    - { role: udpipe, tags: udpipe }
 
   post_tasks:
     - name: Pack tarball
