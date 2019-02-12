@@ -3,32 +3,30 @@
 
 - name: "Debian/Ubuntu: Install list of packages"
   apt:
-    name: "{{ item }}"
-    state: present
-  become: yes
-  with_items:
+    name:
     - python3-pip
     - python-pip
     - python3-dev
     - python-dev
     - python3-setuptools
     - python-setuptools
+    state: present
+  become: yes
   when:
     - ansible_os_family == "Debian"
     - is_admin
 
 - name: "RHEL/CentOS: Install list of packages"
   yum: 
-    name: " {{item}} "
-    state: present
-  become: yes
-  with_items:
+    name:
     - python3-pip
     - python-pip
     - python3-dev
     - python-dev
     - python3-setuptools
     - python-setuptools
+    state: present
+  become: yes
   when:
     - ansible_os_family == "RedHat"
     - is_admin

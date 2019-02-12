@@ -3,22 +3,18 @@
 
 - name: "Debian/Ubuntu: Install list of packages"
   apt:
-    name: "{{ item }}"
+    name: [ default-jre ]
     state: present
   become: yes
-  with_items:
-       - default-jre
   when:
     - ansible_os_family == "Debian"
     - is_admin
 
 - name: "RHEL/CentOS: Install list of packages"
   yum: 
-    name: " {{item}} "
+    name: [ default-jre ]
     state: present
   become: yes
-  with_items:
-       - default-jre
   when:
     - ansible_os_family == "RedHat"
     - is_admin
