@@ -156,6 +156,12 @@
       command: "scp -3 cloud-user@{{ ansible_host }}:/tmp/kielipankki_tools.tar.bz2 korp.csc.fi:/var/www/html/download/.mylly/"
       delegate_to: localhost
 
+    - name: Add locales to mylly-comp
+      lineinfile:
+        path: /tmp/kielipankki_local_root_install.sh
+        line: apt install -y language-pack-en language-pack-fi language-pack-sv
+      delegate_to: localhost
+        
     - name: Copy scripts to Download
       command: "scp {{ item }} korp.csc.fi:/var/www/html/download/.mylly/"
       delegate_to: localhost
