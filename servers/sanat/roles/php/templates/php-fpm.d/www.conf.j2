@@ -10,7 +10,6 @@ listen.backlog = 65536
 user = {{ php_fpm_user }}
 group = {{ php_fpm_group }}
 request_terminate_timeout = 70s
-catch_workers_output = yes
 
 pm = dynamic
 ; each worker uses around 50M of memory or more
