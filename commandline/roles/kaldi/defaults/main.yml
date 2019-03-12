@@ -3,4 +3,4 @@
 
 # Check http://kaldi-asr.org/doc/versions.html
 release_url: https://github.com/kaldi-asr/kaldi.git
-install_dir: "{{ install_prefix }}/kaldi/{{ kaldi_version.number }}"
+install_dir: "{{ install_prefix }}/ling/kaldi/{{ kaldi_version.number }}"

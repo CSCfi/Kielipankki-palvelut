@@ -19,7 +19,7 @@
 
 - name: get nasm
   # should use get_url or even unpack directly. Workaround missing SNI support in Taito's python 2.6
-  command: wget "https://www.zytor.com/pub/nasm/releasebuilds/{{ nasm_version }}/nasm-{{ nasm_version }}.tar.xz"
+  command: wget "https://ftp.osuosl.org/pub/blfs/conglomeration/nasm/nasm-{{ nasm_version }}.tar.xz"
   args:
     chdir: "{{ compile_dir }}"
     creates: "nasm-{{ nasm_version }}.tar.xz"

@@ -1,5 +1,24 @@
 ---
 # tasks file for hfst-ospell
+- name: "Debian/Ubuntu: Install list of packages"
+  apt:
+    name:
+    - libxml++2.6-dev
+    state: present
+  become: yes
+  when:
+    - ansible_os_family == "Debian"
+    - is_admin
+
+- name: "RHEL/CentOS: Install list of packages"
+  yum: 
+    name:
+    - libxml++2.6-dev # check name!
+    state: present
+  become: yes
+  when:
+    - ansible_os_family == "RedHat"
+    - is_admin
 
 - name: compile_root directory exists with 0777 permission
   become: no

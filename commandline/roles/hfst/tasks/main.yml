@@ -3,34 +3,32 @@
 
 - name: "Debian/Ubuntu: Install list of packages"
   apt:
-    name: "{{ item }}"
+    name:
+      - libreadline-dev
+      - libtool
+      - automake
+      - flex
+      - build-essential
+      - swig
+      - python3-dev
     state: present
   become: yes
-  with_items:
-       - libreadline-dev
-       - libtool
-       - automake
-       - flex
-       - build-essential
-       - swig
-       - python3-dev
   when:
     - ansible_os_family == "Debian"
     - is_admin
 
 - name: "RHEL/CentOS: Install list of packages"
   yum: 
-    name: " {{item}} "
+    name:
+      - libreadline-dev
+      - libtool
+      - automake
+      - flex
+      - build-essential
+      - swig
+      - python3-dev
     state: present
   become: yes
-  with_items:
-       - libreadline-dev
-       - libtool
-       - automake
-       - flex
-       - gcc-c++
-       - swig
-       - python3-dev
   when:
     - ansible_os_family == "RedHat"
     - is_admin

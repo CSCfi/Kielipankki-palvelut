@@ -1,37 +1,66 @@
 ---
 # tasks file for Kaldi
 
+- name: "Debian/Ubuntu: Install list of packages"
+  apt:
+    name:
+    - subversion
+    - libatlas-dev
+    - libatlas-base-dev
+    state: present
+  become: yes
+  when:
+    - ansible_os_family == "Debian"
+    - is_admin
+
+- name: "RHEL/CentOS: Install list of packages"
+  yum: 
+    name:
+    - subversion
+    - atlas
+    state: present
+  become: yes
+  when:
+    - ansible_os_family == "RedHat"
+    - is_admin
+
 - name: Clone Kaldi
   git:
     repo:  "{{ release_url }}"
     dest: "{{ compile_root }}/kaldi/"
     remote: upstream
+    force: yes
     version: "{{ kaldi_version.githash }}"
+
+- name: Set python call on HPC
+  set_fact:
+    py_modcall: "{{ 'module load python-env/2.7.10 &&' if env_csc_hpc is defined else '' }}"
 
 
 - name: Make Tools
-  shell: "module load python-env/2.7.10 && make  > MAKE_TOOLS.log"
+  shell: "{{ py_modcall }} make  > MAKE_TOOLS.log"
   args:
     chdir: "{{ compile_root }}/kaldi/tools"
-    creates: MAKE_TOOLS.log
+    #creates: MAKE_TOOLS.log
 
+    
 - name: Run configure
-  shell: "module load python-env/2.7.10 && ./configure --shared > CONFIGURE.log"
+  shell: "{{ py_modcall }} ./configure --shared > CONFIGURE.log"
   args:
     chdir: "{{ compile_root }}/kaldi/src"
-    creates: CONFIGURE.log
+    #creates: CONFIGURE.log
 
 - name: Run make depend
-  shell: "module load python-env/2.7.10 && make depend > MAKE_DEPEND.log"
+  shell: "{{ py_modcall }} make depend > MAKE_DEPEND.log"
   args:
     chdir: "{{ compile_root }}/kaldi/src"
-    creates: MAKE_DEPEND.log
+    #creates: MAKE_DEPEND.log
 
-- name: "Run make (-j12)"
-  shell: "module load python-env/2.7.10 && make -j 12 > MAKE.log"
+- name: "Run make (-j 2)"
+  shell: "{{ py_modcall }} make -j2  > MAKE.log"
   args:
     chdir: "{{ compile_root }}/kaldi/src"
-    creates: MAKE.log
+    #creates: MAKE.log
 
 - name: Create installdir structure
   file:
@@ -56,14 +85,15 @@
   args:
     chdir : "{{ install_dir }}/lib"
 
-
-
-- name: Fix permissions (again)
+- name: Fix permissions (if shared group is set)
   file:
-    path="{{ install_dir }}/.."
-    group=csc
-    mode="g+rwX,o+rX"
-    recurse=yes
+    path: "{{ install_dir }}/.."
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  when: shared_group is defined
+
+
 
 
 

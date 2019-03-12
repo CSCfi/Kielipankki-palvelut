@@ -2,22 +2,20 @@
 # tasks file for praat
 - name: "Debian/Ubuntu: Install list of packages"
   apt:
-    name: "{{ item }}"
+    name:
+      - libjack-dev
     state: present
   become: yes
-  with_items:
-       - libjack-dev
   when:
     - ansible_os_family == "Debian"
     - is_admin
 
 - name: "RHEL/CentOS: Install list of packages"
   yum: 
-    name: " {{item}} "
+    name:
+      - libjack-devel
     state: present
   become: yes
-  with_items:
-       - libjack-devel
   when:
     - ansible_os_family == "RedHat"
     - is_admin

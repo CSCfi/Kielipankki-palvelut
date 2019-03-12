@@ -51,7 +51,7 @@
       os_server:
         name: mylly-tools
         image: Ubuntu-16.04
-        flavor: standard.small
+        flavor: standard.medium
         key_name: "{{ project_key }}"
         security_groups: "{{ project_security_groups }}"
 
@@ -77,16 +77,17 @@
   vars:
     - is_admin: true
     - swig3_as_module: no
-    - install_prefix: /appl/
+    - install_prefix: /appl
     - hfst_version: 3.15.0
-    - hfst_ospell_version: 0.5.0
+    - hfst_ospell_version: 0.5.1
     - finnish_parse_version: 1.0
     - praat_version: 6.0.43
-    - nasm_version: 2.13.02
-    - finnish_tagtools_version: 1.3.0
+    - nasm_version: 2.14.02
+    - finnish_tagtools_version: 1.3.2
     - kaldi_version:
         number: 5.2.5
         githash: 3e57783
+    - udpipe_version: 1.2.0
 #  - ffmpeg_version: see roles/ffmpeg/defaults/main.yml
 
 
@@ -133,15 +134,16 @@
   roles:
     - { role: hfst, tags: hfst }
     - { role: hfst-morphologies, tags: hfst-morphologies }
-#    - { role: hfst-ospell, tags: hfst-ospell }
-#    - { role: check-hfst, tags: check-hfst }
+    - { role: hfst-ospell, tags: hfst-ospell }
+    - { role: check-hfst, tags: check-hfst }
     - { role: finnish-parse, branch: master, tags: finnish-parse }
     - { role: praat, branch: master, tags: praat }
     - { role: nasm, tags: nasm }
     - { role: ffmpeg, branch: master, tags: ffmpeg }
     - { role: finnish-tagtools, tags: finnish-tagtools }
-#    - { role: kaldi, tags: kaldi }
+    - { role: kaldi, tags: kaldi }
     - { role: python,  tags: python }
+    - { role: udpipe, tags: udpipe }
 
   post_tasks:
     - name: Pack tarball
@@ -154,6 +156,12 @@
       command: "scp -3 cloud-user@{{ ansible_host }}:/tmp/kielipankki_tools.tar.bz2 korp.csc.fi:/var/www/html/download/.mylly/"
       delegate_to: localhost
 
+    - name: Add locales to mylly-comp
+      lineinfile:
+        path: /tmp/kielipankki_local_root_install.sh
+        line: apt install -y language-pack-en language-pack-fi language-pack-sv
+      delegate_to: localhost
+        
     - name: Copy scripts to Download
       command: "scp {{ item }} korp.csc.fi:/var/www/html/download/.mylly/"
       delegate_to: localhost

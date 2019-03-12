@@ -1,0 +1,12 @@
+- name: Destroy a compute instance
+  hosts: localhost
+  tasks:
+    - name: Destroy a VM
+      os_server:
+        name: mylly-tools
+        state: absent
+
+#    - name: Destroy a security group
+#      os_security_group:
+#        name: kielipouta-sg
+#        state: absent
