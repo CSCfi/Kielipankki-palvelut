@@ -1,0 +1,27 @@
+#!/bin/bash
+set -xueo pipefail
+
+# This script creates an RDF dump of a Wikibase based Wiki (WIKINAME)
+# Authors: Niklas Laxström, Martin Matthiesen
+
+WIKINAME=nimiarkisto.fi
+WIKIDIR=/srv/mediawiki/targets/production
+DUMPDIR=/data/public-dumps/$WIKINAME
+
+#Run as user apace
+RUNAS_USER=apache
+
+# Commands used
+PHP_CMD="/usr/bin/php"
+BZIP2_CMD="/usr/bin/bzip2"
+NICE_CMD="/usr/bin/nice -n19"
+
+# Delete older bz2 files than 90 days
+/bin/su -s /bin/bash -c "find $DUMPDIR/*.bz2 -mtime +90 -exec rm -f {} \;" $RUNAS_USER
+
+# Create RDF Dump
+/bin/su -s /bin/bash -c "$NICE_CMD $PHP_CMD $WIKIDIR/extensions/Wikibase/repo/maintenance/dumpRdf.php \
+    --wiki $WIKINAME \
+    --quiet | \
+    $NICE_CMD $BZIP2_CMD > $DUMPDIR/$WIKINAME-CC-BY-4.0_$(date -I).rdf.bz2" $RUNAS_USER
+
