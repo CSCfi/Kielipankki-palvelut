@@ -1,2 +1,3 @@
 # compile in fast /tmp
 compile_root: /tmp/{{ ansible_user_id }}/ansible
+python3_base_version: "3.5"

@@ -115,7 +115,7 @@
 
 - name: Set python module call
   set_fact:
-    python_modcall: "{{ 'module load swig && module load {{python3_module}} &&' if env_csc_hpc is defined else '' }}"
+    python_modcall: "{{ 'module load swig && module load {{ python3_module }} &&' if env_csc_hpc is defined else '' }}"
 
 - name: Running make install
   shell: "make install prefix={{ hfst_install_dir }} > MAKE_INSTALL.log"
@@ -134,7 +134,7 @@
     chdir: "{{ hfst_compile_dir }}/python"
 
 - name: Checking python module
-  shell: bash --login -c  "./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python3.4/site-packages"
+  shell: bash --login -c  "./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages"
   args:
     chdir: "{{ hfst_compile_dir }}/python/test"
   environment:
