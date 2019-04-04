@@ -91,7 +91,7 @@
 
 - name: Set gcc module call
   set_fact:
-    gcc_modcall: "{{ 'module load gcc/4.8.2 &&' if env_csc_hpc is defined else '' }}"
+    gcc_modcall: "{{ 'module load gcc/5.4.0 &&' if env_csc_hpc is defined else '' }}"
     
 - name: Running make 
   shell: bash --login -c "{{ gcc_modcall }} make -j8 > MAKE.log"
