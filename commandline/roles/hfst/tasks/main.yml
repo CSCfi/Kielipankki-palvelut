@@ -124,7 +124,7 @@
     creates: "{{ hfst_install_dir }}/bin/hfst-lookup"
 
 - name: Building python module
-  shell: bash --login -c  "{{ python_modcall }}python3 setup.py build_ext --inplace"
+  shell: bash --login -c  "{{ python_modcall }}python3 setup.py build_ext --inplace --local-hfst"
   args:
     chdir: "{{ hfst_compile_dir }}/python"
 

@@ -37,7 +37,6 @@
   shell: "make install prefix={{ hfst_install_dir }} > MAKE_INSTALL.log"
   args:
     chdir: "{{ temp_dir }}/{{ item.pkg }}/hfst-{{ item.lang }}-installable"
-    creates: MAKE_INSTALL.log
   loop: "{{ morphologies }}"
 
 - name: Fix permissions (again)

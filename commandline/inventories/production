@@ -1,6 +1,6 @@
 taito:
   hosts:
-    taito-login3.csc.fi:
+    taito-login4.csc.fi:
       install_prefix: /appl
       swig3_as_module: yes
       shared_group: csc
