@@ -28,7 +28,7 @@
 - name: Install monthly dump script
   copy:
     src: dump_nimiarkisto
-    dest: :/etc/cron.monthly/
+    dest: /etc/cron.monthly/
     mode: 0755
 
 - name: Install MediaWiki repository clone script
