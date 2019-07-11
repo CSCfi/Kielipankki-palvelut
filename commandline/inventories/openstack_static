@@ -2,7 +2,7 @@
 new_openstack_vms:
   hosts:
     new_openstack_vm:
-      ansible_host: 195.148.30.88
+      ansible_host: 195.148.31.151
       ansible_user: cloud-user
       is_admin: true
       swig3_as_module: no
