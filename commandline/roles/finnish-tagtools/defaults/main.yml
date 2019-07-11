@@ -1,4 +1,4 @@
 
-tagtools_tar: https://korp.csc.fi/download/finnish-tagtools/v1.3/finnish-tagtools-{{ finnish_tagtools_version }}.zip
+tagtools_tar: https://korp.csc.fi/download/finnish-tagtools/v1.4/finnish-tagtools-{{ finnish_tagtools_version }}.zip
 tagtools_install_dir: "{{ install_prefix }}/ling/finnish-tagtools/{{ finnish_tagtools_version }}"
 compile_dir: "{{ compile_root }}/finnish-tagtools-{{ finnish_tagtools_version }}"
