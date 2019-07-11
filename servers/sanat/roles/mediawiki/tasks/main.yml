@@ -24,6 +24,13 @@
 - name: Install oregano hooks
   copy: src=oregano_hook_deploy dest=/srv/mediawiki/hooks/deploy mode=0755
 
+# So far only nimiarkisto is supported  
+- name: Install monthly dump script
+  copy:
+    src: dump_nimiarkisto
+    dest: /etc/cron.monthly/
+    mode: 0755
+
 - name: Install MediaWiki repository clone script
   copy: src=co_repos dest=/srv/mediawiki/co_repos mode=0755
 
