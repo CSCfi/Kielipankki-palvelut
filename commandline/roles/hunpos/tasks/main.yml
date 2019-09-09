@@ -1,0 +1,37 @@
+---
+
+- name: Ensure directories exists
+  become: no
+  file:
+    path: "{{ item }}"
+    mode: 0775
+    recurse: yes
+    state: directory
+  with_items:
+    - "{{ src_root }}"
+    - "{{ install_dir }}/bin"
+
+- name: Get source
+  unarchive:
+    src: "{{ release_url }}"
+    dest: "{{ src_root }}"
+    remote_src: yes
+
+
+- name: Copy hunpos to install_dir
+  copy:
+    remote_src: true
+    src: "{{ compile_dir }}/{{ item }}"
+    dest: "{{ install_dir }}/bin/"
+    mode: 0755
+  with_items:
+    - hunpos-tag
+    - hunpos-train
+
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ install_dir }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  when: shared_group is defined

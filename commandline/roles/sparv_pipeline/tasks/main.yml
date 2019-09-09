@@ -1,0 +1,42 @@
+---
+
+- name: Ensure directories exists
+  become: no
+  command: mkdir -p "{{ item }}"
+  args:
+    creates: "{{ item }}"
+  loop:
+    - "{{ src_root }}"
+    - "{{ install_dir }}/jars/lib"
+    - "{{ install_dir }}/models"
+
+- name: Get source
+  unarchive:
+    src: "{{ release_url }}"
+    dest: "{{ src_root }}"
+    remote_src: yes
+
+
+- name: Copy sparv pipeline to install_dir
+  copy:
+    remote_src: true
+    src: "{{ compile_dir }}/{{ item.src }}"
+    dest: "{{ install_dir }}/{{ item.dest }}"
+    mode: 0755
+  loop:
+    - { src: 'annotate/bin/maltparser-1.7.2/maltparser-1.7.2.jar', dest: 'jars'}
+    - { src: 'annotate/bin/maltparser-1.7.2/lib/liblinear-1.8.jar', dest: 'jars/lib'}
+    - { src: 'annotate/bin/maltparser-1.7.2/lib/libsvm.jar', dest: 'jars/lib'}
+    - { src: 'annotate/bin/maltparser-1.7.2/lib/log4j.jar', dest: 'jars/lib'}
+    - { src: 'annotate/models/swemalt-1.7.2.mco', dest: 'models' }
+    - { src: 'annotate/models/hunpos.suc3.suc-tags.default-setting.utf8.model', dest: 'models' }
+    - { src: 'annotate/models/hunpos.dalinm-swedberg.saldo.suc-tags.morphtable', dest: 'models' }
+
+
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ install_dir }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  when: shared_group is defined
