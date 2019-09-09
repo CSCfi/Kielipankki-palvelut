@@ -4,6 +4,14 @@ taito:
       install_prefix: /tmp/{{ansible_user_id}}/ansible/install
       swig3_as_module: yes
 
+puhti:
+  hosts:
+    puhti-login1.csc.fi:
+      install_prefix: /users/{{ansible_user_id}}/ansible/install
+      is_admin: false
+      swig3_as_module: yes
+    
+
 abel:
   hosts:
     abel.uio.no:
