@@ -5,6 +5,7 @@
   command: mkdir -p "{{ item }}"
   args:
     creates: "{{ item }}"
+    warn: false
   loop:
     - "{{ src_root }}"
     - "{{ install_dir }}/jars/lib"
