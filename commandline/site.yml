@@ -2,7 +2,7 @@
 # The Language Bank of Finland Software Stack on CSC's Taito-cluster
 #
 
-- hosts: puhti
+- hosts: taito
   vars:
    - hfst_version: 3.15.0
    - hfst_ospell_version: 0.5.1
@@ -16,7 +16,6 @@
    - hunpos_version: 1.0
    - sparv_pipeline_version: 2.0_MIT_2017-10-23
 #  - ffmpeg_version: see roles/ffmpeg/defaults/main.yml
-#  - cstlemma_version: see roles/cstlemma/defaults/main.yml
    - udpipe_version: 1.2.0
       
 
@@ -37,7 +36,6 @@
    - { role: udpipe, tags: udpipe }
    - { role: hunpos, tags: hunpos }
    - { role: sparv_pipeline, tags: sparv_pipeline }
-   - { role: cstlemma, tags: cstlemma }
 
 
 

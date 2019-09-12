@@ -10,6 +10,7 @@
     - "{{ src_root }}"
     - "{{ install_dir }}/jars/lib"
     - "{{ install_dir }}/models"
+    - "{{ install_dir }}/bin"
 
 - name: Get source
   unarchive:
@@ -17,13 +18,66 @@
     dest: "{{ src_root }}"
     remote_src: yes
 
+- name: Get cstlemma parts
+  git:
+    repo: "{{ kuhumcst_url }}/{{ item.name }}"
+    dest: "{{ src_root }}/{{ item.name }}"
+    version: "{{ item.githash }}"
+    accept_hostkey: yes
+    force: yes
+  loop: "{{ kuhumcst_git_pkgs }}"
+  
+- name: set cstlemma STREAM
+  lineinfile:
+    path: "{{ src_root }}/cstlemma/src/defines.h"
+    regexp: "^#define STREAM 0"
+    line: "#define STREAM 1 // 0: use stdio 1: use iostream"
+
+- name: make cstlemma 
+  shell: bash --login -c "{{ gcc_modcall }} make  > MAKE.log"
+  args:
+    chdir: "{{ src_root }}/cstlemma/src"
+
+- name: Install cstlemma
+  copy:
+    src: "{{ src_root }}/cstlemma/cstlemma"
+    dest: "{{ install_dir }}/bin"
+    remote_src: yes
+    mode: 0775
+
+- name: create suc-saldo src files
+  shell: cat {suc,saldo}.cstlemma.lemmas > suc-saldo.cstlemma.lemmas
+  args:
+    chdir: "{{ compile_dir }}/annotate/models/"
+   
+- name: compile cstlemma dicts
+  shell: bash --login -c "{{ install_dir }}/bin/cstlemma -D -c FBT -e 1  -i {{ item }}.cstlemma.lemmas -o {{ item }}.cstlemma.dict"
+  args:
+    chdir: "{{ compile_dir }}/annotate/models/"
+  with_items:
+    - suc
+    - saldo
+    - suc-saldo
+  async: 120
+  poll: 0
+
+- name: compile cstlemma flex
+  shell: bash --login -c "{{ install_dir }}/bin/cstlemma -FF -c FBT -e 1 -R- -C 2 -i {{ item }}.cstlemma.lemmas -o {{ item }}.cstlemma.flex"
+  args:
+    chdir: "{{ compile_dir }}/annotate/models/"
+  with_items:
+    - suc
+    - saldo
+    - suc-saldo
+  async: 240
+  poll: 0
 
 - name: Copy sparv pipeline to install_dir
   copy:
     remote_src: true
     src: "{{ compile_dir }}/{{ item.src }}"
     dest: "{{ install_dir }}/{{ item.dest }}"
-    mode: 0755
+    mode: 0664
   loop:
     - { src: 'annotate/bin/maltparser-1.7.2/maltparser-1.7.2.jar', dest: 'jars'}
     - { src: 'annotate/bin/maltparser-1.7.2/lib/liblinear-1.8.jar', dest: 'jars/lib'}
@@ -34,8 +88,12 @@
     - { src: 'annotate/models/hunpos.dalinm-swedberg.saldo.suc-tags.morphtable', dest: 'models' }
     - { src: 'annotate/models/suc.cstlemma.lemmas', dest: 'models' }
     - { src: 'annotate/models/saldo.cstlemma.lemmas', dest: 'models' }
-
-
+    - { src: 'annotate/models/saldo.cstlemma.dict', dest: 'models' }
+    - { src: 'annotate/models/saldo.cstlemma.flex', dest: 'models' }
+    - { src: 'annotate/models/suc.cstlemma.dict', dest: 'models' }
+    - { src: 'annotate/models/suc.cstlemma.flex', dest: 'models' }
+    - { src: 'annotate/models/suc-saldo.cstlemma.dict', dest: 'models' }
+    - { src: 'annotate/models/suc-saldo.cstlemma.flex', dest: 'models' }
 
 - name: Fix permissions (if shared group is set)
   file:
