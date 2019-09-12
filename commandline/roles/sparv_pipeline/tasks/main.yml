@@ -32,6 +32,9 @@
     - { src: 'annotate/models/swemalt-1.7.2.mco', dest: 'models' }
     - { src: 'annotate/models/hunpos.suc3.suc-tags.default-setting.utf8.model', dest: 'models' }
     - { src: 'annotate/models/hunpos.dalinm-swedberg.saldo.suc-tags.morphtable', dest: 'models' }
+    - { src: 'annotate/models/suc.cstlemma.lemmas', dest: 'models' }
+    - { src: 'annotate/models/saldo.cstlemma.lemmas', dest: 'models' }
+
 
 
 - name: Fix permissions (if shared group is set)

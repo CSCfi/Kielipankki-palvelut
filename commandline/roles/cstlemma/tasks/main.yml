@@ -24,9 +24,9 @@
     gcc_modcall: "{{ 'module load 9.1.0 &&' if env_csc_hpc is defined else '' }}"
     
 - name: Running make 
-  shell: bash --login -c "{{ gcc_modcall }} make -j8 > MAKE.log"
+  shell: bash --login -c "{{ gcc_modcall }} make  > MAKE.log"
   args:
-    chdir: "{{ src_root }}/cstlemma"
+    chdir: "{{ src_root }}/cstlemma/src"
   
 
 - name: Fix permissions (if shared group is set)
