@@ -60,6 +60,7 @@
     - suc-saldo
   async: 120
   poll: 0
+  register: dict_compile
 
 - name: compile cstlemma flex
   shell: bash --login -c "{{ install_dir }}/bin/cstlemma -FF -c FBT -e 1 -R- -C 2 -i {{ item }}.cstlemma.lemmas -o {{ item }}.cstlemma.flex"
@@ -69,8 +70,27 @@
     - suc
     - saldo
     - suc-saldo
-  async: 240
+  async: 600
   poll: 0
+  register: flex_compile
+
+- name: Check flex compile
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: jobs_result
+  with_items: "{{ flex_compile.results }}"
+  until: jobs_result.finished
+  delay: 20
+  retries: 40
+
+- name: Check dict compile # to be sure
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: jobs_result
+  with_items: "{{ dict_compile.results }}"
+  until: jobs_result.finished
+  delay: 1
+  retries: 40
 
 - name: Copy sparv pipeline to install_dir
   copy:
@@ -88,6 +108,7 @@
     - { src: 'annotate/models/hunpos.dalinm-swedberg.saldo.suc-tags.morphtable', dest: 'models' }
     - { src: 'annotate/models/suc.cstlemma.lemmas', dest: 'models' }
     - { src: 'annotate/models/saldo.cstlemma.lemmas', dest: 'models' }
+    - { src: 'annotate/models/suc-saldo.cstlemma.lemmas', dest: 'models' }
     - { src: 'annotate/models/saldo.cstlemma.dict', dest: 'models' }
     - { src: 'annotate/models/saldo.cstlemma.flex', dest: 'models' }
     - { src: 'annotate/models/suc.cstlemma.dict', dest: 'models' }
