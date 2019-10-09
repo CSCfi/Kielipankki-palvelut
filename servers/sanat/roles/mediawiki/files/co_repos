@@ -5,7 +5,7 @@ declare -a REPOS
 
 REPOS=(
 	"workdir https://github.com/wikimedia/mediawiki.git origin/REL1_31" #
-	"workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2018.07"
+	"workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2019.04"
 	"workdir/extensions/CategoryTree https://github.com/wikimedia/mediawiki-extensions-CategoryTree.git origin/REL1_31"
 	"workdir/extensions/CirrusSearch https://github.com/wikimedia/mediawiki-extensions-CirrusSearch.git origin/REL1_31"
 	"workdir/extensions/Cite https://github.com/wikimedia/mediawiki-extensions-Cite.git origin/REL1_31"
@@ -25,7 +25,7 @@ REPOS=(
 	"workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git origin/REL1_31"
 	"workdir/extensions/Nimiarkisto https://github.com/Nikerabbit/mediawiki-extensions-Nimiarkisto.git origin/master"
 	"workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git origin/REL1_31"
-	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.4.2"
+	"workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms.git 4.6"
 	"workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git origin/REL1_31"
 	"workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git origin/REL1_31"
 	"workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git origin/REL1_31"
@@ -37,7 +37,8 @@ REPOS=(
 	"workdir/extensions/SimpleMathJax https://github.com/jmnote/SimpleMathJax.git 65f9814" # 1.31-pre
 	"workdir/extensions/SmiteSpam https://github.com/wikimedia/mediawiki-extensions-SmiteSpam origin/master"
 	"workdir/extensions/Termbank https://github.com/Nikerabbit/mediawiki-extensions-Termbank.git origin/master"
-	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2018.07"
+	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2019.04"
+	"workdir/extensions/UniversalLanguageSelector https://github.com/wikimedia/mediawiki-extensions-UniversalLanguageSelector.git 2019.04"
 	"workdir/extensions/UserMerge https://github.com/wikimedia/mediawiki-extensions-UserMerge.git origin/REL1_31"
 	"workdir/extensions/WikiEditor https://github.com/wikimedia/mediawiki-extensions-WikiEditor.git origin/REL1_31"
 	"workdir/extensions/Wikibase https://github.com/wikimedia/mediawiki-extensions-Wikibase.git origin/REL1_31"

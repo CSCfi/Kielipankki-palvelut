@@ -177,47 +177,6 @@ $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
 
-
-// Q: Tarvitaanko näitä?
-/*$wgHooks['UserLoginComplete'][] = 'tUserLogin';
-function tUserLogin( &$user, &$_, &$query, &$params ) {
-	if ( !$query ) {
-		$query = 'Työryhmä X';
-		$params = '';
-	}
-	return true;
-}
-
-$wgHooks['LanguageGetNamespaces'][] = 'tNamespaces';
-function tNamespaces( &$list ) {
-
-	unset( $list[NS_HELP] );
-	unset( $list[NS_HELP_TALK] );
-
-	natcasesort( $list );
-	$basic =  $extra = array();
-	foreach ( $list as $key => $text ) {
-		if ( $key %2 === 1 ) continue;
-		if ( $key < 1000 ) {array(
-			$basic[$key] = $text;
-		} else {
-			$extra[$key] = $text;
-		}
-	}
-
-	foreach ( $list as $key => $text ) {
-		if ( $key %2 === 0 ) continue;
-		if ( $key < 1000 ) {
-			$basic[$key] = $text;
-		} else {
-			$extra[$key] = $text;
-		}
-	}
-
-	$list = $basic + $extra;
-	return true;
-}*/
-
 // Dynaaminen koodi
 $wgHooks['SkinAfterBottomScripts'][] = function ( $skin, &$text ) {
 	$text .= Html::inlineScript( <<<JS
@@ -337,6 +296,7 @@ wfAddTermNamespace( 1200, 'Taidehistoria' );
 wfAddTermNamespace( 1202, 'Yleinen_valtio-oppi' );
 wfAddTermNamespace( 1204, 'Arkkitehtuuri' );
 wfAddTermNamespace( 1206, 'Historia' );
+wfAddTermNamespace( 1208, 'Game_Studies' );
 
 
 $wgTermbankColors = [
@@ -356,6 +316,7 @@ $wgTermbankColors = [
 	'Filosofia' => '#d765bb',
 	'Folkloristiikka' => '#4c825d',
 	'Fysiikka' => '#4c825d', #025B5B ???
+	'Game_Studies' => '#ac3956',
 	'Geofysiikka' => '#025b5b',
 	'Geologia' => '#d27328',
 	'Historia' => '#db631f',
