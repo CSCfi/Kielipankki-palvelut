@@ -21,6 +21,8 @@ $smwgEnabledQueryDependencyLinksStore = true;
 
 require "$IP/extensions/MixedNamespaceSearchSuggestions/MixedNamespaceSearchSuggestions.php";
 wfLoadExtension( 'ParserFunctions' );
+$wgPFEnableStringFunctions = true;
+
 require "$IP/extensions/DeleteBatch/DeleteBatch.php";
 
 require "$IP/extensions/Translate/Translate.php";
