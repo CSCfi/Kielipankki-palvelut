@@ -10,7 +10,7 @@ REPOS=(
 	"workdir/extensions/CirrusSearch https://github.com/wikimedia/mediawiki-extensions-CirrusSearch.git origin/REL1_31"
 	"workdir/extensions/Cite https://github.com/wikimedia/mediawiki-extensions-Cite.git origin/REL1_31"
 	"workdir/extensions/CodeEditor https://github.com/wikimedia/mediawiki-extensions-CodeEditor.git origin/REL1_31"
-	"workdir/extensions/ConfirmEdit https://github.com/wikimedia/mediawiki-extensions-ConfirmEdit.git origin/master" #REL1_30 broken
+	"workdir/extensions/ConfirmEdit https://github.com/wikimedia/mediawiki-extensions-ConfirmEdit.git origin/REL1_31"
 	"workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git origin/REL1_31"
 	"workdir/extensions/Elastica https://github.com/wikimedia/mediawiki-extensions-Elastica.git origin/REL1_31"
 	"workdir/extensions/FileSystemImageServer https://github.com/Nikerabbit/mediawiki-extensions-FileSystemImageServer.git origin/master"
