@@ -351,7 +351,7 @@ def makeCore(new, doc, deleted):
         if coreschema(metadata):
             metadata = wrap(metadata)
             metadata = etree.tostring(metadata, encoding=str)
-            if opts.validate > 0: print('valid oai_dc:', new)
+            if opts.verbose and opts.validate > 0: print('valid oai_dc:', new)
         else:
             metadata = ''
             if opts.validate > 0:
@@ -377,7 +377,7 @@ def makeOLAC(new, doc, deleted):
         if olacschema(metadata):
             metadata = wrap(metadata)
             metadata = etree.tostring(metadata, encoding=str)
-            if opts.validate > 0: print('valid olac:', new)
+            if opts.verbose and opts.validate > 0: print('valid olac:', new)
         else:
             metadata = ''
             if opts.validate > 0:
@@ -400,7 +400,8 @@ def checkInfo(doc, identifier):
     deleted.'''
 
     if infoschema(doc) and opts.validate > 0:
-        print('valid meta:', identifier)
+        if opts.verbose:
+          print('valid meta:', identifier)
         return True
 
     if opts.validate > 0:
@@ -455,7 +456,7 @@ def makeCMDI(new, doc, deleted):
     else:
         if cmdischema[prefix](metadata):
             metadata = etree.tostring(wrap(metadata), encoding=str)
-            if opts.validate > 0: print('valid {}:'.format(prefix), new)
+            if opts.verbose and opts.validate > 0: print('valid {}:'.format(prefix), new)
         else:
             metadata = ''
             if opts.validate > 0:
@@ -489,10 +490,16 @@ def report_invalidity(log, doc):
         parts = StringIO(name).readlines() # sigh with stray newlines
         for line in [ part.rstrip() for part in parts ]:
             print('resource short name:', line)
+    for name in doc.xpath('descendant::info:identifier/text()',
+                          namespaces = metaschema):
+        parts = StringIO(name).readlines() # sigh with stray newlines
+        for line in [ part.rstrip() for part in parts ]:
+            print('ID:', line)
     lines = StringIO(str(log)).readlines() # ugh
     for line in [ s.rstrip() for s in lines ][:opts.validate]:
         print('log:', line)
     if len(lines) > opts.validate: print('log: ...')
+
 
 def main(see = ['']):
     current = os.path.join(dbparent, 'current')
@@ -533,6 +540,7 @@ def main(see = ['']):
     # set current -> newdb.name
     os.remove(current) # race condition!
     os.symlink(newdb.name, current)
+
 
 if __name__ == '__main__':
     from optparse import OptionParser
