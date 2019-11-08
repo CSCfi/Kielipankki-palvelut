@@ -21,7 +21,7 @@ clean () {
     # Sleep to give mongoose time to print its final message first. Is
     # that message in stdout because stderr was directed there when
     # mongoose was started? Inquiring minds are too lazy to find out.
-    kill $SERVER && sleep 1 && echo all done
+    [ -n "$SERVER" ] && kill $SERVER && sleep 1 && echo all done
     exit $1
 }
 
