@@ -22,6 +22,7 @@
 # some xxxxxx.
 
 from http.cookiejar import CookieJar
+from http import client
 from urllib.parse import urlencode
 from urllib.request import build_opener, HTTPCookieProcessor, Request
 from zipfile import ZipFile
@@ -44,6 +45,8 @@ def now():
 
 def login():
     '''Do protocol to access the META-SHARE node.'''
+
+    client.HTTPConnection.debuglevel = 0 # set to one for more info
     
     cookieJar = CookieJar()
     opener = build_opener(HTTPCookieProcessor(cookieJar))
