@@ -1,19 +1,18 @@
 ---
-# tasks file for Kaldi
+# tasks file for Pytorch
 
-- name: Clone Kaldi
+- name: Clone Pytorch
   git:
     repo:  "{{ release_url }}"
     dest: "{{ compile_root }}/pytorch/"
     remote: upstream
-    version: "{{ kaldi_version.githash }}"
+    version: "{{ pytorch_version.githash }}"
 
 
 - name: Make Tools
-  shell: "module load python-env/3.5.3 && python3 setup.py install"
+  shell: "module load {{ python3_module }} && python3 setup.py install"
   args:
     chdir: "{{ compile_root }}/pytorch"
-    creates: MAKE_TOOLS.log
 
 - name: Fix permissions (again)
   file:

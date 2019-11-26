@@ -1,6 +1,4 @@
 ---
-# defaults file for kaldi
+# defaults file for pytorth
 
-# Check http://kaldi-asr.org/doc/versions.html
 release_url: release_location: https://github.com/pytorch/pytorch.git 
-#install_dir: "{{ install_prefix }}//{{ kaldi_version.number }}"
