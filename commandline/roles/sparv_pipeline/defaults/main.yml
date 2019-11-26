@@ -9,3 +9,10 @@ release_url: "https://spraakbanken.gu.se/pub/sparv.dist/sparv_pipeline/{{ file_b
 src_root: "{{ compile_root }}"
 compile_dir: "{{ src_root }}/{{ file_basename }}"
 install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+
+kuhumcst_url: "https://github.com/kuhumcst/"
+kuhumcst_git_pkgs: 
+ - { name: "cstlemma",   githash: "266beae" }
+ - { name: "hashmap",    githash: "0fcb7a9" }
+ - { name: "letterfunc", githash: "20b5ae9" }
+ - { name: "parsesgml",  githash: "978bbb6" }
