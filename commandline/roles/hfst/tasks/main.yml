@@ -88,10 +88,6 @@
   args:
     chdir: "{{ hfst_compile_dir }}"
     creates: config.log
-
-- name: Set gcc module call
-  set_fact:
-    gcc_modcall: "{{ 'module load gcc/5.4.0 &&' if env_csc_hpc is defined else '' }}"
     
 - name: Running make 
   shell: bash --login -c "{{ gcc_modcall }} make -j8 > MAKE.log"
@@ -112,10 +108,6 @@
     mode: 0775
     recurse: no
     state: directory
-
-- name: Set python module call
-  set_fact:
-    python_modcall: "{{ 'module load swig && module load {{ python3_module }} &&' if env_csc_hpc is defined else '' }}"
 
 - name: Running make install
   shell: "make install prefix={{ hfst_install_dir }} > MAKE_INSTALL.log"

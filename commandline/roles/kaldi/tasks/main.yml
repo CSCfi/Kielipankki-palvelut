@@ -32,13 +32,8 @@
     force: yes
     version: "{{ kaldi_version.githash }}"
 
-- name: Set python call on HPC
-  set_fact:
-    py_modcall: "{{ 'module load python-env/2.7.10 &&' if env_csc_hpc is defined else '' }}"
-
-
 - name: Make Tools
-  shell: "{{ py_modcall }} make  > MAKE_TOOLS.log"
+  shell: "{{ python_modcall }} make  > MAKE_TOOLS.log"
   args:
     chdir: "{{ compile_root }}/kaldi/tools"
     #creates: MAKE_TOOLS.log

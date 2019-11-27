@@ -46,11 +46,6 @@
     regexp: "^LIBS = -lm -lpthread( -static -static-libgcc -static-libstdc\\+\\+)?$"
     line: "LIBS = -lm -lpthread"
 
-- name: Set gcc module call
-  set_fact:
-    gcc_modcall: "{{ 'module load gcc/7.3.0 &&' if env_csc_hpc is defined else '' }}"
-    
-
 - name: Running make 
   shell: bash --login -c "{{ gcc_modcall }} make -j8 > MAKE.log"
   args:
