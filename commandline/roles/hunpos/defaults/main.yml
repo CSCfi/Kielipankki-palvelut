@@ -4,7 +4,7 @@
 package_name: hunpos
 version: "{{ hunpos_version }}"
 file_basename: "hunpos-{{ hunpos_version }}-linux"
-release_url: "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/hunpos/{{ file_basename }}.tgz"
+release_url: "https://github.com/CSCfi/Kielipankki-palvelut/tree/KP-2679_puhti_install/commandline/roles/hunpos/files/{{ file_basename }}.tgz"
 src_root: "{{ compile_root }}"
 compile_dir: "{{ src_root }}/{{ file_basename }}"
 install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
