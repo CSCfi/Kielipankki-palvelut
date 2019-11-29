@@ -33,26 +33,26 @@
     version: "{{ kaldi_version.githash }}"
 
 - name: Make Tools
-  shell: "{{ python_modcall }} make  > MAKE_TOOLS.log"
+  shell: "make -j10  > MAKE_TOOLS.log"
   args:
     chdir: "{{ compile_root }}/kaldi/tools"
     #creates: MAKE_TOOLS.log
 
     
 - name: Run configure
-  shell: "{{ py_modcall }} ./configure --shared > CONFIGURE.log"
+  shell: "{{ compiler_call }} ./configure --mkl-root=$MKLROOT > CONFIGURE.log"
   args:
     chdir: "{{ compile_root }}/kaldi/src"
     #creates: CONFIGURE.log
 
-- name: Run make depend
-  shell: "{{ py_modcall }} make depend > MAKE_DEPEND.log"
+- name: Run make clean / depend
+  shell: "{{ compiler_call }} make {{ make_extra_flags }} clean depend > MAKE_DEPEND.log"
   args:
     chdir: "{{ compile_root }}/kaldi/src"
     #creates: MAKE_DEPEND.log
 
-- name: "Run make (-j 2)"
-  shell: "{{ py_modcall }} make -j2  > MAKE.log"
+- name: "Run make {{ make_extra_flags }}"
+  shell: "{{ compiler_call }} make {{ make_extra_flags }}  > MAKE.log"
   args:
     chdir: "{{ compile_root }}/kaldi/src"
     #creates: MAKE.log

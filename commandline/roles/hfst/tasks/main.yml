@@ -90,7 +90,7 @@
     creates: config.log
     
 - name: Running make 
-  shell: bash --login -c "{{ gcc_modcall }} make -j8 > MAKE.log"
+  shell: /bin/bash -lc "{{ gcc_modcall }} make -j8 > MAKE.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
     #creates: MAKE.log

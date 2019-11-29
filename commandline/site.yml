@@ -11,8 +11,8 @@
    - nasm_version: 2.14.02
    - finnish_tagtools_version: 1.4.0
    - kaldi_version:
-      number: 5.2.86
-      githash: 53e5e12
+      number: 5.5.219
+      githash:  06bf62a57
    - hunpos_version: 1.0
    - sparv_pipeline_version: 2.0_MIT_2017-10-23
 #  - ffmpeg_version: see roles/ffmpeg/defaults/main.yml
@@ -29,8 +29,9 @@
    - { role: check-hfst, tags: check-hfst }
    - { role: finnish-parse, branch: master, tags: finnish-parse }
    - { role: praat, tags: praat }
-   - { role: nasm, tags: nasm }
-   - { role: ffmpeg, branch: master, tags: ffmpeg }
+# disabled, managed with Spack now
+#   - { role: nasm, tags: nasm }
+#   - { role: ffmpeg, branch: master, tags: ffmpeg }
    - { role: finnish-tagtools, tags: finnish-tagtools }
    - { role: kaldi, tags: kaldi }
    - { role: udpipe, tags: udpipe }

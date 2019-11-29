@@ -40,6 +40,7 @@
     chdir: "{{ compile_dir }}"
 #    creates: model/fin_model.marmot
 
+# disabled:
 - name: Add module load python-env/2.7.10
   lineinfile:
     dest: "{{ compile_dir }}/parser_wrapper.sh"
@@ -47,7 +48,7 @@
     regexp: module load python-env/2.7.10
     line: module load python-env/2.7.10
     state: present
-  when: not is_admin
+  when: false #not is_admin
 
 - name: Run quick test, creates pyc as side effect
   shell: "echo saunoja |./parser_wrapper.sh|grep sauna"
