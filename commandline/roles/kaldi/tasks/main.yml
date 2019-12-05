@@ -33,14 +33,14 @@
     version: "{{ kaldi_version.githash }}"
 
 - name: Make Tools
-  shell: "make -j10  > MAKE_TOOLS.log"
+  shell: "{{ compiler_call }} make {{ make_extra_flags }}  > MAKE_TOOLS.log"
   args:
     chdir: "{{ compile_root }}/kaldi/tools"
     #creates: MAKE_TOOLS.log
 
     
 - name: Run configure
-  shell: "{{ compiler_call }} ./configure --mkl-root=$MKLROOT > CONFIGURE.log"
+  shell: "{{ compiler_call }} ./configure --shared --mkl-root=$MKLROOT > CONFIGURE.log"
   args:
     chdir: "{{ compile_root }}/kaldi/src"
     #creates: CONFIGURE.log
