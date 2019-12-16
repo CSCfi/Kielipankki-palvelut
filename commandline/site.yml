@@ -13,6 +13,7 @@
    - kaldi_version:
       number: 5.5.219
       githash:  06bf62a57
+   - pytorch_version: v1.3.1
    - hunpos_version: 1.0
    - sparv_pipeline_version: 2.0_MIT_2017-10-23
 #  - ffmpeg_version: see roles/ffmpeg/defaults/main.yml
@@ -37,6 +38,7 @@
    - { role: udpipe, tags: udpipe }
    - { role: hunpos, tags: hunpos }
    - { role: sparv_pipeline, tags: sparv_pipeline }
+   - { role: pytorch, tags: pytorch }
 
 
 

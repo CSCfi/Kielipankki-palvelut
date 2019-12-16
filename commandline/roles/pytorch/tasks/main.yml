@@ -5,8 +5,7 @@
   git:
     repo:  "{{ release_url }}"
     dest: "{{ compile_root }}/pytorch/"
-    remote: upstream
-    version: "{{ pytorch_version.githash }}"
+    version: "{{ pytorch_version }}"
 
 
 - name: Make Tools
