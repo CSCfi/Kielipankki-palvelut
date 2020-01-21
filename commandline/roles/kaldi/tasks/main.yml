@@ -37,7 +37,6 @@
   args:
     chdir: "{{ compile_root }}/kaldi/tools"
     #creates: MAKE_TOOLS.log
-
     
 - name: Run configure
   shell: "{{ compiler_call }} ./configure --shared --mkl-root=$MKLROOT > CONFIGURE.log"
