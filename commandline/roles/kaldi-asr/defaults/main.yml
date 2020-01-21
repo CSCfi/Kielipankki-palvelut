@@ -1,0 +1,13 @@
+---
+# defaults file for kaldi
+
+# Check http://kaldi-asr.org/doc/versions.html
+release_url: git@github.com:aalto-speech/kaldi_aalto_finnish.git
+install_dir: "{{ install_prefix }}/ling/kaldi-asr/{{ kaldi_asr_version.number }}"
+
+build: "{{ install_dir }}/build"
+ivec:   "{{ build }}/ivec/fi/all-lstm"
+models: "{{ build }}/models/fi/all-lstm"
+graph: "{{ models }}/aalto-speech"
+bin:  "{{ build }}/bin"
+conf: "{{ build }}/conf"

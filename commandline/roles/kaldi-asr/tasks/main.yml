@@ -1,0 +1,50 @@
+---
+# tasks file for Aalto's kaldi-asr
+
+- name: Clone Kaldi-asr
+  git:
+    repo:  "{{ release_url }}"
+    dest: "{{ compile_root }}/kaldi-asr/"
+    remote: upstream
+    force: yes
+    version: "{{ kaldi_asr_version.githash }}"
+
+- name: Create installdir structure
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+   - "{{ bin }}"
+   - "{{ build }}"
+   - "{{ ivec }}"
+   - "{{ models }}"
+   - "{{ graph }}"
+   - "{{ conf }}"
+
+
+- name: Copy IVECs
+  copy: 
+    src: "{{ compile_root }}/kaldi-asr/exp/aalto_finnish/ivecs/extractor/{{ item }}"
+    dest: "{{ ivec }}"
+    remote_src: yes
+  loop:
+    - final.dubm
+    - final.ie
+    - final.ie.id
+    - final.mat
+    - global_cmvn.stats
+    - online_cmvn.conf
+    - splice_opts 
+
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ install_dir }}/.."
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  when: shared_group is defined
+
+
+
+
+
