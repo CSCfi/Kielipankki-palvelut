@@ -34,8 +34,75 @@
     - final.mat
     - global_cmvn.stats
     - online_cmvn.conf
-    - splice_opts 
+    - splice_opts
 
+- name: Copy configuration files
+  copy: 
+    src: "{{ compile_root }}/kaldi-asr/{{ item }}"
+    dest: "{{ conf }}"
+    remote_src: yes
+  loop:
+    - exp/aalto_finnish/ivecs/extractor/ivector_extractor.conf
+    - conf/mfcc_hires.conf
+
+- name: CHECK AV CONVERTERS, DIARIZATION
+  debug:
+    msg: "See comments below this task"
+
+#  AV converters
+#  replace by ffmpeg? Would need kaldi-asr fixes
+
+# cp /appl/ling/kaldi-asr/1.0/build/bin/sox $BUILD/bin
+# cp /appl/ling/kaldi-asr/1.0/build/bin/avconv $BUILD/bin
+# cp /appl/ling/kaldi-asr/1.0/build/bin/youtube-dl $BUILD/bin
+
+# Diarization
+#
+# Old, need to be copied so the script does not crash, not really needed and superseeded by newer
+# methods. kaldi-asr needs to be adapted before removing those
+#cp -a /appl/ling/kaldi-asr/1.0/build/aalto-speaker-diarization $BUILD
+#cp -a /appl/ling/kaldi-asr/1.0/build/LIUM $BUILD
+
+- name: "Link to Kaldi {{ kaldi_version.number }}"
+  file:
+    src: "{{ install_prefix }}/ling/kaldi/{{ kaldi_version.number }}/build/egs/wsj/s5/{{ item }}"
+    dest: "{{ build }}/{{ item }}"
+    state: link
+  loop:
+    - steps
+    - utils
+
+- name: Copy Models
+  copy: 
+    src: "{{ compile_root }}/kaldi-asr/exp/aalto_finnish/{{ item }}"
+    dest: "{{ models }}"
+    remote_src: yes
+  loop:
+    - final.mdl
+    - cmvn_opts
+    - frame_subsampling_factor
+# Juho needs to find:
+#   - lda.mat
+#   - tree
+
+    
+- name: Copy local files
+  copy:
+    src: "{{ item.name }}"
+    dest: "{{ item.dest }}"
+    remote_src: no
+  loop:
+    - {name: slurm.conf, dest: "{{ conf }}"  }
+    - {name: path.sh,    dest: "{{ build }}"  }
+    - {name: kaldi-rec,  dest: "{{ bin }}"  }
+
+- name: Copy GRAPH
+  copy:
+    src: "{{ compile_root }}/kaldi-asr/exp/aalto_finnish/graph_morph_v_n-gram/"
+    dest: "{{ graph }}"
+    remote_src: yes
+      
+    
 - name: Fix permissions (if shared group is set)
   file:
     path: "{{ install_dir }}/.."
