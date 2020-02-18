@@ -52,14 +52,16 @@
 #  AV converters
 #  replace by ffmpeg? Would need kaldi-asr fixes
 
-# cp /appl/ling/kaldi-asr/1.0/build/bin/sox $BUILD/bin
-# cp /appl/ling/kaldi-asr/1.0/build/bin/avconv $BUILD/bin
-# cp /appl/ling/kaldi-asr/1.0/build/bin/youtube-dl $BUILD/bin
+# cp /appl/ling/kaldi-asr/1.0/build/bin/sox $BUILD/bin -> installed on Puhti as /usr/bin/sox via yum
+# cp /appl/ling/kaldi-asr/1.0/build/bin/avconv $BUILD/bin -> converts from somethig to wav. (see convert_to_target_wav function) ffmpeg can do this.
+# cp /appl/ling/kaldi-asr/1.0/build/bin/youtube-dl $BUILD/bin -> optional
 
 # Diarization
 #
 # Old, need to be copied so the script does not crash, not really needed and superseeded by newer
 # methods. kaldi-asr needs to be adapted before removing those
+# we need to remove options from script
+
 #cp -a /appl/ling/kaldi-asr/1.0/build/aalto-speaker-diarization $BUILD
 #cp -a /appl/ling/kaldi-asr/1.0/build/LIUM $BUILD
 
@@ -72,15 +74,15 @@
     - steps
     - utils
 
-- name: Copy Models
+- name: Copy Models 1
   copy: 
     src: "{{ compile_root }}/kaldi-asr/exp/aalto_finnish/{{ item }}"
     dest: "{{ models }}"
     remote_src: yes
   loop:
-    - final.mdl
     - cmvn_opts
     - frame_subsampling_factor
+
 # Juho needs to find:
 #   - lda.mat
 #   - tree
@@ -95,6 +97,8 @@
     - {name: slurm.conf, dest: "{{ conf }}"  }
     - {name: path.sh,    dest: "{{ build }}"  }
     - {name: kaldi-rec,  dest: "{{ bin }}"  }
+    - {name: final.mdl,  dest: "{{ models }}"  }
+    - {name: HCLG.fst,   dest: "{{ graph }}"  }
 
 - name: Copy GRAPH
   copy:
