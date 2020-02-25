@@ -10,6 +10,8 @@ $wgDBname = '{{ instance.value.db.database }}';
 $wgLogo = '/logo.png';
 $wgGroupPermissions['*']['createaccount'] = false;
 
+$wgEnotifWatchlist = true;
+
 wfLoadSkin( 'Vector' );
 
 enableSemantics( $VHOST );
