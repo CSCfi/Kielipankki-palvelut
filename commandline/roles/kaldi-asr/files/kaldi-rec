@@ -783,6 +783,11 @@ def main():
     os.system(rootdir+"steps/compute_cmvn_stats.sh "+data_folder_path+" "+log_path+" "+cmvn_path)
     os.system(rootdir+"steps/online/nnet2/extract_ivectors_online.sh --nj "+str(number_of_speakers)+" "+data_folder_path+" "+IVEC_EXTRACTOR+" "+ivectors_dir)
 
+    # FIXME: This should be fixed by modifying a local copy of decode.sh
+    # link model, opts
+    os.system("ln -sf "+AM_MODEL+"/cmvn_opts  "+data_folder_path)
+    os.system("ln -sf "+AM_MODEL+"/final.mdl  "+data_folder_path)
+  
     #Recognize 
     decoding_output_path = data_folder_path+"/decode_output"
     print("!!! DEBUG")
