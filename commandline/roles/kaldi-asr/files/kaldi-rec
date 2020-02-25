@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Overall settings and paths to data files
-rootdir = '/appl/ling/kaldi-asr/2.0/build/'
-#rootdir = '/homeappl/home/ammansik/work/kaldi-asr/'
+rootdir = '/appl/soft/ling/kaldi-asr/2.0/build/'
 import argparse
 import math
 import os
@@ -274,7 +273,7 @@ def create_data_folder(target_wav_filename,seg_filenames):
             spk2utt[speaker] = file_id+" "
     spk2utt_filename = kaldi_data_dir+"/spk2utt"
     spk2utt_file = open(spk2utt_filename,"w")
-    for speaker,utt in spk2utt.iteritems():
+    for speaker,utt in spk2utt.items():
         spk2utt_file.write(speaker+" "+utt.strip()+"\n")
     spk2utt_file.close()
     
@@ -339,9 +338,9 @@ def alignment_to_milliseconds(rfile):
 
 
 def write_elan(media_file,rfile,outf):
-    print "Writing ELAN"
-    print media_file
-    print guess_type(media_file)[0]
+    print ( "Writing ELAN" )
+    print ( media_file )
+    print ( guess_type(media_file)[0] )
     media_type = guess_type(media_file)[0]
     if media_type == None:
         media_type = ''
@@ -745,7 +744,7 @@ def main():
         wav_filename = args['input'][0]
     asr_model_name = args['model']
     asr_model = asr_models[asr_model_name]
-    SOX_PATH = rootdir+"bin/sox"
+    SOX_PATH = "/usr/bin/sox"
     AM_MODEL = rootdir+asr_model['am-model']
     IVEC_EXTRACTOR = rootdir+asr_model['ivec-extractor']
     DECODING_GRAPH = rootdir+asr_model['decoding-graph']

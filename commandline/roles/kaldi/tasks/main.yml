@@ -37,9 +37,16 @@
   args:
     chdir: "{{ compile_root }}/kaldi/tools"
     #creates: MAKE_TOOLS.log
+
+- name: Fix incorrect MIN_GCC (7>8) for Cuda in Kaldi 5.2.x
+  replace:
+    path:  "{{ compile_root }}/kaldi/src/configure"
+    regexp: 'MIN_UNSUPPORTED_GCC_VER_NUM=70000'
+    replace: 'MIN_UNSUPPORTED_GCC_VER_NUM=80000'
+  when: kaldi_version.number is regex('^5\.2\.\d+') 
     
 - name: Run configure
-  shell: "{{ compiler_call }} ./configure --shared --mkl-root=$MKLROOT > CONFIGURE.log"
+  shell: "{{ compiler_call }} ./configure --shared --mkl-root=$MKLROOT --cudatk-dir=$CUDA_INSTALL_ROOT > CONFIGURE.log"
   args:
     chdir: "{{ compile_root }}/kaldi/src"
     #creates: CONFIGURE.log

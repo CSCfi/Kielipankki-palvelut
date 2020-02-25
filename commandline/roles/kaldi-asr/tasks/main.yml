@@ -87,6 +87,18 @@
 #   - lda.mat
 #   - tree
 
+- name: Copy graph files
+  copy:
+    src: "{{ compile_root }}/kaldi-asr/exp/aalto_finnish/graph_morph_v_n-gram/{{ item }}"
+    dest: "{{ graph }}"
+    remote_src: yes
+  loop:
+    - disambig_tid.int
+    - num_pdfs
+    - phones
+    - phones.txt
+    - words.txt
+
     
 - name: Copy local files
   copy:
@@ -100,16 +112,12 @@
     - {name: final.mdl,  dest: "{{ models }}"  }
     - {name: HCLG.fst,   dest: "{{ graph }}"  }
 
-- name: Copy GRAPH
-  copy:
-    src: "{{ compile_root }}/kaldi-asr/exp/aalto_finnish/graph_morph_v_n-gram/"
-    dest: "{{ graph }}"
-    remote_src: yes
+
       
     
 - name: Fix permissions (if shared group is set)
   file:
-    path: "{{ install_dir }}/.."
+    path: "{{ install_dir }}"
     group: "{{ shared_group }}"
     mode: "g+rwX,o+rX"
     recurse: yes
