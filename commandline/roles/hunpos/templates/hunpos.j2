@@ -1,0 +1,3 @@
+#!/bin/sh
+# wrapper for {{ item }}:
+{{ lib_dir }}/ld-linux.so.2 --library-path {{ lib_dir }}  {{ lib_dir }}/{{ item }} $@
