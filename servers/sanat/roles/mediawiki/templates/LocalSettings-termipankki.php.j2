@@ -177,47 +177,6 @@ $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
 
-
-// Q: Tarvitaanko näitä?
-/*$wgHooks['UserLoginComplete'][] = 'tUserLogin';
-function tUserLogin( &$user, &$_, &$query, &$params ) {
-	if ( !$query ) {
-		$query = 'Työryhmä X';
-		$params = '';
-	}
-	return true;
-}
-
-$wgHooks['LanguageGetNamespaces'][] = 'tNamespaces';
-function tNamespaces( &$list ) {
-
-	unset( $list[NS_HELP] );
-	unset( $list[NS_HELP_TALK] );
-
-	natcasesort( $list );
-	$basic =  $extra = array();
-	foreach ( $list as $key => $text ) {
-		if ( $key %2 === 1 ) continue;
-		if ( $key < 1000 ) {array(
-			$basic[$key] = $text;
-		} else {
-			$extra[$key] = $text;
-		}
-	}
-
-	foreach ( $list as $key => $text ) {
-		if ( $key %2 === 0 ) continue;
-		if ( $key < 1000 ) {
-			$basic[$key] = $text;
-		} else {
-			$extra[$key] = $text;
-		}
-	}
-
-	$list = $basic + $extra;
-	return true;
-}*/
-
 // Dynaaminen koodi
 $wgHooks['SkinAfterBottomScripts'][] = function ( $skin, &$text ) {
 	$text .= Html::inlineScript( <<<JS
@@ -337,7 +296,21 @@ wfAddTermNamespace( 1200, 'Taidehistoria' );
 wfAddTermNamespace( 1202, 'Yleinen_valtio-oppi' );
 wfAddTermNamespace( 1204, 'Arkkitehtuuri' );
 wfAddTermNamespace( 1206, 'Historia' );
-
+wfAddTermNamespace( 1208, 'Game_Studies' );
+wfAddTermNamespace( 1210, 'Elintarviketieteet' );
+wfAddTermNamespace( 1212, 'Kestävyystiede'  );
+wfAddTermNamespace( 1214, 'Sukupuolentutkimus' );
+wfAddTermNamespace( 1216, 'Maisemantutkimus' );
+wfAddTermNamespace( 1218, 'Tiedeneuvonta' );
+wfAddTermNamespace( 1220, 'Tilastotiede' );
+wfAddTermNamespace( 1222, 'Kemia' );
+wfAddTermNamespace( 1224, 'Lääketiede' );
+wfAddTermNamespace( 1226, 'Hälso-_och_sjukvård' );
+wfAddTermNamespace( 1228, 'Terveystieteet' );
+wfAddTermNamespace( 1230, 'Maantiede' );
+wfAddTermNamespace( 1232, 'Kulttuuriantropologia' );
+wfAddTermNamespace( 1234, 'Uskontotiede' );
+wfAddTermNamespace( 1236, 'Selkokielen_tutkimus' );
 
 $wgTermbankColors = [
 #	'Avoin_tiede' => '#fff',
@@ -346,6 +319,7 @@ $wgTermbankColors = [
 	'Biologia' => '#008000',
 	'Biotekniikka' => '#008000',
 	'Clean_Energy_Research' => '#3bc0c3',
+	'Elintarviketieteet' => '#46868a',
 	'Elokuva-_ja_televisiotutkimus' => '#ec6406',
 	'Eläinlääketiede'=> '#d1ab4d',
 	'Eläintiede'=> '#8b4513',
@@ -356,33 +330,47 @@ $wgTermbankColors = [
 	'Filosofia' => '#d765bb',
 	'Folkloristiikka' => '#4c825d',
 	'Fysiikka' => '#4c825d', #025B5B ???
+	'Game_Studies' => '#ac3956',
 	'Geofysiikka' => '#025b5b',
 	'Geologia' => '#d27328',
 	'Historia' => '#db631f',
+	'Hälso-_och_sjukvård' => '#50a18a',
 	'Ilmatiede' => '#2859a8',
 	'Kasvatustieteet' => '#46176f',
 	'Kasvitiede' => '#27b600',
+	'Kemia'  => '#9c8a05',
+	'Kestävyystiede' => '#4f5e3b',
 	'Kieliteknologia' => '#4c00bf',
 	'Kielitiede' => '#3e7fdb',
 	'Kirjallisuudentutkimus' => '#990033',
 	'Kosmologia' => '#263058',
+	'Kulttuuriantropologia' => '#9e050a',
 	'Kulttuurintutkimus' => '#2b2370',
 	'Käännöstiede' => '#4f7e8f',
 	'Language_Technology' => '#4c00bf',
+	'Lääketiede' => '#0d7558',
+	'Maantiede' => '#6e2d0c',
+	'Maisemantutkimus' => '#025c47',
 	'Mikrobiologia' => '#656096', #D765BB ???
 	'Oikeustiede' => '#5a2336',
 	'Pelitutkimus' => '#cb5b1b',
 	'Perinnöntutkimus' => '#170d9c',
+	'Selkokielen_tutkimus' => '#3a4c69',
 	'Semiotiikka' => '#9900ff',
 	'Sienitiede' => '#55641c',
 	'Sosiaalipsykologia' => '#dc143c',
 	'Språkvetenskap' => '#3e7fdb',
+	'Sukupuolentutkimus' => '#ab034f',
 	'Taidehistoria' => '#cd1039',
 	'Taloustiede' => '#1f7fd0', #252525 ???
 	'Tekstuaalitieteet' => '#598243',
 	'Terminologiako_bankos' => '#3e7fdb',
 	'Terminologiaoppi'=> '#0000df',
+	'Terveystieteet' => '#15ad87',
+	'Tiedeneuvonta' => '#6e464a',
+	'Tilastotiede' => '#a86534',
 	'Tähtitiede' => '#263058',
+	'Uskontotiede' => '#794d8a',
 	'Yleinen_valtio-oppi' => '#853c3c',
 	'Ympäristötieteet' => '#347b9a',
 	#'Kliininen_neurofysiologia' => '#fff',

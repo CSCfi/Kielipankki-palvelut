@@ -2,8 +2,11 @@
 	"extra": {
 		"merge-plugin": {
 			"include": [
-				"extensions/*/composer.json",
-				"skins/*/composer.json"
+				"extensions/Elastica/composer.json",
+				"extensions/Flow/composer.json",
+				"extensions/Maps/composer.json",
+				"extensions/SemanticMediaWiki/composer.json",
+				"extensions/Wikibase/composer.json"
 			]
 		}
 	}
