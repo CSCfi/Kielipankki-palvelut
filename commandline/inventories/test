@@ -6,7 +6,7 @@ taito:
 
 puhti:
   hosts:
-    puhti-login1.csc.fi:
+    puhti-login3.csc.fi:
       install_prefix: /users/{{ansible_user_id}}/ansible/install
       is_admin: false
       swig3_as_module: yes

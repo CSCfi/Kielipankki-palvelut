@@ -40,14 +40,13 @@
     chdir: "{{ compile_dir }}"
 #    creates: model/fin_model.marmot
 
-- name: Add module load python-env/2.7.10
+- name: point python to /usr/bin on Puhti
   lineinfile:
     dest: "{{ compile_dir }}/parser_wrapper.sh"
     insertafter: "#!/bin/bash"
-    regexp: module load python-env/2.7.10
-    line: module load python-env/2.7.10
+    line: "export PATH=/usr/bin/:$PATH"
     state: present
-  when: not is_admin
+
 
 - name: Run quick test, creates pyc as side effect
   shell: "echo saunoja |./parser_wrapper.sh|grep sauna"

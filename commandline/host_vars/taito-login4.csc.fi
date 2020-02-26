@@ -1,5 +1,5 @@
 is_admin: false
-python3_module: python-env/3.4.0
+python3_module: python-env/3.5.3
 env_csc_hpc: true
 shared_group: csc
 

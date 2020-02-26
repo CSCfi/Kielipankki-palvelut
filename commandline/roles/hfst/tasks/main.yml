@@ -88,13 +88,9 @@
   args:
     chdir: "{{ hfst_compile_dir }}"
     creates: config.log
-
-- name: Set gcc module call
-  set_fact:
-    gcc_modcall: "{{ 'module load gcc/4.8.2 &&' if env_csc_hpc is defined else '' }}"
     
 - name: Running make 
-  shell: bash --login -c "{{ gcc_modcall }} make -j8 > MAKE.log"
+  shell: /bin/bash -lc "{{ gcc_modcall }} make -j8 > MAKE.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
     #creates: MAKE.log
@@ -113,10 +109,6 @@
     recurse: no
     state: directory
 
-- name: Set python module call
-  set_fact:
-    python_modcall: "{{ 'module load swig && module load {{python3_module}} &&' if env_csc_hpc is defined else '' }}"
-
 - name: Running make install
   shell: "make install prefix={{ hfst_install_dir }} > MAKE_INSTALL.log"
   args:
@@ -124,7 +116,7 @@
     creates: "{{ hfst_install_dir }}/bin/hfst-lookup"
 
 - name: Building python module
-  shell: bash --login -c  "{{ python_modcall }}python3 setup.py build_ext --inplace"
+  shell: bash --login -c  "{{ python_modcall }}python3 setup.py build_ext --inplace --local-hfst"
   args:
     chdir: "{{ hfst_compile_dir }}/python"
 
@@ -134,7 +126,7 @@
     chdir: "{{ hfst_compile_dir }}/python"
 
 - name: Checking python module
-  shell: bash --login -c  "./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python3.4/site-packages"
+  shell: bash --login -c  "./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages"
   args:
     chdir: "{{ hfst_compile_dir }}/python/test"
   environment:

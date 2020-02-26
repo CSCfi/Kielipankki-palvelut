@@ -1,0 +1,129 @@
+---
+# tasks file for Aalto's kaldi-asr
+
+- name: Clone Kaldi-asr
+  git:
+    repo:  "{{ release_url }}"
+    dest: "{{ compile_root }}/kaldi-asr/"
+    remote: upstream
+    force: yes
+    version: "{{ kaldi_asr_version.githash }}"
+
+- name: Create installdir structure
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+   - "{{ bin }}"
+   - "{{ build }}"
+   - "{{ ivec }}"
+   - "{{ models }}"
+   - "{{ graph }}"
+   - "{{ conf }}"
+
+
+- name: Copy IVECs
+  copy: 
+    src: "{{ compile_root }}/kaldi-asr/exp/aalto_finnish/ivecs/extractor/{{ item }}"
+    dest: "{{ ivec }}"
+    remote_src: yes
+  loop:
+    - final.dubm
+    - final.ie
+    - final.ie.id
+    - final.mat
+    - global_cmvn.stats
+    - online_cmvn.conf
+    - splice_opts
+
+- name: Copy configuration files
+  copy: 
+    src: "{{ compile_root }}/kaldi-asr/{{ item }}"
+    dest: "{{ conf }}"
+    remote_src: yes
+  loop:
+    - exp/aalto_finnish/ivecs/extractor/ivector_extractor.conf
+    - conf/mfcc_hires.conf
+
+- name: CHECK AV CONVERTERS, DIARIZATION
+  debug:
+    msg: "See comments below this task"
+
+#  AV converters
+#  replace by ffmpeg? Would need kaldi-asr fixes
+
+# cp /appl/ling/kaldi-asr/1.0/build/bin/sox $BUILD/bin -> installed on Puhti as /usr/bin/sox via yum
+# cp /appl/ling/kaldi-asr/1.0/build/bin/avconv $BUILD/bin -> converts from somethig to wav. (see convert_to_target_wav function) ffmpeg can do this.
+# cp /appl/ling/kaldi-asr/1.0/build/bin/youtube-dl $BUILD/bin -> optional
+
+# Diarization
+#
+# Old, need to be copied so the script does not crash, not really needed and superseeded by newer
+# methods. kaldi-asr needs to be adapted before removing those
+# we need to remove options from script
+
+#cp -a /appl/ling/kaldi-asr/1.0/build/aalto-speaker-diarization $BUILD
+#cp -a /appl/ling/kaldi-asr/1.0/build/LIUM $BUILD
+
+- name: "Link to Kaldi {{ kaldi_version.number }}"
+  file:
+    src: "{{ install_prefix }}/ling/kaldi/{{ kaldi_version.number }}/build/egs/wsj/s5/{{ item }}"
+    dest: "{{ build }}/{{ item }}"
+    state: link
+  loop:
+    - steps
+    - utils
+
+- name: Copy Models 1
+  copy: 
+    src: "{{ compile_root }}/kaldi-asr/exp/aalto_finnish/{{ item }}"
+    dest: "{{ models }}"
+    remote_src: yes
+  loop:
+    - cmvn_opts
+    - frame_subsampling_factor
+
+# Juho needs to find:
+#   - lda.mat
+#   - tree
+
+- name: Copy graph files
+  copy:
+    src: "{{ compile_root }}/kaldi-asr/exp/aalto_finnish/graph_morph_v_n-gram/{{ item }}"
+    dest: "{{ graph }}"
+    remote_src: yes
+  loop:
+    - disambig_tid.int
+    - num_pdfs
+    - phones
+    - phones.txt
+    - words.txt
+
+    
+- name: Copy local files
+  copy:
+    src: "{{ item.name }}"
+    dest: "{{ item.dest }}"
+    remote_src: no
+  loop:
+    - {name: slurm.conf, dest: "{{ conf }}"  }
+    - {name: path.sh,    dest: "{{ build }}"  }
+    - {name: kaldi-rec,  dest: "{{ bin }}"  }
+    - {name: final.mdl,  dest: "{{ models }}"  }
+    - {name: HCLG.fst,   dest: "{{ graph }}"  }
+
+
+      
+    
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ install_dir }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  when: shared_group is defined
+
+
+
+
+

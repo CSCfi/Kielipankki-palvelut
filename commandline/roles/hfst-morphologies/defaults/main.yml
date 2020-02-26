@@ -2,13 +2,9 @@
 # defaults file for hfst-morphologies
 
 package_name: hfst
-
 release_url: "https://korp.csc.fi/download/hfst-morphologies/"
-
 version: "{{ hfst_version }}"
-
-temp_dir: /tmp/{{ ansible_user_id }}/ansible
-
+temp_dir: "{{ compile_root }}"
 hfst_install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
 
 morphologies:

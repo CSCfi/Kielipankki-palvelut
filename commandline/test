@@ -5,5 +5,8 @@
 [taito]
 taito-login4.csc.fi install_prefix=/tmp/{{ansible_user_id}}/ansible/install
 
+[puhti]
+puhti-login3.csc.fi install_prefix=/local_scratch/{{ansible_user_id}}/ansible/install
+
 [abel]
 abel.uio.no install_prefix=/tmp/{{ansible_user_id}}/ansible/install

@@ -4,3 +4,6 @@
 # Check http://kaldi-asr.org/doc/versions.html
 release_url: https://github.com/kaldi-asr/kaldi.git
 install_dir: "{{ install_prefix }}/ling/kaldi/{{ kaldi_version.number }}"
+# use intel here
+compiler_call: ". /appl/profile/zz-csc-env.sh && module purge && module load gcc/8.3.0  cuda/10.1.168 hpcx-mpi/2.4.0 intel-mkl/2019.0.4-omp &&"
+make_extra_flags: "-j"
