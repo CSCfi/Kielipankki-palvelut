@@ -10,13 +10,15 @@ $wgDBname = '{{ instance.value.db.database }}';
 $wgLogo = '/logo.png';
 $wgGroupPermissions['*']['createaccount'] = false;
 
+$wgEnotifWatchlist = true;
+
 wfLoadSkin( 'Vector' );
 
 enableSemantics( $VHOST );
 wfLoadExtension( 'PageForms' );
 $wgPageFormsRedLinksCheckOnlyLocalProps = true;
 $wgPageFormsRenameEditTabs = true;
-$smwgQMaxInlineLimit = $wgCategoryPagingLimit = 250;
+$smwgQMaxInlineLimit = $wgCategoryPagingLimit = 500;
 $smwgEnabledQueryDependencyLinksStore = true;
 
 require "$IP/extensions/MixedNamespaceSearchSuggestions/MixedNamespaceSearchSuggestions.php";

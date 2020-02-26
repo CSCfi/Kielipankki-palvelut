@@ -1,5 +1,5 @@
 # compile in fast directory
-compile_root: /local_scratch/matthies/
+compile_root: "/local_scratch/{{ ansible_user_id }}"
 is_admin: false
 python3_module: python-data/3.7.3-1
 python_modcall: ". /appl/profile/zz-csc-env.sh && module load {{python3_module}} &&"
