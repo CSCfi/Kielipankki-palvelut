@@ -10,20 +10,18 @@
     - "{{ src_root }}"
     - "{{ install_dir }}/bin"
 
-- name: Get source
+- name: Copy binaries and libs
   unarchive:
-    src: "{{ release_url }}"
-    dest: "{{ src_root }}"
-    remote_src: yes
+    src: "{{ zipfilename }}"
+    dest: "{{ install_dir }}"
 
 
-- name: Copy hunpos to install_dir
-  copy:
-    remote_src: true
-    src: "{{ compile_dir }}/{{ item }}"
-    dest: "{{ install_dir }}/bin/"
+- name: create wrapper scripts
+  template:
+    src: hunpos.j2
+    dest: "{{ install_dir }}/bin/{{ item }}"
     mode: 0755
-  with_items:
+  loop:
     - hunpos-tag
     - hunpos-train
 
