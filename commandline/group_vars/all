@@ -1,2 +1,2 @@
-# compile in fast /tmp
-compile_root: /tmp/{{ ansible_user_id }}/ansible
+python_modcall: ""
+gcc_modcall: ""
