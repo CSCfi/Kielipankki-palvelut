@@ -59,7 +59,7 @@ function lfAddNamespace( $id, $name ) {
 }
 
 lfAddNamespace( 1200, 'Lud' );
-require "$IP/extensions/Lud/Lud.php";
+wfLoadExtension( 'Lud' );
 
 lfAddNamespace( 1202, 'WordNet' );
 require "$IP/extensions/WordNet/WordNet.php";
