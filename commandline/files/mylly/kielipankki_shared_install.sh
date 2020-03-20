@@ -1,3 +1,4 @@
 # get and extract tar file
-wget -P /tmp https://korp.csc.fi:/download/.mylly/kielipankki_tools.tar.bz2
-tar xfjv /tmp/kielipankki_tools.tar.bz2 -C /appl
+FILE=kielipankki_tools.tar.lz4
+wget -P /tmp https://korp.csc.fi:/download/.mylly/$FILE
+cat /tmp/$FILE | lz4 -d | tar xfv - -C /appl
