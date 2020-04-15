@@ -1,0 +1,36 @@
+---
+# tasks file for Pytorch
+
+- name: Create directories
+  file:
+    path: "{{ install_dir }}/{{ item }}"
+    state: directory
+    mode: 0775
+  loop: "{{ bert_models }}"
+  
+
+- name: Download model files
+  get_url:
+    url:  "{{ release_url }}/{{ item.0 }}/{{ item.1 }}"
+    dest: "{{ install_dir }}/{{ item.0 }}"
+  with_nested:
+    - "{{ bert_models }}"
+    - "{{ bert_files }}"
+
+- name: Copy documentation
+  copy:
+    src: "{{ item }}"
+    dest: "{{ install_dir }}"
+  loop:
+    - finbert_example.py
+    - README.txt
+
+- name: Fix permissions (again)
+  file:
+    path: "{{ install_dir }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  when: shared_group is defined
+
+

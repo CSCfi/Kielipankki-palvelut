@@ -1,0 +1,17 @@
+# This very simple example loads the models, tokenizes a sentence and decodes the same sentence.
+
+import transformers
+import torch
+
+# Load model
+model = transformers.BertForMaskedLM.from_pretrained("/local_scratch/matthies/ansible/kielipankki_data/bert_models/TurkuNLP/bert-base-finnish-cased-v1/") 
+model.eval()
+if torch.cuda.is_available():
+    model = model.cuda()
+
+# Initialize tokenizer
+tokenizer = transformers.BertTokenizer.from_pretrained("/local_scratch/matthies/ansible/kielipankki_data/bert_models/TurkuNLP/bert-base-finnish-cased-v1/")
+
+# Run simple tokenization
+tokens=tokenizer.encode("Suomessa vaihtuu kesän aikana sekä pääministeri että valtiovarainministeri.", add_special_tokens=True)
+print (tokenizer.decode(tokens))

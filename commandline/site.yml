@@ -21,6 +21,9 @@
    - sparv_pipeline_version: 2.0_MIT_2017-10-23
 #  - ffmpeg_version: see roles/ffmpeg/defaults/main.yml
    - udpipe_version: 1.2.0
+   - bert_models:
+       - TurkuNLP/bert-base-finnish-cased-v1
+       - TurkuNLP/bert-base-finnish-uncased-v1
       
 
   become: no
@@ -42,7 +45,9 @@
    - { role: udpipe, tags: udpipe }
    - { role: hunpos, tags: hunpos }
    - { role: sparv_pipeline, tags: sparv_pipeline }
-   - { role: pytorch, tags: pytorch }
+#   - { role: pytorch, tags: pytorch }
+   - { role: bert_models , tags: bert_models }
+
 
 
 
