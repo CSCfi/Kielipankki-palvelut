@@ -1,0 +1,14 @@
+This directory contains a selection of models to be used with the "torch" and "transformers" python modules.
+
+The models were downloaded from {{ release_url }}.
+
+A simple example script is provided: finbert_example.py
+
+Models available:
+
+{% for i in bert_models %}
+   * {{ i }}
+{% endfor %}
+
+For support contact: kielipankki@csc.fi
+-- matthies 04/2020

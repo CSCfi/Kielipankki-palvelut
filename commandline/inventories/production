@@ -9,5 +9,6 @@ puhti:
   hosts:
     puhti-login3.csc.fi:
       install_prefix: /appl/soft
+      kielipankki_data_dir: /appl/data/kielipankki
       swig3_as_module: no
       shared_group: p_installation

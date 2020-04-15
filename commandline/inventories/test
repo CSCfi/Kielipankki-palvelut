@@ -8,6 +8,7 @@ puhti:
   hosts:
     puhti-login3.csc.fi:
       install_prefix: /users/{{ansible_user_id}}/ansible/install
+      kielipankki_data_dir: /local_scratch/{{ansible_user_id}}/ansible/kielipankki_data
       is_admin: false
       swig3_as_module: yes
     
