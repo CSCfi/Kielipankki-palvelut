@@ -9,23 +9,9 @@ To use the models: module load pytorch/1.4 (this one was tested)
 
 Role Variables
 --------------
-
-Dependencies
-------------
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
+release_url: The url to get the files from
+install_dir:_ The Laguage Bank data directory
+bert_files: List of files that are downloaded per model
 
 Author Information
 ------------------
