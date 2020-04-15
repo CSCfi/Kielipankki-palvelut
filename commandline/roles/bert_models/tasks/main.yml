@@ -16,11 +16,23 @@
   with_nested:
     - "{{ bert_models }}"
     - "{{ bert_files }}"
+  async: 600
+  poll: 0
+  register: download
+
+- name: Check Download
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: jobs_result
+  loop: "{{ download.results }}"
+  until: jobs_result.finished
+  delay: 2
+  retries: 40
 
 - name: Copy documentation
-  copy:
-    src: "{{ item }}"
-    dest: "{{ install_dir }}"
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ install_dir }}/{{ item }}"
   loop:
     - finbert_example.py
     - README.txt
