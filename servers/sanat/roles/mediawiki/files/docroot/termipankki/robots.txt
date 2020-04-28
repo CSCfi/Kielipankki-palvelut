@@ -1,2 +1,11 @@
+User-agent: *
+Disallow: /w/index.php
+Disallow: /wiki/Special:
+Disallow: /wiki/Toiminnot:
+
+User-agent: SMW Registry:
+Allow: /wiki/Special:Version
+Allow: /wiki/Toiminnot:Versio
+
 User-agent: SemrushBot
 Disallow: /

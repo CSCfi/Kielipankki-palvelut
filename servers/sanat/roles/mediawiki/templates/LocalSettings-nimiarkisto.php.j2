@@ -80,6 +80,14 @@ $smwgQUpperbound = 10000;
 $wgAllowDisplayTitle = true;
 $wgRestrictDisplayTitle = false;
 
+$wgExtensionFunctions[] = function () {
+	global $wgHooks;
+	$wgHooks['SpecialPage_initList'][] = function ( &$list ) {
+		$list['SearchByProperty'] = 'SpecialBlankPage';
+		unset( $list['SearchByProperty'] );
+	};
+};
+
 wfLoadExtension( 'PageForms' );
 $wgPageFormsCacheFormDefinitions = true;
 $wgPageFormsCacheAutocompleteValues = true;
