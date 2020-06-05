@@ -108,14 +108,9 @@ for ( $i = 0; $i < 100000; $i++ ) {
 	$wgNamespaceProtection[$i] = 'alledit';
 }
 
-wfLoadExtension( 'Nuke' );
-require_once "$IP/extensions/SmiteSpam/SmiteSpam.php";
-$wgDisplayPageSize = 10;
-
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
 wfLoadExtension( 'CodeEditor' );
-
 
 wfLoadExtension( 'FileSystemImageServer' );
 $wgFSISGroups['Kotus'] = [

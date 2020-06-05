@@ -107,7 +107,6 @@ wfLoadExtension( 'HeaderTabs' );
 wfLoadExtension( 'InputBox' );
 wfLoadExtension( 'LiquidThreads' );
 wfLoadExtension( 'MixedNamespaceSearchSuggestions' );
-wfLoadExtension( 'Nuke' );
 wfLoadExtension( 'PageForms' );
 $wgPageFormsRenameEditTabs = true;
 $wgPageForms24HourTime = true;
@@ -171,8 +170,6 @@ $wgHooks['TranslatePostInitGroups'][] = function ( &$list, &$deps, &$autoload ) 
 };
 
 wfLoadExtension( 'UniversalLanguageSelector' );
-wfLoadExtension( 'UserMerge' );
-$wgGroupPermissions['bureaucrat']['usermerge'] = true;
 
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
