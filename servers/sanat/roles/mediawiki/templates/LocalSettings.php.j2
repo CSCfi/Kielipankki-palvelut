@@ -120,6 +120,13 @@ require __DIR__ . "/LocalSettings-$VHOST.php";
 // $wgSearchType = 'CirrusSearch';
 // $wgCirrusSearchExtraIndexSettings['index.mapping.total_fields.limit'] = 5000;
 
+// Spam tools
+wfLoadExtension( 'Nuke' );
+wfLoadExtension( 'UserMerge' );
+$wgGroupPermissions['bureaucrat']['usermerge'] = true;
+require_once "$IP/extensions/SmiteSpam/SmiteSpam.php";
+$wgDisplayPageSize = 10;
+
 {% if nocaptcha is defined %}
 wfLoadExtensions( [ 'ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha' ] );
 $wgReCaptchaSiteKey = '{{ nocaptcha.site }}';
