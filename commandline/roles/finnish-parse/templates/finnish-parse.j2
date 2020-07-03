@@ -2,6 +2,9 @@
 
 set -o pipefail
 
+# ensure java on HPC
+module load biojava/1.8 2>/dev/null;
+
 resourcedir="{{ install_dir }}/share/Finnish-dep-parser"
 verbose=0
 if [ ! -d "$resourcedir" ] ; then
