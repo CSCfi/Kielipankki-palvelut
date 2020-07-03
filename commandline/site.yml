@@ -24,6 +24,7 @@
    - bert_models:
        - TurkuNLP/bert-base-finnish-cased-v1
        - TurkuNLP/bert-base-finnish-uncased-v1
+   - tsv_tools_version: 1.6.1
       
 
   become: no
@@ -47,7 +48,7 @@
    - { role: sparv_pipeline, tags: sparv_pipeline }
 #   - { role: pytorch, tags: pytorch }
    - { role: bert_models , tags: bert_models }
-
+   - { role: tsv-tools , tags: tsv-tools }
 
 
 
