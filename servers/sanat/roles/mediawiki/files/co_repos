@@ -36,6 +36,7 @@ REPOS=(
 	"workdir/extensions/ShortUrl https://github.com/wikimedia/mediawiki-extensions-ShortUrl.git origin/REL1_31"
 	"workdir/extensions/SimpleMathJax https://github.com/jmnote/SimpleMathJax.git 65f9814" # 1.31-pre
 	"workdir/extensions/SmiteSpam https://github.com/wikimedia/mediawiki-extensions-SmiteSpam origin/master"
+	"workdir/extensions/SpamBlacklist https://github.com/wikimedia/mediawiki-extensions-SpamBlacklist origin/REL1_31"
 	"workdir/extensions/Termbank https://github.com/Nikerabbit/mediawiki-extensions-Termbank.git origin/master"
 	"workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2019.04"
 	"workdir/extensions/UniversalLanguageSelector https://github.com/wikimedia/mediawiki-extensions-UniversalLanguageSelector.git 2019.04"
