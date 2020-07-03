@@ -542,7 +542,7 @@ def main(see = ['']):
                    for six in see) })
     # set current -> newdb.name
     os.remove(current) # race condition!
-    os.symlink(newdb.name, current)
+    os.rename(newdb.name, current)
 
 
 if __name__ == '__main__':
