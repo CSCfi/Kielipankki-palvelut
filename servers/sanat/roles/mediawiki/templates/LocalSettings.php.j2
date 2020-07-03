@@ -126,6 +126,19 @@ wfLoadExtension( 'UserMerge' );
 $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 require_once "$IP/extensions/SmiteSpam/SmiteSpam.php";
 $wgDisplayPageSize = 10;
+wfLoadExtension( 'SpamBlacklist' );
+$wgBlacklistSettings = [
+        'spam' => [
+                'files' => [
+                        '/srv/mediawiki/spam-filter.txt',
+                ],
+        ],
+        'email' => [
+                'files' =>  [
+                        '/srv/mediawiki/email-filter.txt',
+                ],
+        ],
+];
 
 {% if nocaptcha is defined %}
 wfLoadExtensions( [ 'ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha' ] );
