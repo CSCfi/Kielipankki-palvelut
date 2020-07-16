@@ -540,10 +540,13 @@ def main(see = ['']):
             for stoid in newinv
             if any(stoid.endswith(six)
                    for six in see) })
-    # set current -> newdb.name
-    os.remove(current) # race condition!
-    os.rename(newdb.name, current)
-
+    if opts.dryrun:
+        # discard changes
+        os.remove(newdb.name)
+    else:
+        # set current -> newdb.name
+        os.remove(current) # race condition!
+        os.rename(newdb.name, current)
 
 if __name__ == '__main__':
     from optparse import OptionParser
@@ -562,6 +565,10 @@ if __name__ == '__main__':
     parser.add_option('--touch', action = 'store_true',
                       help = ( 'update seen records as if they were changed '
                                'or new' ))
+    parser.add_option('--dryrun', action = 'store_true',
+                      help = ( 'do not really change the database'
+                               'to be used with --validate' ))
+
     opts, args = parser.parse_args()
     opts.validate = int(opts.validate)
     if opts.verbose: opts.validate = max(1, opts.validate)
