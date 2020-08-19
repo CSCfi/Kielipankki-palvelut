@@ -58,7 +58,7 @@ on origin(sourcename, sourceid);
 INSERT INTO repository(secret, identification, minstamp, maxstamp)
 select '"jupinaa"',
          '<repositoryName>Language Bank of Finland</repositoryName>'
-	 || '<baseURL>http://metalb.csc.fi/cgi-bin/que</baseURL>'
+	 || '<baseURL>https://kielipankki.fi/md_api/que</baseURL>'
 	 || '<protocolVersion>2.0</protocolVersion>'
 	 || '<adminEmail>kielipankki@csc.fi</adminEmail>'
 	 || '<earliestDatestamp>2013-05-31T23:59:00Z'
