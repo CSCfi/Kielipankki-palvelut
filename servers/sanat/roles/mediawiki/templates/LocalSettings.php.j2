@@ -104,8 +104,9 @@ $wgUploadDirectory = "/www/$VHOST/docroot/uploads";
 $wgMaxImageArea = 75e6; // 75MP
 
 $wgDefaultUserOptions['usenewrc'] = 1;
-$wgRCMaxAge = 5 * 365 * 24 * 3600; // 5 years
+$wgRCMaxAge = 365 * 24 * 3600; // 1 year
 $wgShowIPinHeader = false;
+$wgEnotifWatchlist = true;
 
 $wgCacheDirectory = "/www/$VHOST/cache";
 

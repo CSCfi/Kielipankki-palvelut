@@ -10,8 +10,6 @@ $wgDBname = '{{ instance.value.db.database }}';
 $wgLogo = '/logo.png';
 $wgGroupPermissions['*']['createaccount'] = false;
 
-$wgEnotifWatchlist = true;
-
 wfLoadSkin( 'Vector' );
 
 enableSemantics( $VHOST );
@@ -19,7 +17,7 @@ wfLoadExtension( 'PageForms' );
 $wgPageFormsRedLinksCheckOnlyLocalProps = true;
 $wgPageFormsRenameEditTabs = true;
 $smwgQMaxInlineLimit = $wgCategoryPagingLimit = 500;
-$smwgEnabledQueryDependencyLinksStore = true;
+$smwgEnabledQueryDependencyLinksStore = false;
 
 require "$IP/extensions/MixedNamespaceSearchSuggestions/MixedNamespaceSearchSuggestions.php";
 wfLoadExtension( 'ParserFunctions' );
