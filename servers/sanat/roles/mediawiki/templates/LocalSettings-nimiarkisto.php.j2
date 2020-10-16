@@ -136,3 +136,10 @@ $smwgEnabledQueryDependencyLinksStore = false;
 // https://phabricator.wikimedia.org/T193246
 $wgUpdateRowsPerJob = 2000;
 $wgUpdateRowsPerQuery = 500;
+
+wfLoadExtension( 'OAuth' );
+$wgMWOAuthSecureTokenTransfer = true;
+$wgGroupPermissions['user']['mwoauthproposeconsumer'] = true;
+$wgGroupPermissions['user']['mwoauthupdateownconsumer'] = true;
+$wgGroupPermissions['oauthadmin']['mwoauthmanageconsumer'] = true;
+$wgOAuthGroupsToNotify = [ 'oauthadmin' ];

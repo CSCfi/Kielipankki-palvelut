@@ -22,9 +22,29 @@ vhost_nimiarkisto:
   serveralias: "{{ webaliases_nimiarkisto | join(' ') }}"
   documentroot: /www/{{ webdomain_nimiarkisto }}/docroot
   extra_parameters: |
+    <Location "/reconciliation/">
+      ProxyPass         "http://95.216.176.62:8484/"
+      ProxyPassReverse  "http://95.216.176.62:8484/"
+    </Location>
+
+    <Location "/query/">
+      ProxyPass         "http://95.216.176.62:8282/"
+      ProxyPassReverse  "http://95.216.176.62:8282/"
+    </Location>
+
+    <Location "/proxy/">
+      ProxyPass         "http://95.216.176.62:8282/proxy/"
+    </Location>
+
+    <Location "/openrefine/">
+      ProxyPass         "http://95.216.176.62:3333/"
+    </Location>
+
+    RewriteEngine On
+    RewriteRule ^/entity/(Q.*) /wiki/Item:$1 [R]
+    RewriteRule ^/entity/(P.*) /wiki/Wikibase_property:$1 [R]
     ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_nimiarkisto }}/docroot/"
     Header always set Strict-Transport-Security "max-age=15768000"
-    RewriteEngine On
     RewriteCond %{HTTPS} off
     RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
     # Drop www prefix
