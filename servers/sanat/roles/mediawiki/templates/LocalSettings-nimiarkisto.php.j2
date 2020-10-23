@@ -58,6 +58,9 @@ call_user_func( function() {
 
 	// these are the site_group codes as listed in the sites table
 	$wgWBRepoSettings['specialSiteLinkGroups'] = [ 'special' ];
+
+	// has to be http
+	$wgWBRepoSettings['conceptBaseUri'] = 'http://nimiarkisto.fi/entity/';
 } );
 
 $wgLocalInterwikis[] = 'nimiarkisto';
