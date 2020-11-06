@@ -141,7 +141,7 @@ wfLoadExtension( 'ShortUrl' );
 $wgShortUrlTemplate = '/!$1';
 
 wfLoadExtension( 'Termbank' );
-require "$IP/extensions/Translate/Translate.php";
+wfLoadExtension( 'Translate' );
 $wgGroupPermissions['sysop']['translate'] = true;
 $wgGroupPermissions['translator']['translate'] = true;
 $wgGroupPermissions['user']['translate-messagereview'] = true;

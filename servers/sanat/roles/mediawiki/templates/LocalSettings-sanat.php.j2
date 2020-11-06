@@ -10,30 +10,35 @@ $wgDBname = '{{ instance.value.db.database }}';
 $wgLogo = '/logo.png';
 $wgGroupPermissions['*']['createaccount'] = false;
 
+$wgAllowDisplayTitle = true;
+$wgRestrictDisplayTitle = false;
+
 wfLoadSkin( 'Vector' );
+
+// Extensions with default configuration //
+
+wfLoadExtensions( [
+	'DeleteBatch',
+	'InputBox',
+	'MixedNamespaceSearchSuggestions',
+	'Sanat',
+	'Translate',
+	'UniversalLanguageSelector',
+	'YouTube'
+] );
+
+// Extensions with custom configuration //
 
 enableSemantics( $VHOST );
 wfLoadExtension( 'PageForms' );
 $wgPageFormsRedLinksCheckOnlyLocalProps = true;
 $wgPageFormsRenameEditTabs = true;
 $smwgQMaxInlineLimit = $wgCategoryPagingLimit = 500;
-$smwgEnabledQueryDependencyLinksStore = false;
 
-require "$IP/extensions/MixedNamespaceSearchSuggestions/MixedNamespaceSearchSuggestions.php";
 wfLoadExtension( 'ParserFunctions' );
 $wgPFEnableStringFunctions = true;
 
-require "$IP/extensions/DeleteBatch/DeleteBatch.php";
-
-require "$IP/extensions/Translate/Translate.php";
-wfLoadExtensions( [ 'UniversalLanguageSelector', 'InputBox', 'Sanat' ] );
-
-
-foreach ( $wgUrlProtocols as $index => $value ) {
-	if ( $value === 'sms:' ) {
-		unset( $wgUrlProtocols[ $index ] );
-	}
-}
+// Helper functions //
 
 function lfAddNamespace( $id, $name ) {
 	global $wgExtraNamespaces, $wgContentNamespaces, $wgNamespacesToBeSearchedDefault,
@@ -56,14 +61,14 @@ function lfAddNamespace( $id, $name ) {
 	$smwgNamespacesWithSemanticLinks[$id] = true;
 }
 
+// Content extensions and configuration //
+
 lfAddNamespace( 1200, 'Lud' );
 wfLoadExtension( 'Lud' );
 
 lfAddNamespace( 1202, 'WordNet' );
-require "$IP/extensions/WordNet/WordNet.php";
+wfLoadExtension( 'WordNet' );
 $wgNamespacesWithSubpages[NS_WORDNET] = true;
-$wgAllowDisplayTitle = true;
-$wgRestrictDisplayTitle = false;
 
 // XXX: this is broken. This is not present when MediaWiki runs scripts.
 // The extensions should be installed with co_repos.

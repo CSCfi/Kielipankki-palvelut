@@ -11,7 +11,13 @@ $wgDefaultSkin = 'Timeless';
 $wgLogo = null;
 
 wfLoadSkin( 'Timeless' );
-wfLoadExtensions( [ 'UniversalLanguageSelector', 'Nimiarkisto' ] );
+wfLoadExtensions( [
+	'CodeEditor',
+	'Maps',
+	'Nimiarkisto',
+	'Scribunto',
+	'UniversalLanguageSelector',
+] );
 
 $wgEnableWikibaseRepo = true;
 $wgEnableWikibaseClient = true;
@@ -70,10 +76,7 @@ require_once "$IP/extensions/Wikibase/client/WikibaseClient.php";
 wfLoadExtension( 'Flow' );
 $wgNamespaceContentModels[NS_TALK] = 'flow-board';
 
-require_once "$IP/extensions/Maps/Maps.php";
-
-require_once "$IP/extensions/Scribunto/Scribunto.php";
-require_once "$IP/extensions/ParserFunctions/ParserFunctions.php";
+wfLoadExtension( 'ParserFunctions' );
 $wgPFEnableStringFunctions = true;
 
 enableSemantics( $VHOST );
@@ -113,7 +116,6 @@ for ( $i = 0; $i < 100000; $i++ ) {
 
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
-wfLoadExtension( 'CodeEditor' );
 
 wfLoadExtension( 'FileSystemImageServer' );
 $wgFSISGroups['Kotus'] = [
