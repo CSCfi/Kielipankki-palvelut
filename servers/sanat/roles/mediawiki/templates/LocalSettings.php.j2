@@ -14,6 +14,8 @@ $wgLocalisationCacheConf['manualRecache'] = true;
 $wgLocalisationCacheConf['storeDirectory'] = "$IP/cache";
 
 if ( isset( $_ENV['FORLC'] ) && $_ENV['FORLC'] ) {
+	$wgServer = 'https://localhost';
+
 	$wgMessagesDirs['SemanticMediaWiki'] = "$IP/extensions/SemanticMediaWiki/i18n";
 	$wgMessagesDirs['ReCaptchaNoCaptcha'] = "$IP/extensions/ConfirmEdit/ReCaptchaNoCaptcha/i18n";
 	$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = "$IP/extensions/SemanticMediaWiki/i18n/extra/SemanticMediaWiki.alias.php";
@@ -110,8 +112,7 @@ $wgEnotifWatchlist = true;
 
 $wgCacheDirectory = "/www/$VHOST/cache";
 
-
-$wgULSGeoService = false;
+$wgForceHTTPS = true;
 
 
 require __DIR__ . "/LocalSettings-$VHOST.php";

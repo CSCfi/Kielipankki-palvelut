@@ -3,10 +3,10 @@
 - src: geerlingguy.memcached
   version: 1.0.8
 - src: geerlingguy.composer
-  version: 1.6.1
+  version: 1.8.0
 - src: geerlingguy.repo-epel
   version: 1.2.3
+- src: geerlingguy.repo-remi
+  version: 2.0.1
 - src: advertine.nodejs
   version: 8041b1168cf7849ec1f374c6a216fb0b5d7607df
-- src: elastic.elasticsearch
-  version: 5.5.1

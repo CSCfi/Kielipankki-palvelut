@@ -1,8 +1,19 @@
-- name: Install Webtatic Repo
+- name: Import remi GPG key
+  rpm_key:
+    key: "{{ remi_repo_gpg_key_url }}"
+    state: present
+
+- name: Install remi repo
   yum:
-    name: https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-    state: installed
-  when: ansible_distribution == 'CentOS'
+    name: "{{ remi_repo_url }}"
+    state: present
+
+- name: Enable PHP repo
+  ini_file:
+    dest: /etc/yum.repos.d/{{ remi_repo_php_version }}.repo
+    section: "{{ remi_repo_php_version }}"
+    option: enabled
+    value: "1"
 
 - name: Install PHP packages
   package:

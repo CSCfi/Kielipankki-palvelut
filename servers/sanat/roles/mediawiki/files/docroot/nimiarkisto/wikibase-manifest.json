@@ -11,7 +11,7 @@
     "maxlag": 5,
     "properties": {
       "instance_of": "P31",
-      "subclass_of": "P0",
+      "subclass_of": "P0"
     }
   },
   "oauth": {

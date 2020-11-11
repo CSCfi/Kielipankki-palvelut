@@ -1,16 +1,21 @@
+remi_repo_url: "https://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
+remi_repo_gpg_key_url: "https://rpms.remirepo.net/RPM-GPG-KEY-remi2018"
+remi_repo_php_version: remi-php73
+
 php_packages:
-  - php71w-common
-  - php71w-cli
-  - php71w-fpm
-  - php71w-opcache
-  - php71w-mbstring
-  - php71w-intl
-  - php71w-mysql
-  - php71w-mcrypt
-  - php71w-pecl-mongodb
-  - php71w-pecl-memcached
-  - php71w-gd
-  - php71w-xml
+  - php-common
+  - php-cli
+  - php-fpm
+  - php-opcache
+  - php-mbstring
+  - php-intl
+  - php-mysqlnd
+  - php-pecl-mcrypt
+  - php-pecl-mongodb
+  - php-pecl-memcached
+  - php-pecl-zip
+  - php-gd
+  - php-xml
 
 php_ini_file: /etc/php.ini
 php_fpm_conf_file: /etc/php-fpm.conf

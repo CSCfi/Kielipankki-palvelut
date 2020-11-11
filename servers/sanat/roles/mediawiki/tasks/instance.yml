@@ -50,7 +50,7 @@
 - name: Upgrade database schema for {{ instance.key }}
   command: >-
     /usr/bin/php maintenance/update.php
-      --quick
+      --quick --skip-optimize
       --wiki="{{ instance.key }}"
       --dbuser="{{ instance.value.db.admin_user | default(instance.value.db.user) }}"
       --dbpass="{{ instance.value.db.admin_password | default(instance.value.db.password) }}"
