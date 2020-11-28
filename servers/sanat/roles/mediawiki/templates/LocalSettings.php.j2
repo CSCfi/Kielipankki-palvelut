@@ -16,10 +16,10 @@ $wgLocalisationCacheConf['storeDirectory'] = "$IP/cache";
 if ( isset( $_ENV['FORLC'] ) && $_ENV['FORLC'] ) {
 	$wgServer = 'https://localhost';
 
-	$wgMessagesDirs['SemanticMediaWiki'] = "$IP/extensions/SemanticMediaWiki/i18n";
-	$wgMessagesDirs['ReCaptchaNoCaptcha'] = "$IP/extensions/ConfirmEdit/ReCaptchaNoCaptcha/i18n";
-	$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = "$IP/extensions/SemanticMediaWiki/i18n/extra/SemanticMediaWiki.alias.php";
-	$wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = "$IP/extensions/SemanticMediaWiki/i18n/extra/SemanticMediaWiki.magic.php";
+	$wgMessagesDirs['LC-ReCaptchaNoCaptcha'] = "$IP/extensions/ConfirmEdit/ReCaptchaNoCaptcha/i18n";
+	$wgMessagesDirs['LC-Wikibaseclient'] = "$IP/extensions/Wikibase/client/i18n";
+	$wgExtensionMessagesFiles['LC-wikibaseclientmagic'] = "$IP/extensions/Wikibase/client/WikibaseClient.i18n.magic.php";
+	$wgExtensionMessagesFiles['LC-Wikibaseclientalias'] = "$IP/extensions/Wikibase/client/WikibaseClient.i18n.alias.php";
 
 	if ( file_exists( '/srv/mediawiki/MessagesSettings.php' ) ) {
 		require '/srv/mediawiki/MessagesSettings.php';

@@ -50,9 +50,6 @@
   args:
     chdir: /srv/mediawiki/workdir
 
-- name: Create symlink from smsxml
-  file: src=/www/smsxml/wiki/extensions/Saame dest=/srv/mediawiki/workdir/extensions/Saame state=link force=yes
-
 - name: Configure all wiki instances
   include: instance.yml
   with_dict: "{{ mediawikis }}"
