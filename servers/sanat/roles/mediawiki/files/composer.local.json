@@ -4,6 +4,7 @@
 			"include": [
 				"extensions/Elastica/composer.json",
 				"extensions/Flow/composer.json",
+				"extensions/OAuth/composer.json",
 				"extensions/Maps/composer.json",
 				"extensions/SemanticMediaWiki/composer.json",
 				"extensions/Wikibase/composer.json"

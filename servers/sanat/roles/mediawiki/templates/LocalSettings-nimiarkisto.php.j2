@@ -19,6 +19,7 @@ wfLoadExtensions( [
 	'UniversalLanguageSelector',
 ] );
 
+$wgNimiarkistoMapProxy['key'] = '{{ nimiarkisto_mapproxy_key }}';
 
 require_once "$IP/extensions/Wikibase/repo/Wikibase.php";
 require_once "$IP/extensions/Wikibase/repo/ExampleSettings.php";
@@ -118,3 +119,4 @@ $wgGroupPermissions['user']['mwoauthproposeconsumer'] = true;
 $wgGroupPermissions['user']['mwoauthupdateownconsumer'] = true;
 $wgGroupPermissions['oauthadmin']['mwoauthmanageconsumer'] = true;
 $wgOAuthGroupsToNotify = [ 'oauthadmin' ];
+$wgGrantPermissions['editpage']['alledit'] = true;

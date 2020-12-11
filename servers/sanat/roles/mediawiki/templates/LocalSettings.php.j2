@@ -165,6 +165,12 @@ $wgHooks['TestCanonicalRedirect'][] = function ( $request ) {
 	return $request->getRequestURL() !== '/';
 };
 
+$wgHooks['LiquidThreadsIsLqtPage'][] = function ( $title, &$isTalkPage ) {
+        if ( $title->inNamespace( NS_USER_TALK ) ) {
+                $isTalkPage = User::newFromName( $title->getBaseText() )->isLoggedIn();
+        }
+};
+
 # This must be in the parent directory, because everything under workdir can be wiped out
 # by the ansible scripts. This enables easier development by allowing changing stuff without
 # running the slow scripts, as well as keeping those changes.

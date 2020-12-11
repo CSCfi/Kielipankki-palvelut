@@ -45,3 +45,5 @@ sms_xml:
   wiki_username: "SyncBot"
   wiki_password: "SyncBot12"
   debug: "True"
+
+nimiarkisto_mapproxy_key: ''
