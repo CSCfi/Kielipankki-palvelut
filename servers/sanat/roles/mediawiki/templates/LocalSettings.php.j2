@@ -166,9 +166,10 @@ $wgHooks['TestCanonicalRedirect'][] = function ( $request ) {
 };
 
 $wgHooks['LiquidThreadsIsLqtPage'][] = function ( $title, &$isTalkPage ) {
-        if ( $title->inNamespace( NS_USER_TALK ) ) {
-                $isTalkPage = User::newFromName( $title->getBaseText() )->isLoggedIn();
-        }
+	if ( $title->inNamespace( NS_USER_TALK ) ) {
+		$user = User::newFromName( $title->getRootText() );
+		$isTalkPage = $user && $user->isRegistered();
+	}
 };
 
 # This must be in the parent directory, because everything under workdir can be wiped out
