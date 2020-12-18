@@ -85,6 +85,7 @@ for ( $i = 0; $i < 100000; $i++ ) {
 	}
 	$wgNamespaceProtection[$i] = 'alledit';
 }
+$wgGrantPermissions['editpage']['alledit'] = true;
 
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
@@ -119,4 +120,10 @@ $wgGroupPermissions['user']['mwoauthproposeconsumer'] = true;
 $wgGroupPermissions['user']['mwoauthupdateownconsumer'] = true;
 $wgGroupPermissions['oauthadmin']['mwoauthmanageconsumer'] = true;
 $wgOAuthGroupsToNotify = [ 'oauthadmin' ];
-$wgGrantPermissions['editpage']['alledit'] = true;
+
+wfLoadExtension( 'WikibaseStatementUpdater' );
+
+$wgWSUClientConfig = [
+	'key' => '{{ nimiarkisto_wikibasestatementupdater_key }}',
+	'secret' => '{{ nimiarkisto_wikibasestatementupdater_secret }}',
+];

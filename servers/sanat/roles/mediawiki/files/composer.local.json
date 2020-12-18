@@ -7,7 +7,8 @@
 				"extensions/OAuth/composer.json",
 				"extensions/Maps/composer.json",
 				"extensions/SemanticMediaWiki/composer.json",
-				"extensions/Wikibase/composer.json"
+				"extensions/Wikibase/composer.json",
+				"extensions/WikibaseStatementUpdater/composer.json"
 			]
 		}
 	}

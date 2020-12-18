@@ -3,52 +3,47 @@ vhost_sanat:
   serveralias: "{{ webaliases_sanat | join(' ') }}"
   documentroot: /www/{{ webdomain_sanat }}/docroot
   extra_parameters: |
-    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_sanat }}/docroot/"
-    ProxyPass /smsxml/ http://{{ webdomain_sanat }}:8000/smsxml/
-    ProxyPassReverse /smsxml/ http://{{ webdomain_sanat }}:8000/smsxml/
+
     Header always set Strict-Transport-Security "max-age=15768000"
-    Alias /js/ /www/smsxml/wiki/js/
-    <Directory /www/smsxml/wiki/js>
-        Require all granted
-    </Directory>
-    RewriteEngine On
-    RewriteCond %{HTTPS} off
-    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-    ProxyPass /smsxml/ http://{{ webdomain_sanat }}:8000/smsxml/
-    ProxyPassReverse /smsxml/ http://{{ webdomain_sanat }}:8000/smsxml/
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_sanat }}/docroot/"
 
 vhost_nimiarkisto:
   servername: "{{ webdomain_nimiarkisto }}"
   serveralias: "{{ webaliases_nimiarkisto | join(' ') }}"
   documentroot: /www/{{ webdomain_nimiarkisto }}/docroot
   extra_parameters: |
+
     <Location "/reconciliation/">
-      ProxyPass         "http://95.216.176.62:8484/"
-      ProxyPassReverse  "http://95.216.176.62:8484/"
+      ProxyPass         "{{ nimiarkisto_service_url }}:8484/"
+      ProxyPassReverse  "{{ nimiarkisto_service_url }}:8484/"
     </Location>
 
     <Location "/query/">
-      ProxyPass         "http://95.216.176.62:8282/"
-      ProxyPassReverse  "http://95.216.176.62:8282/"
+      ProxyPass         "{{ nimiarkisto_service_url }}:8282/"
+      ProxyPassReverse  "{{ nimiarkisto_service_url }}:8282/"
     </Location>
 
     <Location "/proxy/">
-      ProxyPass         "http://95.216.176.62:8282/proxy/"
+      ProxyPass         "{{ nimiarkisto_service_url }}:8282/proxy/"
     </Location>
 
     <Location "/openrefine/">
-      ProxyPass         "http://95.216.176.62:3333/"
+      ProxyPass         "{{ nimiarkisto_service_url }}:3333/"
     </Location>
+
+    <Location "/quickstatements/">
+      ProxyPass         "{{ nimiarkisto_service_url }}:9191/"
+    </Location>
+
+    Header always set Strict-Transport-Security "max-age=15768000"
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_nimiarkisto }}/docroot/"
 
     RewriteEngine On
     RewriteRule ^/entity/(Q.*) /wiki/Item:$1 [R]
     RewriteRule ^/entity/(P.*) /wiki/Wikibase_property:$1 [R]
-    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_nimiarkisto }}/docroot/"
-    Header always set Strict-Transport-Security "max-age=15768000"
-    RewriteCond %{HTTPS} off
-    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
     # Drop www prefix
-    RewriteCond %{HTTPS} on
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
     RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
@@ -57,22 +52,29 @@ vhost_termipankki:
   serveralias: "{{ webaliases_termipankki | join(' ') }}"
   documentroot: /www/{{ webdomain_termipankki }}/docroot
   extra_parameters: |
+
+    Header always set Strict-Transport-Security "max-age=15768000"
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
     ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_termipankki }}/docroot/"
-    #Header always set Strict-Transport-Security "max-age=15768000"
+
     RewriteEngine On
     # Drop www prefix
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
     RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
-    # RewriteCond %{HTTPS} off
-    # RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
     # This will redirect anyway, so use internal redirect
     RewriteRule ^/!(.*) /wiki/Special:ShortUrl/$1 [PT]
 
+_https_redirect:
+  extra_parameters: |
+
+    RewriteEngine On
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+
 
 apache_vhosts:
-  - "{{ vhost_sanat }}"
-  - "{{ vhost_nimiarkisto }}"
-  - "{{ vhost_termipankki }}"
+  - "{{ vhost_sanat | combine(_https_redirect) }}"
+  - "{{ vhost_nimiarkisto | combine(_https_redirect) }}"
+  - "{{ vhost_termipankki | combine(_https_redirect) }}"
 
 apache_vhosts_ssl:
   - "{{ vhost_sanat | combine(ssl_params_sanat) }}"

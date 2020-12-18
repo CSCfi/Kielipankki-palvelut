@@ -38,3 +38,5 @@ mediawikis:
       user: wikiuser
       password: wikipass
       database: termipankki
+
+nimiarkisto_service_url: http://95.217.134.251

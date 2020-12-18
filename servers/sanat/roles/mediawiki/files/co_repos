@@ -5,6 +5,7 @@ declare -a REPOS
 
 REPOS=(
 	"workdir https://github.com/wikimedia/mediawiki.git origin/REL1_35" #
+	"workdir/extensions/AbuseFilter https://github.com/wikimedia/mediawiki-extensions-AbuseFilter.git origin/REL1_35"
 	"workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2020.10"
 	"workdir/extensions/CategoryTree https://github.com/wikimedia/mediawiki-extensions-CategoryTree.git origin/REL1_35"
 	"workdir/extensions/CirrusSearch https://github.com/wikimedia/mediawiki-extensions-CirrusSearch.git origin/REL1_35"
@@ -44,6 +45,7 @@ REPOS=(
 	"workdir/extensions/UserMerge https://github.com/wikimedia/mediawiki-extensions-UserMerge.git origin/REL1_35"
 	"workdir/extensions/WikiEditor https://github.com/Nikerabbit/mediawiki-extensions-WikiEditor.git origin/csc-135"
 	"workdir/extensions/Wikibase https://github.com/Nikerabbit/mediawiki-extensions-Wikibase.git origin/csc-135"
+	"workdir/extensions/WikibaseStatementUpdater https://github.com/wikimedia/mediawiki-extensions-WikibaseStatementUpdater.git origin/master"
 	"workdir/extensions/WordNet https://github.com/Nikerabbit/mediawiki-extensions-WordNet.git origin/master"
 	"workdir/extensions/YouTube https://github.com/wikimedia/mediawiki-extensions-YouTube origin/REL1_35"
 	"workdir/skins/Timeless https://github.com/wikimedia/mediawiki-skins-Timeless.git origin/REL1_35"

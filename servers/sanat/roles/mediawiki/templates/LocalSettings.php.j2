@@ -123,6 +123,14 @@ require __DIR__ . "/LocalSettings-$VHOST.php";
 // $wgCirrusSearchExtraIndexSettings['index.mapping.total_fields.limit'] = 5000;
 
 // Spam tools
+wfLoadExtension( 'AbuseFilter' );
+$wgGroupPermissions['sysop']['abusefilter-modify'] = true;
+$wgGroupPermissions['*']['abusefilter-log-detail'] = true;
+$wgGroupPermissions['*']['abusefilter-view'] = true;
+$wgGroupPermissions['*']['abusefilter-log'] = true;
+$wgGroupPermissions['sysop']['abusefilter-privatedetails'] = true;
+$wgGroupPermissions['sysop']['abusefilter-modify-restricted'] = true;
+$wgGroupPermissions['sysop']['abusefilter-revert'] = true;
 wfLoadExtension( 'Nuke' );
 wfLoadExtension( 'UserMerge' );
 $wgGroupPermissions['bureaucrat']['usermerge'] = true;
