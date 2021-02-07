@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+DIR="$1"
+URL="$2"
+VER="$3"
+
+if [ -d "$DIR" ]
+then (
+	cd "$DIR" || exit
+	ACTUALURL="$(git config --get remote.origin.url)"
+	if [ "$URL" != "$ACTUALURL" ]
+	then
+		echo "Re-cloning $DIR";
+		cd -
+		rm -rf "$DIR"
+	fi
+) fi
+
+if [ ! -d "$DIR" ]
+then
+	echo "Cloning $DIR";
+	git clone --depth 1 -b "$VER" "$URL" "$DIR" || exit
+fi

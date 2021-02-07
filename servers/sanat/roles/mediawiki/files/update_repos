@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+parallel --halt soon,fail=1 -j1 --colsep ' ' ./clone_repo {1} {2} {3} :::: repos
+parallel --halt soon,fail=1 -j4 --colsep ' ' ./update_repo {1} {2} {3} :::: repos

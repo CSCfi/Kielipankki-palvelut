@@ -31,11 +31,19 @@
     dest: /etc/cron.monthly/
     mode: 0755
 
-- name: Install MediaWiki repository clone script
-  copy: src=co_repos dest=/srv/mediawiki/co_repos mode=0755
+- name: Copy repo updating files
+  copy: src={{item}} dest=/srv/mediawiki mode=0755
+  loop:
+    - update_repos
+    - update_repo
+    - clone_repo
+    - repos
 
-- name: Clone repos
-  command: /srv/mediawiki/co_repos
+- name: Copy list of repos
+  copy: src=repos dest=/srv/mediawiki
+
+- name: Clone/update repos
+  command: /srv/mediawiki/update_repos
   args:
     chdir: /srv/mediawiki/
 
