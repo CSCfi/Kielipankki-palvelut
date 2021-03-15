@@ -16,7 +16,7 @@ import sys # for sys.stdout.buffer.write and sys.stdin.read
 
 from collections import namedtuple
 
-sys.stderr = sys.stdout # to see tracebacks from Python
+#sys.stderr = sys.stdout # to see tracebacks from Python
 
 # --Configuration section--
 

@@ -9,7 +9,7 @@
    - finnish_parse_version: 1.0
    - praat_version: 6.0.43
    - nasm_version: 2.14.02
-   - finnish_tagtools_version: 1.5.0
+   - finnish_tagtools_version: 1.5.1
    - kaldi_version:
       number: 5.5.219
       githash:  06bf62a57
@@ -48,7 +48,7 @@
    - { role: sparv_pipeline, tags: sparv_pipeline }
 #   - { role: pytorch, tags: pytorch }
    - { role: bert_models , tags: bert_models }
-   - { role: tsv-tools , tags: tsv-tools }
+   - { role: tsv-utils , tags: tsv-utils }
 
 
 
