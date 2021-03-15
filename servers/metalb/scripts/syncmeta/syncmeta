@@ -28,8 +28,8 @@ from urllib.request import build_opener, HTTPCookieProcessor, Request
 from zipfile import ZipFile
 from io import BytesIO, StringIO, TextIOWrapper
 from time import time, strftime, gmtime
-from tempfile import NamedTemporaryFile as NamedFile
 from lxml import etree
+import datetime
 import hashlib, json, os.path, shutil, sqlite3
 from os import environ
 from sys import stderr
@@ -529,24 +529,22 @@ def main(see = ['']):
                                see)
         exit(0)
 
-    newdb = NamedFile(dir = dbparent, prefix = 'md', suffix = '.db',
-                      delete = False)
-    newdb.close()
-    # shutil.copy2 calls copystat and raises this exception on hippu:
-    # "OSError: [Errno 95] Operation not supported"
-    shutil.copy(current, newdb.name)
-    synch(sqlite3.connect(newdb.name), opener, oldinv,
+    # get file path based on day of week (0=Monday) This is slight overkill,
+    # but easy to implement. Strictly we would need only 2 versions instead of 7.
+    newdb_name = dbparent + '/newdb_' + str(datetime.datetime.today().weekday())  + '.db'
+    shutil.copy(current, newdb_name)
+    synch(sqlite3.connect(newdb_name), opener, oldinv,
           { stoid : newinv[stoid]
             for stoid in newinv
             if any(stoid.endswith(six)
                    for six in see) })
     if opts.dryrun:
         # discard changes
-        os.remove(newdb.name)
+        os.remove(newdb_name)
     else:
-        # set current -> newdb.name
+        # set current -> newdb_name
         os.remove(current) # race condition!
-        os.rename(newdb.name, current)
+        os.symlink(newdb_name, current)
 
 if __name__ == '__main__':
     from optparse import OptionParser
