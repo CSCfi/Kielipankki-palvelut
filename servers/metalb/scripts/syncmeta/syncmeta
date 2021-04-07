@@ -532,7 +532,10 @@ def main(see = ['']):
     # get file path based on day of week (0=Monday) This is slight overkill,
     # but easy to implement. Strictly we would need only 2 versions instead of 7.
     newdb_name = dbparent + '/newdb_' + str(datetime.datetime.today().weekday())  + '.db'
-    shutil.copy(current, newdb_name)
+    try:
+        shutil.copy(current, newdb_name)
+    except shutil.SameFileError:
+        pass
     synch(sqlite3.connect(newdb_name), opener, oldinv,
           { stoid : newinv[stoid]
             for stoid in newinv
