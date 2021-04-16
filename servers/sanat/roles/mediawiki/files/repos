@@ -17,11 +17,11 @@ workdir/extensions/Kotus https://github.com/Nikerabbit/mediawiki-extensions-Kotu
 workdir/extensions/LiquidThreads https://github.com/wikimedia/mediawiki-extensions-LiquidThreads.git REL1_35
 workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git master
 workdir/extensions/Maps https://github.com/JeroenDeDauw/Maps.git 7.20.1
-workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git REL1_35
+workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git master
 workdir/extensions/Nimiarkisto https://github.com/Nikerabbit/mediawiki-extensions-Nimiarkisto.git master
 workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git REL1_35
 workdir/extensions/OAuth https://github.com/wikimedia/mediawiki-extensions-OAuth.git REL1_35
-workdir/extensions/PageForms https://github.com/Nikerabbit/mediawiki-extensions-PageForms csc-135
+workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.2
 workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git REL1_35
 workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git REL1_35
 workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git REL1_35
@@ -33,6 +33,7 @@ workdir/extensions/ShortUrl https://github.com/wikimedia/mediawiki-extensions-Sh
 workdir/extensions/SimpleMathJax https://github.com/jmnote/SimpleMathJax.git v0.7.4
 workdir/extensions/SmiteSpam https://github.com/wikimedia/mediawiki-extensions-SmiteSpam master
 workdir/extensions/SpamBlacklist https://github.com/wikimedia/mediawiki-extensions-SpamBlacklist REL1_35
+workdir/extensions/TemplateStyles https://github.com/wikimedia/mediawiki-extensions-TemplateStyles REL1_35
 workdir/extensions/Termbank https://github.com/Nikerabbit/mediawiki-extensions-Termbank.git master
 workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2021.01
 workdir/extensions/UniversalLanguageSelector https://github.com/wikimedia/mediawiki-extensions-UniversalLanguageSelector.git 2021.01

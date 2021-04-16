@@ -15,6 +15,7 @@ $wgGrammarForms['fi']['partitive']['Tieteen termipankki']  = 'Tieteen termipankk
 
 wfLoadSkin( 'Vector' );
 $wgDefaultSkin = 'vector';
+$wgVectorResponsive = true;
 
 $wgLogos = [ '1x' => ' ' ];
 
@@ -30,6 +31,7 @@ $wgFooterIcons['poweredby']['myicon'] = [
 $wgEnableEmail      = true;
 $wgEnableUserEmail  = true;
 
+$wgUseInstantCommons = true;
 $wgEnableUploads  = true;
 $wgUseImageMagick = true;
 $wgFileExtensions[] = 'ppt';
@@ -108,6 +110,7 @@ wfLoadExtension( 'HeaderTabs' );
 wfLoadExtension( 'InputBox' );
 wfLoadExtension( 'LiquidThreads' );
 wfLoadExtension( 'MixedNamespaceSearchSuggestions' );
+
 wfLoadExtension( 'PageForms' );
 $wgPageFormsRenameEditTabs = true;
 $wgPageForms24HourTime = true;
@@ -140,6 +143,9 @@ $wgSimpleMathJaxUseCDN = false;
 
 wfLoadExtension( 'ShortUrl' );
 $wgShortUrlTemplate = '/!$1';
+
+wfLoadExtension( 'TemplateStyles' );
+$wgTemplateStylesAllowedUrls['image'][] = '<^/uploads/>';
 
 wfLoadExtension( 'Termbank' );
 wfLoadExtension( 'Translate' );

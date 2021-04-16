@@ -14,17 +14,20 @@ $wgAllowDisplayTitle = true;
 $wgRestrictDisplayTitle = false;
 
 wfLoadSkin( 'Vector' );
+$wgVectorResponsive = true;
 
 // Extensions with default configuration //
 
 wfLoadExtensions( [
+	'CodeEditor',
 	'DeleteBatch',
 	'InputBox',
 	'MixedNamespaceSearchSuggestions',
 	'Sanat',
 	'Translate',
 	'UniversalLanguageSelector',
-	'YouTube'
+	'YouTube',
+	'WikiEditor'
 ] );
 
 // Extensions with custom configuration //
