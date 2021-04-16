@@ -23,7 +23,7 @@
     - /www/{{ instance.key }}/secretkey
 
 - name: Install custom docroot files for {{ instance.key }}
-  synchronize: src=docroot/{{ instance.value.conf }}/ dest=/www/{{ instance.key }}/docroot/
+  synchronize: src=docroot/{{ instance.value.conf }}/ dest=/www/{{ instance.key }}/docroot/ owner=no group=no
 
 - name: Create symlink to MediaWiki code for {{ instance.key }}
   file:
