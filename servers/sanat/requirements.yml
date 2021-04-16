@@ -8,5 +8,3 @@
   version: 1.2.3
 - src: geerlingguy.repo-remi
   version: 2.0.1
-- src: advertine.nodejs
-  version: 8041b1168cf7849ec1f374c6a216fb0b5d7607df
