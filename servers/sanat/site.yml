@@ -16,8 +16,6 @@
       tags: hfst
     - role: php
       tags: php
-    - role: advertine.nodejs
-      tags: nodejs
     - role: geerlingguy.composer
       tags: php
     - role: geerlingguy.memcached
@@ -28,8 +26,6 @@
       tags: apache
     - role: mediawiki
       tags: mediawiki
-    - role: smsxml
-      tags: smsxml
     - role: selinux
     - role: firewall
       tags: firewall

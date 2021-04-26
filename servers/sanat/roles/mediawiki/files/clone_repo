@@ -21,5 +21,5 @@ then (
 if [ ! -d "$DIR" ]
 then
 	echo "Cloning $DIR";
-	git clone --depth 1 -b "$VER" "$URL" "$DIR" || exit
+	git clone -b "$VER" "$URL" "$DIR" || exit
 fi

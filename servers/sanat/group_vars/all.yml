@@ -49,11 +49,4 @@ memcached_memory_limit: 4000
 composer_keep_updated: false
 composer_version: "1.10.17"
 
-nodejs_version: "7.10.0"
-
-sms_xml:
-  wiki_username: "SyncBot"
-  wiki_password: "SyncBot12"
-  debug: "True"
-
 nimiarkisto_mapproxy_key: ''

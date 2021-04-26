@@ -9,7 +9,7 @@ VER="$3"
 (
 	cd "$DIR" || exit
 	echo "Updating $DIR"
-	git fetch --depth 1 origin "$VER" && git reset -q --hard FETCH_HEAD
+	git fetch origin "$VER" && git reset -q --hard FETCH_HEAD
 	if [ "$DIR" != 'workdir' ]
 	then
 		git submodule update --init
