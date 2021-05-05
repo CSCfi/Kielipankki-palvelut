@@ -11,13 +11,19 @@
   loop:
     -  "{{ src_root }}"
     -  "{{ install_dir }}/bin/"
+    -  "{{ install_dir }}/sif/"
 
-- name: Get docker files to local host
-  command:
-    cmd: docker pull "{{ container }}"
-  become: yes
-  delegate_to: localhost
-  when: false #skip for now
+- name: Install Singularity Containers from DockerHub
+  shell:
+    cmd: "singularity pull {{docker_hub_base}}/{{item.name}}:{{item.version}}"
+    chdir: "{{ install_dir }}/sif/"
+    creates: "{{ install_dir }}/sif/{{item.name}}_{{item.version}}.sif"
+  environment:
+    XDG_RUNTIME_DIR: ""
+    SINGULARITY_CACHEDIR:  "{{ compile_dir | default('/tmp') }}"
+    SINGULARITY_TMPDIR:  "{{ compile_dir | default('/tmp') }}"
+    PATH: "/usr/bin:/usr/sbin"
+  loop: "{{ containers }}"
 
 - name: Copy scripts
   get_url:
