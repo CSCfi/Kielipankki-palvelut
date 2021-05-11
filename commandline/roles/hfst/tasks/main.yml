@@ -76,6 +76,18 @@
     line: ':)'
     dest: "{{ hfst_compile_dir }}/configure.ac"
 
+- name: Fix subdir-objects definition in configure
+  lineinfile:
+    regexp: subdir\-objects\]\)$
+    line: 'AM_INIT_AUTOMAKE([-Wall std-options foreign check-news])'
+    dest: "{{ hfst_compile_dir }}/configure.ac"
+
+- name: Disable hfst-tagger tests
+  lineinfile:
+    regexp: TESTS=|check_PROGRAMS=
+    line: '#'
+    dest: "{{ hfst_compile_dir }}/tools/src/hfst-tagger/src/Makefile.am"
+
 - name: Running ./autoreconf -i 
   command: "autoreconf -i"
   args:
