@@ -32,16 +32,12 @@
     mode: 0755
   loop: "{{ asr_scripts }}"
 
-- name: Hack paths
-  command:
-    cmd: "{{ item }}"
-    chdir: "{{ install_dir }}/bin"
-  loop:
-    - "sed -i s%/tmp/matthies/kaldi-aligner-5.0%/{{ install_dir }}/sif/kaldi-align_5.0%g align.sh"
-    - "sed -i s%/tmp/matthies/%/{{ install_dir }}/bin/%g kaldi-align"
-    - "sed -i s%/tmp/matthies/kaldi-rec.sh%{{ install_dir }}/bin/recognize.sh%g kaldi-rec"
-    - "sed -i s%/tmp/matthies/%{{ install_dir }}/sif/%g kaldi-rec"
-
+- name: Install configs
+  template:
+    src: config_template.j2
+    dest: "{{ install_dir }}/bin/{{ item.conf }}"
+  loop: "{{ containers }}"
+  
 - name: Fix permissions (if shared group is set)
   file:
     path: "{{ install_dir }}"

@@ -3,23 +3,24 @@
 
 package_name: singularity-asr
 version: "{{ singularity_asr_version.number }}"
-github_src: "https://raw.githubusercontent.com/juholeinonen/aligning_with_Docker/master"
+github_src: "https://raw.githubusercontent.com/CSCfi/Kielipankki-aalto_docker_asr/master/"
 docker_hub_base: "docker://juholeinonen"
 src_root: "{{ compile_root }}"
 compile_dir: "/local_scratch/{{ ansible_user_id }}"
 install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
 asr_scripts:
-  - name: kaldi-rec.sh
-    install_as: recognize.sh
-  - name: align.sh
-    install_as: align.sh
-  - name: wrapper.py
+  - name: wrappers/singularity_wrapper.sh
+    install_as: singularity_wrapper.sh
+  - name: interfaces/kaldi_rec.py
     install_as: kaldi-rec
-  - name: bin/singularity_wrapper.py
+  - name: interfaces/kaldi_align.py
     install_as: kaldi-align
 
+# container names and the script config files where they need to be referenced.
 containers:
   - name: kaldi-align
     version: 5.0
+    conf: kaldi_align_conf.py
   - name: kaldi-rec-py2
     version: 1.0
+    conf: kaldi_rec_conf.py
