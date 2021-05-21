@@ -1,8 +1,8 @@
 ---
 # defaults
 
-package_name: singularity-asr
-version: "{{ singularity_asr_version.number }}"
+package_name: aalto-asr
+version: "{{ aalto_asr_version.number }}"
 github_src: "https://raw.githubusercontent.com/CSCfi/Kielipankki-aalto_docker_asr/master/"
 docker_hub_base: "docker://juholeinonen"
 src_root: "{{ compile_root }}"
