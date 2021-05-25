@@ -82,10 +82,16 @@
     line: 'AM_INIT_AUTOMAKE([-Wall std-options foreign check-news])'
     dest: "{{ hfst_compile_dir }}/configure.ac"
 
-- name: Disable hfst-tagger tests
+- name: Disable hfst-tagger tests (1)
   lineinfile:
     regexp: TESTS=|check_PROGRAMS=
     line: '#'
+    dest: "{{ hfst_compile_dir }}/tools/src/hfst-tagger/src/Makefile.am"
+
+- name: Disable hfst-tagger tests (2)
+  lineinfile:
+    regexp: check_PROGRAMS=
+    line: '# \'
     dest: "{{ hfst_compile_dir }}/tools/src/hfst-tagger/src/Makefile.am"
 
 - name: Running ./autoreconf -i 
