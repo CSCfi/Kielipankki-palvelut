@@ -84,7 +84,7 @@
 
 - name: Disable hfst-tagger tests (1)
   lineinfile:
-    regexp: TESTS=|check_PROGRAMS=
+    regexp: TESTS=
     line: '#'
     dest: "{{ hfst_compile_dir }}/tools/src/hfst-tagger/src/Makefile.am"
 
@@ -93,6 +93,12 @@
     regexp: check_PROGRAMS=
     line: '# \'
     dest: "{{ hfst_compile_dir }}/tools/src/hfst-tagger/src/Makefile.am"
+
+- name: Remove lexc/yacc rules from foma back-end
+  replace:
+    path: "{{ hfst_compile_dir }}/back-ends/foma/Makefile.am"
+    regexp: '((^lex\.)|(^regex\.c)|(^[^ \t]*$\((LEX|YACC)\)))'
+    replace: '#\1'
 
 - name: Running ./autoreconf -i 
   command: "autoreconf -i"
