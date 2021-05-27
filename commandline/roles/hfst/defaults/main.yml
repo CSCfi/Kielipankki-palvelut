@@ -5,6 +5,6 @@ package_name: hfst
 release_url: https://github.com/hfst/hfst/releases/download/
 version: "{{hfst_version}}"
 compile_dir: "{{ compile_root }}"
-hfst_tarball: "{{package_name}}-{{ version }}.tar.bz2"
+hfst_tarball: "{{package_name}}-{{ version }}.tar.gz"
 hfst_compile_dir: "{{ compile_dir }}/{{package_name}}-{{ version }}"
 hfst_install_dir: "{{ install_prefix }}/ling/{{package_name}}/{{ version }}"
