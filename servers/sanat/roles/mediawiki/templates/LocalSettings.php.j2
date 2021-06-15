@@ -79,8 +79,24 @@ $wgSQLMode = 'TRADITIONAL';
 ## Shared memory settings
 $wgMainCacheType = 'memcached-pecl';
 $wgParserCacheType = CACHE_DB;
-$wgSessionCacheType = CACHE_DB;
+$wgSessionCacheType = 'memcached-db';
 $wgMemCachedServers = [ 'localhost:11211' ];
+$wgObjectCaches['memcached-db'] = [
+	'class' => 'MultiWriteBagOStuff',
+	'caches' => [
+		[
+			'factory' => [ 'ObjectCache', 'getInstance' ],
+			'args' => [ 'memcached-pecl' ]
+		],
+		[
+			'factory' => [ 'ObjectCache', 'getInstance' ],
+			'args' => [ CACHE_DB ]
+		],
+	],
+	'replication' => 'async',
+	'reportDupes' => false
+];
+$wgPHPSessionHandling = 'disable';
 
 $wgShellLocale = "en_US.utf8";
 $wgDiff3 = "/usr/bin/diff3";
