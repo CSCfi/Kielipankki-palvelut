@@ -1,0 +1,47 @@
+---
+# tasks file for tsv-tools
+
+- name: Setup directories
+  become: no
+  file:
+    path: "{{ item }}"
+    mode: 0777
+    recurse: yes
+    state: directory
+  loop:
+    -  "{{ src_root }}"
+    -  "{{ install_dir }}/bin/"
+    -  "{{ install_dir }}/sif/"
+
+- name: Install Singularity Containers from DockerHub
+  shell:
+    cmd: "singularity pull {{docker_hub_base}}/{{item.name}}:{{item.version}}"
+    chdir: "{{ install_dir }}/sif/"
+    creates: "{{ install_dir }}/sif/{{item.name}}_{{item.version}}.sif"
+  environment:
+    XDG_RUNTIME_DIR: ""
+    SINGULARITY_CACHEDIR:  "{{ compile_dir | default('/tmp') }}"
+    SINGULARITY_TMPDIR:  "{{ compile_dir | default('/tmp') }}"
+    PATH: "/usr/bin:/usr/sbin"
+  loop: "{{ containers }}"
+
+- name: Copy scripts
+  get_url:
+    url: "{{ github_src }}/{{ item.name }}"
+    dest: "{{ install_dir }}/bin/{{ item.install_as }}"
+    mode: 0755
+  loop: "{{ asr_scripts }}"
+
+- name: Install configs
+  template:
+    src: config_template.j2
+    dest: "{{ install_dir }}/bin/{{ item.conf }}"
+  loop: "{{ containers }}"
+  
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ install_dir }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  when: shared_group is defined
