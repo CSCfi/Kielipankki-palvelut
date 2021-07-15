@@ -3,11 +3,13 @@
 
 package_name: aalto-asr
 version: "{{ aalto_asr_version.number }}"
-github_src: "https://raw.githubusercontent.com/CSCfi/Kielipankki-aalto_docker_asr/master/"
+repo_name: "Kielipankki-aalto_docker_asr"
+github_src: "https://github.com/CSCfi/{{ repo_name }}/"
 docker_hub_base: "docker://juholeinonen"
 src_root: "{{ compile_root }}"
 compile_dir: "/local_scratch/{{ ansible_user_id }}"
 install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+module_path: "{{ module_root }}/{{ package_name }}"
 asr_scripts:
   - name: wrappers/singularity_wrapper.sh
     install_as: singularity_wrapper.sh
