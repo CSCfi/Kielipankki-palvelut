@@ -93,10 +93,9 @@ $wgObjectCaches['memcached-db'] = [
 			'args' => [ CACHE_DB ]
 		],
 	],
-	'replication' => 'async',
+	'replication' => 'sync',
 	'reportDupes' => false
 ];
-$wgPHPSessionHandling = 'disable';
 
 $wgShellLocale = "en_US.utf8";
 $wgDiff3 = "/usr/bin/diff3";
