@@ -4,4 +4,3 @@ is_admin: false
 python3_module: python-data/3.7.3-1
 python_modcall: ". /appl/profile/zz-csc-env.sh && module load {{python3_module}} &&"
 gcc_modcall: ". /appl/profile/zz-csc-env.sh && module load gcc/9.1.0 &&"
-shared_group: p_installation

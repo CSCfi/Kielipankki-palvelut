@@ -529,22 +529,19 @@ def main(see = ['']):
                                see)
         exit(0)
 
-    # get file path based on day of week (0=Monday) This is slight overkill,
-    # but easy to implement. Strictly we would need only 2 versions instead of 7.
-    newdb_name = dbparent + '/newdb_' + str(datetime.datetime.today().weekday())  + '.db'
-    try:
-        shutil.copy(current, newdb_name)
-    except shutil.SameFileError:
-        pass
-    synch(sqlite3.connect(newdb_name), opener, oldinv,
-          { stoid : newinv[stoid]
-            for stoid in newinv
-            if any(stoid.endswith(six)
-                   for six in see) })
-    if opts.dryrun:
-        # discard changes
-        os.remove(newdb_name)
-    else:
+    if not opts.dryrun:
+        # get file path based on day of week (0=Monday) This is slight overkill,
+        # but easy to implement. Strictly we would need only 2 versions instead of 7.
+        newdb_name = dbparent + '/newdb_' + str(datetime.datetime.today().weekday())  + '.db'
+        try:
+            shutil.copy(current, newdb_name)
+        except shutil.SameFileError:
+            pass
+        synch(sqlite3.connect(newdb_name), opener, oldinv,
+              { stoid : newinv[stoid]
+                for stoid in newinv
+                if any(stoid.endswith(six)
+                       for six in see) })
         # set current -> newdb_name
         os.remove(current) # race condition!
         os.symlink(newdb_name, current)
