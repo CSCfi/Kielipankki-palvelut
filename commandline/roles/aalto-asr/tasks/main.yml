@@ -12,6 +12,7 @@
     -  "{{ src_root }}"
     -  "{{ install_dir }}/bin/"
     -  "{{ install_dir }}/sif/"
+    -  "{{ module_path }}"
 
 - name: Install Singularity Containers from DockerHub
   shell:
@@ -25,11 +26,20 @@
     PATH: "/usr/bin:/usr/sbin"
   loop: "{{ containers }}"
 
+
+- name: Clone repo
+  git:
+    repo: "{{ github_src }}"
+    dest: "{{ src_root }}/{{ repo_name }}"
+    accept_hostkey: yes
+    force: yes
+  
 - name: Copy scripts
-  get_url:
-    url: "{{ github_src }}/{{ item.name }}"
+  copy:
+    src: "{{ src_root }}/{{ repo_name }}/{{ item.name }}"
     dest: "{{ install_dir }}/bin/{{ item.install_as }}"
     mode: 0755
+    remote_src: yes
   loop: "{{ asr_scripts }}"
 
 - name: Install configs
@@ -37,6 +47,12 @@
     src: config_template.j2
     dest: "{{ install_dir }}/bin/{{ item.conf }}"
   loop: "{{ containers }}"
+
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
   
 - name: Fix permissions (if shared group is set)
   file:
