@@ -98,9 +98,10 @@ $wgFSISGroups['Kotus'] = [
 	'fallback' => '/www/nimiarkisto.fi/docroot/fallback.png',
 ];
 
-$wgHooks['SkinTemplateOutputPageBeforeExec'][] = function( $sk, &$tpl ) {
-	$tpl->set( 'kotus', '<a href="https://www.kotus.fi">Kotimaisten kielten keskus</a>' );
-	$tpl->data['footerlinks']['places'][] = 'kotus';
+$wgHooks['SkinAddFooterLinks'][] = function( Skin $sk, string $key, array &$links ) {
+	if ( $key === 'places' ) {
+		$links['kotus'] = '<a href="https://www.kotus.fi">Kotimaisten kielten keskus</a>';
+	}
 };
 
 $wgPageFormsMaxAutocompleteValues = 15;

@@ -76,6 +76,30 @@
     line: ':)'
     dest: "{{ hfst_compile_dir }}/configure.ac"
 
+- name: Fix subdir-objects definition in configure
+  lineinfile:
+    regexp: subdir\-objects\]\)$
+    line: 'AM_INIT_AUTOMAKE([-Wall std-options foreign check-news])'
+    dest: "{{ hfst_compile_dir }}/configure.ac"
+
+- name: Disable hfst-tagger tests (1)
+  lineinfile:
+    regexp: TESTS=
+    line: '#'
+    dest: "{{ hfst_compile_dir }}/tools/src/hfst-tagger/src/Makefile.am"
+
+- name: Disable hfst-tagger tests (2)
+  lineinfile:
+    regexp: check_PROGRAMS=
+    line: '# \'
+    dest: "{{ hfst_compile_dir }}/tools/src/hfst-tagger/src/Makefile.am"
+
+- name: Remove lexc/yacc rules from foma back-end
+  replace:
+    path: "{{ hfst_compile_dir }}/back-ends/foma/Makefile.am"
+    regexp: '((^lex\.)|(^regex\.c)|(^[^ \t]*$\((LEX|YACC)\)))'
+    replace: '#\1'
+
 - name: Running ./autoreconf -i 
   command: "autoreconf -i"
   args:
