@@ -17,7 +17,7 @@
       number: 2.0
       githash:  07f0e37
    - aalto_asr_version:
-       number: 2.0
+       number: 2.1
        githash: latest
    - pytorch_version: v1.3.1
    - hunpos_version: 1.0

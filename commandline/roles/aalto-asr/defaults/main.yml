@@ -21,8 +21,8 @@ asr_scripts:
 # container names and the script config files where they need to be referenced.
 containers:
   - name: kaldi-align
-    version: 5.0
+    version: 5.1
     conf: kaldi_align_conf.py
   - name: kaldi-rec-py2
-    version: 1.0
+    version: 2.0
     conf: kaldi_rec_conf.py
