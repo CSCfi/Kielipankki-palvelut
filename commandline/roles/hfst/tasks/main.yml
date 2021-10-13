@@ -150,12 +150,12 @@
     chdir: "{{ hfst_compile_dir }}/python"
 
 - name: Checking python module
-  shell: bash --login -c  "./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages"
+  shell: bash --login -c  "{{ python_modcall }} LD_LIBRARY_PATH={{ hfst_install_dir }}/lib/:/appl/opt/cluster_studio_xe2019/compilers_and_libraries_2019.4.243/linux/compiler/lib/intel64_lin:$LD_LIBRARY_PATH && ./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages --verbose"
   args:
     chdir: "{{ hfst_compile_dir }}/python/test"
-  environment:
-    LD_LIBRARY_PATH: "{{ hfst_install_dir }}/lib/:{{ ansible_env.LD_LIBRARY_PATH }}"
-  when: false # disable for now
+#  environment:
+#    LD_LIBRARY_PATH: "{{ hfst_install_dir }}/lib/:{{ ansible_env.LD_LIBRARY_PATH }}"
+#  when: false # disable for now
 
 # This is a workaround to be able to compile everything just once
 # And install to multiple places
