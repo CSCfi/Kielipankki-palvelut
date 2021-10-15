@@ -108,7 +108,7 @@
 
 # Setting prefix explicitly to be able to replace it later in scripts
 - name: Running ./configure 
-  command: "./configure --enable-all-tools --with-readline --enable-fsmbook-tests --prefix=/usr/local"
+  shell: /bin/bash -lc "{{ gcc_modcall }} ./configure --enable-all-tools --with-readline --enable-fsmbook-tests --prefix=/usr/local"
   args:
     chdir: "{{ hfst_compile_dir }}"
     creates: config.log
@@ -150,7 +150,7 @@
     chdir: "{{ hfst_compile_dir }}/python"
 
 - name: Checking python module
-  shell: bash --login -c  "{{ python_modcall }} LD_LIBRARY_PATH={{ hfst_install_dir }}/lib/:/appl/opt/cluster_studio_xe2019/compilers_and_libraries_2019.4.243/linux/compiler/lib/intel64_lin:$LD_LIBRARY_PATH && ./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages --verbose"
+  shell: bash --login -c  "{{ python_modcall }} LD_LIBRARY_PATH={{ hfst_install_dir }}/lib/:$LD_LIBRARY_PATH && ./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages --verbose"
   args:
     chdir: "{{ hfst_compile_dir }}/python/test"
 #  environment:
