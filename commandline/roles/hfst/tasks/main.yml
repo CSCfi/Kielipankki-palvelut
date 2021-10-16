@@ -119,7 +119,7 @@
     chdir: "{{ hfst_compile_dir }}"
     #creates: MAKE.log
     
-- name: Running make check 
+- name: Running make check
   shell: bash --login -c "{{ gcc_modcall }} make check  > MAKE_CHECK.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
@@ -140,12 +140,12 @@
     creates: "{{ hfst_install_dir }}/bin/hfst-lookup"
 
 - name: Building python module
-  shell: bash --login -c  "{{ python_modcall }}python3 setup.py build_ext --inplace --local-hfst"
+  shell: bash --login -c  "{{ python_swig_modcall }}python3 setup.py build_ext --inplace --local-hfst"
   args:
     chdir: "{{ hfst_compile_dir }}/python"
 
 - name: Installing python module
-  shell: bash --login -c  "{{ python_modcall }}python3 setup.py install --prefix={{ hfst_install_dir }} "
+  shell: bash --login -c  "{{ python_swig_modcall }}python3 setup.py install --prefix={{ hfst_install_dir }} "
   args:
     chdir: "{{ hfst_compile_dir }}/python"
 
