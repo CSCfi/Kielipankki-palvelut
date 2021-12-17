@@ -149,7 +149,7 @@ $wgGroupPermissions['sysop']['abusefilter-revert'] = true;
 wfLoadExtension( 'Nuke' );
 wfLoadExtension( 'UserMerge' );
 $wgGroupPermissions['bureaucrat']['usermerge'] = true;
-require_once "$IP/extensions/SmiteSpam/SmiteSpam.php";
+wfLoadExtension( 'SmiteSpam' );
 $wgDisplayPageSize = 10;
 wfLoadExtension( 'SpamBlacklist' );
 $wgBlacklistSettings = [
