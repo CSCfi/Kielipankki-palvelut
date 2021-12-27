@@ -1,6 +1,6 @@
 workdir https://github.com/wikimedia/mediawiki.git REL1_35
 workdir/extensions/AbuseFilter https://github.com/wikimedia/mediawiki-extensions-AbuseFilter.git REL1_35
-workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2021.06
+workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2021.12
 workdir/extensions/CategoryTree https://github.com/wikimedia/mediawiki-extensions-CategoryTree.git REL1_35
 workdir/extensions/CirrusSearch https://github.com/wikimedia/mediawiki-extensions-CirrusSearch.git REL1_35
 workdir/extensions/Cite https://github.com/wikimedia/mediawiki-extensions-Cite.git REL1_35
@@ -21,7 +21,7 @@ workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/
 workdir/extensions/Nimiarkisto https://github.com/Nikerabbit/mediawiki-extensions-Nimiarkisto.git master
 workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git REL1_35
 workdir/extensions/OAuth https://github.com/wikimedia/mediawiki-extensions-OAuth.git REL1_35
-workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.2.1
+workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.3.1
 workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git REL1_35
 workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git REL1_35
 workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git REL1_35
@@ -35,8 +35,8 @@ workdir/extensions/SmiteSpam https://github.com/wikimedia/mediawiki-extensions-S
 workdir/extensions/SpamBlacklist https://github.com/wikimedia/mediawiki-extensions-SpamBlacklist REL1_35
 workdir/extensions/TemplateStyles https://github.com/wikimedia/mediawiki-extensions-TemplateStyles REL1_35
 workdir/extensions/Termbank https://github.com/Nikerabbit/mediawiki-extensions-Termbank.git master
-workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2021.06
-workdir/extensions/UniversalLanguageSelector https://github.com/wikimedia/mediawiki-extensions-UniversalLanguageSelector.git 2021.06
+workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2021.12
+workdir/extensions/UniversalLanguageSelector https://github.com/wikimedia/mediawiki-extensions-UniversalLanguageSelector.git 2021.12
 workdir/extensions/UserMerge https://github.com/wikimedia/mediawiki-extensions-UserMerge.git REL1_35
 workdir/extensions/WikiEditor https://github.com/Nikerabbit/mediawiki-extensions-WikiEditor.git csc-135
 workdir/extensions/Wikibase https://github.com/Nikerabbit/mediawiki-extensions-Wikibase.git csc-135
