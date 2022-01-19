@@ -137,7 +137,7 @@
   shell: "make install prefix={{ hfst_install_dir }} > MAKE_INSTALL.log"
   args:
     chdir: "{{ hfst_compile_dir }}"
-    creates: "{{ hfst_install_dir }}/bin/hfst-lookup"
+    #creates: "{{ hfst_install_dir }}/bin/hfst-lookup"
 
 - name: Building python module
   shell: bash --login -c  "{{ python_swig_modcall }}python3 setup.py build_ext --inplace --local-hfst"

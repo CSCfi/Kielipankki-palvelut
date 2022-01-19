@@ -4,5 +4,5 @@ puhti:
       module_root: /appl/modulefiles
       install_prefix: /appl/soft
       kielipankki_data_dir: /appl/data/kielipankki
-      swig3_as_module: no
+      swig3_as_module: yes
       shared_group: p_installation
