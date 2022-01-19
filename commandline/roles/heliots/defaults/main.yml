@@ -1,0 +1,9 @@
+---
+# defaults
+
+package_name: heliots
+version: "{{ heliots_version }}"
+jar_name: "heliots-{{ heliots_version }}.jar"
+source: "https://zenodo.org/record/5853116/files/HeLI.jar?download=1"
+install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+lib_dir: "{{ install_dir }}/lib"
