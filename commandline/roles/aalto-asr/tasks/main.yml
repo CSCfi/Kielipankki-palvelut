@@ -32,7 +32,12 @@
     dest: "{{ src_root }}/{{ repo_name }}"
     accept_hostkey: yes
     force: yes
-  
+
+- name: Run unit tests
+  shell:
+    cmd: "module load python-data/3.7.6-1 && pytest tests/unit_tests/"
+    chdir: "{{ src_root }}/{{ repo_name }}"
+
 - name: Copy scripts
   copy:
     src: "{{ src_root }}/{{ repo_name }}/{{ item.name }}"
