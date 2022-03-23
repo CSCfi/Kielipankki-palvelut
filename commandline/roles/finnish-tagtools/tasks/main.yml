@@ -21,10 +21,20 @@
     params:
       prefix: "{{ tagtools_install_dir }}"
 
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
+
+      
 - name: Fix permissions (if shared group is set)
   file:
-    path="{{ tagtools_install_dir }}/.."
-    group={{ shared_group }}
-    mode="g+rwX,o+rX"
-    recurse=yes
+    path: "{{ item }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  loop:
+    - "{{ tagtools_install_dir }}"
+    - "{{ module_path }}"
   when: shared_group is defined
