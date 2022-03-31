@@ -25,7 +25,7 @@
     SINGULARITY_TMPDIR:  "{{ compile_dir | default('/tmp') }}"
     PATH: "/usr/bin:/usr/sbin"
   loop: "{{ containers }}"
-
+  ignore_errors: yes
 
 - name: Clone repo
   git:
