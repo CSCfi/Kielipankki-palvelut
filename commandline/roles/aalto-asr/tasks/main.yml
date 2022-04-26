@@ -45,8 +45,7 @@
 - name: Install configs
   template:
     src: config_template.j2
-    dest: "{{ install_dir }}/bin/{{ item.conf }}"
-  loop: "{{ containers }}"
+    dest: "{{ install_dir }}/bin/config.yaml"
 
 - name: Install modulefile
   template:
