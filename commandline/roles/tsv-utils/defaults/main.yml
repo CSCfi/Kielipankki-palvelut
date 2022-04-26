@@ -7,3 +7,4 @@ release_url: "https://github.com/eBay/tsv-utils/releases/download/v{{ version }}
 src_root: "{{ compile_root }}"
 compile_dir: "{{ src_root }}/{{ package_name }}-v{{ version }}_linux-x86_64_ldc2"
 install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+module_path: "{{ module_root }}/{{ package_name }}"

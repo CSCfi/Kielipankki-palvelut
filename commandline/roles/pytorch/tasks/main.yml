@@ -17,7 +17,7 @@
   file:
     path="{{ install_dir }}/.."
     group=csc
-    mode="g+rwX,o+rX"
+    mode="g+rwX,o+rX,o-w"
     recurse=yes
 
 

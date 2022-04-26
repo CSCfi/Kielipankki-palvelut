@@ -38,11 +38,16 @@
     - tsv-split
     - tsv-uniq
 
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
 
 - name: Fix permissions (if shared group is set)
   file:
     path: "{{ install_dir }}"
     group: "{{ shared_group }}"
-    mode: "g+rwX,o+rX"
+    mode: "g+rwX,o+rX,o-w"
     recurse: yes
   when: shared_group is defined

@@ -41,7 +41,7 @@
   file:
     path: "{{ install_dir }}"
     group: "{{ shared_group }}"
-    mode: "g+rwX,o+rX"
+    mode: "g+rwX,o+rX,o-w"
     recurse: yes
   when: shared_group is defined
 
