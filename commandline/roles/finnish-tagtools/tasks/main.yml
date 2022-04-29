@@ -37,3 +37,10 @@
     - "{{ tagtools_install_dir }}"
     - "{{ module_path }}"
   when: shared_group is defined
+
+- name: Run make check-installed
+  make:
+    chdir: "{{ compile_dir }}"
+    target: check-installed
+    params:
+      prefix: "{{ tagtools_install_dir }}"
