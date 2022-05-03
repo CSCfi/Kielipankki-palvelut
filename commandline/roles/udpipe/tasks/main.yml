@@ -69,7 +69,7 @@
   file:
     path: "{{ item }}"
     group: "{{ shared_group }}"
-    mode: "g+rwX,o+rX"
+    mode: "g+rwX,o+rX,o-w"
     recurse: yes
   with_items:
     - "{{ install_dir }}"
