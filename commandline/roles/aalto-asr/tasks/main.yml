@@ -1,5 +1,5 @@
 ---
-# tasks file for tsv-tools
+# tasks file for aalto-asr
 
 - name: Setup directories
   become: no
@@ -25,7 +25,6 @@
     SINGULARITY_TMPDIR:  "{{ compile_dir | default('/tmp') }}"
     PATH: "/usr/bin:/usr/sbin"
   loop: "{{ containers }}"
-  ignore_errors: yes
 
 - name: Clone repo
   git:
