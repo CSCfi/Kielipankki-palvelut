@@ -1,4 +1,4 @@
-puhti:
+hpc:
   hosts:
     puhti-login2.csc.fi:
       module_root: /local_scratch/{{ansible_user_id}}/ansible/modulefiles

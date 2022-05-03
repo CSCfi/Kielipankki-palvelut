@@ -1,4 +1,4 @@
-puhti:
+hpc:
   hosts:
     puhti-login3.csc.fi:
       install_prefix: /users/{{ansible_user_id}}/ansible/install

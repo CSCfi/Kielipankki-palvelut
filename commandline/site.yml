@@ -2,7 +2,7 @@
 # The Language Bank of Finland Software Stack on CSC's Taito-cluster
 #
 
-- hosts: puhti
+- hosts: hpc
   vars:
    - hfst_version: 3.16.0
    - hfst_ospell_version: 0.5.1
