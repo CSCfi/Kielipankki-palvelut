@@ -7,6 +7,8 @@
     - subversion
     - libatlas-dev
     - libatlas-base-dev
+    - sox
+    - gfortran
     state: present
   become: yes
   when:
