@@ -154,6 +154,11 @@
   args:
     chdir: "{{ hfst_compile_dir }}/python/test"
 
+- name: Create modulefile installation directory
+  file:
+    path: "{{ module_path }}"
+    state: directory
+
 - name: Install modulefile
   template:
     src: module_template.j2
