@@ -20,6 +20,30 @@ ansible-playbook -i test site.yml -t tsv-utils
 ssh puhti-login2.csc.fi (check host in inventories/test)
 module use /local_scratch/<uid>/ansible/modulefiles  (check module_root in inventories/test)
 
+## Local installation
+
+It is possible to install the tools on a local machine to test the scripts, but this still needs some manual work. Below are the extra steps needed on a Ubuntu machine.
+
+```
+# create directory that corresponds to install_prefix
+sudo mkdir /data
+sudo chmod 0777 /data
+
+# debian dependencies for hfst-ospell
+sudo apt installlibxml++2.6-dev libarchive-dev
+# alternatives
+libxml++2 libarchive
+
+# dependencies for finnish-parse
+sudo apt install opennlp
+
+# the hfst installation location must be in path so that is discovered when testing finnish-tagtools
+export PATH="/data/ling/hfst/3.16.0/bin:$PATH"
+
+# run the playbook locally (set python version to match yours)
+ansible-playbook site.yml -i inventories/localhost --connection=local --extra-vars "python3_base_version=3.8"
+```
+
 # Production
 
 In production the installation target is Kielipankki's software
