@@ -149,6 +149,17 @@
   args:
     chdir: "{{ hfst_compile_dir }}/python"
 
+- name: Add hfst path to library directories
+  copy:
+    dest: "/etc/ld.so.conf.d/libhfst.conf"
+    content: "{{ hfst_install_dir }}/lib"
+  become: yes
+  notify: Update ldconfig
+  when: inventory_hostname == 'localhost'
+
+- name: Flush handlers to ensure that ldconfig is run before checking the module
+  meta: flush_handlers
+
 - name: Checking python module
   shell: bash --login -c  "{{ python_modcall }} LD_LIBRARY_PATH={{ hfst_install_dir }}/lib/:$LD_LIBRARY_PATH && ./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages --verbose"
   args:
