@@ -1,18 +1,8 @@
-- name: Create oregano directories
-  file:
-    path: "{{ item }}"
-    state: directory
-  with_items:
-    - /srv/mediawiki/hooks
-    - /srv/mediawiki/tags
-    - /srv/mediawiki/targets
-
 - name: Install packages required for wiki setup
   package:
     name: "{{ item }}"
     state: present
   with_items: "{{ mediawiki_packages }}"
-
 
 - name: Install oregano
   get_url:
@@ -21,66 +11,15 @@
     checksum: sha1:a6a9028352d72b45cd1dc07113ea659ff0d4cd57
     mode: a+x
 
-- name: Install oregano hooks
-  copy: src=oregano_hook_deploy dest=/srv/mediawiki/hooks/deploy mode=0755
-
-# So far only nimiarkisto is supported  
+# So far only nimiarkisto is supported
 - name: Install monthly dump script
   copy:
     src: dump_nimiarkisto
     dest: /etc/cron.monthly/
     mode: 0755
 
-- name: Copy repo updating files
-  copy: src={{item}} dest=/srv/mediawiki mode=0755
-  loop:
-    - update_repos
-    - update_repo
-    - clone_repo
-
-- name: Copy list of repos
-  copy: src=repos dest=/srv/mediawiki
-
-- name: Clone/update repos
-  command: /srv/mediawiki/update_repos
-  args:
-    chdir: /srv/mediawiki/
-
-- name: Install composer.local.json
-  copy: src=composer.local.json dest=/srv/mediawiki/workdir/composer.local.json
-
-- name: Install LocalSettings.php
-  template: src=LocalSettings.php.j2 dest=/srv/mediawiki/workdir/LocalSettings.php
-
-- name: Run composer update
-  command: /usr/local/bin/composer update --no-dev
-  args:
-    chdir: /srv/mediawiki/workdir
-
 - name: Configure all wiki instances
   include: instance.yml
   with_dict: "{{ mediawikis }}"
   loop_control:
     loop_var: instance
-
-- name: Update l10n cache for all wikis 1/2
-  command: /usr/bin/php maintenance/mergeMessageFileList.php --extensions-dir skins:extensions --output /srv/mediawiki/MessagesSettings.php
-  args:
-    chdir: /srv/mediawiki/workdir
-  environment:
-    FORLC: 1
-
-- name: Update l10n cache for all wikis 2/2
-  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8
-  args:
-    chdir: /srv/mediawiki/workdir
-  environment:
-    FORLC: 1
-
-- name: Deploy latest code with oregano
-  command: /srv/mediawiki/oregano {{ item }}
-  args:
-    chdir: /srv/mediawiki
-  with_items:
-    - tag
-    - deploy

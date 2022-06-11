@@ -14,10 +14,17 @@ $wgGrammarForms['fi']['elative' ]['Tieteen termipankki']  = 'Tieteen termipankis
 $wgGrammarForms['fi']['partitive']['Tieteen termipankki']  = 'Tieteen termipankkia';
 
 wfLoadSkin( 'Vector' );
-$wgDefaultSkin = 'vector';
+$wgDefaultSkin = 'vector-2022';
 $wgVectorResponsive = true;
+$wgVectorWvuiSearchOptions = [
+	'showThumbnail' => false,
+	'showDescription' => false,
+];
 
-$wgLogos = [ '1x' => ' ' ];
+$wgLogos = [
+	'icon' => '/logo.svg',
+	'wordmark' => [ 'src' => '/wordmark.svg', 'width' => '376', 'height' => '80' ],
+];
 
 $wgFavicon = '/favicon.png';
 $wgFooterIcons['poweredby']['myicon'] = [
@@ -43,7 +50,6 @@ $wgRightsText = 'Creative Commons Nimeä-Tarttuva 3.0 Muokkaamaton';
 $wgRightsIcon = 'https://i.creativecommons.org/l/by-sa/3.0/88x31.png';
 
 // Turhat pois
-$wgHiddenPrefs[] = 'stubthreshold';
 $wgHiddenPrefs[] = 'userid';
 $wgHiddenPrefs[] = 'math';
 $wgHiddenPrefs[] = 'imagesize';
@@ -109,10 +115,8 @@ wfLoadExtension( 'CodeEditor' );
 wfLoadExtension( 'HeaderTabs' );
 wfLoadExtension( 'InputBox' );
 wfLoadExtension( 'LiquidThreads' );
-wfLoadExtension( 'MixedNamespaceSearchSuggestions' );
 
 wfLoadExtension( 'PageForms' );
-$wgPageFormsRenameEditTabs = true;
 $wgPageForms24HourTime = true;
 $wgGroupPermissions['user']['createclass'] = false;
 $wgGroupPermissions['sysop']['createclass'] = true;
@@ -128,6 +132,7 @@ wfLoadExtension( 'Renameuser' );
 wfLoadExtension( 'ReplaceText' );
 require "$IP/extensions/SemanticDrilldown/SemanticDrilldown.php";
 // Semantic MediaWiki
+wfLoadExtension( 'SemanticMediaWiki' );
 enableSemantics( $VHOST );
 $smwgPageSpecialProperties[] = '_CDAT';
 $smwgPageSpecialProperties[] = '_LEDT';
@@ -137,6 +142,10 @@ $smwgQMaxInlineLimit = 5000;
 $smwgQUpperbound = 30000;
 // Causes performance issues
 $smwgEnabledQueryDependencyLinksStore = false;
+$smwgCheckForConstraintErrors = SMW_CONSTRAINT_ERR_CHECK_NONE;
+// Work around SMW bug: https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5250
+$wgNamespacesToBeSearchedDefault[102] = true;
+$wgNamespacesToBeSearchedDefault[108] = true;
 
 wfLoadExtension( 'SimpleMathJax' );
 $wgSimpleMathJaxUseCDN = false;
@@ -177,6 +186,15 @@ $wgHooks['TranslatePostInitGroups'][] = function ( &$list, &$deps, &$autoload ) 
 };
 
 wfLoadExtension( 'UniversalLanguageSelector' );
+wfLoadExtension( 'VEForAll' );
+wfLoadExtension( 'VisualEditor' );
+$wgVisualEditorEnableDiffPage = true;
+$wgHiddenPrefs[] = 'visualeditor-tabs';
+$wgHiddenPrefs[] = 'visualeditor-newwikitext';
+#$wgVisualEditorEnableWikitext = true;
+#$wgDefaultUserOptions['visualeditor-newwikitext'] = 1;
+$wgVisualEditorUseSingleEditTab = true;
+#$wgDefaultUserOptions['visualeditor-enable'] = 1;
 
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;

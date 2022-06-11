@@ -51,9 +51,16 @@ $wgNamespaceContentModels[NS_TALK] = 'flow-board';
 wfLoadExtension( 'ParserFunctions' );
 $wgPFEnableStringFunctions = true;
 
+wfLoadExtension( 'SemanticMediaWiki' );
 enableSemantics( $VHOST );
 $smwgQMaxInlineLimit = 2500;
 $smwgQUpperbound = 10000;
+$smwgCheckForConstraintErrors = SMW_CONSTRAINT_ERR_CHECK_NONE;
+$smwgValueLookupCacheLifetime = 60 * 60 * 2; // Default week
+$smwgQueryResultCacheType = CACHE_MEMCACHED;
+$smwgQueryResultCacheLifetime = 60 * 60 * 2; // Default week
+$smwgQueryResultNonEmbeddedCacheLifetime = 60 * 10; // Default ten minutes
+$smwgEnabledQueryDependencyLinksStore = false;
 
 $wgAllowDisplayTitle = true;
 $wgRestrictDisplayTitle = false;
@@ -106,11 +113,6 @@ $wgHooks['SkinAddFooterLinks'][] = function( Skin $sk, string $key, array &$link
 
 $wgPageFormsMaxAutocompleteValues = 15;
 $wgPageFormsMaxLocalAutocompleteValues = 10;
-$smwgValueLookupCacheLifetime = 60 * 60 * 2; // Default week
-$smwgQueryResultCacheType = CACHE_MEMCACHED;
-$smwgQueryResultCacheLifetime = 60 * 60 * 2; // Default week
-$smwgQueryResultNonEmbeddedCacheLifetime = 60 * 10; // Default ten minutes
-$smwgEnabledQueryDependencyLinksStore = false;
 // https://phabricator.wikimedia.org/T193246
 $wgUpdateRowsPerJob = 2000;
 $wgUpdateRowsPerQuery = 500;

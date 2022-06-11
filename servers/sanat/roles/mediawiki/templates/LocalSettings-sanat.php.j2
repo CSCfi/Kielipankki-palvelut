@@ -7,7 +7,10 @@ $wgDBuser = '{{ instance.value.db.user }}';
 $wgDBpassword = '{{ instance.value.db.password }}';
 $wgDBname = '{{ instance.value.db.database }}';
 
-$wgLogo = '/logo.png';
+$wgLogos = [
+	'wordmark' => [ 'src' => '/KIELIPANKKI_logotxt_SU_EN.png', 'width' => '196', 'height' => '38' ],
+];
+
 $wgGroupPermissions['*']['createaccount'] = false;
 
 $wgAllowDisplayTitle = true;
@@ -16,7 +19,9 @@ $wgRestrictDisplayTitle = false;
 $wgUseInstantCommons = true;
 
 wfLoadSkin( 'Vector' );
+$wgDefaultSkin = 'vector-2022';
 $wgVectorResponsive = true;
+$wgVectorDefaultSidebarVisibleForAnonymousUser = true;
 
 // Extensions with default configuration //
 
@@ -24,7 +29,6 @@ wfLoadExtensions( [
 	'CodeEditor',
 	'DeleteBatch',
 	'InputBox',
-	'MixedNamespaceSearchSuggestions',
 	'Sanat',
 	'Translate',
 	'UniversalLanguageSelector',
@@ -34,7 +38,10 @@ wfLoadExtensions( [
 
 // Extensions with custom configuration //
 
+wfLoadExtension( 'SemanticMediaWiki' );
 enableSemantics( $VHOST );
+$smwgCheckForConstraintErrors = SMW_CONSTRAINT_ERR_CHECK_NONE;
+
 wfLoadExtension( 'PageForms' );
 $wgPageFormsRedLinksCheckOnlyLocalProps = true;
 $wgPageFormsRenameEditTabs = true;

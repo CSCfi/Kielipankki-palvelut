@@ -11,9 +11,20 @@ wikidb_innodb_buffer_pool_instances: 4
 wikidb_innodb_buffer_pool_size: 8G
 
 mediawikis:
+  termipankki.nikerabb.it:
+    conf: termipankki
+    oregano_target: workdir
+    repofile: repos-termipankki
+    db:
+      server_host: localhost
+      server_client: localhost
+      user: wikiuser
+      password: wikipass
+      database: termipankki
   sanat.nikerabb.it:
     conf: sanat
     oregano_target: workdir
+    repofile: repos-sanat
     db:
       server_host: localhost
       server_client: localhost
@@ -23,20 +34,12 @@ mediawikis:
   nimiarkisto.nikerabb.it:
     conf: nimiarkisto
     oregano_target: workdir
+    repofile: repos
     db:
       server_host: localhost
       server_client: localhost
       user: wikiuser
       password: wikipass
       database: nimiarkisto
-  termipankki.nikerabb.it:
-    conf: termipankki
-    oregano_target: workdir
-    db:
-      server_host: localhost
-      server_client: localhost
-      user: wikiuser
-      password: wikipass
-      database: termipankki
 
 nimiarkisto_service_url: http://95.217.134.251

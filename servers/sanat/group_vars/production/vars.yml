@@ -19,6 +19,7 @@ webaliases_termipankki:
 mediawikis:
   sanat.csc.fi:
     conf: sanat
+    repofile: repos-sanat
     db:
       database: sanatdb
       server_host: '{{ vault_sanat_db_server }}'
@@ -28,6 +29,7 @@ mediawikis:
       admin_password: "{{ vault_db_admin_password }}"
   nimiarkisto.fi:
     conf: nimiarkisto
+    repofile: repos
     db:
       database: kielipankki_nadigi_m
       server_host: '{{ vault_nimiarkisto_db_server }}'
@@ -37,6 +39,7 @@ mediawikis:
       admin_password: "{{ vault_db_admin_password }}"
   tieteentermipankki.fi:
     conf: termipankki
+    repofile: repos-termipankki
     db:
       database: termipankki
       server_host: '{{ vault_termipankki_db_server }}'

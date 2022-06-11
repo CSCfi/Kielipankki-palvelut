@@ -5,7 +5,7 @@ set -xueo pipefail
 # Authors: Niklas Laxström, Martin Matthiesen
 
 WIKINAME=nimiarkisto.fi
-WIKIDIR=/srv/mediawiki/targets/production
+WIKIDIR=/srv/mediawiki/$WIKINAME/targets/production
 DUMPDIR=/data/public-dumps/$WIKINAME
 
 #Run as user apace
@@ -21,7 +21,6 @@ NICE_CMD="/usr/bin/nice -n19"
 
 # Create RDF Dump
 /bin/su -s /bin/bash -c "$NICE_CMD $PHP_CMD $WIKIDIR/extensions/Wikibase/repo/maintenance/dumpRdf.php \
-    --wiki $WIKINAME \
     --quiet | \
     $NICE_CMD $BZIP2_CMD > $DUMPDIR/$WIKINAME-CC-BY-4.0_$(date -I).rdf.bz2" $RUNAS_USER
 
