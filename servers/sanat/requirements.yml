@@ -1,5 +1,5 @@
 - src: geerlingguy.apache
-  version: 2.1.1
+  version: 2.1.2
 - src: geerlingguy.memcached
   version: 1.0.8
 - src: geerlingguy.composer

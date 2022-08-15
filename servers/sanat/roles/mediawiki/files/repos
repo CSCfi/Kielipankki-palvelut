@@ -21,7 +21,7 @@ workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/
 workdir/extensions/Nimiarkisto https://github.com/Nikerabbit/mediawiki-extensions-Nimiarkisto.git master
 workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git REL1_35
 workdir/extensions/OAuth https://github.com/wikimedia/mediawiki-extensions-OAuth.git REL1_35
-workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.3.1
+workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.3.4
 workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git REL1_35
 workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git REL1_35
 workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git REL1_35
@@ -40,7 +40,7 @@ workdir/extensions/UniversalLanguageSelector https://github.com/wikimedia/mediaw
 workdir/extensions/UserMerge https://github.com/wikimedia/mediawiki-extensions-UserMerge.git REL1_35
 workdir/extensions/WikiEditor https://github.com/Nikerabbit/mediawiki-extensions-WikiEditor.git csc-135
 workdir/extensions/Wikibase https://github.com/Nikerabbit/mediawiki-extensions-Wikibase.git csc-135
-workdir/extensions/WikibaseStatementUpdater https://github.com/wikimedia/mediawiki-extensions-WikibaseStatementUpdater.git master
+workdir/extensions/WikibaseStatementUpdater https://github.com/wikimedia/mediawiki-extensions-WikibaseStatementUpdater.git REL1_37
 workdir/extensions/WordNet https://github.com/Nikerabbit/mediawiki-extensions-WordNet.git master
 workdir/extensions/YouTube https://github.com/wikimedia/mediawiki-extensions-YouTube REL1_35
 workdir/skins/Timeless https://github.com/wikimedia/mediawiki-skins-Timeless.git REL1_35

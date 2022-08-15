@@ -1,2 +1,12 @@
-container_name = "{{ install_dir }}/sif/{{item.name}}_{{item.version}}.sif"
-singularity_wrapper = "{{ install_dir }}/bin/singularity_wrapper.sh"
+---
+# This file needs to be in the same directory as the interface code files!
+#
+# Align parameters
+# path to singularity container for aligning speech with ready text.
+align_container_name: "{{ install_dir }}/sif/{{containers[0].name}}_{{containers[0].version}}.sif"
+
+# path to singularity container for creating a transcript from speech.
+rec_container_name: "{{ install_dir }}/sif/{{containers[1].name}}_{{containers[1].version}}.sif"
+                     
+# path to wrapper script for singularity containers. Used for adding slurm parameters.
+singularity_wrapper: "{{ install_dir }}/bin/singularity_wrapper.sh"

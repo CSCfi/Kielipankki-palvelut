@@ -153,17 +153,18 @@
   shell: bash --login -c  "{{ python_modcall }} LD_LIBRARY_PATH={{ hfst_install_dir }}/lib/:$LD_LIBRARY_PATH && ./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages --verbose"
   args:
     chdir: "{{ hfst_compile_dir }}/python/test"
-#  environment:
-#    LD_LIBRARY_PATH: "{{ hfst_install_dir }}/lib/:{{ ansible_env.LD_LIBRARY_PATH }}"
-#  when: false # disable for now
 
-# This is a workaround to be able to compile everything just once
-# And install to multiple places
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
+
 
 - name: Fix permissions (if shared group is set)
   file:
     path={{ hfst_install_dir }}
     group={{ shared_group }}
-    mode="g+rwX,o+rX"
+    mode="g+rwX,o+rX,o-w"
     recurse=yes
   when: shared_group is defined

@@ -37,7 +37,6 @@
     - update_repos
     - update_repo
     - clone_repo
-    - repos
 
 - name: Copy list of repos
   copy: src=repos dest=/srv/mediawiki

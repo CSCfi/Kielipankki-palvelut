@@ -1,4 +1,8 @@
 
-tagtools_tar: https://korp.csc.fi/download/finnish-tagtools/v1.5/finnish-tagtools-{{ finnish_tagtools_version }}.zip
-tagtools_install_dir: "{{ install_prefix }}/ling/finnish-tagtools/{{ finnish_tagtools_version }}"
-compile_dir: "{{ compile_root }}/finnish-tagtools-{{ finnish_tagtools_version }}"
+package_name: finnish-tagtools
+version: "{{ finnish_tagtools_version }}"
+module_path: "{{ module_root }}/{{ package_name }}"
+
+tagtools_tar: https://korp.csc.fi/download/{{ package_name }}/v{{ version[0:3] }}/{{ package_name }}-{{ version }}.zip
+tagtools_install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+compile_dir: "{{ compile_root }}/{{ package_name }}-{{ version }}"

@@ -7,10 +7,10 @@
     - "{{ tagtools_install_dir }}"
     - "{{ tagtools_install_dir }}/bin"
     - "{{ compile_root }}"
-    
+
 - name: Unpack from tar
   unarchive:
-    src: "{{ tagtools_tar}}"
+    src: "{{ tagtools_tar }}"
     dest: "{{ compile_root }}"
     remote_src: yes
 
@@ -21,10 +21,26 @@
     params:
       prefix: "{{ tagtools_install_dir }}"
 
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
+
 - name: Fix permissions (if shared group is set)
   file:
-    path="{{ tagtools_install_dir }}/.."
-    group={{ shared_group }}
-    mode="g+rwX,o+rX"
-    recurse=yes
+    path: "{{ item }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX,o-w"
+    recurse: yes
+  loop:
+    - "{{ tagtools_install_dir }}"
+    - "{{ module_path }}"
   when: shared_group is defined
+
+- name: Run make check-installed
+  make:
+    chdir: "{{ compile_dir }}"
+    target: check-installed
+    params:
+      prefix: "{{ tagtools_install_dir }}"
