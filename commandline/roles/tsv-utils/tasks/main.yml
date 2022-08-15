@@ -10,6 +10,7 @@
     state: directory
   loop:
     -  "{{ src_root }}"
+    -  "{{ module_path }}"
     -  "{{ install_dir }}/bin/"
 
 - name: Get source
