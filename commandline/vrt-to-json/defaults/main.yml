@@ -1,0 +1,13 @@
+---
+# defaults
+
+
+package_name: vrt-to-json
+version: "{{ vrt2json_version }}"
+repo_name: "Kielipankki-utilities"
+github_src: "https://github.com/CSCfi/{{ repo_name }}/"
+src_root: "{{ compile_root }}"
+install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+lib_dir: "{{ install_dir }}/lib"
+module_path: "{{ module_root }}/{{ package_name }}"
+
