@@ -1,0 +1,43 @@
+---
+
+- name: Ensure directories exist
+  become: no
+  command: mkdir -p "{{ item }}"
+  args:
+    creates: "{{ item }}"
+    warn: false
+  loop:
+    # - "{{ src_root }}"
+    - "{{ install_dir }}/bin"
+    - "{{ lib_dir }}"
+    -  "{{ module_path }}"
+
+- name: Download jar
+  get_url:
+    url: "{{ source_url }}"
+    dest: "{{ install_dir }}/lib/{{ jar_name }}"
+    mode: "g+rwX,o+rX"
+
+
+- name: Create wrapper scripts
+  template:
+    src: heliots.j2
+    dest: "{{ install_dir }}/bin/{{ item }}"
+    mode: 0755
+  loop:
+    - heliots
+
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
+
+
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ install_dir }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  when: shared_group is defined

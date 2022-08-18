@@ -1,0 +1,8 @@
+- name: Install heliots
+  hosts: hpc
+  gather_facts: true
+  vars_files: defaults/main.yml
+
+  tasks:
+    - name: Include task list in play
+      ansible.builtin.import_tasks: tasks/main.yml  
