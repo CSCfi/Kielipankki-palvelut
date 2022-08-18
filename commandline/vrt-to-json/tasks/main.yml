@@ -1,0 +1,41 @@
+---
+
+- name: Ensure directories exist
+  become: no
+  command: mkdir -p "{{ item }}"
+  args:
+    creates: "{{ item }}"
+    warn: false
+  loop:
+    - "{{ src_root }}"
+    - "{{ install_dir }}/bin"
+    - "{{ module_path }}"
+
+- name: Clone repo
+  git:
+    repo: "{{ github_src }}"
+    dest: "{{ src_root }}/{{ repo_name }}"
+    accept_hostkey: yes
+    force: yes
+
+- name: Copy script
+  copy:
+    src: "{{ src_root }}/{{ repo_name }}/{{ package_name }}"
+    dest: "{{ install_dir }}/bin/{{ package_name }}"
+    mode: 0755
+    remote_src: yes
+
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
+
+
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ install_dir }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX"
+    recurse: yes
+  when: shared_group is defined
