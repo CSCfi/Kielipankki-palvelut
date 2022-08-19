@@ -1,6 +1,6 @@
 - name: Install vrt-to-json conversion tool
   hosts: hpc
-  gather_facts: true
+  gather_facts: no
   vars_files: defaults/main.yml
 
   tasks:
