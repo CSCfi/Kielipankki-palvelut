@@ -7,22 +7,14 @@
     creates: "{{ item }}"
     warn: false
   loop:
-    - "{{ src_root }}"
     - "{{ install_dir }}/bin"
     - "{{ module_path }}"
 
 - name: Get source
-  unarchive:
-    src: "{{ release_url }}"
-    dest: "{{ src_root }}"
-    remote_src: yes
-
-- name: Copy script
-  copy:
-    src: "{{ compile_dir }}/bin/{{ package_name }}"
+  get_url:
+    url: "{{ release_url }}"
     dest: "{{ install_dir }}/bin/{{ package_name }}"
     mode: 0755
-    remote_src: yes
 
 - name: Install modulefile
   template:
@@ -35,6 +27,6 @@
   file:
     path: "{{ install_dir }}"
     group: "{{ shared_group }}"
-    mode: "g+rwX,o+rX"
+    mode: "g+rwX,o+rX, o-w"
     recurse: yes
   when: shared_group is defined
