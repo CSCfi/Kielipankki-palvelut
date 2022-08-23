@@ -1,8 +1,8 @@
 ---
 # defaults
 
-
 package_name: heliots
+heliots_version: 1.3
 version: "{{ heliots_version }}"
 jar_name: "heliots-{{ heliots_version }}.jar"
 source_url: https://zenodo.org/record/6077089/files/HeLI.jar?download=1
