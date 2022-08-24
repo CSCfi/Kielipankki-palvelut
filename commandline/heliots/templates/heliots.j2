@@ -2,4 +2,4 @@
 # wrapper for {{ item }}:
 # the sed command fixes the built-in help for use with this wrapper script.
 
-java -cp {{ lib_dir }} -jar {{ lib_dir}}/{{ jar_name }} $@ |sed 's/java -jar HeLI.jar/heliots/g'
+java -cp {{ lib_dir }} -jar {{ lib_dir}}/{{ jar_name }} "$@" |sed 's/java -jar HeLI.jar/heliots/g'
