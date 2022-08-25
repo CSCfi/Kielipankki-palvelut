@@ -3,8 +3,8 @@
 
 
 package_name: vrt-tools
-vrt_to_json_version: 1.0
-version: "{{ vrt_to_json_version }}"
+vrt_tools_version: 1.0
+version: "{{ vrt_tools_version }}"
 release_url: "https://raw.githubusercontent.com/CSCfi/Kielipankki-utilities/master/json/"
 src_root: "{{ compile_root }}"
 install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
