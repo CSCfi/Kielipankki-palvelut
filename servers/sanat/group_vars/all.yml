@@ -23,9 +23,12 @@ apache_ssl_cipher_suite: "\
 
 certificate_path: /etc/pki/tls
 
-ssl_params_sanat:
-  certificate_file: "{{ certificate_path }}/certs/{{ webdomain_sanat }}.crt"
-  certificate_key_file: "{{ certificate_path }}/private/{{ webdomain_sanat }}.key"
+acme_root: /etc/letsencrypt
+acme_endpoint: "https://acme.sectigo.com/v2/OV"
+acme_email: ling-admin@listat.csc.fi
+acme_keyid: "{{ lookup('passwordstore', 'lb_passwords/portal/acme_keyid') }}"
+acme_hmac: "{{ lookup('passwordstore', 'lb_passwords/portal/acme_hmac') }}"
+
 ssl_params_nimiarkisto:
   certificate_file: "{{ certificate_path }}/certs/{{ webdomain_nimiarkisto }}.crt"
   certificate_key_file: "{{ certificate_path }}/private/{{ webdomain_nimiarkisto }}.key"
