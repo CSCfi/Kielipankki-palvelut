@@ -50,7 +50,7 @@
 #   - { role: pytorch, tags: pytorch }
    - { role: bert_models , tags: bert_models }
    - { role: tsv-utils , tags: tsv-utils }
-   - { role: heliots , tags: heliots }
+- { import_playbook: heliots/heliots.yml , tags: heliots }
 
 
 
