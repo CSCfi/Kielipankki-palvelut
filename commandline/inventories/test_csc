@@ -1,6 +1,7 @@
 hpc:
   hosts:
     puhti-login3.csc.fi:
+      module_root: /local_scratch/{{ ansible_user_id }}/ansible/modulefiles
       install_prefix: /users/{{ansible_user_id}}/ansible/install
       kielipankki_data_dir: /local_scratch/{{ansible_user_id}}/ansible/kielipankki_data
       is_admin: false
