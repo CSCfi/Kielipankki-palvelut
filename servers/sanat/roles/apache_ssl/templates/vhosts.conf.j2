@@ -61,7 +61,7 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
   SSLHonorCipherOrder On
   SSLCompression off
   SSLCertificateFile  "{{ acme_root }}/live/sanat.csc.fi/cert.pem"
-SSLCertificateKeyFile "{{ acme_root }}/live/sanat.csc.fi/privkey.pem"
+  SSLCertificateKeyFile "{{ acme_root }}/live/sanat.csc.fi/privkey.pem"
   SSLCertificateChainFile  "{{ acme_root }}/live/sanat.csc.fi/chain.pem"
 
   <Directory "/www/sanat.csc.fi/docroot">
