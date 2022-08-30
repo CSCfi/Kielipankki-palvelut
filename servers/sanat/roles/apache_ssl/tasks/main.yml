@@ -41,7 +41,7 @@
 
 - name: Copy vhost.conf
   template:
-    src: "ssl.conf.j2"
-    dest: "/etc/httpd/conf.d/vhost.conf"
+    src: "vhosts.conf.j2"
+    dest: "/etc/httpd/conf.d/vhosts.conf"
   notify: restart httpd
   become: yes
