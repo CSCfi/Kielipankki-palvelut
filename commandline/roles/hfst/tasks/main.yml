@@ -43,10 +43,13 @@
 - name: compile_dir directory exists with 0777 permission
   become: no
   file:
-    path: "{{ compile_dir }}"
+    path: "{{ item }}"
     mode: 0777
     recurse: no
     state: directory
+  loop:
+    - "{{ compile_dir }}"
+    - "{{ module_path }}"
 
 - name: check for install root
   stat:
@@ -145,12 +148,23 @@
     chdir: "{{ hfst_compile_dir }}/python"
 
 - name: Installing python module
-  shell: bash --login -c  "{{ python_swig_modcall }}python3 setup.py install --prefix={{ hfst_install_dir }} "
+  shell: bash --login -c  "{{ python_swig_modcall }}python3  setup.py install --prefix={{ hfst_install_dir }}  "
   args:
     chdir: "{{ hfst_compile_dir }}/python"
+  environment:
+    PYTHONPATH: "{{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages"
 
+- name: "HACK: Get easy-install.pth content"
+  slurp:
+    src: "{{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages/easy-install.pth"
+  register: slurped_data
+
+- name: Decode content and store as fact
+  set_fact:
+    libhfst_name_egg: "{{ slurped_data.content | b64decode | trim }}"
+    
 - name: Checking python module
-  shell: bash --login -c  "{{ python_modcall }} LD_LIBRARY_PATH={{ hfst_install_dir }}/lib/:$LD_LIBRARY_PATH && ./test.sh --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages --verbose"
+  shell: bash --login -c  "{{ python_modcall }} LD_LIBRARY_PATH={{ hfst_install_dir }}/lib/:$LD_LIBRARY_PATH && ./test.sh  --verbose --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages/{{ libhfst_name_egg }}"
   args:
     chdir: "{{ hfst_compile_dir }}/python/test"
 
