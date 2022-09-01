@@ -26,7 +26,7 @@
   shell:
     cmd: >
       certbot certonly --apache --server {{ acme_endpoint }}
-      --non-interactive --agree-tos --domain signbank.csc.fi
+      --non-interactive --agree-tos --domain sanat.csc.fi
   become: yes
 
 - name: Setup weekly cronjob for updating the certificate
