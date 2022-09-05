@@ -22,11 +22,17 @@
     creates: "{{ acme_root }}/accounts/acme.sectigo.com/v2/OV/"
   become: yes
 
-- name: Fetch certificate via ACME
+- name: Fetch certificates via ACME
   shell:
     cmd: >
       certbot certonly --apache --server {{ acme_endpoint }}
-      --non-interactive --agree-tos --domain sanat.csc.fi
+      --non-interactive --agree-tos
+      {% for domain in item %}
+      -d  {{ domain }}
+      {% endfor %}
+  loop:
+    - ["sanat.csc.fi"]
+    - ["tieteentermipankki.fi", "www.tieteentermipankki.fi"]
   become: yes
 
 - name: Setup weekly cronjob for updating the certificate
