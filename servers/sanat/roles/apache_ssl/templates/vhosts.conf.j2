@@ -141,9 +141,6 @@ RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
   SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1
   SSLHonorCipherOrder On
   SSLCompression off
-  SSLCertificateFile /etc/pki/tls/certs/www_tieteentermipankki_fi_cert.cer
-  SSLCertificateKeyFile /etc/pki/tls/private/www_tieteentermipankki_fi.key
-  SSLCertificateChainFile /etc/pki/tls/certs/GEANT_OV_RSA_CA_4.cer
   SSLCertificateFile  "{{ acme_root }}/live/tieteentermipankki.fi/cert.pem"
   SSLCertificateKeyFile "{{ acme_root }}/live/tieteentermipankki.fi/privkey.pem"
   SSLCertificateChainFile  "{{ acme_root }}/live/tieteentermipankki.fi/chain.pem"
