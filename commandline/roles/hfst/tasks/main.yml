@@ -40,11 +40,11 @@
     state: present
   when: is_admin
 
-- name: compile_dir directory exists with 0777 permission
+- name: Create directories
   become: no
   file:
     path: "{{ item }}"
-    mode: 0777
+    mode: 0775
     recurse: no
     state: directory
   loop:
