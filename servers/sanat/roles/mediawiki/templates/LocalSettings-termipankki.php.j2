@@ -20,6 +20,7 @@ $wgVectorWvuiSearchOptions = [
 	'showThumbnail' => false,
 	'showDescription' => false,
 ];
+$wgVectorDefaultSidebarVisibleForAnonymousUser = true;
 
 $wgLogos = [
 	'icon' => '/logo.svg',
@@ -165,6 +166,7 @@ $wgGroupPermissions['user']['translate-groupreview'] = true;
 $wgGroupPermissions['sysop']['pagetranslation'] = true;
 $wgTranslatePageTranslationULS = true;
 $wgPageTranslationLanguageList = 'sidebar-always';
+$wgTranslateMessageNamespaces = [ NS_MEDIAWIKI ];
 
 $wgHooks['TranslatePostInitGroups'][] = function ( &$list, &$deps, &$autoload ) {
 	$mg = new WikiMessageGroup( 'wiki-sidebar', 'project' );
@@ -213,6 +215,17 @@ $wgHooks['SkinAfterBottomScripts'][] = function ( $skin, &$text ) {
 
 JS
 	);
+};
+
+$wgHooks['APIGetAllowedParams'] = function (
+	ApiBase $module,
+	array &$params,
+	int $flags
+): void {
+	global $wgContentNamespaces;
+	if ( $module instanceof ApiQueryPrefixSearch ) {
+		$params['namespace'][Wikimedia\ParamValidator\ParamValidator::PARAM_DEFAULT] = $wgContentNamespaces;
+	}
 };
 
 function wfAddTermNamespace( $id, $name ) {

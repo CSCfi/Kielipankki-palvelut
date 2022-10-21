@@ -7,6 +7,7 @@ php_packages:
   - php-cli
   - php-fpm
   - php-opcache
+  - php-process
   - php-mbstring
   - php-intl
   - php-mysqlnd
