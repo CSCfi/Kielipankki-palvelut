@@ -1,7 +1,8 @@
 -- This is the module file for HFST
 
-if ( not isloaded("python-data/3.7.3-1") )  then
-   load("python-data/3.7.3-1")
+if ( not isloaded("biopythontools/11.3.0_3.10.6") )  then
+   load("gcc/11.3.0")
+   load("biopythontools/11.3.0_3.10.6")
 end
 
 help([[
@@ -12,7 +13,7 @@ local   version =       '{{ version }}'
 local   prog_root =     '{{ install_prefix }}/ling/{{ package_name }}'
 
 prepend_path('LD_LIBRARY_PATH', pathJoin(prog_root,version,'lib'))
-prepend_path('PYTHONPATH', pathJoin(prog_root,version,'lib/python3.7/site-packages'))
+prepend_path('PYTHONPATH', pathJoin(prog_root,version,'lib/python{{ python3_base_version }}/site-packages/{{ libhfst_name_egg }}'))
 
 prepend_path('CPATH', pathJoin(prog_root,version,'include'))
 prepend_path('MANPATH', pathJoin(prog_root,version,'man'))

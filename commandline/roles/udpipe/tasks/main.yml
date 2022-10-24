@@ -18,13 +18,18 @@
     - ansible_os_family == "RedHat"
     - is_admin
 
-- name: src_root directory exists with 0777 permission
+- name: Ensure directories
   become: no
   file:
-    path: "{{ src_root }}"
-    mode: 0777
+    path: "{{ item }}"
+    mode: 0775
     recurse: yes
     state: directory
+  loop:
+    - "{{ src_root }}"
+    - "{{ module_path }}"
+    - "{{ install_dir }}/bin"
+    - "{{ model_package_install_dir }}"
 
 - name: Get source
   unarchive:
@@ -37,17 +42,6 @@
   args:
     chdir: "{{ compile_dir }}"
     creates: MAKE.log
-
-- name: create install_dir subtree
-  become: no
-  file:
-    path: "{{ item }}"
-    mode: 0775
-    recurse: yes
-    state: directory
-  with_items:
-    - "{{ install_dir }}/bin"
-    - "{{ model_package_install_dir }}"
 
 - name: Copy udpipe to install_dir
   copy:
@@ -63,7 +57,12 @@
     remote_src: yes
     exclude:
       - "{{ model_package_name }}/udpipe" # don't unpack the precompiled executable
-  
+
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
     
 - name: Fix permissions (if shared group is set)
   file:

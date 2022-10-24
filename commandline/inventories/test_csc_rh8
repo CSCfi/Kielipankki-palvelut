@@ -1,0 +1,9 @@
+hpc:
+  hosts:
+    puhti83:
+      module_root: /appl/modulefiles
+      install_prefix: /appl/soft
+      #kielipankki_data_dir: 
+      is_admin: false
+      swig3_as_module: yes
+

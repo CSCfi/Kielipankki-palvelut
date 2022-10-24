@@ -40,8 +40,7 @@
   when: shared_group is defined
 
 - name: Run make check-installed
-  make:
+  shell:
     chdir: "{{ compile_dir }}"
-    target: check-installed
-    params:
-      prefix: "{{ tagtools_install_dir }}"
+    cmd: ". /appl/profile/zz-csc-env.sh && module use {{ module_root }} && module load finnish-tagtools hfst && make check-installed prefix='{{ tagtools_install_dir }}'"
+
