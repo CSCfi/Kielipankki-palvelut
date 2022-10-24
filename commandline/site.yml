@@ -22,7 +22,7 @@
    - bert_models:
        - TurkuNLP/bert-base-finnish-cased-v1
        - TurkuNLP/bert-base-finnish-uncased-v1
-   - tsv_tools_version: 2.2.1
+   - tsv_tools_version: 2.2.0
    - heliots_version: 1.3
    - vrt_tools_version: 1.0
       
@@ -49,6 +49,7 @@
    - { role: tsv-utils , tags: tsv-utils }
 - { import_playbook: heliots/heliots.yml , tags: heliots }
 - { import_playbook: vrt-tools/vrt-tools.yml , tags: vrt-tools }
+- { import_playbook: tsv-utils/tsv-utils.yml , tags: tsv-utils }
 
 
 
