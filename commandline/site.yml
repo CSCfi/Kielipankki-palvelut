@@ -1,5 +1,5 @@
 ---
-# The Language Bank of Finland Software Stack on CSC's Taito-cluster
+# The Language Bank of Finland Software Stack on CSC's Puhti
 #
 
 - hosts: hpc
