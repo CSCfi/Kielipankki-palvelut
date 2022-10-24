@@ -1,5 +1,9 @@
 -- This is the module file for {{ package_name }}
 
+if ( not isloaded("hfst") )  then
+   load("hfst")
+end
+
 help([[
          {{ package_name }} {{ version }}
 ]])
