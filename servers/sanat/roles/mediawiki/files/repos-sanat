@@ -14,11 +14,10 @@ workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-
 workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git REL1_38
 workdir/extensions/Sanat https://github.com/Nikerabbit/mediawiki-extensions-Sanat.git master
 workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki.git 4.0.2
-workdir/extensions/SimpleMathJax https://github.com/jmnote/SimpleMathJax.git v0.8.2
 workdir/extensions/SmiteSpam https://github.com/wikimedia/mediawiki-extensions-SmiteSpam master
 workdir/extensions/SpamBlacklist https://github.com/wikimedia/mediawiki-extensions-SpamBlacklist REL1_38
 workdir/extensions/TemplateStyles https://github.com/wikimedia/mediawiki-extensions-TemplateStyles REL1_38
-workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2022.04
+workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2022.07
 workdir/extensions/UniversalLanguageSelector https://github.com/wikimedia/mediawiki-extensions-UniversalLanguageSelector.git 2022.07
 workdir/extensions/UserMerge https://github.com/wikimedia/mediawiki-extensions-UserMerge.git REL1_38
 workdir/extensions/WikiEditor https://github.com/wikimedia/mediawiki-extensions-WikiEditor.git REL1_38

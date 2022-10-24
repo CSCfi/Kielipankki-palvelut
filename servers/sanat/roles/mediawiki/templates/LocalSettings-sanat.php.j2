@@ -73,6 +73,8 @@ function lfAddNamespace( $id, $name ) {
 	$smwgNamespacesWithSemanticLinks[$id] = true;
 }
 
+wfLoadExtension( 'ReplaceText' );
+
 // Content extensions and configuration //
 
 lfAddNamespace( 1200, 'Lud' );

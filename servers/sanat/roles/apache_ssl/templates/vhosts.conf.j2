@@ -1,0 +1,166 @@
+DirectoryIndex index.php index.html
+
+
+<VirtualHost *:80>
+  ServerName sanat.csc.fi
+  ServerAlias 
+  DocumentRoot "/www/sanat.csc.fi/docroot"
+
+  <Directory "/www/sanat.csc.fi/docroot">
+    AllowOverride All
+    Options -Indexes +FollowSymLinks
+    Require all granted
+  </Directory>
+  
+RewriteEngine On
+RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName nimiarkisto.fi
+  ServerAlias namnarkivet.fi nammaarkiiva.fi xn--nommarkkdh-64aeb.fi nommaarkkadah.fi xn--nmmarkiiv-q7a.fi nommarkiiv.fi www.nimiarkisto.fi www.namnarkivet.fi www.nammaarkiiva.fi www.xn--nommarkkdh-64aeb.fi www.nommaarkkadah.fi www.xn--nmmarkiiv-q7a.fi www.nommarkiiv.fi
+  DocumentRoot "/www/nimiarkisto.fi/docroot"
+
+  <Directory "/www/nimiarkisto.fi/docroot">
+    AllowOverride All
+    Options -Indexes +FollowSymLinks
+    Require all granted
+  </Directory>
+  
+RewriteEngine On
+RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName tieteentermipankki.fi
+  ServerAlias www.tieteentermipankki.fi
+  DocumentRoot "/www/tieteentermipankki.fi/docroot"
+
+  <Directory "/www/tieteentermipankki.fi/docroot">
+    AllowOverride All
+    Options -Indexes +FollowSymLinks
+    Require all granted
+  </Directory>
+  
+RewriteEngine On
+RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+
+</VirtualHost>
+
+
+<VirtualHost *:443>
+  ServerName sanat.csc.fi
+  ServerAlias 
+  DocumentRoot "/www/sanat.csc.fi/docroot"
+
+  SSLEngine on
+  SSLCipherSuite ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+  SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1
+  SSLHonorCipherOrder On
+  SSLCompression off
+  SSLCertificateFile  "{{ acme_root }}/live/sanat.csc.fi/cert.pem"
+  SSLCertificateKeyFile "{{ acme_root }}/live/sanat.csc.fi/privkey.pem"
+  SSLCertificateChainFile  "{{ acme_root }}/live/sanat.csc.fi/chain.pem"
+
+  <Directory "/www/sanat.csc.fi/docroot">
+    AllowOverride All
+    Options -Indexes +FollowSymLinks
+    Require all granted
+  </Directory>
+  
+Header always set Strict-Transport-Security "max-age=15768000"
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/sanat.csc.fi/docroot/"
+
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName nimiarkisto.fi
+  ServerAlias namnarkivet.fi nammaarkiiva.fi xn--nommarkkdh-64aeb.fi nommaarkkadah.fi xn--nmmarkiiv-q7a.fi nommarkiiv.fi www.nimiarkisto.fi www.namnarkivet.fi www.nammaarkiiva.fi www.xn--nommarkkdh-64aeb.fi www.nommaarkkadah.fi www.xn--nmmarkiiv-q7a.fi www.nommarkiiv.fi
+  DocumentRoot "/www/nimiarkisto.fi/docroot"
+
+  SSLEngine on
+  SSLCipherSuite ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+  SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1
+  SSLHonorCipherOrder On
+  SSLCompression off
+  SSLCertificateFile /etc/pki/tls/certs/nimiarkisto_fi_cert.cer
+  SSLCertificateKeyFile /etc/pki/tls/private/nimiarkisto_fi.key
+  SSLCertificateChainFile /etc/pki/tls/certs/GEANT_OV_RSA_CA_4.cer
+
+  <Directory "/www/nimiarkisto.fi/docroot">
+    AllowOverride All
+    Options -Indexes +FollowSymLinks
+    Require all granted
+  </Directory>
+  
+<Location "/reconciliation/">
+  ProxyPass         "http://95.216.176.62:8484/"
+  ProxyPassReverse  "http://95.216.176.62:8484/"
+</Location>
+
+<Location "/query/">
+  ProxyPass         "http://95.216.176.62:8282/"
+  ProxyPassReverse  "http://95.216.176.62:8282/"
+</Location>
+
+<Location "/proxy/">
+  ProxyPass         "http://95.216.176.62:8282/proxy/"
+</Location>
+
+<Location "/openrefine/">
+  ProxyPass         "http://95.216.176.62:3333/"
+</Location>
+
+<Location "/quickstatements/">
+  ProxyPass         "http://95.216.176.62:9191/"
+</Location>
+
+Header always set Strict-Transport-Security "max-age=15768000"
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/nimiarkisto.fi/docroot/"
+
+RewriteEngine On
+RewriteRule ^/entity/(Q.*) /wiki/Item:$1 [R]
+RewriteRule ^/entity/(P.*) /wiki/Wikibase_property:$1 [R]
+# Drop www prefix
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName tieteentermipankki.fi
+  ServerAlias www.tieteentermipankki.fi
+  DocumentRoot "/www/tieteentermipankki.fi/docroot"
+
+  SSLEngine on
+  SSLCipherSuite ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+  SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1
+  SSLHonorCipherOrder On
+  SSLCompression off
+  SSLCertificateFile  "{{ acme_root }}/live/tieteentermipankki.fi/cert.pem"
+  SSLCertificateKeyFile "{{ acme_root }}/live/tieteentermipankki.fi/privkey.pem"
+  SSLCertificateChainFile  "{{ acme_root }}/live/tieteentermipankki.fi/chain.pem"
+
+  <Directory "/www/tieteentermipankki.fi/docroot">
+    AllowOverride All
+    Options -Indexes +FollowSymLinks
+    Require all granted
+  </Directory>
+  
+Header always set Strict-Transport-Security "max-age=15768000"
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/tieteentermipankki.fi/docroot/"
+
+RewriteEngine On
+# Drop www prefix
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+# This will redirect anyway, so use internal redirect
+RewriteRule ^/!(.*) /wiki/Special:ShortUrl/$1 [PT]
+
+</VirtualHost>
+
