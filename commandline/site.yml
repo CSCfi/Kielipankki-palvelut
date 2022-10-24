@@ -50,6 +50,7 @@
 - { import_playbook: heliots/heliots.yml , tags: heliots }
 - { import_playbook: vrt-tools/vrt-tools.yml , tags: vrt-tools }
 - { import_playbook: tsv-utils/tsv-utils.yml , tags: tsv-utils }
+- { import_playbook: finnish-tagtools/finnish-tagtools.yml , tags: finnish-tagtools }
 
 
 
