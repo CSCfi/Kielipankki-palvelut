@@ -1,7 +1,9 @@
 - name: Install finnish-tagtools
   hosts: hpc
-  gather_facts: yes
-  vars_files: defaults/main.yml
+  gather_facts: no
+  vars_files: 
+    - ../group_vars/all
+    - defaults/main.yml
 
   tasks:
     - name: Include task list in play
