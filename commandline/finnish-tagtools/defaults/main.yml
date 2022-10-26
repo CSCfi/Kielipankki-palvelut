@@ -1,5 +1,6 @@
 
 package_name: finnish-tagtools
+finnish_tagtools_version: 1.6.0
 version: "{{ finnish_tagtools_version }}"
 module_path: "{{ module_root }}/{{ package_name }}"
 

@@ -3,6 +3,7 @@
 
 package_name: tsv-utils
 version: "{{ tsv_tools_version }}"
+tsv_tools_version: 2.2.0
 name_suffix: "linux-x86_64_ldc2"
 release_url: "https://github.com/eBay/tsv-utils/releases/download/v{{ version }}/tsv-utils-v{{ version }}_{{ name_suffix }}.tar.gz"
 src_root: "{{ compile_root }}"
