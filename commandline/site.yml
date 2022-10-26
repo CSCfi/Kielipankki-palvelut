@@ -39,14 +39,12 @@
    - { role: praat, tags: praat }
 # disabled, managed with Spack now
 #   - { role: ffmpeg, branch: master, tags: ffmpeg }
-   - { role: finnish-tagtools, tags: finnish-tagtools }
 #   - { role: kaldi    , tags: kaldi }
    - { role: aalto-asr, tags: aalto-asr }
    - { role: udpipe, tags: udpipe }
    - { role: hunpos, tags: hunpos }
    - { role: sparv_pipeline, tags: sparv_pipeline }
 #   - { role: bert_models , tags: bert_models }
-   - { role: tsv-utils , tags: tsv-utils }
 - { import_playbook: heliots/heliots.yml , tags: heliots }
 - { import_playbook: vrt-tools/vrt-tools.yml , tags: vrt-tools }
 - { import_playbook: tsv-utils/tsv-utils.yml , tags: tsv-utils }
