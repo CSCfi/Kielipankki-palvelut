@@ -29,6 +29,7 @@ wfLoadExtensions( [
 	'CodeEditor',
 	'DeleteBatch',
 	'InputBox',
+	'NoTitle',
 	'Sanat',
 	'Translate',
 	'UniversalLanguageSelector',
@@ -74,6 +75,9 @@ function lfAddNamespace( $id, $name ) {
 }
 
 wfLoadExtension( 'ReplaceText' );
+wfLoadExtension( 'VEForAll' );
+wfLoadExtension( 'VisualEditor' );
+$wgVisualEditorEnableDiffPage = true;
 
 // Content extensions and configuration //
 

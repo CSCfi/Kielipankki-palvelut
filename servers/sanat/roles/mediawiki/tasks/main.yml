@@ -19,7 +19,7 @@
     mode: 0755
 
 - name: Configure all wiki instances
-  include: instance.yml
+  include_tasks: instance.yml
   with_dict: "{{ mediawikis }}"
   loop_control:
     loop_var: instance
