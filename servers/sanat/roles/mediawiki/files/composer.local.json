@@ -3,6 +3,8 @@
 		"merge-plugin": {
 			"include": [
 				"extensions/AbuseFilter/composer.json",
+				"extensions/CirrusSearch/composer.json",
+				"extensions/Elastica/composer.json",
 				"extensions/Flow/composer.json",
 				"extensions/OAuth/composer.json",
 				"extensions/Maps/composer.json",

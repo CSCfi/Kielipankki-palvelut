@@ -48,8 +48,11 @@ hfst_components:
 
 memcached_memory_limit: 4000
 
-# composer-merge-plugin does not support 2.x
-composer_keep_updated: false
-composer_version: "1.10.17"
+composer_keep_updated: true
 
 nimiarkisto_mapproxy_key: ''
+
+elasticsearch_version: '6.x'
+elasticsearch_network_host: localhost
+elasticsearch_heap_size_min: 1g
+elasticsearch_heap_size_max: 4g

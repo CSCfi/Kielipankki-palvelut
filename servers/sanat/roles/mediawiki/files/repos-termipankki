@@ -2,10 +2,12 @@ workdir https://github.com/wikimedia/mediawiki.git REL1_38
 workdir/extensions/AbuseFilter https://github.com/wikimedia/mediawiki-extensions-AbuseFilter.git REL1_38
 workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel.git 2022.07
 workdir/extensions/CategoryTree https://github.com/wikimedia/mediawiki-extensions-CategoryTree.git REL1_38
+workdir/extensions/CirrusSearch https://github.com/wikimedia/mediawiki-extensions-CirrusSearch.git REL1_38
 workdir/extensions/Cite https://github.com/wikimedia/mediawiki-extensions-Cite.git REL1_38
 workdir/extensions/CodeEditor https://github.com/wikimedia/mediawiki-extensions-CodeEditor.git REL1_38
 workdir/extensions/ConfirmEdit https://github.com/wikimedia/mediawiki-extensions-ConfirmEdit.git REL1_38
 workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git REL1_38
+workdir/extensions/Elastica https://github.com/wikimedia/mediawiki-extensions-Elastica.git REL1_38
 workdir/extensions/HeaderTabs https://github.com/wikimedia/mediawiki-extensions-HeaderTabs.git REL1_38
 workdir/extensions/InputBox https://github.com/wikimedia/mediawiki-extensions-InputBox.git REL1_38
 workdir/extensions/LiquidThreads https://github.com/wikimedia/mediawiki-extensions-LiquidThreads.git REL1_38

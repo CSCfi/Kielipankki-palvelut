@@ -12,7 +12,6 @@ php_packages:
   - php-intl
   - php-mysqlnd
   - php-pecl-mcrypt
-  - php-pecl-mongodb
   - php-pecl-memcached
   - php-pecl-zip
   - php-gd
