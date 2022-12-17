@@ -18,7 +18,7 @@ workdir/extensions/LiquidThreads https://github.com/wikimedia/mediawiki-extensio
 workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git master
 workdir/extensions/Maps https://github.com/ProfessionalWiki/Maps.git 8.0.0
 workdir/extensions/MixedNamespaceSearchSuggestions https://github.com/wikimedia/mediawiki-extensions-MixedNamespaceSearchSuggestions.git master
-workdir/extensions/Nimiarkisto https://github.com/Nikerabbit/mediawiki-extensions-Nimiarkisto.git master
+workdir/extensions/Nimiarkisto https://github.com/Nikerabbit/mediawiki-extensions-Nimiarkisto.git csc
 workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git REL1_35
 workdir/extensions/OAuth https://github.com/wikimedia/mediawiki-extensions-OAuth.git REL1_35
 workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.4
