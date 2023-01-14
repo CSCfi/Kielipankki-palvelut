@@ -42,6 +42,7 @@ wfLoadExtensions( [
 wfLoadExtension( 'SemanticMediaWiki' );
 enableSemantics( $VHOST );
 $smwgCheckForConstraintErrors = SMW_CONSTRAINT_ERR_CHECK_NONE;
+$smwgSearchByPropertyFuzzy = [ '_num', '_dat' ];
 
 wfLoadExtension( 'PageForms' );
 $wgPageFormsRedLinksCheckOnlyLocalProps = true;
