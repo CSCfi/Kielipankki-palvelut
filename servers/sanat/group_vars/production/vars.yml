@@ -65,4 +65,10 @@ ssl_params_termipankki:
 
 nimiarkisto_service_url: http://95.216.176.62
 
-memcached_memory_limit: 3000
+memcached_memory_limit: 6000
+
+elasticsearch_extra_options: |
+  cluster.routing.allocation.disk.threshold_enabled: true
+  cluster.routing.allocation.disk.watermark.flood_stage: 200mb
+  cluster.routing.allocation.disk.watermark.low: 500mb
+  cluster.routing.allocation.disk.watermark.high: 300mb
