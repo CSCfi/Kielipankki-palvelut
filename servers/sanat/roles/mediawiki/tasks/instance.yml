@@ -35,6 +35,8 @@
   command: /usr/local/bin/composer update --no-dev
   args:
     chdir: /srv/mediawiki/{{ instance.key }}/workdir
+  environment:
+    COMPOSER_ALLOW_SUPERUSER: 1
 
 - name: Create docroot for {{ instance.key }}
   file: path={{item}} state=directory owner={{ mediawiki_apache_user }} mode=755

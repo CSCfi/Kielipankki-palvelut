@@ -101,6 +101,7 @@ foreach ( $wgUrlProtocols as $index => $value ) {
 		unset( $wgUrlProtocols[ $index ] );
 	}
 }
+$wgUrlProtocols = array_values( $wgUrlProtocols );
 
 wfLoadExtension( 'Kotus' );
 lfAddNamespace( 1210, 'Vepsä' );
