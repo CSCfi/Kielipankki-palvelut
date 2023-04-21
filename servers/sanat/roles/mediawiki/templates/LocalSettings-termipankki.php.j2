@@ -201,6 +201,9 @@ $wgHiddenPrefs[] = 'visualeditor-newwikitext';
 #$wgDefaultUserOptions['visualeditor-newwikitext'] = 1;
 $wgVisualEditorUseSingleEditTab = true;
 #$wgDefaultUserOptions['visualeditor-enable'] = 1;
+$wgHooks['VEForAllToolbarConfigNormal'][] = static function( &$defaultConfigNormal ) {
+    $defaultConfigNormal[] = [ 'name' => 'reference' ];
+};
 
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
