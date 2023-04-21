@@ -9,7 +9,7 @@ workdir/extensions/Kotus https://github.com/Nikerabbit/mediawiki-extensions-Kotu
 workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git master
 workdir/extensions/NoTitle https://github.com/wikimedia/mediawiki-extensions-NoTitle.git REL1_39
 workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git REL1_39
-workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.6
+workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.6.1
 workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git REL1_39
 workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git REL1_39
 workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git REL1_39
@@ -21,7 +21,7 @@ workdir/extensions/TemplateStyles https://github.com/wikimedia/mediawiki-extensi
 workdir/extensions/Translate https://github.com/wikimedia/mediawiki-extensions-Translate.git 2023.01
 workdir/extensions/UniversalLanguageSelector https://github.com/wikimedia/mediawiki-extensions-UniversalLanguageSelector.git 2023.01
 workdir/extensions/UserMerge https://github.com/wikimedia/mediawiki-extensions-UserMerge.git REL1_39
-workdir/extensions/VEForAll https://github.com/wikimedia/mediawiki-extensions-VEForAll.git REL1_39
+workdir/extensions/VEForAll https://github.com/wikimedia/mediawiki-extensions-VEForAll.git 0.5
 workdir/extensions/VisualEditor https://github.com/wikimedia/mediawiki-extensions-VisualEditor.git REL1_39
 workdir/extensions/WikiEditor https://github.com/wikimedia/mediawiki-extensions-WikiEditor.git REL1_39
 workdir/extensions/WordNet https://github.com/Nikerabbit/mediawiki-extensions-WordNet.git master
