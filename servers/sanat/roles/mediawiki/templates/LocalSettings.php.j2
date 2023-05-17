@@ -108,6 +108,8 @@ wfLoadExtension( 'UserMerge' );
 $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 wfLoadExtension( 'SmiteSpam' );
 $wgDisplayPageSize = 10;
+$wgSmiteSpamIgnoreSmallPages = false;
+$wgSmiteSpamIgnorePagesWithNoExternalLinks = false;
 wfLoadExtension( 'SpamBlacklist' );
 $wgBlacklistSettings = [
 	'spam' => [
