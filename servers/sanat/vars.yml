@@ -8,45 +8,6 @@ vhost_sanat:
     SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
     ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_sanat }}/docroot/"
 
-vhost_nimiarkisto:
-  servername: "{{ webdomain_nimiarkisto }}"
-  serveralias: "{{ webaliases_nimiarkisto | join(' ') }}"
-  documentroot: /www/{{ webdomain_nimiarkisto }}/docroot
-  extra_parameters: |
-
-    <Location "/reconciliation/">
-      ProxyPass         "{{ nimiarkisto_service_url }}:8484/"
-      ProxyPassReverse  "{{ nimiarkisto_service_url }}:8484/"
-    </Location>
-
-    <Location "/query/">
-      ProxyPass         "{{ nimiarkisto_service_url }}:8282/"
-      ProxyPassReverse  "{{ nimiarkisto_service_url }}:8282/"
-    </Location>
-
-    <Location "/proxy/">
-      ProxyPass         "{{ nimiarkisto_service_url }}:8282/proxy/"
-    </Location>
-
-    <Location "/openrefine/">
-      ProxyPass         "{{ nimiarkisto_service_url }}:3333/"
-    </Location>
-
-    <Location "/quickstatements/">
-      ProxyPass         "{{ nimiarkisto_service_url }}:9191/"
-    </Location>
-
-    Header always set Strict-Transport-Security "max-age=15768000"
-    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
-    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_nimiarkisto }}/docroot/"
-
-    RewriteEngine On
-    RewriteRule ^/entity/(Q.*) /wiki/Item:$1 [R]
-    RewriteRule ^/entity/(P.*) /wiki/Wikibase_property:$1 [R]
-    # Drop www prefix
-    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-    RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
-
 vhost_termipankki:
   servername: "{{ webdomain_termipankki }}"
   serveralias: "{{ webaliases_termipankki | join(' ') }}"
@@ -73,10 +34,8 @@ _https_redirect:
 
 apache_vhosts:
   - "{{ vhost_sanat | combine(_https_redirect) }}"
-  - "{{ vhost_nimiarkisto | combine(_https_redirect) }}"
   - "{{ vhost_termipankki | combine(_https_redirect) }}"
 
 apache_vhosts_ssl:
   - "{{ vhost_sanat | combine(ssl_params_sanat) }}"
-  - "{{ vhost_nimiarkisto | combine(ssl_params_nimiarkisto) }}"
   - "{{ vhost_termipankki | combine(ssl_params_termipankki) }}"

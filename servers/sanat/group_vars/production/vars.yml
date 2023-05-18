@@ -1,18 +1,3 @@
-webaliases_nimiarkisto:
-  - namnarkivet.fi
-  - nammaarkiiva.fi
-  - xn--nommarkkdh-64aeb.fi
-  - nommaarkkadah.fi
-  - xn--nmmarkiiv-q7a.fi
-  - nommarkiiv.fi
-  - www.nimiarkisto.fi
-  - www.namnarkivet.fi
-  - www.nammaarkiiva.fi
-  - www.xn--nommarkkdh-64aeb.fi
-  - www.nommaarkkadah.fi
-  - www.xn--nmmarkiiv-q7a.fi
-  - www.nommarkiiv.fi
-
 webaliases_termipankki:
   - www.tieteentermipankki.fi
 
@@ -25,16 +10,6 @@ mediawikis:
       server_host: '{{ vault_sanat_db_server }}'
       user: '{{ vault_sanat_db_user }}'
       password: '{{ vault_sanat_db_password }}'
-      admin_user: "{{ vault_db_admin_user }}"
-      admin_password: "{{ vault_db_admin_password }}"
-  nimiarkisto.fi:
-    conf: nimiarkisto
-    repofile: repos
-    db:
-      database: kielipankki_nadigi_m
-      server_host: '{{ vault_nimiarkisto_db_server }}'
-      user: '{{ vault_nimiarkisto_db_user }}'
-      password: '{{ vault_nimiarkisto_db_password }}'
       admin_user: "{{ vault_db_admin_user }}"
       admin_password: "{{ vault_db_admin_password }}"
   tieteentermipankki.fi:
@@ -53,17 +28,10 @@ ssl_params_sanat:
   certificate_key_file: "/etc/pki/tls/private/sanat.csc.fi.key"
   certificate_chain_file: "/etc/pki/tls/certs/DigiCertCA.crt"
 
-ssl_params_nimiarkisto:
-  certificate_file: "/etc/pki/tls/certs/nimiarkisto2.crt"
-  certificate_key_file: "/etc/pki/tls/private/nimiarkisto2.key"
-  certificate_chain_file: "/etc/pki/tls/certs/DigiCertCA.crt"
-
 ssl_params_termipankki:
   certificate_file: "/etc/pki/tls/certs/tieteentermipankki_fi.crt"
   certificate_key_file: "/etc/pki/tls/private/tieteentermipankki_fi.key"
   certificate_chain_file: "/etc/pki/tls/certs/DigiCertCA.crt"
-
-nimiarkisto_service_url: http://95.216.176.62
 
 memcached_memory_limit: 6000
 
