@@ -1,7 +1,0 @@
-- hosts: web
-  become: yes
-  tasks:
-    - name: Import Nimiarkisto data
-      command: /usr/bin/php extensions/Sanat/SanatImport.php --wiki="{{ webdomain_nimiarkisto }}" extensions/Nimiarkisto/maintenancepages
-      args:
-        chdir: /srv/mediawiki/workdir/

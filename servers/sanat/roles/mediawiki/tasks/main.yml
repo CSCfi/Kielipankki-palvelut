@@ -11,13 +11,6 @@
     checksum: sha1:a6a9028352d72b45cd1dc07113ea659ff0d4cd57
     mode: a+x
 
-# So far only nimiarkisto is supported
-- name: Install monthly dump script
-  copy:
-    src: dump_nimiarkisto
-    dest: /etc/cron.monthly/
-    mode: 0755
-
 - name: Configure all wiki instances
   include_tasks: instance.yml
   with_dict: "{{ mediawikis }}"
