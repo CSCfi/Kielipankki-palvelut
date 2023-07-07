@@ -21,6 +21,8 @@ $wgVectorWvuiSearchOptions = [
 	'showDescription' => false,
 ];
 $wgVectorDefaultSidebarVisibleForAnonymousUser = true;
+$wgVectorLanguageAlertInSidebar = false;
+$wgVectorLanguageInMainPageHeader = true;
 
 $wgLogos = [
 	'icon' => '/logo.svg',
@@ -123,6 +125,7 @@ wfLoadExtension( 'LiquidThreads' );
 
 wfLoadExtension( 'PageForms' );
 $wgPageForms24HourTime = true;
+$wgPageFormsAutocompleteOnAllChars = true;
 $wgGroupPermissions['user']['createclass'] = false;
 $wgGroupPermissions['sysop']['createclass'] = true;
 $wgGroupPermissions['*']['viewedittab'] = false;
@@ -192,6 +195,8 @@ $wgHooks['TranslatePostInitGroups'][] = function ( &$list, &$deps, &$autoload ) 
 };
 
 wfLoadExtension( 'UniversalLanguageSelector' );
+$wgULSPosition = 'interlanguage';
+
 wfLoadExtension( 'VEForAll' );
 wfLoadExtension( 'VisualEditor' );
 $wgVisualEditorEnableDiffPage = true;
