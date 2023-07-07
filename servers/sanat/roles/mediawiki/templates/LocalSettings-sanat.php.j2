@@ -22,6 +22,8 @@ wfLoadSkin( 'Vector' );
 $wgDefaultSkin = 'vector-2022';
 $wgVectorResponsive = true;
 $wgVectorDefaultSidebarVisibleForAnonymousUser = true;
+$wgVectorLanguageAlertInSidebar = false;
+$wgVectorLanguageInMainPageHeader = true;
 
 // Extensions with default configuration //
 
@@ -32,7 +34,6 @@ wfLoadExtensions( [
 	'NoTitle',
 	'Sanat',
 	'Translate',
-	'UniversalLanguageSelector',
 	'YouTube',
 	'WikiEditor'
 ] );
@@ -46,13 +47,22 @@ $smwgSearchByPropertyFuzzy = [ '_num', '_dat' ];
 
 wfLoadExtension( 'PageForms' );
 $wgPageFormsRedLinksCheckOnlyLocalProps = true;
-$wgPageFormsRenameEditTabs = true;
 $smwgQMaxInlineLimit = $wgCategoryPagingLimit = 500;
 
 wfLoadExtension( 'ParserFunctions' );
 $wgPFEnableStringFunctions = true;
 
-// Helper functions //
+wfLoadExtension( 'ReplaceText' );
+wfLoadExtension( 'TemplateSandbox' );
+wfLoadExtension( 'TemplateStyles' );
+wfLoadExtension( 'UniversalLanguageSelector' );
+$wgULSPosition = 'interlanguage';
+
+wfLoadExtension( 'VEForAll' );
+wfLoadExtension( 'VisualEditor' );
+$wgVisualEditorEnableDiffPage = true;
+
+// Content extensions and configuration //
 
 function lfAddNamespace( $id, $name ) {
 	global $wgExtraNamespaces, $wgContentNamespaces, $wgNamespacesToBeSearchedDefault,
@@ -75,13 +85,6 @@ function lfAddNamespace( $id, $name ) {
 	$smwgNamespacesWithSemanticLinks[$id] = true;
 }
 
-wfLoadExtension( 'ReplaceText' );
-wfLoadExtension( 'VEForAll' );
-wfLoadExtension( 'VisualEditor' );
-$wgVisualEditorEnableDiffPage = true;
-
-// Content extensions and configuration //
-
 lfAddNamespace( 1200, 'Lud' );
 wfLoadExtension( 'Lud' );
 
@@ -89,11 +92,6 @@ lfAddNamespace( 1202, 'WordNet' );
 wfLoadExtension( 'WordNet' );
 $wgNamespacesWithSubpages[NS_WORDNET] = true;
 
-// XXX: this is broken. This is not present when MediaWiki runs scripts.
-// The extensions should be installed with co_repos.
-if ( file_exists( "$IP/extensions/Saame/Saame.php" ) ) {
-	include_once "$IP/extensions/Saame/Saame.php";
-}
 lfAddNamespace( 1204, 'Sms' );
 lfAddNamespace( 1206, 'Izh' );
 foreach ( $wgUrlProtocols as $index => $value ) {
