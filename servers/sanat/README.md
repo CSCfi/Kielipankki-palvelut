@@ -21,5 +21,5 @@
 
   - `cd /srv/mediawiki/SITE/workdir`
   - `rm LocalSettings.php`
-  - `php maintenance/install.php --pass=... --dbname=nimiarkisto --dbuser=wikiuser --dbpass=wikipass MediaWiki WikiSysop`
+  - `php maintenance/install.php --pass=... --dbname=sanat --dbuser=wikiuser --dbpass=wikipass MediaWiki WikiSysop`
   - Then run ansible-playbook again

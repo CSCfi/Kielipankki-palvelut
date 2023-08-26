@@ -1,7 +1,4 @@
 webdomain_sanat: sanat.nikerabb.it
-webdomain_nimiarkisto: nimiarkisto.nikerabb.it
-webaliases_nimiarkisto:
-  - namnarkivet.nikerabb.it
 webdomain_termipankki: termipankki.nikerabb.it
 
 ansible_user: root
@@ -31,15 +28,3 @@ mediawikis:
       user: wikiuser
       password: wikipass
       database: sanat
-  nimiarkisto.nikerabb.it:
-    conf: nimiarkisto
-    oregano_target: workdir
-    repofile: repos
-    db:
-      server_host: localhost
-      server_client: localhost
-      user: wikiuser
-      password: wikipass
-      database: nimiarkisto
-
-nimiarkisto_service_url: http://95.217.134.251

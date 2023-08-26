@@ -1,11 +1,7 @@
 webdomain_sanat: sanat.csc.fi
 webaliases_sanat: []
-webdomain_nimiarkisto: nimiarkisto.fi
-webaliases_nimiarkisto: []
 webdomain_termipankki: tieteentermipankki.fi
 webaliases_termipankki: []
-
-nimiarkisto_service_url: http://127.0.0.1
 
 mediawikis: []
 
@@ -29,13 +25,9 @@ acme_email: ling-admin@listat.csc.fi
 acme_keyid: "{{ lookup('passwordstore', 'lb_passwords/portal/acme_keyid') }}"
 acme_hmac: "{{ lookup('passwordstore', 'lb_passwords/portal/acme_hmac') }}"
 
-ssl_params_nimiarkisto:
-  certificate_file: "{{ certificate_path }}/certs/{{ webdomain_nimiarkisto }}.crt"
-  certificate_key_file: "{{ certificate_path }}/private/{{ webdomain_nimiarkisto }}.key"
 ssl_params_termipankki:
   certificate_file: "{{ certificate_path }}/certs/{{ webdomain_termipankki }}.crt"
   certificate_key_file: "{{ certificate_path }}/private/{{ webdomain_termipankki }}.key"
-
 
 hfst_tmp: /tmp/hfst
 hfst_url: http://apertium.projectjj.com/apt/release/pool/main/h/hfst/
@@ -49,8 +41,6 @@ hfst_components:
 memcached_memory_limit: 4000
 
 composer_keep_updated: true
-
-nimiarkisto_mapproxy_key: ''
 
 elasticsearch_version: '7.x'
 elasticsearch_network_host: localhost
