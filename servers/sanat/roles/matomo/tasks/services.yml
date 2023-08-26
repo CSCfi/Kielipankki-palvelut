@@ -1,0 +1,32 @@
+- name: Install systemd services
+  ansible.builtin.include_role:
+    name: 0x0i.systemd
+  vars:
+    unit_config:
+      - name: matomo-archiver
+        enabled: true
+        state: started
+        Unit:
+          Description: Matomo Archiver
+        Service:
+          ExecStart: /usr/bin/php "{{ matomo_deploy_dir }}/console" core:archive --url "{{ matomo_url }}"
+          User: "{{ matomo_user }}"
+          PrivateTmp: true
+          PrivateDevices: true
+          DevicePolicy: closed
+          ProtectControlGroups: true
+          ProtectKernelModules: true
+          ProtectKernelTunables: true
+          RestrictNamespaces: true
+          RestrictRealtime: true
+        Install:
+          WantedBy: multi-user.target
+      - name: matomo-archiver
+        enabled: true
+        state: started
+        type: timer
+        Timer:
+          OnCalendar: "*:0/5"
+          Unit: matomo-archiver.service
+        Install:
+          WantedBy: timers.target

@@ -33,6 +33,8 @@
       tags: java
     - role: geerlingguy.elasticsearch
       tags: elasticsearch
+    - role: matomo
+      tags: matomo
 
 - hosts: all
   become: yes

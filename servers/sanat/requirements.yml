@@ -12,3 +12,5 @@
   version: 2.2.0
 - src: geerlingguy.elasticsearch
   version: 5.1.1
+- src: 0x0i.systemd
+  version: v0.3.5

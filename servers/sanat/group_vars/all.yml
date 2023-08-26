@@ -56,3 +56,6 @@ elasticsearch_version: '7.x'
 elasticsearch_network_host: localhost
 elasticsearch_heap_size_min: 1g
 elasticsearch_heap_size_max: 4g
+
+matomo_user: apache
+matomo_group: apache
