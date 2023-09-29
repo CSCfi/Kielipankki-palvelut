@@ -4,6 +4,7 @@ workdir/extensions/Babel https://github.com/wikimedia/mediawiki-extensions-Babel
 workdir/extensions/CategoryTree https://github.com/wikimedia/mediawiki-extensions-CategoryTree.git REL1_40
 workdir/extensions/CirrusSearch https://github.com/wikimedia/mediawiki-extensions-CirrusSearch.git REL1_40
 workdir/extensions/Cite https://github.com/wikimedia/mediawiki-extensions-Cite.git REL1_40
+workdir/extensions/cldr https://github.com/wikimedia/mediawiki-extensions-cldr.git 2023.07
 workdir/extensions/CodeEditor https://github.com/wikimedia/mediawiki-extensions-CodeEditor.git REL1_40
 workdir/extensions/ConfirmEdit https://github.com/wikimedia/mediawiki-extensions-ConfirmEdit.git REL1_40
 workdir/extensions/DeleteBatch https://github.com/wikimedia/mediawiki-extensions-DeleteBatch.git REL1_40
