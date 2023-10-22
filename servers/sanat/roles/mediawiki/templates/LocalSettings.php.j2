@@ -43,7 +43,7 @@ $wgSQLMode = 'TRADITIONAL';
 
 ## Shared memory settings
 $wgMainCacheType = 'memcached-pecl';
-$wgParserCacheType = CACHE_DB;
+$wgParserCacheType = 'memcached-pecl';
 $wgSessionCacheType = 'memcached-db';
 $wgMemCachedServers = [ 'localhost:11211' ];
 $wgObjectCaches['memcached-db'] = [
