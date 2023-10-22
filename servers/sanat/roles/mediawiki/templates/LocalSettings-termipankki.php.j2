@@ -295,6 +295,7 @@ function wfAddTermNamespace( $id, $name ) {
 	$wgContentNamespaces[] = $id;
 	$wgNamespacesToBeSearchedDefault[$id] = true;
 	$wgCapitalLinkOverrides[$id] = false;
+	$wgVisualEditorAvailableNamespaces[$id] = false;
 
 	$right = strtolower( $name );
 	$wgNamespaceProtection[$id] = [ $right ];
