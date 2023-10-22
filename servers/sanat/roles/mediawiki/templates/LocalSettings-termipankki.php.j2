@@ -127,6 +127,8 @@ wfLoadExtension( 'LiquidThreads' );
 wfLoadExtension( 'PageForms' );
 $wgPageForms24HourTime = true;
 $wgPageFormsAutocompleteOnAllChars = true;
+// This option is really really slow
+$wgPageFormsUseDisplayTitle = false;
 $wgGroupPermissions['user']['createclass'] = false;
 $wgGroupPermissions['sysop']['createclass'] = true;
 $wgGroupPermissions['*']['viewedittab'] = false;
