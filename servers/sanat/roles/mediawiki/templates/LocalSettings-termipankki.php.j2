@@ -239,11 +239,6 @@ $wgParsoidSettings[ 'linting' ] = true;
 
 // Dynaaminen koodi
 $wgHooks['SkinAfterBottomScripts'][] = function ( $skin, &$text ) {
-	// https://phabricator.wikimedia.org/T345039
-	static $run = false;
-	if ( $run ) { return; }
-	$run = true;
-
 	$text .= Html::inlineScript(
 		<<<'JS'
 		var _paq = window._paq = window._paq || [];
