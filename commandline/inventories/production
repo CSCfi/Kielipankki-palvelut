@@ -7,3 +7,4 @@ hpc:
       kielipankki_data_dir: /appl/data/kielipankki
       swig3_as_module: yes
       shared_group: p_installation
+      is_admin: false
