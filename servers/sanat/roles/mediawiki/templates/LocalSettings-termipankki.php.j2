@@ -164,6 +164,11 @@ $wgSimpleMathJaxUseCDN = false;
 wfLoadExtension( 'ShortUrl' );
 $wgShortUrlTemplate = '/!$1';
 
+wfLoadExtension( 'SmiteSpam' );
+$wgDisplayPageSize = 10;
+$wgSmiteSpamIgnoreSmallPages = false;
+$wgSmiteSpamIgnorePagesWithNoExternalLinks = false;
+
 wfLoadExtension( 'TemplateStyles' );
 $wgTemplateStylesAllowedUrls['image'][] = '<^/uploads/>';
 
