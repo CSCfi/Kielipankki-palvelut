@@ -1,2 +1,0 @@
-is_admin: false
-python3_module: python3
