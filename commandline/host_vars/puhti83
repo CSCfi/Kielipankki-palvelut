@@ -1,8 +1,0 @@
-# compile in fast directory
-compile_root: "/local_scratch/{{ ansible_user_id }}"
-is_admin: false
-gcc_modcall: ". /appl/profile/zz-csc-env.sh && module load gcc/11.3.0 &&"
-python3_module: biopythontools/11.3.0_3.10.6
-python3_base_version: "3.10"
-python_modcall: "{{ gcc_modcall }} module load {{python3_module}} &&"
-python_swig_modcall: "{{ python_modcall }}"
