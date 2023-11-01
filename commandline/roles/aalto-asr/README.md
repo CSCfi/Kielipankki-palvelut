@@ -7,11 +7,11 @@ Installing Aalto's singularity based speech recognizer
 
 `cd Kielipankki-palvelut/commandline`
 
-Install as normal user to puhti-login2:
-`ansible-playbook site.yml -vv -i inventories/test -t aalto-asr`
+Install as normal user to puhti-login12:
+`ansible-playbook site.yml -vv -i inventories/test_csc -t aalto-asr`
 
-Login to puhti-login2.csc.fi:
-`ssh puhti-login2.csc.fi`
+Login to puhti-login12.csc.fi:
+`ssh puhti-login12.csc.fi`
 
 Add your local module to the module system:
 `module use /local_scratch/<your used id>/ansible/modulefiles/`
