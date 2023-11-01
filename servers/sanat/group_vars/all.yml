@@ -1,11 +1,7 @@
 webdomain_sanat: sanat.csc.fi
 webaliases_sanat: []
-webdomain_nimiarkisto: nimiarkisto.fi
-webaliases_nimiarkisto: []
 webdomain_termipankki: tieteentermipankki.fi
 webaliases_termipankki: []
-
-nimiarkisto_service_url: http://127.0.0.1
 
 mediawikis: []
 
@@ -23,16 +19,15 @@ apache_ssl_cipher_suite: "\
 
 certificate_path: /etc/pki/tls
 
-ssl_params_sanat:
-  certificate_file: "{{ certificate_path }}/certs/{{ webdomain_sanat }}.crt"
-  certificate_key_file: "{{ certificate_path }}/private/{{ webdomain_sanat }}.key"
-ssl_params_nimiarkisto:
-  certificate_file: "{{ certificate_path }}/certs/{{ webdomain_nimiarkisto }}.crt"
-  certificate_key_file: "{{ certificate_path }}/private/{{ webdomain_nimiarkisto }}.key"
+acme_root: /etc/letsencrypt
+acme_endpoint: "https://acme.sectigo.com/v2/OV"
+acme_email: ling-admin@listat.csc.fi
+acme_keyid: "{{ lookup('passwordstore', 'lb_passwords/portal/acme_keyid') }}"
+acme_hmac: "{{ lookup('passwordstore', 'lb_passwords/portal/acme_hmac') }}"
+
 ssl_params_termipankki:
   certificate_file: "{{ certificate_path }}/certs/{{ webdomain_termipankki }}.crt"
   certificate_key_file: "{{ certificate_path }}/private/{{ webdomain_termipankki }}.key"
-
 
 hfst_tmp: /tmp/hfst
 hfst_url: http://apertium.projectjj.com/apt/release/pool/main/h/hfst/
@@ -45,8 +40,12 @@ hfst_components:
 
 memcached_memory_limit: 4000
 
-# composer-merge-plugin does not support 2.x
-composer_keep_updated: false
-composer_version: "1.10.17"
+composer_keep_updated: true
 
-nimiarkisto_mapproxy_key: ''
+elasticsearch_version: '7.x'
+elasticsearch_network_host: localhost
+elasticsearch_heap_size_min: 1g
+elasticsearch_heap_size_max: 4g
+
+matomo_user: apache
+matomo_group: apache

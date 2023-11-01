@@ -1,3 +1,43 @@
+- name: Create oregano directories for {{ instance.key }}
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /srv/mediawiki/{{ instance.key }}/hooks
+    - /srv/mediawiki/{{ instance.key }}/tags
+    - /srv/mediawiki/{{ instance.key }}/targets
+
+- name: Install oregano hooks for {{ instance.key }}
+  copy: src=oregano_hook_deploy dest=/srv/mediawiki/{{ instance.key }}/hooks/deploy mode=0755
+
+- name: Copy repo updating files
+  copy: src={{item}} dest=/srv/mediawiki/{{ instance.key }} mode=0755
+  loop:
+    - update_repos
+    - update_repo
+    - clone_repo
+
+- name: Copy list of repos for {{ instance.key }}
+  copy: src={{ instance.value.repofile }} dest=/srv/mediawiki/{{ instance.key }}/repos
+
+- name: Clone/update repos for {{ instance.key }}
+  command: /srv/mediawiki/{{ instance.key }}/update_repos
+  args:
+    chdir: /srv/mediawiki/{{ instance.key }}
+
+- name: Install composer.local.json for {{ instance.key }}
+  copy: src=composer.local.json dest=/srv/mediawiki/{{ instance.key }}/workdir/composer.local.json
+
+- name: Install LocalSettings.php for {{ instance.key }}
+  template: src=LocalSettings.php.j2 dest=/srv/mediawiki/{{ instance.key }}/workdir/LocalSettings.php
+
+- name: Run composer update for {{ instance.key }}
+  command: /usr/local/bin/composer update --no-dev
+  args:
+    chdir: /srv/mediawiki/{{ instance.key }}/workdir
+  environment:
+    COMPOSER_ALLOW_SUPERUSER: 1
+
 - name: Create docroot for {{ instance.key }}
   file: path={{item}} state=directory owner={{ mediawiki_apache_user }} mode=755
   with_items:
@@ -27,7 +67,7 @@
 
 - name: Create symlink to MediaWiki code for {{ instance.key }}
   file:
-    src: /srv/mediawiki/{{ instance.value.oregano_target | default('targets/production') }}
+    src: /srv/mediawiki/{{ instance.key }}/{{ instance.value.oregano_target | default('targets/production') }}
     dest: /www/{{ instance.key }}/docroot/w
     state: link
     force: yes
@@ -36,7 +76,7 @@
   copy: src=.htaccess dest=/www/{{ instance.key }}/docroot/.htaccess owner={{ mediawiki_apache_user }} mode=755
 
 - name: Create LocalSettings file for {{ instance.key }}
-  template: src=LocalSettings-{{ instance.value.conf }}.php.j2 dest=/srv/mediawiki/workdir/LocalSettings-{{ instance.key }}.php
+  template: src=LocalSettings-{{ instance.value.conf }}.php.j2 dest=/srv/mediawiki/{{ instance.key }}/workdir/LocalSettings-site.php
 
 - name: Install jobrunner for {{ instance.key }}
   template: src=mw-jobrunner.service.j2 dest=/etc/systemd/system/mw-jobrunner-{{ instance.key }}.service
@@ -51,13 +91,20 @@
   command: >-
     /usr/bin/php maintenance/update.php
       --quick --skip-optimize
-      --wiki="{{ instance.key }}"
       --dbuser="{{ instance.value.db.admin_user | default(instance.value.db.user) }}"
       --dbpass="{{ instance.value.db.admin_password | default(instance.value.db.password) }}"
   args:
-    chdir: /srv/mediawiki/workdir
+    chdir: /srv/mediawiki/{{ instance.key }}/workdir
 
-#- name: Setup ElasticSearch for {{ instance.key }}
-  #command: /usr/bin/php extensions/CirrusSearch/maintenance/updateSearchIndexConfig.php --wiki="{{ instance.key }}"
-  #args:
-    #chdir: /srv/mediawiki/workdir
+- name: Update l10n cache for {{ instance.key }}
+  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8
+  args:
+    chdir: /srv/mediawiki/{{ instance.key }}/workdir
+
+- name: Deploy latest code for {{ instance.key }} with oregano
+  command: /srv/mediawiki/oregano {{ item }}
+  args:
+    chdir: /srv/mediawiki/{{ instance.key }}
+  with_items:
+    - tag
+    - deploy

@@ -1,0 +1,11 @@
+-- This is the module file for Praat
+
+help([[
+         Praat {{ version }}, barren version, compiled from github: {{ release_url }}
+         More information: http://www.praat.org
+]])
+
+local   version =       '{{ version }}'
+local   prog_root =     '/appl/soft/ling/praat/'
+
+prepend_path('PATH', pathJoin(prog_root,version,'bin'))

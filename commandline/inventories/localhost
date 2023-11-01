@@ -1,0 +1,11 @@
+hpc:
+  hosts:
+    localhost:
+      module_root: /tmp/{{ansible_user_id}}/ansible/modulefiles
+      install_prefix: /data
+      kielipankki_data_dir: /tmp/{{ansible_user_id}}/ansible/kielipankki_data
+      is_admin: false
+      swig3_as_module: yes
+      python_swig_modcall: ""
+      python_modcall: ""
+      compiler_call: ""

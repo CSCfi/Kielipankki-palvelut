@@ -1,5 +1,5 @@
 ---
-# tasks file for tsv-tools
+# tasks file for aalto-asr
 
 - name: Setup directories
   become: no
@@ -49,8 +49,7 @@
 - name: Install configs
   template:
     src: config_template.j2
-    dest: "{{ install_dir }}/bin/{{ item.conf }}"
-  loop: "{{ containers }}"
+    dest: "{{ install_dir }}/bin/config.yaml"
 
 - name: Install modulefile
   template:
@@ -62,6 +61,6 @@
   file:
     path: "{{ install_dir }}"
     group: "{{ shared_group }}"
-    mode: "g+rwX,o+rX"
+    mode: "g+rwX,o+rX,o-w"
     recurse: yes
   when: shared_group is defined

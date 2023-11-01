@@ -1,20 +1,9 @@
 webdomain_sanat: sanat.dev
 webaliases_sanat: []
-webdomain_nimiarkisto: nimiarkisto.dev
-webaliases_nimiarkisto: []
-
 
 mediawikis:
   sanat.dev:
     conf: sanat
-    db:
-      server_host: localhost
-      server_client: localhost
-      user: wikiuser
-      password: wikipass
-      database: mediawiki
-  nimiarkisto.dev:
-    conf: nimiarkisto
     db:
       server_host: localhost
       server_client: localhost
@@ -27,9 +16,6 @@ apache_ssl_cipher_suite: "AES256+EECDH:AES256+EDH"
 ssl_params_sanat:
   certificate_file: "/etc/pki/tls/certs/{{ webdomain_sanat }}.crt"
   certificate_key_file: "/etc/pki/tls/private/{{ webdomain_sanat }}.key"
-ssl_params_nimiarkisto:
-  certificate_file: "/etc/pki/tls/certs/{{ webdomain_nimiarkisto }}.crt"
-  certificate_key_file: "/etc/pki/tls/private/{{ webdomain_nimiarkisto }}.key"
 
 
 hfst_tmp: /tmp/hfst

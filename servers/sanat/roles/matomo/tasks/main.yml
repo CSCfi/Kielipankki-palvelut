@@ -1,0 +1,58 @@
+- name: Create Matomo directory
+  ansible.builtin.file: path={{ matomo_dir }} state=directory
+
+- name: Create Matomo working directory
+  ansible.builtin.file: path={{ matomo_work_dir }} state=directory
+
+- name: Fetch latest stable version
+  ansible.builtin.uri:
+    url: https://builds.matomo.org/LATEST_4X
+    return_content: true
+  register: matomo_latest_version_fetch
+
+- name: Decode latest version
+  ansible.builtin.set_fact: matomo_latest_version={{ matomo_latest_version_fetch.content }}
+
+- name: Check if Matomo is already installed
+  ansible.builtin.stat:
+    path: "{{ matomo_work_dir }}/version"
+  register: matomo_installed
+
+- block:
+  - name: Fetch installed version number
+    ansible.builtin.command: cat {{ matomo_work_dir }}/version
+    register: matomo_installed_version_encoded
+  - name: Define installed version number
+    ansible.builtin.set_fact: matomo_installed_version={{ matomo_installed_version_encoded.stdout }}
+  when: matomo_installed.stat.exists
+
+- name: Install latest version
+  block:
+  - name: Download latest version
+    ansible.builtin.get_url:
+      url: https://builds.matomo.org/matomo-{{ matomo_latest_version }}.zip
+      dest: "{{ _zip }}"
+  - name: Unzip latest version
+    ansible.builtin.unarchive:
+      remote_src: true
+      src: "{{ _zip }}"
+      dest: "{{ matomo_work_dir }}"
+      owner: "{{ matomo_user }}"
+      group: "{{ matomo_group }}"
+  - name: Run upgrade
+    become: true
+    become_user: "{{ matomo_user }}"
+    ansible.builtin.command: /usr/bin/php "{{ matomo_deploy_dir }}/console" core:update
+    when: matomo_installed_version is defined
+  - name: Store version number
+    ansible.builtin.copy: dest={{ matomo_work_dir }}/version content={{ matomo_latest_version }}
+  - name: Remove archive
+    ansible.builtin.file: path={{ _zip }} state=absent
+  when: matomo_installed_version is undefined or matomo_installed_version != matomo_latest_version
+  vars:
+    _zip: "{{ matomo_dir }}/matomo-{{ matomo_latest_version }}.zip"
+
+- name: Link deployment directory from docroot
+  ansible.builtin.file: path={{ matomo_symlink }} src={{ matomo_deploy_dir }} state=link
+
+- import_tasks: services.yml

@@ -1,0 +1,7 @@
+matomo_dir: /srv/matomo
+matomo_work_dir: /srv/matomo/workdir
+matomo_deploy_dir: /srv/matomo/workdir/matomo
+matomo_user: www-data
+matomo_group: www-data
+matomo_url: https://localhost/matomo
+matomo_symlink: /www/example.com/docroot/matomo

@@ -1,0 +1,14 @@
+-- This is the module file for {{ package_name }}
+
+if ( not isloaded("hfst") )  then
+   load("hfst")
+end
+
+help([[
+         {{ package_name }} {{ version }}
+]])
+
+local   version =       '{{ version }}'
+local   prog_root =     '{{ install_prefix }}/ling/{{ package_name }}'
+
+prepend_path('PATH', pathJoin(prog_root,version,'bin'))

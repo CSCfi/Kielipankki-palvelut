@@ -1,12 +1,53 @@
-# You should place the proper certs on the server directly. This wont replace it.
+---
 
-- name: Install openssl
-  package:
-    name: openssl
+- name: Install required packages
+  yum:
+    name:
+      - httpd
+      - mod_ssl
+      - certbot
+      - python*-certbot-apache
+      - logrotate
     state: present
+  become: yes
 
-# TODO: This does not handle aliases
-- name: Create self-signed SSL certificate
-  command: openssl req -new -nodes -x509 -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN={{ item.servername }}" -days 365 -keyout {{ item.certificate_key_file }} -out {{ item.certificate_file }} -extensions v3_ca creates={{ item.certificate_key_file }}
-  notify: restart apache
-  with_items: "{{ apache_vhosts_ssl }}"
+- name: Register ACME
+  shell:
+    cmd: >
+      certbot register --server {{ acme_endpoint }}
+      --agree-tos --eab-kid {{ acme_keyid }}
+      --eab-hmac-key {{ acme_hmac }}
+      --no-eff-email
+      --email {{ acme_email }}
+    creates: "{{ acme_root }}/accounts/acme.sectigo.com/v2/OV/"
+  become: yes
+
+- name: Fetch certificates via ACME
+  shell:
+    cmd: >
+      certbot certonly --apache --server {{ acme_endpoint }}
+      --non-interactive --agree-tos
+      {% for domain in item %}
+      -d  {{ domain }}
+      {% endfor %}
+  loop:
+    - ["sanat.csc.fi"]
+    - ["tieteentermipankki.fi", "www.tieteentermipankki.fi"]
+  become: yes
+
+- name: Setup weekly cronjob for updating the certificate
+  copy:
+    dest: /etc/cron.weekly/renew-cert
+    mode: 0755
+    content: |
+      #!/bin/bash
+      # See https://wiki.csc.fi/PATA/Ohjeet/ServerCertificatesACME
+      certbot renew --deploy-hook "systemctl reload httpd"
+  become: yes
+
+- name: Copy vhost.conf
+  template:
+    src: "vhosts.conf.j2"
+    dest: "/etc/httpd/conf.d/vhosts.conf"
+  notify: restart httpd
+  become: yes

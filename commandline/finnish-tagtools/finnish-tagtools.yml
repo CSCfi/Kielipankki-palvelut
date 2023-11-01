@@ -1,0 +1,10 @@
+- name: Install finnish-tagtools
+  hosts: hpc
+  gather_facts: no
+  vars_files: 
+    - ../group_vars/all
+    - defaults/main.yml
+
+  tasks:
+    - name: Include task list in play
+      ansible.builtin.import_tasks: tasks/main.yml  

@@ -7,14 +7,23 @@ $wgDBuser = '{{ instance.value.db.user }}';
 $wgDBpassword = '{{ instance.value.db.password }}';
 $wgDBname = '{{ instance.value.db.database }}';
 
-$wgLogo = '/logo.png';
+$wgLogos = [
+	'wordmark' => [ 'src' => '/KIELIPANKKI_logotxt_SU_EN.png', 'width' => '196', 'height' => '38' ],
+];
+
 $wgGroupPermissions['*']['createaccount'] = false;
 
 $wgAllowDisplayTitle = true;
 $wgRestrictDisplayTitle = false;
 
+$wgUseInstantCommons = true;
+
 wfLoadSkin( 'Vector' );
+$wgDefaultSkin = 'vector-2022';
 $wgVectorResponsive = true;
+$wgVectorDefaultSidebarVisibleForAnonymousUser = true;
+$wgVectorLanguageAlertInSidebar = false;
+$wgVectorLanguageInMainPageHeader = true;
 
 // Extensions with default configuration //
 
@@ -22,26 +31,38 @@ wfLoadExtensions( [
 	'CodeEditor',
 	'DeleteBatch',
 	'InputBox',
-	'MixedNamespaceSearchSuggestions',
+	'NoTitle',
 	'Sanat',
 	'Translate',
-	'UniversalLanguageSelector',
 	'YouTube',
 	'WikiEditor'
 ] );
 
 // Extensions with custom configuration //
 
+wfLoadExtension( 'SemanticMediaWiki' );
 enableSemantics( $VHOST );
+$smwgCheckForConstraintErrors = SMW_CONSTRAINT_ERR_CHECK_NONE;
+$smwgSearchByPropertyFuzzy = [ '_num', '_dat' ];
+
 wfLoadExtension( 'PageForms' );
 $wgPageFormsRedLinksCheckOnlyLocalProps = true;
-$wgPageFormsRenameEditTabs = true;
 $smwgQMaxInlineLimit = $wgCategoryPagingLimit = 500;
 
 wfLoadExtension( 'ParserFunctions' );
 $wgPFEnableStringFunctions = true;
 
-// Helper functions //
+wfLoadExtension( 'ReplaceText' );
+wfLoadExtension( 'TemplateSandbox' );
+wfLoadExtension( 'TemplateStyles' );
+wfLoadExtension( 'UniversalLanguageSelector' );
+$wgULSPosition = 'interlanguage';
+
+wfLoadExtension( 'VEForAll' );
+wfLoadExtension( 'VisualEditor' );
+$wgVisualEditorEnableDiffPage = true;
+
+// Content extensions and configuration //
 
 function lfAddNamespace( $id, $name ) {
 	global $wgExtraNamespaces, $wgContentNamespaces, $wgNamespacesToBeSearchedDefault,
@@ -64,8 +85,6 @@ function lfAddNamespace( $id, $name ) {
 	$smwgNamespacesWithSemanticLinks[$id] = true;
 }
 
-// Content extensions and configuration //
-
 lfAddNamespace( 1200, 'Lud' );
 wfLoadExtension( 'Lud' );
 
@@ -73,11 +92,6 @@ lfAddNamespace( 1202, 'WordNet' );
 wfLoadExtension( 'WordNet' );
 $wgNamespacesWithSubpages[NS_WORDNET] = true;
 
-// XXX: this is broken. This is not present when MediaWiki runs scripts.
-// The extensions should be installed with co_repos.
-if ( file_exists( "$IP/extensions/Saame/Saame.php" ) ) {
-	include_once "$IP/extensions/Saame/Saame.php";
-}
 lfAddNamespace( 1204, 'Sms' );
 lfAddNamespace( 1206, 'Izh' );
 foreach ( $wgUrlProtocols as $index => $value ) {
@@ -85,6 +99,7 @@ foreach ( $wgUrlProtocols as $index => $value ) {
 		unset( $wgUrlProtocols[ $index ] );
 	}
 }
+$wgUrlProtocols = array_values( $wgUrlProtocols );
 
 wfLoadExtension( 'Kotus' );
 lfAddNamespace( 1210, 'Vepsä' );
@@ -127,5 +142,7 @@ $wgGroupPermissions[ 'etymologiatoimittaja' ][ 'bibliografi' ] = true;
 /* Sampsa Holopainen */
 lfAddNamespace( 1236, 'Hungarian_Historical_Phonology' );
 
-# Next free namespace 1238
+/* Kimmo Granqvist */
+lfAddNamespace( 1238, 'Suomen_romanikielen_verkkosanakirja' );
 
+# Next free namespace 1240 #

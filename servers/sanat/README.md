@@ -10,7 +10,7 @@
  - `ansible-playbook -i inventories/development site.yml`
  - After completed setup, initialize the database and update, eg:
   - gzip -dc mw.sql.gz| mysql -u wikiuser -p  mediawiki
-  - php /srv/mediawiki/targets/production/maintenance/update.php
+  - php /srv/mediawiki/SITE/targets/production/maintenance/update.php
 
 ## Notes
 
@@ -19,7 +19,7 @@
  
 ## Example for bootstrapping an empty wiki database
 
-  - `cd /srv/mediawiki/workdir`
+  - `cd /srv/mediawiki/SITE/workdir`
   - `rm LocalSettings.php`
-  - `php maintenance/install.php --wiki=nimiarkisto.fi --pass=... --dbname=nimiarkisto --dbuser=wikiuser --dbpass=wikipass MediaWiki WikiSysop`
+  - `php maintenance/install.php --pass=... --dbname=sanat --dbuser=wikiuser --dbpass=wikipass MediaWiki WikiSysop`
   - Then run ansible-playbook again

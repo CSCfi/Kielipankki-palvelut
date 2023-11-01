@@ -2,5 +2,6 @@
 
 set -e
 
-parallel --halt soon,fail=1 -j1 --colsep ' ' ./clone_repo {1} {2} {3} :::: repos
+head -n 1 repos | parallel --halt soon,fail=1 -j1 --colsep ' ' ./clone_repo {1} {2} {3}
+tail -n+2 repos | parallel --halt soon,fail=1 -j4 --colsep ' ' ./clone_repo {1} {2} {3}
 parallel --halt soon,fail=1 -j4 --colsep ' ' ./update_repo {1} {2} {3} :::: repos

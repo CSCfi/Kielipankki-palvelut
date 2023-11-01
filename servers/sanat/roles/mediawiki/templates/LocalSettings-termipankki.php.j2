@@ -14,10 +14,20 @@ $wgGrammarForms['fi']['elative' ]['Tieteen termipankki']  = 'Tieteen termipankis
 $wgGrammarForms['fi']['partitive']['Tieteen termipankki']  = 'Tieteen termipankkia';
 
 wfLoadSkin( 'Vector' );
-$wgDefaultSkin = 'vector';
+$wgDefaultSkin = 'vector-2022';
 $wgVectorResponsive = true;
+$wgVectorWvuiSearchOptions = [
+	'showThumbnail' => false,
+	'showDescription' => false,
+];
+$wgVectorDefaultSidebarVisibleForAnonymousUser = true;
+$wgVectorLanguageAlertInSidebar = false;
+$wgVectorLanguageInMainPageHeader = true;
 
-$wgLogos = [ '1x' => ' ' ];
+$wgLogos = [
+	'icon' => '/logo.svg',
+	'wordmark' => [ 'src' => '/wordmark.svg', 'width' => '376', 'height' => '80' ],
+];
 
 $wgFavicon = '/favicon.png';
 $wgFooterIcons['poweredby']['myicon'] = [
@@ -43,7 +53,6 @@ $wgRightsText = 'Creative Commons Nimeä-Tarttuva 3.0 Muokkaamaton';
 $wgRightsIcon = 'https://i.creativecommons.org/l/by-sa/3.0/88x31.png';
 
 // Turhat pois
-$wgHiddenPrefs[] = 'stubthreshold';
 $wgHiddenPrefs[] = 'userid';
 $wgHiddenPrefs[] = 'math';
 $wgHiddenPrefs[] = 'imagesize';
@@ -105,15 +114,21 @@ $wgCategoryPagingLimit  = 1000;
 $wgCategoryTreeMaxDepth['categories'] = 5;
 
 wfLoadExtension( 'Cite' );
+wfLoadExtension( 'CirrusSearch' );
+$wgSearchType = 'CirrusSearch';
+
+wfLoadExtension( 'cldr' );
 wfLoadExtension( 'CodeEditor' );
+wfLoadExtension( 'Elastica' );
 wfLoadExtension( 'HeaderTabs' );
 wfLoadExtension( 'InputBox' );
 wfLoadExtension( 'LiquidThreads' );
-wfLoadExtension( 'MixedNamespaceSearchSuggestions' );
 
 wfLoadExtension( 'PageForms' );
-$wgPageFormsRenameEditTabs = true;
 $wgPageForms24HourTime = true;
+$wgPageFormsAutocompleteOnAllChars = true;
+// This option is really really slow
+$wgPageFormsUseDisplayTitle = false;
 $wgGroupPermissions['user']['createclass'] = false;
 $wgGroupPermissions['sysop']['createclass'] = true;
 $wgGroupPermissions['*']['viewedittab'] = false;
@@ -126,8 +141,9 @@ $wgPFEnableStringFunctions = true;
 
 wfLoadExtension( 'Renameuser' );
 wfLoadExtension( 'ReplaceText' );
-require "$IP/extensions/SemanticDrilldown/SemanticDrilldown.php";
+
 // Semantic MediaWiki
+wfLoadExtension( 'SemanticMediaWiki' );
 enableSemantics( $VHOST );
 $smwgPageSpecialProperties[] = '_CDAT';
 $smwgPageSpecialProperties[] = '_LEDT';
@@ -137,6 +153,10 @@ $smwgQMaxInlineLimit = 5000;
 $smwgQUpperbound = 30000;
 // Causes performance issues
 $smwgEnabledQueryDependencyLinksStore = false;
+$smwgCheckForConstraintErrors = SMW_CONSTRAINT_ERR_CHECK_NONE;
+// Work around SMW bug: https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5250
+$wgNamespacesToBeSearchedDefault[102] = true;
+$wgNamespacesToBeSearchedDefault[108] = true;
 
 wfLoadExtension( 'SimpleMathJax' );
 $wgSimpleMathJaxUseCDN = false;
@@ -156,6 +176,7 @@ $wgGroupPermissions['user']['translate-groupreview'] = true;
 $wgGroupPermissions['sysop']['pagetranslation'] = true;
 $wgTranslatePageTranslationULS = true;
 $wgPageTranslationLanguageList = 'sidebar-always';
+$wgTranslateMessageNamespaces = [ NS_MEDIAWIKI ];
 
 $wgHooks['TranslatePostInitGroups'][] = function ( &$list, &$deps, &$autoload ) {
 	$mg = new WikiMessageGroup( 'wiki-sidebar', 'project' );
@@ -177,24 +198,75 @@ $wgHooks['TranslatePostInitGroups'][] = function ( &$list, &$deps, &$autoload ) 
 };
 
 wfLoadExtension( 'UniversalLanguageSelector' );
+$wgULSPosition = 'interlanguage';
+
+wfLoadExtension( 'VEForAll' );
+wfLoadExtension( 'VisualEditor' );
+$wgVisualEditorEnableDiffPage = true;
+$wgHiddenPrefs[] = 'visualeditor-tabs';
+$wgHiddenPrefs[] = 'visualeditor-newwikitext';
+#$wgVisualEditorEnableWikitext = true;
+#$wgDefaultUserOptions['visualeditor-newwikitext'] = 1;
+$wgVisualEditorUseSingleEditTab = true;
+#$wgDefaultUserOptions['visualeditor-enable'] = 1;
+$wgHooks['VEForAllToolbarConfigNormal'][] = static function( &$defaultConfigNormal ) {
+    $defaultConfigNormal[] = [ 'name' => 'reference' ];
+};
 
 wfLoadExtension( 'WikiEditor' );
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
 
+wfLoadExtensions( [ 'Linter', 'DiscussionTools' ] );
+// LiquidThreads is enabled by default on all talk pages. This hook handler disables it on pages without any threads.
+// This makes manual opt-in/out unnecessary (and impossible), but adds a few additional database queries.
+$wgHooks['LiquidThreadsIsLqtPage'][] = static function ( Title $title, bool &$isTalkPage ) {
+	if ( !$title->exists() ) {
+		$isTalkPage = false;
+	} else {
+		$db = \MediaWiki\MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
+		$query = $db->newSelectQueryBuilder();
+		$isTalkPage = (bool)$query
+			->from( 'thread' )
+			->where( [
+				'thread_article_namespace' => $title->getNamespace(),
+				'thread_article_title' => $title->getDBkey(),
+			] )
+			->limit( 1 )
+			->caller( __FILE__ )
+			->fetchRowCount();
+	}
+};
+// Linter extensions requires this to produce results.
+$wgParsoidSettings[ 'linting' ] = true;
+
 // Dynaaminen koodi
 $wgHooks['SkinAfterBottomScripts'][] = function ( $skin, &$text ) {
-	$text .= Html::inlineScript( <<<JS
-
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-27482119-1', 'tieteentermipankki.fi');
-  ga('send', 'pageview');
-
-JS
+	$text .= Html::inlineScript(
+		<<<'JS'
+		var _paq = window._paq = window._paq || [];
+		/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+		_paq.push(['trackPageView']);
+		_paq.push(['enableLinkTracking']);
+		(function() {
+			var u="//tieteentermipankki.fi/matomo/";
+			_paq.push(['setTrackerUrl', u+'matomo.php']);
+			_paq.push(['setSiteId', '1']);
+			var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+			g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+		})();
+		JS
 	);
+};
+
+$wgHooks['APIGetAllowedParams'] = function (
+	ApiBase $module,
+	array &$params,
+	int $flags
+): void {
+	global $wgContentNamespaces;
+	if ( $module instanceof ApiQueryPrefixSearch ) {
+		$params['namespace'][Wikimedia\ParamValidator\ParamValidator::PARAM_DEFAULT] = $wgContentNamespaces;
+	}
 };
 
 function wfAddTermNamespace( $id, $name ) {
@@ -211,6 +283,7 @@ function wfAddTermNamespace( $id, $name ) {
 	$wgContentNamespaces[] = $id;
 	$wgNamespacesToBeSearchedDefault[$id] = true;
 	$wgCapitalLinkOverrides[$id] = false;
+	$wgVisualEditorAvailableNamespaces[$id] = false;
 
 	$right = strtolower( $name );
 	$wgNamespaceProtection[$id] = [ $right ];
@@ -320,6 +393,13 @@ wfAddTermNamespace( 1240, 'Antiikintutkimus' );
 wfAddTermNamespace( 1242, 'Alkuperäiskansatutkimus' );
 wfAddTermNamespace( 1244, 'Pohjois-Amerikan_tutkimus' );
 wfAddTermNamespace( 1246, 'Ihmistieteet' );
-
-
-$wgTermbankColors = [];
+wfAddTermNamespace( 1248, 'Digital_Humanities' );
+wfAddTermNamespace( 1250, 'Mesoamerikan_tutkimus' );
+wfAddTermNamespace( 1252, 'Käyttäytymistieteet' );
+wfAddTermNamespace( 1254, 'Saamentutkimus' );
+wfAddTermNamespace( 1256, 'Matematiikka' );
+wfAddTermNamespace( 1258, 'Antropologia' );
+wfAddTermNamespace( 1260, 'Viestintä' );
+wfAddTermNamespace( 1262, 'Kaupunkitutkimus' );
+wfAddTermNamespace( 1264, 'Ravitsemustiede' );
+wfAddTermNamespace( 1266, 'Seismologia' );

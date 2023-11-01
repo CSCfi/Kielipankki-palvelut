@@ -29,6 +29,12 @@
     - role: selinux
     - role: firewall
       tags: firewall
+    - role: geerlingguy.java
+      tags: java
+    - role: geerlingguy.elasticsearch
+      tags: elasticsearch
+    - role: matomo
+      tags: matomo
 
 - hosts: all
   become: yes

@@ -1,0 +1,46 @@
+
+- name: Ensure directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ tagtools_install_dir }}"
+    - "{{ tagtools_install_dir }}/bin"
+    - "{{ compile_root }}"
+    - "{{ module_path }}"
+
+- name: Unpack from tar
+  unarchive:
+    src: "{{ tagtools_tar }}"
+    dest: "{{ compile_root }}"
+    remote_src: yes
+
+- name: Run make install
+  make:
+    chdir: "{{ compile_dir }}"
+    target: install
+    params:
+      prefix: "{{ tagtools_install_dir }}"
+
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
+
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ item }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX,o-w"
+    recurse: yes
+  loop:
+    - "{{ tagtools_install_dir }}"
+    - "{{ module_path }}"
+  when: shared_group is defined
+
+- name: Run make check-installed
+  shell:
+    chdir: "{{ compile_dir }}"
+    cmd: ". /appl/profile/zz-csc-env.sh && module use {{ module_root }} && module load finnish-tagtools hfst && make check-installed prefix='{{ tagtools_install_dir }}'"
+

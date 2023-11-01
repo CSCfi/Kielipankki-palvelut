@@ -52,27 +52,37 @@
     chdir: "{{ compile_dir }}"
     #creates: MAKE.log
 
-- name: create install_dir subtree
+- name: ensure directories
   become: no
   file:
-    path: "{{ install_dir }}/{{ item }}"
-    mode: 0775
+    path: "{{ item.name }}"
+    mode:  "{{ item.mode }}"
     recurse: no
     state: directory
-  with_items:
-    - bin
+  loop:
+    - { name: "{{ install_dir }}/bin", mode: "0775" }
+    - { name: "{{ module_path }}"    , mode: "2775" }
 
 - name: Copy praat to install_dir
   copy:
     remote_src: true
     src: "{{ compile_dir }}/praat_barren"
     dest: "{{ install_dir }}/bin/praat"
-    mode: 0755
+    mode: 0775
+
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
 
 - name: Fix permissions (if shared group is set)
   file:
-    path: "{{ install_dir }}"
+    path: "{{ item }}"
     group: "{{ shared_group }}"
-    mode: "g+rwX,o+rX"
+    mode: "g+rwX,o+rX,o-w"
     recurse: yes
   when: shared_group is defined
+  loop:
+    -  "{{ install_dir }}"
+    -  "{{ module_path }}"

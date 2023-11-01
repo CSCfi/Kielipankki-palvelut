@@ -12,7 +12,7 @@ install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
 
 kuhumcst_url: "https://github.com/kuhumcst/"
 kuhumcst_git_pkgs: 
- - { name: "cstlemma",   githash: "266beae" }
- - { name: "hashmap",    githash: "0fcb7a9" }
- - { name: "letterfunc", githash: "20b5ae9" }
- - { name: "parsesgml",  githash: "978bbb6" }
+ - { name: "cstlemma",   githash: "9b02944" } # v8.1.2
+ - { name: "hashmap",    githash: "0fcb7a9" } # 11/2016
+ - { name: "letterfunc", githash: "842f97f" } # 04/2022
+ - { name: "parsesgml",  githash: "978bbb6" } # 08/2014

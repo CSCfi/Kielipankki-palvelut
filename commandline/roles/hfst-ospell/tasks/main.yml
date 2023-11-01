@@ -11,7 +11,7 @@
     - is_admin
 
 - name: "RHEL/CentOS: Install list of packages"
-  yum: 
+  yum:
     name:
     - libxml++2.6-dev # check name!
     state: present
@@ -40,19 +40,19 @@
     chdir: "{{ compile_dir }}"
     creates: libtool
 
-- name: Running ./configure 
+- name: Running ./configure
   command: "./configure --enable-hfst-ospell-office=no "
   args:
     chdir: "{{ compile_dir }}"
     creates: config.log
 
-- name: Running make 
+- name: Running make
   shell: "make > MAKE.log"
   args:
     chdir: "{{ compile_dir }}"
     creates: MAKE.log
 
-- name: Running  make check 
+- name: Running  make check
   shell: "make check -j 4 > MAKE_CHECK.log"
   args:
     chdir: "{{ compile_dir }}"
@@ -68,6 +68,6 @@
   file:
     path={{ install_dir }}
     group={{ shared_group }}
-    mode="g+rwX,o+rX"
+    mode="g+rwX,o+rX,o-w"
     recurse=yes
   when: shared_group is defined

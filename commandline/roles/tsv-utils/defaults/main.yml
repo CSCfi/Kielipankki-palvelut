@@ -1,9 +1,0 @@
----
-# defaults
-
-package_name: tsv-utils
-version: "{{ tsv_tools_version }}"
-release_url: "https://github.com/eBay/tsv-utils/releases/download/v{{ version }}/tsv-utils-v{{ version }}_linux-x86_64_ldc2.tar.gz"
-src_root: "{{ compile_root }}"
-compile_dir: "{{ src_root }}/{{ package_name }}-v{{ version }}_linux-x86_64_ldc2"
-install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"

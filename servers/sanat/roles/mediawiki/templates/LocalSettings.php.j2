@@ -7,48 +7,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 }
 
 $IP = __DIR__;
-
-// Some hacks for rebuilding localisation cache only once for all instances
-$wgLocalisationCacheConf['store'] = 'file';
-$wgLocalisationCacheConf['manualRecache'] = true;
-$wgLocalisationCacheConf['storeDirectory'] = "$IP/cache";
-
-if ( isset( $_ENV['FORLC'] ) && $_ENV['FORLC'] ) {
-	$wgServer = 'https://localhost';
-
-	$wgMessagesDirs['LC-ReCaptchaNoCaptcha'] = "$IP/extensions/ConfirmEdit/ReCaptchaNoCaptcha/i18n";
-	$wgMessagesDirs['LC-Wikibaseclient'] = "$IP/extensions/Wikibase/client/i18n";
-	$wgExtensionMessagesFiles['LC-wikibaseclientmagic'] = "$IP/extensions/Wikibase/client/WikibaseClient.i18n.magic.php";
-	$wgExtensionMessagesFiles['LC-Wikibaseclientalias'] = "$IP/extensions/Wikibase/client/WikibaseClient.i18n.alias.php";
-
-	if ( file_exists( '/srv/mediawiki/MessagesSettings.php' ) ) {
-		require '/srv/mediawiki/MessagesSettings.php';
-	}
-	return;
-}
-
-# The version of Apache on CENTOS is too old to set environment variables.
-# And it does not seem to provide the canonical domain name either. So
-# dig out the canonical name from the webroot.
-if ( isset( $_ENV['DOCUMENT_ROOT'] ) ) {
-	$VHOST = preg_replace( '~^/www/([^/]+)/docroot$~', '\1', $_ENV['DOCUMENT_ROOT'] );
-} elseif ( defined( 'MW_DB' ) ) {
-	# Set by --wiki parameter for scripts
-	$VHOST = MW_DB;
-	$wgShowExceptionDetails = true;
-	$wgShowDBErrorBacktrace = true;
-} else {
-	echo "Wiki instance must be given. Use --wiki parameter for command line scripts.\n";
-	exit();
-}
-
-if ( !file_exists( __DIR__ . "/LocalSettings-$VHOST.php" ) ) {
-	$VHOST = htmlspecialchars( $VHOST );
-	echo "Unknown wiki instance $VHOST\n";
-	exit();
-}
-
-$wgServer = $wgCanonicalServer = "https://$VHOST";
+$VHOST = '{{ instance.key }}';
 
 ini_set( 'error_log', "/www/$VHOST/logs/error_php" );
 ini_set( 'display_errors',         0 );
@@ -61,24 +20,30 @@ $wgDebugLogGroups['exception'] = ini_get( 'error_log' );
 $wgDebugLogGroups['error'] = ini_get( 'error_log' );
 $wgDebugLogGroups['fatal'] = ini_get( 'error_log' );
 
+// For SMW
+$wgDeprecationReleaseLimit = '1.36';
 error_reporting( E_ALL | E_STRICT );
 date_default_timezone_set( 'UTC' );
 $wgLocaltimezone = 'Europe/Helsinki';
 
+$wgLocalisationCacheConf['store'] = 'file';
+$wgLocalisationCacheConf['manualRecache'] = true;
+$wgLocalisationCacheConf['storeDirectory'] = "$IP/cache";
 $wgSecretKey = file_get_contents( "/www/$VHOST/secretkey" );
 
+$wgServer = $wgCanonicalServer = "https://$VHOST";
 $wgArticlePath = "/wiki/$1";
 $wgScriptPath = "/w";
+$wgMainPageIsDomainRoot = true;
 
 ## Database settings
 $wgDBtype = "mysql";
-
 $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgSQLMode = 'TRADITIONAL';
 
 ## Shared memory settings
 $wgMainCacheType = 'memcached-pecl';
-$wgParserCacheType = CACHE_DB;
+$wgParserCacheType = 'memcached-pecl';
 $wgSessionCacheType = 'memcached-db';
 $wgMemCachedServers = [ 'localhost:11211' ];
 $wgObjectCaches['memcached-db'] = [
@@ -127,15 +92,7 @@ $wgEnotifWatchlist = true;
 
 $wgCacheDirectory = "/www/$VHOST/cache";
 
-$wgForceHTTPS = true;
-
-
-require __DIR__ . "/LocalSettings-$VHOST.php";
-
-// wfLoadExtension( 'Elastica' );
-// require_once( "$IP/extensions/CirrusSearch/CirrusSearch.php" );
-// $wgSearchType = 'CirrusSearch';
-// $wgCirrusSearchExtraIndexSettings['index.mapping.total_fields.limit'] = 5000;
+require __DIR__ . '/LocalSettings-site.php';
 
 // Spam tools
 wfLoadExtension( 'AbuseFilter' );
@@ -151,18 +108,20 @@ wfLoadExtension( 'UserMerge' );
 $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 wfLoadExtension( 'SmiteSpam' );
 $wgDisplayPageSize = 10;
+$wgSmiteSpamIgnoreSmallPages = false;
+$wgSmiteSpamIgnorePagesWithNoExternalLinks = false;
 wfLoadExtension( 'SpamBlacklist' );
 $wgBlacklistSettings = [
-        'spam' => [
-                'files' => [
-                        '/srv/mediawiki/spam-filter.txt',
-                ],
-        ],
-        'email' => [
-                'files' =>  [
-                        '/srv/mediawiki/email-filter.txt',
-                ],
-        ],
+	'spam' => [
+		'files' => [
+			'/srv/mediawiki/spam-filter.txt',
+		],
+	],
+	'email' => [
+		'files' =>  [
+			'/srv/mediawiki/email-filter.txt',
+		],
+	],
 ];
 
 {% if nocaptcha is defined %}
@@ -176,17 +135,6 @@ $wgCaptchaTriggers['addurl'] = false;
 $wgCaptchaTriggers['createaccount'] = true;
 $wgCaptchaTriggers['badlogin'] = true;
 {% endif %}
-
-# Some non-configurable changes to MediaWiki
-$wgHooks['GetLocalURL'][] = function ( &$title, &$url, $query ) {
-	if ( !$title->isExternal() && $query == '' && $title->isMainPage() ) {
-		$url = '/';
-	}
-};
-
-$wgHooks['TestCanonicalRedirect'][] = function ( $request ) {
-	return $request->getRequestURL() !== '/';
-};
 
 $wgHooks['LiquidThreadsIsLqtPage'][] = function ( $title, &$isTalkPage ) {
 	if ( $title->inNamespace( NS_USER_TALK ) ) {

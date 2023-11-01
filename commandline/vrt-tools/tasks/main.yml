@@ -1,0 +1,34 @@
+---
+
+- name: Ensure directories exist
+  become: no
+  command: mkdir -p "{{ item }}"
+  args:
+    creates: "{{ item }}"
+    warn: false
+  loop:
+    - "{{ install_dir }}/bin"
+    - "{{ module_path }}"
+
+- name: Get source
+  get_url:
+    url: "{{ release_url }}/{{ item }}"
+    dest: "{{ install_dir }}/bin/{{ item }}"
+    mode: 0755
+  loop:
+    - vrt-to-json
+
+- name: Install modulefile
+  template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{ version }}.lua"
+    mode: 0644
+
+
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ install_dir }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX,o-w"
+    recurse: yes
+  when: shared_group is defined
