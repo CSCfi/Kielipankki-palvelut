@@ -15,7 +15,7 @@ workdir/extensions/InputBox https://github.com/wikimedia/mediawiki-extensions-In
 workdir/extensions/Linter https://github.com/wikimedia/mediawiki-extensions-Linter.git REL1_40
 workdir/extensions/LiquidThreads https://github.com/wikimedia/mediawiki-extensions-LiquidThreads.git REL1_40
 workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git REL1_40
-workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 77bbf48769c37a13ef217e7a4bb32b268fccd4bc # >5.6.1
+workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.6.3
 workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git REL1_40
 workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git REL1_40
 workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git REL1_40

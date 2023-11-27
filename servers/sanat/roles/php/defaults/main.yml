@@ -1,6 +1,6 @@
 remi_repo_url: "https://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
 remi_repo_gpg_key_url: "https://rpms.remirepo.net/RPM-GPG-KEY-remi2018"
-remi_repo_php_version: remi-php74
+remi_repo_php_version: remi-php82
 
 php_packages:
   - php-common

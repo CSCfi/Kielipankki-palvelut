@@ -9,7 +9,7 @@ workdir/extensions/Kotus https://github.com/Nikerabbit/mediawiki-extensions-Kotu
 workdir/extensions/Lud https://github.com/Nikerabbit/mediawiki-extensions-Lud.git master
 workdir/extensions/NoTitle https://github.com/wikimedia/mediawiki-extensions-NoTitle.git REL1_40
 workdir/extensions/Nuke https://github.com/wikimedia/mediawiki-extensions-Nuke.git REL1_40
-workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.6.1
+workdir/extensions/PageForms https://github.com/wikimedia/mediawiki-extensions-PageForms 5.6.3
 workdir/extensions/ParserFunctions https://github.com/wikimedia/mediawiki-extensions-ParserFunctions.git REL1_40
 workdir/extensions/Renameuser https://github.com/wikimedia/mediawiki-extensions-Renameuser.git REL1_40
 workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions-ReplaceText.git REL1_40
