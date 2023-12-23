@@ -20,6 +20,7 @@ then (
 
 if [ ! -d "$DIR" ]
 then
+	export GIT_TERMINAL_PROMPT=0
 	echo "Cloning $DIR";
 	git clone -b "$VER" "$URL" "$DIR" || exit
 fi

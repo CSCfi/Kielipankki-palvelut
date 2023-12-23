@@ -10,6 +10,8 @@ VER="$3"
 	export GIT_TERMINAL_PROMPT=0
 	cd "$DIR" || exit
 	echo "Updating $DIR"
+	git fetch -q --prune
+	git checkout -qf "$VER"
 	git fetch origin "$VER" && git reset -q --hard FETCH_HEAD
 	if [ "$DIR" != 'workdir' ]
 	then
