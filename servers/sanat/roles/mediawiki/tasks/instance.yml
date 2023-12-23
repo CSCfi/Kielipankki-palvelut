@@ -89,7 +89,7 @@
 
 - name: Upgrade database schema for {{ instance.key }}
   command: >-
-    /usr/bin/php maintenance/update.php
+    maintenance/run update
       --quick --skip-optimize
       --dbuser="{{ instance.value.db.admin_user | default(instance.value.db.user) }}"
       --dbpass="{{ instance.value.db.admin_password | default(instance.value.db.password) }}"
@@ -97,7 +97,7 @@
     chdir: /srv/mediawiki/{{ instance.key }}/workdir
 
 - name: Update l10n cache for {{ instance.key }}
-  command: /usr/bin/php maintenance/rebuildLocalisationCache.php --threads=8
+  command: maintenance/run rebuildLocalisationCache --threads=8
   args:
     chdir: /srv/mediawiki/{{ instance.key }}/workdir
 

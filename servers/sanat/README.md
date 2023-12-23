@@ -10,7 +10,7 @@
  - `ansible-playbook -i inventories/development site.yml`
  - After completed setup, initialize the database and update, eg:
   - gzip -dc mw.sql.gz| mysql -u wikiuser -p  mediawiki
-  - php /srv/mediawiki/SITE/targets/production/maintenance/update.php
+  - /srv/mediawiki/SITE/targets/production/maintenance/run update
 
 ## Notes
 
