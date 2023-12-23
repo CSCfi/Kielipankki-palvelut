@@ -3,7 +3,6 @@ DirectoryIndex index.php index.html
 
 <VirtualHost *:80>
   ServerName sanat.csc.fi
-  ServerAlias
   DocumentRoot "/www/sanat.csc.fi/docroot"
 
   <Directory "/www/sanat.csc.fi/docroot">
@@ -56,7 +55,9 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
 
 Header always set Strict-Transport-Security "max-age=15768000"
 SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
-ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/sanat.csc.fi/docroot/"
+<FilesMatch "\.php$">
+  SetHandler "proxy:unix:/run/php-fpm.sock|fcgi://localhost:9000"
+</FilesMatch>
 
 </VirtualHost>
 
@@ -82,7 +83,9 @@ ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/sanat.csc.fi/docroo
 
 Header always set Strict-Transport-Security "max-age=15768000"
 SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
-ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/tieteentermipankki.fi/docroot/"
+<FilesMatch "\.php$">
+  SetHandler "proxy:unix:/run/php-fpm.sock|fcgi://localhost:9000"
+</FilesMatch>
 
 RewriteEngine On
 # Drop www prefix

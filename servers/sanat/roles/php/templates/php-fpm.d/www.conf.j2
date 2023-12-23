@@ -1,8 +1,7 @@
 ; {{ ansible_managed }}
 
-[www]
-listen = 127.0.0.1:9000
-listen.allowed_clients = 127.0.0.1
+[www using unix-socket]
+listen = /run/php-fpm.sock
 listen.owner = {{ php_fpm_user }}
 listen.group = {{ php_fpm_group }}
 listen.mode = 0666
@@ -18,4 +17,3 @@ pm.start_servers = 1
 pm.min_spare_servers = 1
 pm.max_spare_servers = 3
 pm.max_requests = 500
-;pm.status_path = /php_status

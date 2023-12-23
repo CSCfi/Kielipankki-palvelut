@@ -6,7 +6,9 @@ vhost_sanat:
 
     Header always set Strict-Transport-Security "max-age=15768000"
     SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
-    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_sanat }}/docroot/"
+    <FilesMatch "\.php$">
+      SetHandler "proxy:unix:/run/php-fpm.sock|fcgi://localhost:9000"
+    </FilesMatch>
 
 vhost_termipankki:
   servername: "{{ webdomain_termipankki }}"
@@ -16,7 +18,9 @@ vhost_termipankki:
 
     Header always set Strict-Transport-Security "max-age=15768000"
     SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
-    ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://localhost:9000/www/{{ webdomain_termipankki }}/docroot/"
+    <FilesMatch "\.php$">
+      SetHandler "proxy:unix:/run/php-fpm.sock|fcgi://localhost:9000"
+    </FilesMatch>
 
     RewriteEngine On
     # Drop www prefix
