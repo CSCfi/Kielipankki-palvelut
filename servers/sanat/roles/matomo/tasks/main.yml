@@ -22,17 +22,17 @@
   block:
     - name: Check if Matomo is installed
       ansible.builtin.stat:
-        path: "{{ matomo_work_dir }}/version"
+        path: "{{ matomo_deploy_dir }}/console"
       register: matomo_installation
     - name: Fetch installed version
-      ansible.builtin.slurp:
-        src: "{{ matomo_work_dir }}/version"
-      register: matomo_installed_version_encoded
+      ansible.builtin.command: "'{{ matomo_deploy_dir }}/console' core:version"
+      register: matomo_installed_version_output
+      check_mode: no
       when: matomo_installation.stat.exists
     - name: Decode installed version number
       ansible.builtin.set_fact:
-        matomo_installed_version: "{{ matomo_installed_version_encoded.content | b64decode }}"
-      when: matomo_installed_version_encoded is defined
+        matomo_installed_version: "{{ matomo_installed_version_output.stdout }}"
+      when: matomo_installed_version_output is defined
 
 - name: Print Matomo versions
   ansible.builtin.debug:
@@ -53,13 +53,9 @@
     - name: Upgrade if necessary
       when: matomo_installed_version is defined
       ansible.builtin.command:
-        cmd: "/usr/bin/php '{{ matomo_deploy_dir }}/console' core:update"
+        cmd: "'{{ matomo_deploy_dir }}/console' core:update"
       become: true
       become_user: "{{ matomo_user }}"
-    - name: Update the installed version number
-      ansible.builtin.copy:
-        dest: "{{ matomo_work_dir }}/version"
-        content: "{{ matomo_latest_version }}"
   when: matomo_installed_version is undefined or matomo_installed_version != matomo_latest_version
 
 - name: Link deployment directory from docroot
