@@ -16,6 +16,7 @@ ini_set( 'log_errors',             1 );
 ini_set( 'expose_php',             0 );
 ini_set( 'memory_limit',      '450M' );
 ini_set( 'max_execution_time', '60s' );
+$wgDebugLogGroups['BlockManager'] = ini_get( 'error_log' );
 $wgDebugLogGroups['exception'] = ini_get( 'error_log' );
 $wgDebugLogGroups['error'] = ini_get( 'error_log' );
 $wgDebugLogGroups['fatal'] = ini_get( 'error_log' );
@@ -131,6 +132,12 @@ $wgCaptchaTriggers['addurl'] = false;
 $wgCaptchaTriggers['createaccount'] = true;
 $wgCaptchaTriggers['badlogin'] = true;
 {% endif %}
+
+$wgEnableDnsBlacklist = true;
+$wgDnsBlacklistUrls = [
+	'zen.spamhaus.org.',
+	'all.s5h.net.',
+];
 
 $wgHooks['LiquidThreadsIsLqtPage'][] = function ( $title, &$isTalkPage ) {
 	if ( $title->inNamespace( NS_USER_TALK ) ) {
