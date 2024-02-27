@@ -7,7 +7,7 @@
    - hfst_version: 3.16.0
    - hfst_ospell_version: 0.5.1
    - finnish_parse_version: 1.0
-   - praat_version: 6.3.18
+   - praat_version: 6.4
    - finnish_tagtools_version: 1.6.0
 #   - kaldi_version:
 #      number: 5.5.219
