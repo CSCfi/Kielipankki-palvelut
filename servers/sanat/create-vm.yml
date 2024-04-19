@@ -1,0 +1,66 @@
+---
+
+- name: Create virtual machine on cPouta
+  hosts: localhost
+  remote_user: almalinux
+  become: false
+
+  vars:
+    project_sg: sanat-sg
+    project_security_groups: "default,{{project_sg}}"
+    authorized_users:
+      - ktegel
+      - ajarven
+      - matthies
+      - shardwic
+      # TODO add Niklas
+    servers:
+      - name: sanat
+        image: AlmaLinux-9
+        flavor: standard.medium
+        key_name: kielipouta
+        security_groups: "{{project_security_groups}}"
+        meta:
+          group: default
+
+    security_group_rules:
+      - name: ping
+        protocol: icmp
+        port: -1
+        allowed_ips:
+          - "193.167.254.68/32"  # opsview
+
+      - name: nagios
+        protocol: tcp
+        port: 5666
+        allowed_ips:
+          - "193.167.254.68/32"  # opsview
+
+      - name: http
+        protocol: tcp
+        port: 80
+        allowed_ips:
+          - "192.168.1.0/24"  # pouta local network
+
+      - name: ssh
+        protocol: tcp
+        port: 22
+        allowed_ips:
+          - "193.166.1.0/24"  # CSC Office
+          - "193.166.2.0/24"  # CSC Office
+          - "193.166.84.0/24"  # CSC VPN
+          - "193.166.85.0/24"  # CSC VPN
+
+  roles:
+    - role: kielipankki.common.create_instances
+      tags: create_instances
+
+
+- name: Install CSC basics
+  hosts: web
+  become: true
+  roles:
+    - role: kielipankki.common.postfix
+      tags: postfix
+    - role: kielipankki.common.opsview
+      tags: opsview
