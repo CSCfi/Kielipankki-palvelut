@@ -1,5 +1,9 @@
-[web]
-vm0623.kaj.pouta.csc.fi webdomain_sanat=vm0623.kaj.pouta.csc.fi ansible_user=cloud-user
-
-[pouta:children]
-web
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+      floating_ip: 128.214.255.214
+      ansible_python_interpreter: python
+    web:
+      ansible_host: 128.214.255.214
+      ansible_user: almalinux
