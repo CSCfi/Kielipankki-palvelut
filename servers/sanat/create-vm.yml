@@ -17,7 +17,7 @@
     servers:
       - name: sanat
         image: AlmaLinux-9
-        flavor: standard.medium
+        flavor: standard.large
         key_name: kielipouta
         security_groups: "{{project_security_groups}}"
         meta:
