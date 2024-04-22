@@ -46,6 +46,7 @@
         protocol: tcp
         port: 22
         allowed_ips:
+          - "95.216.214.203/32" # Niklas Laxström
           - "193.166.1.0/24"  # CSC Office
           - "193.166.2.0/24"  # CSC Office
           - "193.166.84.0/24"  # CSC VPN
