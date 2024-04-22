@@ -16,7 +16,7 @@ See site.yml for details.
 
 In testing mode the script "installs" the tools to a temporary directory, see inventories/test for details. To selectively install, use tags, e.g.:
 
-ansible-playbook -i test site.yml -t tsv-utils
+ansible-playbook -i inventories/csc_test site.yml -t tsv-utils
 ssh puhti-login2.csc.fi (check host in inventories/test)
 module use /local_scratch/<uid>/ansible/modulefiles  (check module_root in inventories/test)
 
@@ -53,7 +53,7 @@ A long term solution is to adjust the roles and/or the invocation (e.g. use of `
 In production the installation target is Kielipankki's software
 environment below /appl/soft/ling/. 
 
-ansible-playbook -i production site.yml 
+ansible-playbook -i inventories/production site.yml 
 
 # Partial installation
 
