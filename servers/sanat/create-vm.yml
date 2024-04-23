@@ -13,7 +13,7 @@
       - ajarven
       - matthies
       - shardwic
-      # TODO add Niklas
+      - nlaxstrom
     servers:
       - name: sanat
         image: AlmaLinux-9
