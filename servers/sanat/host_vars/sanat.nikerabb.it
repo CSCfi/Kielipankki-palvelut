@@ -1,9 +1,0 @@
-ssl_params_sanat:
-  certificate_file: "/etc/letsencrypt/live/nimiarkisto.nikerabb.it/cert.pem"
-  certificate_key_file: "/etc/letsencrypt/live/nimiarkisto.nikerabb.it/privkey.pem"
-  certificate_chain_file: "/etc/letsencrypt/live/nimiarkisto.nikerabb.it/chain.pem"
-
-ssl_params_termipankki:
-  certificate_file: "/etc/letsencrypt/live/nimiarkisto.nikerabb.it/cert.pem"
-  certificate_key_file: "/etc/letsencrypt/live/nimiarkisto.nikerabb.it/privkey.pem"
-  certificate_chain_file: "/etc/letsencrypt/live/nimiarkisto.nikerabb.it/chain.pem"

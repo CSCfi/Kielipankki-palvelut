@@ -28,7 +28,7 @@
       certbot certonly --apache --server {{ acme_endpoint }}
       --non-interactive --agree-tos
       {% for domain in item %}
-      -d  {{ domain }}
+      -d  {{ domain }}
       {% endfor %}
   loop:
     - ["sanat.csc.fi"]
@@ -51,3 +51,4 @@
     dest: "/etc/httpd/conf.d/vhosts.conf"
   notify: restart httpd
   become: yes
+  tags: vhost

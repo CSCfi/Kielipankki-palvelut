@@ -3,5 +3,3 @@
 # Load new rules by running /etc/rc.d/rc{{ item }}.firewall
 
 ip{{ item }}tables -I INPUT -m tcp -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment "HTTP & HTTPS access from everywhere"
-
-ip{{ item }}tables -I INPUT -m tcp -p tcp -m multiport --dports 8000 -j ACCEPT -m comment --comment "SMSXML Port"

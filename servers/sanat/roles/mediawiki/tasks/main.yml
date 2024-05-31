@@ -16,3 +16,4 @@
   with_dict: "{{ mediawikis }}"
   loop_control:
     loop_var: instance
+  tags: mediawiki/deploy

@@ -1,9 +1,0 @@
-[web]
-sanat.nikerabb.it
-
-[db]
-sanat.nikerabb.it
-
-[development:children]
-web
-db
