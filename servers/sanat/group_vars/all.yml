@@ -5,19 +5,7 @@ webaliases_termipankki: []
 
 mediawikis: []
 
-# https://ssl-config.mozilla.org/#server=apache&version=2.4.6&config=intermediate&openssl=1.0.2k&guideline=5.6
-apache_ssl_protocol: "all -SSLv3 -TLSv1 -TLSv1.1"
-apache_ssl_cipher_suite: "\
-  ECDHE-ECDSA-AES128-GCM-SHA256:\
-  ECDHE-RSA-AES128-GCM-SHA256:\
-  ECDHE-ECDSA-AES256-GCM-SHA384:\
-  ECDHE-RSA-AES256-GCM-SHA384:\
-  ECDHE-ECDSA-CHACHA20-POLY1305:\
-  ECDHE-RSA-CHACHA20-POLY1305:\
-  DHE-RSA-AES128-GCM-SHA256:\
-  DHE-RSA-AES256-GCM-SHA384"
-
-certificate_path: /etc/pki/tls
+apache_create_vhosts: false
 
 acme_root: /etc/letsencrypt
 acme_endpoint: "https://acme.sectigo.com/v2/OV"
@@ -25,27 +13,31 @@ acme_email: ling-admin@listat.csc.fi
 acme_keyid: "{{ lookup('passwordstore', 'lb_passwords/portal/acme_keyid') }}"
 acme_hmac: "{{ lookup('passwordstore', 'lb_passwords/portal/acme_hmac') }}"
 
-ssl_params_termipankki:
-  certificate_file: "{{ certificate_path }}/certs/{{ webdomain_termipankki }}.crt"
-  certificate_key_file: "{{ certificate_path }}/private/{{ webdomain_termipankki }}.key"
-
-hfst_tmp: /tmp/hfst
-hfst_url: http://apertium.projectjj.com/apt/release/pool/main/h/hfst/
-hfst_bin: hfst_3.14.0-1~trusty1_amd64
-hfst_lib: libhfst51_3.14.0-1~trusty1_amd64
-hfst_components:
- - [ '{{ hfst_bin }}' , 'sha256:70b6bdc1f2f9489a73ef1f096feac6f3f70546e5f99288fd8afaba7207e2ea9e' ]
- - [ '{{ hfst_lib }}' , 'sha256:ad9cec6b8472d8d7568aac25cc09a4af8acbf341a06e755cf918839cf1d8b56e' ]
-
-
 memcached_memory_limit: 4000
 
 composer_keep_updated: true
 
 elasticsearch_version: '7.x'
 elasticsearch_network_host: localhost
-elasticsearch_heap_size_min: 1g
-elasticsearch_heap_size_max: 4g
+elasticsearch_heap_size_min: 2g
+elasticsearch_heap_size_max: 2g
+elasticsearch_extra_options: |
+  cluster.routing.allocation.disk.threshold_enabled: true
+  cluster.routing.allocation.disk.watermark.flood_stage: 200mb
+  cluster.routing.allocation.disk.watermark.low: 500mb
+  cluster.routing.allocation.disk.watermark.high: 300mb
 
 matomo_user: apache
 matomo_group: apache
+matomo_url: https://{{ webdomain_termipankki }}/matomo
+matomo_symlink: /www/{{ webdomain_termipankki }}/docroot/matomo
+
+php_version: '8.2'
+php_packages_extra:
+  - php-process
+  - php-intl
+  - php-mysqlnd
+  - php-pecl-mcrypt
+  - php-pecl-memcached
+  - php-pecl-zip
+php_date_timezone: 'Europe/Helsinki'

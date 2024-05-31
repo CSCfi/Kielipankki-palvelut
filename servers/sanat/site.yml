@@ -6,27 +6,25 @@
 
 - hosts: web
   become: yes
-  vars_files:
-    - vars.yml
   roles:
-    - role: geerlingguy.repo-epel
+    - role: base
+      tags: base
     - role: geerlingguy.repo-remi
       tags: php
-    - role: hfst
-      tags: hfst
-    - role: php
+    - role: geerlingguy.php-versions
+      tags: php
+    - role: geerlingguy.php
       tags: php
     - role: geerlingguy.composer
       tags: php
     - role: geerlingguy.memcached
       tags: memcached
     - role: apache_ssl
-      tags: apache
+      tags: certs
     - role: geerlingguy.apache
       tags: apache
     - role: mediawiki
       tags: mediawiki
-    - role: selinux
     - role: firewall
       tags: firewall
     - role: geerlingguy.java
@@ -35,13 +33,3 @@
       tags: elasticsearch
     - role: matomo
       tags: matomo
-
-- hosts: all
-  become: yes
-  tasks:
-    - name: Install admin tools
-      yum: name={{ item }} state=present
-      with_items:
-        - nano
-        - htop
-        - mytop

@@ -1,16 +1,18 @@
 - src: geerlingguy.apache
-  version: 3.3.0
+  version: 4.0.0
 - src: geerlingguy.memcached
   version: 2.2.0
 - src: geerlingguy.composer
   version: 1.9.2
-- src: geerlingguy.repo-epel
-  version: 3.1.1
+- src: geerlingguy.php
+  version: 5.0.1
+- src: geerlingguy.php-versions
+  version: 6.0.1
 - src: geerlingguy.repo-remi
-  version: 2.0.1
+  version: 2.1.0
 - src: geerlingguy.java
-  version: 2.3.1
+  version: 2.5.0
 - src: geerlingguy.elasticsearch
-  version: 5.1.1
+  version: 5.1.2
 - src: 0x0i.systemd
   version: v0.3.5

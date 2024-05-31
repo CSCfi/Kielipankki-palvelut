@@ -22,24 +22,3 @@ mediawikis:
       password: '{{ vault_termipankki_db_password }}'
       admin_user: "{{ vault_db_admin_user }}"
       admin_password: "{{ vault_db_admin_password }}"
-
-ssl_params_sanat:
-  certificate_file: "/etc/pki/tls/certs/sanat.csc.fi.crt"
-  certificate_key_file: "/etc/pki/tls/private/sanat.csc.fi.key"
-  certificate_chain_file: "/etc/pki/tls/certs/DigiCertCA.crt"
-
-ssl_params_termipankki:
-  certificate_file: "/etc/pki/tls/certs/tieteentermipankki_fi.crt"
-  certificate_key_file: "/etc/pki/tls/private/tieteentermipankki_fi.key"
-  certificate_chain_file: "/etc/pki/tls/certs/DigiCertCA.crt"
-
-memcached_memory_limit: 6000
-
-elasticsearch_extra_options: |
-  cluster.routing.allocation.disk.threshold_enabled: true
-  cluster.routing.allocation.disk.watermark.flood_stage: 200mb
-  cluster.routing.allocation.disk.watermark.low: 500mb
-  cluster.routing.allocation.disk.watermark.high: 300mb
-
-matomo_url: https://{{ webdomain_termipankki }}/matomo
-matomo_symlink: /www/{{ webdomain_termipankki }}/docroot/matomo
