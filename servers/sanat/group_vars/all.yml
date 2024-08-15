@@ -1,7 +1,7 @@
 webdomain_sanat: sanat.csc.fi
 webaliases_sanat: []
 webdomain_termipankki: tieteentermipankki.fi
-webaliases_termipankki: []
+webaliases_termipankki: ['www.tieteentermipankki.fi']
 
 mediawikis: []
 

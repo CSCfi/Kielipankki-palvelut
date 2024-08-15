@@ -40,7 +40,13 @@
         protocol: tcp
         port: 80
         allowed_ips:
-          - "192.168.1.0/24"  # pouta local network
+          - "0.0.0.0/0"
+
+      - name: https
+        protocol: tcp
+        port: 443
+        allowed_ips:
+          - "0.0.0.0/0"
 
       - name: ssh
         protocol: tcp
