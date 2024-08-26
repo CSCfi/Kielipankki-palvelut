@@ -21,14 +21,28 @@ pip install -r requirements_dev.txt
 
 ### Creating the VM
 
+#### Production
 ```
-ansible-playbook -i inventories/pouta create-vm.yml
+ansible-playbook -i inventories/pouta-production create-vm.yml
 ```
+#### Development
+```
+ansible-playbook -i inventories/development create-vm.yml
+```
+
 
 ### Setting up the service
 
- - `ansible-playbook -i inventories/development site.yml`
- - After completed setup, initialize the database and update, eg:
+#### Production
+
+`ansible-playbook -i inventories/production site.yml`
+
+#### Development
+
+`ansible-playbook -i inventories/development site.yml`
+
+
+- After completed setup, initialize the database and update, eg:
   - gzip -dc mw.sql.gz| mysql -u wikiuser -p  mediawiki
   - /srv/mediawiki/SITE/targets/production/maintenance/run update
 
