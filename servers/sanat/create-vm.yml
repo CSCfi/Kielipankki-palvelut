@@ -6,33 +6,41 @@
   become: false
 
   vars:
-    project_sg: sanat-sg
-    project_security_groups: "default,{{project_sg}}"
+    sg_custom_ssh_ips:
+      - "95.216.214.203/32" # Niklas Laxström
+
     authorized_users:
       - ktegel
       - ajarven
       - matthies
       - shardwic
       - nlaxstrom
+
+    instance_name: sanat
+    pouta_instance_name: "{{ instance_name }}-{{ vm_name_postfix }}"
+    project_key: kielipouta
+    project_sg: sanat-sg
+    project_security_groups: default,{{ project_sg }}  # don't add spaces here!
+    std_image: "AlmaLinux-9"
+    flavor: "standard.large"
+    network: "project_2000680"
+
     servers:
-      - name: sanat
-        image: AlmaLinux-9
-        flavor: standard.large
-        key_name: kielipouta
-        security_groups: "{{project_security_groups}}"
+      - name: "{{ pouta_instance_name }}"
+        image: "{{ std_image }}"
+        flavor: "{{ flavor }}"
+        key_name: "{{ project_key }}"
+        security_groups: "{{ project_security_groups }}"
+        network: "{{ network }}"
         meta:
-          group: default
+          hostname: "{{ pouta_instance_name }}"
+          group:    "{{ pouta_instance_name }}"
+
 
     security_group_rules:
       - name: ping
         protocol: icmp
         port: -1
-        allowed_ips:
-          - "193.167.254.68/32"  # opsview
-
-      - name: nagios
-        protocol: tcp
-        port: 5666
         allowed_ips:
           - "193.167.254.68/32"  # opsview
 
@@ -47,16 +55,6 @@
         port: 443
         allowed_ips:
           - "0.0.0.0/0"
-
-      - name: ssh
-        protocol: tcp
-        port: 22
-        allowed_ips:
-          - "95.216.214.203/32" # Niklas Laxström
-          - "193.166.1.0/24"  # CSC Office
-          - "193.166.2.0/24"  # CSC Office
-          - "193.166.84.0/24"  # CSC VPN
-          - "193.166.85.0/24"  # CSC VPN
 
   roles:
     - role: kielipankki.common.create_instances
