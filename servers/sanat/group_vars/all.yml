@@ -41,3 +41,13 @@ php_packages_extra:
   - php-pecl-memcached
   - php-pecl-zip
 php_date_timezone: 'Europe/Helsinki'
+
+# for backup role:
+
+backup_dir: "/var/backup"
+backup_filename: "sanat_termbank_www_backup.tar"
+backup_db_password: "--no-database"
+backup_data_root_directory: "/"
+backup_data_subdirectory:   "www"
+backup_remote_deploy_user:  "apache"
+backup_remote_deploy_group: "apache"
