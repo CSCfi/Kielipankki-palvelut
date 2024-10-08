@@ -7,6 +7,8 @@
 - hosts: web
   become: yes
   roles:
+    - role: kielipankki.common.backup
+      tags: backup
     - role: base
       tags: base
     - role: geerlingguy.repo-remi
