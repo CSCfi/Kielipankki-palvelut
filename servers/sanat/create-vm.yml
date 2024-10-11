@@ -8,6 +8,8 @@
   vars:
     sg_custom_ssh_ips:
       - "95.216.214.203/32" # Niklas Laxström
+      - "86.50.31.6/32"     # Korp2
+      - "86.50.56.187/32"   # Korp3
 
     authorized_users:
       - ktegel
