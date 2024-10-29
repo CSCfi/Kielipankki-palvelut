@@ -18,6 +18,8 @@ memcached_memory_limit: 4000
 composer_keep_updated: true
 
 elasticsearch_version: '7.x'
+elasticsearch_package: elasticsearch-7.10.2
+elasticsearch_package_state: latest
 elasticsearch_network_host: localhost
 elasticsearch_heap_size_min: 2g
 elasticsearch_heap_size_max: 2g

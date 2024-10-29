@@ -2,17 +2,12 @@
 Description=MediaWiki jobrunner for {{ instance.key }}
 
 [Service]
-User={{ mediawiki_apache_user }}
 ExecStart=/srv/mediawiki/{{ instance.key }}/targets/production/maintenance/run runJobs --wait --maxjobs=1000 --memory-limit=2G --procs=2
 Restart=always
 RestartSec=5
 PrivateDevices=true
 PrivateTmp=true
-# Not supported in Centos 7
-#ProtectControlGroups=true
 ProtectHome=true
-# Not supported in Centos 7
-#ProtectKernelTunables=true
 ProtectSystem=full
 Nice=15
 
