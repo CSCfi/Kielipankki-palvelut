@@ -42,7 +42,8 @@ php_packages_extra:
   - php-pecl-mcrypt
   - php-pecl-memcached
   - php-pecl-zip
-php_date_timezone: 'Europe/Helsinki'
+php_date_timezone: Europe/Helsinki
+php_max_input_vars: 2000
 
 # for backup role:
 
