@@ -2,10 +2,9 @@
 
 - name: Ensure directories exists
   become: no
-  command: mkdir -p "{{ item }}"
-  args:
-    creates: "{{ item }}"
-    warn: false
+  file:
+    path: "{{ item }}"
+    state: directory
   loop:
     - "{{ src_root }}"
     - "{{ install_dir }}/jars/lib"
@@ -26,14 +25,14 @@
     accept_hostkey: yes
     force: yes
   loop: "{{ kuhumcst_git_pkgs }}"
-  
+
 - name: set cstlemma STREAM
   lineinfile:
     path: "{{ src_root }}/cstlemma/src/defines.h"
     regexp: "^#define STREAM 0"
     line: "#define STREAM 1 // 0: use stdio 1: use iostream"
 
-- name: make cstlemma 
+- name: make cstlemma
   shell: bash --login -c "{{ gcc_modcall }} make  > MAKE.log"
   args:
     chdir: "{{ src_root }}/cstlemma/src"
@@ -49,7 +48,7 @@
   shell: cat {suc,saldo}.cstlemma.lemmas > suc-saldo.cstlemma.lemmas
   args:
     chdir: "{{ compile_dir }}/annotate/models/"
-   
+
 - name: compile cstlemma dicts
   shell: bash --login -c "{{ install_dir }}/bin/cstlemma -D -c FBT -e 1  -i {{ item }}.cstlemma.lemmas -o {{ item }}.cstlemma.dict"
   args:
