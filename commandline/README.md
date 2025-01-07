@@ -9,7 +9,7 @@ This script installs tools to HPC, like:
  * ffmpeg
  * libxml2, xslt1
  * kaldi
- 
+
 See site.yml for details.
 
 # Testing
@@ -51,9 +51,9 @@ A long term solution is to adjust the roles and/or the invocation (e.g. use of `
 # Production
 
 In production the installation target is Kielipankki's software
-environment below /appl/soft/ling/. 
+environment below /appl/soft/ling/.
 
-ansible-playbook -i inventories/production site.yml 
+ansible-playbook -i inventories/production site.yml
 
 # Partial installation
 
@@ -62,4 +62,3 @@ site.yml for details, see example in Testing above.
 
 # Modulefiles
 Note that module files are not created by all scripts, those who do have a template/module_template.j2 present.
-
