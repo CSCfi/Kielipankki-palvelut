@@ -9,7 +9,7 @@
     # - "{{ src_root }}"
     - "{{ install_dir }}/bin"
     - "{{ lib_dir }}"
-    -  "{{ module_path }}"
+    - "{{ module_path }}"
 
 - name: Download jar
   get_url:
