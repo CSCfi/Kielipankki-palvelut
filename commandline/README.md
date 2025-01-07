@@ -15,10 +15,11 @@ See site.yml for details.
 # Testing
 
 In testing mode the script "installs" the tools to a temporary directory, see inventories/test for details. To selectively install, use tags, e.g.:
-
-ansible-playbook -i inventories/csc_test site.yml -t tsv-utils
-ssh puhti-login2.csc.fi (check host in inventories/test)
-module use /local_scratch/<uid>/ansible/modulefiles  (check module_root in inventories/test)
+```
+ansible-playbook -i inventories/test_csc site.yml -t tsv-utils
+ssh puhti-login12.csc.fi  # (check host in inventories/test_csc)
+module use /local_scratch/<uid>/ansible/modulefiles  # (check module_root in inventories/test)
+```
 
 ## Local installation
 
