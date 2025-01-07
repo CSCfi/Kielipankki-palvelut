@@ -2,9 +2,9 @@
 
 - name: Ensure directories exist
   become: no
-  command:
-    cmd: mkdir -p "{{ item }}"
-    creates: "{{ item }}"
+  file:
+    path: "{{ item }}"
+    state: directory
   loop:
     # - "{{ src_root }}"
     - "{{ install_dir }}/bin"
