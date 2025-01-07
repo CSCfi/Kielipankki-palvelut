@@ -1,0 +1,6 @@
+---
+
+package_name: kp-spell
+compile_dir: "{{ compile_root }}/{{ package_name }}"
+install_dir: "{{ install_prefix }}/ling/{{ package_name }}"
+module_dir: "{{ module_root }}/{{ package_name }}"

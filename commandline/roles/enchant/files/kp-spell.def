@@ -1,0 +1,12 @@
+Bootstrap: docker
+From: ubuntu:24.04
+
+%post
+    # for apt to be noninteractive
+    export DEBIAN_FRONTEND=noninteractive
+    export DEBCONF_NONINTERACTIVE_SEEN=true
+    export TZ=Europe/Helsinki
+    			
+    apt-get -y update
+    apt-get -y upgrade
+    apt-get -y install --fix-missing enchant-2 libenchant-2-voikko voikko-fi hunspell-sv
