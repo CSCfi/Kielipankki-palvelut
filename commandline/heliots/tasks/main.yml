@@ -14,7 +14,7 @@
 - name: Download jar
   get_url:
     url: "{{ source_url }}"
-    dest: "{{ install_dir }}/lib/{{ jar_name }}"
+    dest: "{{ lib_dir }}/{{ jar_name }}"
     mode: "g+rwX,o+rX"
 
 
