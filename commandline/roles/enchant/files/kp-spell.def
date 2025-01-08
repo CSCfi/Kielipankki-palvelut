@@ -10,3 +10,4 @@ From: ubuntu:24.04
     apt-get -y update
     apt-get -y upgrade
     apt-get -y install --fix-missing enchant-2 libenchant-2-voikko voikko-fi hunspell-sv
+    
