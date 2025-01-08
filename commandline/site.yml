@@ -4,28 +4,27 @@
 
 - hosts: hpc
   vars:
-   - hfst_version: 3.16.0
-   - hfst_ospell_version: 0.5.1
-   - finnish_parse_version: 1.0
-   - praat_version: 6.4
-   - finnish_tagtools_version: 1.6.0
-   # - kaldi_version:
-   #    number: 5.5.219
-   #    githash:  06bf62a57
-   - aalto_asr_version:
-      number: 2.1
-      githash: latest
-   - hunpos_version: 1.0
-   - sparv_pipeline_version: 2.0_MIT_2017-10-23
-   # - ffmpeg_version: see roles/ffmpeg/defaults/main.yml
-   - udpipe_version: 1.2.0
-   - bert_models:
-      - TurkuNLP/bert-base-finnish-cased-v1
-      - TurkuNLP/bert-base-finnish-uncased-v1
-   - tsv_tools_version: 2.2.0
-   - vrt_tools_version: 1.0
-
-
+   hfst_version: 3.16.0
+   hfst_ospell_version: 0.5.1
+   finnish_parse_version: 1.0
+   praat_version: 6.4
+   finnish_tagtools_version: 1.6.0
+#   kaldi_version:
+#    number: 5.5.219
+#    githash:  06bf62a57
+   aalto_asr_version:
+     number: 2.1
+     githash: latest
+   hunpos_version: 1.0
+   sparv_pipeline_version: 2.0_MIT_2017-10-23
+#  ffmpeg_version: see roles/ffmpeg/defaults/main.yml
+   udpipe_version: 1.2.0
+   bert_models:
+     - TurkuNLP/bert-base-finnish-cased-v1
+     - TurkuNLP/bert-base-finnish-uncased-v1
+   tsv_tools_version: 2.2.0
+   vrt_tools_version: 1.0
+      
   become: no
   gather_facts: true
   gather_subset: min
