@@ -58,6 +58,12 @@
         allowed_ips:
           - "0.0.0.0/0"
 
+     - name: ssh
+       protocol: tcp
+       port: 22
+       allowed_ips:
+         - "86.50.56.187/32" # korp3.csc.fi needs to fetch backups
+
   roles:
     - role: kielipankki.common.create_instances
       tags: create_instances
