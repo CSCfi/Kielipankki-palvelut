@@ -21,13 +21,14 @@
 
 - name: Make tykky wrappers
   ansible.builtin.shell: |
-    module load tykky
-    wrap-container -w /usr/bin/enchant-2 kp-spell.sif --prefix {{ install_dir }}
+    /bin/bash -lc ". /appl/profile/zz-csc-env.sh && \
+    module load tykky && \
+    wrap-container -w /usr/bin/enchant-2 kp-spell.sif --prefix {{ install_dir }}"
   args:
-    chdir: {{ compile_dir }}
+    chdir: "{{ compile_dir }}"
 
 - name: Install module file
   ansible.builtin.template:
     src: module_file.j2
-    dest: "{{ module_dir }}/{{ package_name }}.lua"
+    dest: "{{ module_dir }}/{{ package_version }}.lua"
     mode: 0664
