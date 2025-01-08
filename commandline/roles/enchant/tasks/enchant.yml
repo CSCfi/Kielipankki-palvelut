@@ -2,17 +2,17 @@
 
 - name: Ensure dirs
   ansible.builtin.file:
-    path: {{ item }}
+    path: "{{ item }}"
     state: directory
   loop:
-    - {{ compile_dir }}
-    - {{ install_dir }}
-    - {{ module_dir }}
+    - "{{ compile_dir }}"
+    - "{{ install_dir }}"
+    - "{{ module_dir }}"
 
 - name: Copy Apptainer def file
   ansible.builtin.copy:
     src: kp-spell.def
-    dest: {{ compile_dir }}
+    dest: "{{ compile_dir }}"
 
 - name: Build apptainer container
   ansible.builtin.shell: apptainer build kp-spell.sif kp-spell.def
