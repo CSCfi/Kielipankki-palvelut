@@ -1,0 +1,33 @@
+---
+
+- name: Ensure dirs
+  ansible.builtin.file:
+    path: {{ item }}
+    state: directory
+  loop:
+    - {{ compile_dir }}
+    - {{ install_dir }}
+    - {{ module_dir }}
+
+- name: Copy Apptainer def file
+  ansible.builtin.copy:
+    src: kp-spell.def
+    dest: {{ compile_dir }}
+
+- name: Build apptainer container
+  ansible.builtin.shell: apptainer build kp-spell.sif kp-spell.def
+  args:
+    chdir: "{{ compile_dir }}"
+
+- name: Make tykky wrappers
+  ansible.builtin.shell: |
+    module load tykky
+    wrap-container -w /usr/bin/enchant-2 kp-spell.sif --prefix {{ install_dir }}
+  args:
+    chdir: {{ compile_dir }}
+
+- name: Install module file
+  ansible.builtin.template:
+    src: module_file.j2
+    dest: "{{ module_dir }}/{{ package_name }}.lua"
+    mode: 0664
