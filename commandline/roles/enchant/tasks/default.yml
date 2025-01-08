@@ -30,4 +30,4 @@
   ansible.builtin.template:
     src: module_file.j2
     dest: "{{ module_dir }}/{{ package_name }}.lua"
-    mode: 0644
+    mode: 0664
