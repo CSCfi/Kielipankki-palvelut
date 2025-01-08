@@ -2,66 +2,52 @@
 # The Language Bank of Finland Software Stack on CSC's Puhti
 #
 
-- hosts: hpc
+- name: "Set hpc vars"
+  hosts: hpc
   vars:
-   - hfst_version: 3.16.0
-   - hfst_ospell_version: 0.5.1
-   - finnish_parse_version: 1.0
-   - praat_version: 6.4
-   - finnish_tagtools_version: 1.6.0
-   # - kaldi_version:
-   #    number: 5.5.219
-   #    githash:  06bf62a57
-   - aalto_asr_version:
-      number: 2.1
-      githash: latest
-   - hunpos_version: 1.0
-   - sparv_pipeline_version: 2.0_MIT_2017-10-23
-   # - ffmpeg_version: see roles/ffmpeg/defaults/main.yml
-   - udpipe_version: 1.2.0
-   - bert_models:
-      - TurkuNLP/bert-base-finnish-cased-v1
-      - TurkuNLP/bert-base-finnish-uncased-v1
-   - tsv_tools_version: 2.2.0
-   - vrt_tools_version: 1.0
+   hfst_version: 3.16.0
+   hfst_ospell_version: 0.5.1
+   finnish_parse_version: 1.0
+   praat_version: 6.4
+   finnish_tagtools_version: 1.6.0
+   aalto_asr_version:
+    number: 2.1
+    githash: latest
+   hunpos_version: 1.0
+   sparv_pipeline_version: 2.0_MIT_2017-10-23
+   udpipe_version: 1.2.0
+   bert_models:
+    - TurkuNLP/bert-base-finnish-cased-v1
+    - TurkuNLP/bert-base-finnish-uncased-v1
+   tsv_tools_version: 2.2.0
+   vrt_tools_version: 1.0
+   #  ffmpeg_version: see roles/ffmpeg/defaults/main.yml
+   #   kaldi_version:
+#    number: 5.5.219
+#    githash:  06bf62a57
 
-
-  become: no
+  become: false
   gather_facts: true
-  gather_subset: min
+  gather_subset:
+   - '!all' # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/setup_module.html
   roles:
-   - role: hfst
-     tags: hfst
-   - role: hfst-morphologies
-     tags: hfst-morphologies
-   - role: hfst-ospell
-     tags: hfst-ospell
-   - role: check-hfst
-     tags: check-hfst
-   - role: finnish-parse
-     branch: master
-     tags: finnish-parse
-   - role: praat
-     tags: praat
-   # disabled, managed with Spack now
-   # - { role: ffmpeg, branch: master, tags: ffmpeg }
-   # - { role: kaldi    , tags: kaldi }
-   - role: aalto-asr
-     tags: aalto-asr
-   - role: udpipe
-     tags: udpipe
-   - role: hunpos
-     tags: hunpos
-   - role: sparv_pipeline
-     tags: sparv_pipeline
-   # - { role: bert_models , tags: bert_models }
+   - { role: hfst, tags: hfst }
+   - { role: hfst-morphologies, tags: hfst-morphologies }
+   - { role: hfst-ospell, tags: hfst-ospell }
+   - { role: check-hfst, tags: check-hfst }
+   - { role: finnish-parse, branch: master, tags: finnish-parse }
+   - { role: praat, tags: praat }
+   - { role: aalto-asr, tags: aalto-asr }
+   - { role: udpipe, tags: udpipe }
+   - { role: hunpos, tags: hunpos }
+   - { role: sparv_pipeline, tags: sparv_pipeline }
+   - { role: enchant, tags: enchant }
+#   - { role: bert_models , tags: bert_models }
+# disabled, managed with Spack now
+#   - { role: ffmpeg, branch: master, tags: ffmpeg }
+#   - { role: kaldi    , tags: kaldi }
 
-
-- import_playbook: heliots/heliots.yml
-  tags: heliots
-- import_playbook: vrt-tools/vrt-tools.yml
-  tags: vrt-tools
-- import_playbook: tsv-utils/tsv-utils.yml
-  tags: tsv-utils
-- import_playbook: finnish-tagtools/finnish-tagtools.yml
-  tags: finnish-tagtools
+- { name: "Import Heliots", import_playbook: heliots/heliots.yml, tags: heliots }
+- { name: "Import vrt-tools", import_playbook: vrt-tools/vrt-tools.yml, tags: vrt-tools }
+- { name: "Import tsv-utils", import_playbook: tsv-utils/tsv-utils.yml, tags: tsv-utils }
+- { name: "Import tagtools", import_playbook: finnish-tagtools/finnish-tagtools.yml, tags: finnish-tagtools }

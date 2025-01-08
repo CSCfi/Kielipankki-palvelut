@@ -1,0 +1,5 @@
+---
+
+- name: Include tasks
+  include_tasks: enchant.yml
+  tags: enchant

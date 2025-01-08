@@ -1,0 +1,19 @@
+help([[
+         {{ package_name }} provides Finnish and Swedish spell-checking via Voikko and
+	 Hunspell, respectively, via the common interface of enchant-2. To check Finnish in
+	 ispell pipe mode, do eg.
+
+	 $ echo "Koiro käveli kadulla." | enchant-2 -d fi
+	 @(#) International Ispell Version 3.1.20 (but really Enchant 2.3.3)
+	 & Koiro 5 0: Kairo, Kiro, Koira, Koiso, Koiaro
+	 *
+	 *
+
+	 For Swedish, use "-d sv".
+
+	 Other options supported by enchant-2 are available, like personal word lists with -p.
+]])
+
+local prog_root = '{{ install_dir }}'
+
+prepend_path('PATH', pathJoin(prog_root,'bin'))
