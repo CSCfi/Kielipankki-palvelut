@@ -1,0 +1,45 @@
+---
+
+- name: Ensure necessary directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ src_root }}"
+    - "{{ install_dir }}"
+#    - "{{ module_path }}"
+
+
+- name: Get source
+  ansible.builtin.unarchive:
+    src: "{{ source_url }}"
+    dest: "{{ src_root }}"
+    remote_src: true
+    creates: "{{ build_dir }}"
+
+- name: Set custom build flags
+  ansible.builtin.lineinfile:
+    path: "{{ build_dir }}/build_flags.sh"
+    regexp: "\\s*{{ item.flag }}="
+    line: "{{ item.new_line }}"
+  loop:
+    - {flag: DWITH_FFMPEG, new_line: "    -DWITH_FFMPEG=ON"}
+    - {flag: DMARCH_NATIVE, new_line: "    -DMARCH_NATIVE=ON"}
+
+- name: Build
+  ansible.builtin.shell:
+    cmd: /bin/bash -lc "{{ opensmile_build_modcall }} /bin/bash build.sh"
+    chdir: "{{ build_dir }}"
+    creates: "{{ build_dir }}/build/progsrc/smilextract/SMILExtract"
+
+- name: Copy executable to final location
+  ansible.builtin.copy:
+    src: "{{ build_dir }}/build/progsrc/smilextract/SMILExtract"
+    dest: "{{ install_dir }}"
+    mode: 0755
+    remote_src: true
+
+- name: Remove build directory
+  ansible.builtin.file:
+    path: "{{ build_dir }}"
+    state: absent
