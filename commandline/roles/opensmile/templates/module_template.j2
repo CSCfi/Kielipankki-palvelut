@@ -1,0 +1,11 @@
+help([[
+{{ package_name }} with FFmpeg support for additional audio formats.
+
+For documentation, see https://audeering.github.io/opensmile/index.html.
+]])
+
+local   version =       '{{ version }}'
+local   prog_root =     '{{ install_dir }}'
+
+prepend_path('PATH', prog_root)
+depends_on('ffmpeg/4.4.1')

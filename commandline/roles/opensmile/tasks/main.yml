@@ -7,8 +7,7 @@
   loop:
     - "{{ src_root }}"
     - "{{ install_dir }}"
-#    - "{{ module_path }}"
-
+    - "{{ module_path }}"
 
 - name: Get source
   ansible.builtin.unarchive:
@@ -43,3 +42,9 @@
   ansible.builtin.file:
     path: "{{ build_dir }}"
     state: absent
+
+- name: Create lmod module
+  ansible.builtin.template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{version}}.lua"
+    mode: 0664
