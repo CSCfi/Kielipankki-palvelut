@@ -1,5 +1,4 @@
 ---
-# defaults
 
 package_name: openSMILE
 version: 3.0.2
@@ -7,5 +6,5 @@ source_url: "https://github.com/audeering/opensmile/archive/refs/tags/v{{ versio
 src_root: "/local_scratch/{{ ansible_ssh_user }}/ansible/build/{{ package_name }}"
 build_dir: "{{ src_root }}/opensmile-{{ version }}/"
 opensmile_build_modcall: ". /appl/profile/zz-csc-env.sh && module load gcc && module load ffmpeg &&"
-install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}/bin"
-#module_path: "{{ module_root }}/{{ package_name }}"
+install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+module_path: "{{ module_root }}/{{ package_name }}"
