@@ -4,6 +4,8 @@ all:
       ansible_connection: local
       floating_ip: 128.214.255.214
       ansible_python_interpreter: python
+      vm_name_postfix: prod
+      flavor: standard.large
     web:
       ansible_host: 128.214.255.214
       ansible_user: almalinux
