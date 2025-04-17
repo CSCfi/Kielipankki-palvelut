@@ -1,0 +1,11 @@
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+      floating_ip: 195.148.30.97 
+      ansible_python_interpreter: python
+      vm_name_postfix: dev
+      flavor: "standard.small"
+    web:
+      ansible_host: 195.148.30.97 
+      ansible_user: almalinux
