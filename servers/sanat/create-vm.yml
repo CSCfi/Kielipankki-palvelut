@@ -5,63 +5,9 @@
   remote_user: almalinux
   become: false
 
-  vars:
-    sg_custom_ssh_ips:
-      - "95.216.214.203/32" # Niklas Laxström
-      - "86.50.31.6/32"     # Korp2
-      - "86.50.56.187/32"   # Korp3
-
-    authorized_users:
-      - ktegel
-      - ajarven
-      - matthies
-      - shardwic
-      - nlaxstrom
-
-    instance_name: sanat
-    pouta_instance_name: "{{ instance_name }}-{{ vm_name_postfix }}"
-    project_key: kielipouta
-    project_sg: sanat-sg
-    project_security_groups: default,{{ project_sg }}  # don't add spaces here!
-    std_image: "AlmaLinux-9"
-    flavor: "standard.large"
-    network: "project_2000680"
-
-    servers:
-      - name: "{{ pouta_instance_name }}"
-        image: "{{ std_image }}"
-        flavor: "{{ flavor }}"
-        key_name: "{{ project_key }}"
-        security_groups: "{{ project_security_groups }}"
-        network: "{{ network }}"
-        meta:
-          hostname: "{{ pouta_instance_name }}"
-          group:    "{{ pouta_instance_name }}"
-
-
-    security_group_rules:
-      - name: ping
-        protocol: icmp
-        port: -1
-        allowed_ips:
-          - "193.167.254.68/32"  # opsview
-
-      - name: http
-        protocol: tcp
-        port: 80
-        allowed_ips:
-          - "0.0.0.0/0"
-
-      - name: https
-        protocol: tcp
-        port: 443
-        allowed_ips:
-          - "0.0.0.0/0"
-
   roles:
     - role: kielipankki.common.create_instances
       tags: create_instances
-
 
 - name: Install CSC basics
   hosts: web
