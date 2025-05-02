@@ -1,6 +1,9 @@
 help([[
 {{ package_name }} with FFmpeg support for additional audio formats.
 
+Scripts and configuration files provided by audEERING GmbH are in directories
+found in environment variables $OPENSMILE_SCRIPTS and $OPENSMILE_CONFIG.
+
 For documentation, see https://audeering.github.io/opensmile/index.html.
 ]])
 
@@ -9,3 +12,6 @@ local   prog_root =     '{{ install_dir }}'
 
 prepend_path('PATH', prog_root)
 depends_on('ffmpeg/4.4.1')
+
+setenv("OPENSMILE_SCRIPTS", pathJoin(prog_root, 'scripts'))
+setenv("OPENSMILE_CONFIG", pathJoin(prog_root, 'config'))
