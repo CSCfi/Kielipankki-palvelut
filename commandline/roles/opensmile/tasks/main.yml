@@ -36,6 +36,7 @@
     src: "{{ build_dir }}/build/progsrc/smilextract/SMILExtract"
     dest: "{{ install_dir }}"
     mode: 0755
+    group: p_installation
     remote_src: true
 
 - name: Copy scripts and config to final location
