@@ -38,6 +38,16 @@
     mode: 0755
     remote_src: true
 
+- name: Copy scripts and config to final location
+  ansible.builtin.copy:
+    src: "{{ build_dir }}/{{ item }}"
+    dest: "{{ install_dir }}"
+    group: p_installation
+    remote_src: true
+  loop:
+    - scripts
+    - config
+
 - name: Remove build directory
   ansible.builtin.file:
     path: "{{ build_dir }}"
