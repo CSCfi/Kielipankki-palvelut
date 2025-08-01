@@ -5,9 +5,9 @@
 - src: geerlingguy.composer
   version: 1.9.2
 - src: geerlingguy.php
-  version: 5.0.1
+  version: 6.0.0
 - src: geerlingguy.php-versions
-  version: 6.0.1
+  version: 7.0.0
 - src: geerlingguy.repo-remi
   version: 2.1.0
 - src: geerlingguy.java

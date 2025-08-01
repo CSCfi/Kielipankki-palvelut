@@ -34,7 +34,7 @@ matomo_group: apache
 matomo_url: https://{{ webdomain_termipankki }}/matomo
 matomo_symlink: /www/{{ webdomain_termipankki }}/docroot/matomo
 
-php_version: '8.2'
+php_version: '8.3'
 php_packages_extra:
   - php-process
   - php-intl
