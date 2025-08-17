@@ -16,14 +16,14 @@ ini_set( 'log_errors',             1 );
 ini_set( 'expose_php',             0 );
 ini_set( 'memory_limit',      '450M' );
 ini_set( 'max_execution_time', '60s' );
-$wgDebugLogGroups['BlockManager'] = ini_get( 'error_log' );
 $wgDebugLogGroups['exception'] = ini_get( 'error_log' );
 $wgDebugLogGroups['error'] = ini_get( 'error_log' );
 $wgDebugLogGroups['fatal'] = ini_get( 'error_log' );
-
-// For SMW
-$wgDeprecationReleaseLimit = '1.36';
 error_reporting( E_ALL | E_STRICT );
+// SMW Use of MediaWiki\Parser\ParserOutput::getText was deprecated in MediaWiki 1.42.
+// [Called from SMW\MediaWiki\Hooks\OutputPageParserOutput::getParserOutput]
+$wgDeprecationReleaseLimit = '1.41';
+
 date_default_timezone_set( 'UTC' );
 $wgLocaltimezone = 'Europe/Helsinki';
 

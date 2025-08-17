@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\Html\Html;
+
 $wgDBserver = '{{ instance.value.db.server_host }}';
 $wgDBuser = '{{ instance.value.db.user }}';
 $wgDBpassword = '{{ instance.value.db.password }}';
@@ -234,7 +236,7 @@ $wgDefaultUserOptions['usebetatoolbar'] = 1;
 wfLoadExtensions( [ 'Linter', 'DiscussionTools' ] );
 // LiquidThreads is enabled by default on all talk pages. This hook handler disables it on pages without any threads.
 // This makes manual opt-in/out unnecessary (and impossible), but adds a few additional database queries.
-$wgHooks['LiquidThreadsIsLqtPage'][] = static function ( Title $title, bool &$isTalkPage ) {
+$wgHooks['LiquidThreadsIsLqtPage'][] = static function ( $title, &$isTalkPage ) {
 	if ( !$title->exists() ) {
 		$isTalkPage = false;
 	} else {
@@ -273,7 +275,7 @@ $wgHooks['SkinAfterBottomScripts'][] = function ( $skin, &$text ) {
 	);
 };
 
-$wgHooks['APIGetAllowedParams'] = function (
+$wgHooks['APIGetAllowedParams'][] = function (
 	ApiBase $module,
 	array &$params,
 	int $flags
