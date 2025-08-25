@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+
+import argparse
+import pathlib
+import json
+from trankit.utils.base_utils import trankit2conllu
+
+argparser = argparse.ArgumentParser(
+    description="Convert trankit output files to CoNLL-U output files"
+)
+argparser.add_argument(
+    "--input",
+    type=pathlib.Path,
+    help="Either the path to one input file, or a directory with many input files",
+    required=True,
+)
+
+argparser.add_argument(
+    "--output_dir",
+    type=pathlib.Path,
+    help="A directory in which trankit2conllu will write the output files",
+    required=True,
+)
+
+args = argparser.parse_args()
+
+if not args.output_dir.is_dir():
+    exit(f"Error: {args.output_dir} must be a directory!")
+
+if not args.input.is_dir():
+    input_files = [args.input]
+else:
+    input_files = [f for f in args.input.iterdir()]
+
+for in_path in input_files:
+    in_data = json.load(open(in_path))
+    out_data = trankit2conllu(in_data)
+    if in_path.name.endswith(".json"):
+        out_file_name = in_path.name.replace(".json", ".conllu")
+    else:
+        out_file_name = in_path.name + ".conllu"
+    open(args.output_dir / out_file_name, "w", encoding="utf-8").write(out_data)
+
+print(f"Wrote {len(input_files)} file{'s' if len(input_files) > 1 else ''}.")
