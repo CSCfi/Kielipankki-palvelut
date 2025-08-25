@@ -18,9 +18,8 @@
 # FIXME doesn't work in buildenv, works as regular user elsewhere?!
 # - name: Build apptainer
 #   ansible.builtin.shell:
-#     cmd: "{{ build_modcall }} export APPTAINER_CACHEDIR=/local_scratch/hardwick/.apptainer; cd {{ build_dir }}; apptainer build --fakeroot --bind=/local_scratch/hardwick/build-home:/tmp trankit.sif trankit.def"
+#     cmd: "{{ build_modcall }} cd {{ build_dir }}; apptainer build --fakeroot trankit.sif trankit.def"
 #   creates: "{{ build_dir }}/trankit.sif"
-#   environment: 
 
 # WORKAROUND
 - name: Copy apptainer
