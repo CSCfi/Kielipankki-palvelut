@@ -43,6 +43,7 @@
    - { role: sparv_pipeline, tags: sparv_pipeline }
    - { role: enchant, tags: enchant }
    - { role: opensmile, tags: opensmile }
+   - { role: trankit, tags: trankit }
 #   - { role: bert_models , tags: bert_models }
 # disabled, managed with Spack now
 #   - { role: ffmpeg, branch: master, tags: ffmpeg }
