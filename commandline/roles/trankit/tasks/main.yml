@@ -24,7 +24,7 @@
 # WORKAROUND
 - name: Copy apptainer
   ansible.builtin.copy:
-    src: /scratch/clarin/hardwick/tmp/trankit_apptainer/trankit.sif
+    src: "{{ prebuilt_apptainer_container_path }}"
     dest: "{{ build_dir }}/trankit.sif"
     remote_src: true
 
