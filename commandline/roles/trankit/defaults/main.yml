@@ -1,0 +1,14 @@
+---
+
+package_name: trankit
+version: 1.1.0
+# The version that actually builds doesn't have a tag yet
+source_git_version: 54e863327391262cf72f6adc1b0ff104e972a1dc
+source_git_repo: "https://github.com/nlp-uoregon/trankit"
+build_root: "/local_scratch/{{ ansible_ssh_user }}/ansible/build/{{ package_name }}"
+build_dir: "{{ build_root }}/{{package_name}}-{{ version }}/"
+build_modcall: ". /appl/profile/zz-csc-env.sh &&"
+install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+shared_models_dir: "{{ install_dir }}/cache"
+bin_dir: "{{ install_dir }}/bin"
+module_path: "{{ module_root }}/{{ package_name }}"

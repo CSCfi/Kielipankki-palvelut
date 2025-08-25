@@ -1,0 +1,30 @@
+- name: Create test dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ build_dir }}/test_input"
+    - "{{ build_dir }}/test_output"
+    - "{{ build_dir }}/test_conllu_output"
+
+- name: Copy test content
+  ansible.builtin.copy:
+    src: "test_input_{{ lang }}.txt"
+    dest: "{{ build_dir }}/test_input/test_input_{{ lang }}.txt"
+
+- name: Run trankit on test content
+  ansible.builtin.shell:
+    cmd: "{{ build_modcall }} {{ install_dir }}/bin/python -m trankit --input {{ build_dir }}/test_input --output_dir {{ build_dir }}/test_output --input_format plaindoc --cache_dir {{ shared_models_dir }} --lang {{ lang }}"
+
+- name: Run trankit2conllu script
+  ansible.builtin.shell:
+    cmd: "{{ build_modcall }} {{ install_dir }}/bin/python {{ bin_dir }}/trankit2conllu --input {{ build_dir }}/test_output }} --output_dir {{ build_dir }}/test_conllu_output"
+
+- name: Clear test dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ build_dir }}/test_input"
+    - "{{ build_dir }}/test_output"
+    - "{{ build_dir }}/test_conllu_output"

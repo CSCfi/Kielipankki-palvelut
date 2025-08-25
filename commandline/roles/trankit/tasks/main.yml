@@ -1,0 +1,66 @@
+---
+
+- name: Ensure necessary directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ install_dir }}"
+    - "{{ shared_models_dir }}"
+    - "{{ module_path }}"
+    - "{{ build_dir }}"
+
+- name: Install apptainer .def file
+  ansible.builtin.template:
+    src: trankit.def.j2
+    dest: "{{ build_dir }}/trankit.def"
+
+# FIXME doesn't work in buildenv, works as regular user elsewhere?!
+# - name: Build apptainer
+#   ansible.builtin.shell:
+#     cmd: "{{ build_modcall }} export APPTAINER_CACHEDIR=/local_scratch/hardwick/.apptainer; cd {{ build_dir }}; apptainer build --fakeroot --bind=/local_scratch/hardwick/build-home:/tmp trankit.sif trankit.def"
+#   creates: "{{ build_dir }}/trankit.sif"
+#   environment: 
+
+# WORKAROUND
+- name: Copy apptainer
+  ansible.builtin.copy:
+    src: /scratch/clarin/hardwick/tmp/trankit_apptainer/trankit.sif
+    dest: "{{ build_dir }}/trankit.sif"
+    remote_src: true
+
+- name: Install and wrap container with tykky
+  ansible.builtin.shell:
+    cmd: "{{ build_modcall }} module load tykky; wrap-container -w /usr/local/bin/python {{ build_dir }}/trankit.sif --prefix {{ install_dir }}"
+
+- name: Copy scripts to installation dir
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ install_dir }}/bin/{{ item }}"
+    group: p_installation
+    mode: 0775
+  loop:
+    - trankit2conllu
+
+- name: Create lmod module
+  ansible.builtin.template:
+    src: module_template.j2
+    dest: "{{ module_path }}/{{version}}.lua"
+    mode: 0664
+
+- name: Run tests and fetch shared language models
+  ansible.builtin.include_tasks:
+    file: fetch_model_and_run.yml
+  vars:
+    lang: "{{ item }}"
+  loop:
+    - finnish
+    - english
+    - swedish
+    
+- name: Remove build directory
+  ansible.builtin.file:
+    path: "{{ build_dir }}"
+    state: absent
+
+

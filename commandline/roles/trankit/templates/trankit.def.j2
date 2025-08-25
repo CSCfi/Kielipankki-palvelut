@@ -1,0 +1,41 @@
+Bootstrap: docker
+From: python:3.10-slim
+
+%post
+    # Update system packages
+    apt-get update && apt-get install -y \
+        git \
+        build-essential \
+        && rm -rf /var/lib/apt/lists/*
+
+    pip install --upgrade pip
+
+    # Clone and install trankit
+    cd /opt
+    git clone https://github.com/nlp-uoregon/trankit.git
+    cd trankit
+    # git checkout {{ source_git_version }}
+    # FIXME permission problems doing this in Apptainer in buildenv
+    sed -i 's/numpy/numpy<2/' setup.py
+    sed -i 's/torch>=1.6.0,<=2.0.1/torch>=1.6.0,<=2.2.1/' setup.py
+    sed -i 's/transformers/transformers==4.48.3/' setup.py
+    pip install -e .
+
+%environment
+    export PYTHONPATH="/opt/trankit:$PYTHONPATH"
+    export PATH="/opt/trankit:$PATH"
+
+%runscript
+    # Default behavior when container is run
+    python -m trankit "$@"
+
+%help
+    This container includes Trankit, a Python toolkit for multilingual NLP.
+
+    Usage:
+    - Run with arguments: apptainer run trankit.sif [trankit-args]
+    - Interactive shell: apptainer shell trankit.sif
+    - Execute specific command: apptainer exec trankit.sif python -m trankit [args]
+
+    Example:
+    apptainer run trankit.sif --help
