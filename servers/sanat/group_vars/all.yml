@@ -8,10 +8,10 @@ mediawikis: []
 apache_create_vhosts: false
 
 acme_root: /etc/letsencrypt
-acme_endpoint: "https://acme.sectigo.com/v2/OV"
+acme_endpoint: "{{ lookup('passwordstore', 'lb_passwords/acme/harica_endpoint') }}"
 acme_email: ling-admin@listat.csc.fi
-acme_keyid: "{{ lookup('passwordstore', 'lb_passwords/portal/acme_keyid') }}"
-acme_hmac: "{{ lookup('passwordstore', 'lb_passwords/portal/acme_hmac') }}"
+acme_keyid: "{{ lookup('passwordstore', 'lb_passwords/acme/harica_keyid') }}"
+acme_hmac: "{{ lookup('passwordstore', 'lb_passwords/acme/harica_hmac') }}"
 
 memcached_memory_limit: 4000
 
