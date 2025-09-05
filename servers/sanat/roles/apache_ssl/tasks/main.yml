@@ -14,12 +14,14 @@
 - name: Register ACME
   shell:
     cmd: >
-      certbot register --server {{ acme_endpoint }}
-      --agree-tos --eab-kid {{ acme_keyid }}
+      certbot register
+      --server {{ acme_endpoint }}
+      --agree-tos
+      --eab-kid {{ acme_keyid }}
       --eab-hmac-key {{ acme_hmac }}
       --no-eff-email
       --email {{ acme_email }}
-    creates: "{{ acme_root }}/accounts/acme.sectigo.com/v2/OV/"
+    creates: "{{ acme_root }}/accounts/{{ acme_endpoint }}"
   become: yes
 
 - name: Fetch certificates via ACME
