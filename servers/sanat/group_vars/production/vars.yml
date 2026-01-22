@@ -1,6 +1,8 @@
 webaliases_termipankki:
   - www.tieteentermipankki.fi
 
+postfix_hostname: sanat.csc.fi
+
 mediawikis:
   sanat.csc.fi:
     conf: sanat

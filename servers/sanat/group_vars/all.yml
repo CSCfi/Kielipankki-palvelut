@@ -3,8 +3,6 @@ webaliases_sanat: []
 webdomain_termipankki: tieteentermipankki.fi
 webaliases_termipankki: ['www.tieteentermipankki.fi']
 
-postfix_hostname: sanat.csc.fi
-
 mediawikis: []
 
 apache_create_vhosts: false
