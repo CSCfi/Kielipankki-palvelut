@@ -32,10 +32,19 @@
   ansible.builtin.shell:
     cmd: "{{ build_modcall }} module load tykky; wrap-container -w /usr/local/bin/python {{ build_dir }}/trankit.sif --prefix {{ install_dir }}"
 
-- name: Copy scripts to installation dir
+- name: Copy scripts to tykky-exported bin dir
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ install_dir }}/bin/{{ item }}"
+    group: p_installation
+    mode: 0775
+  loop:
+    - trankit2conllu
+
+- name: Copy scripts to tykky's internal _bin dir
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ install_dir }}/_bin/{{ item }}"
     group: p_installation
     mode: 0775
   loop:
