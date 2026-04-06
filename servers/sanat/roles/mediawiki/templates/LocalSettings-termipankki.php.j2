@@ -227,7 +227,7 @@ $wgHiddenPrefs[] = 'visualeditor-newwikitext';
 $wgVisualEditorUseSingleEditTab = true;
 #$wgDefaultUserOptions['visualeditor-enable'] = 1;
 $wgHooks['VEForAllToolbarConfigNormal'][] = static function( &$defaultConfigNormal ) {
-    $defaultConfigNormal[] = [ 'name' => 'reference' ];
+    $defaultConfigNormal[] = [ 'include' => [ 'reference' ] ];
 };
 
 wfLoadExtension( 'WikiEditor' );
