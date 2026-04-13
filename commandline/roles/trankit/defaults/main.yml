@@ -9,7 +9,7 @@ build_root: "/local_scratch/{{ ansible_ssh_user }}/ansible/build/{{ package_name
 build_dir: "{{ build_root }}/{{package_name}}-{{ version }}/"
 prebuilt_apptainer_container_path: "" # must be set before installing
 build_modcall: ". /appl/profile/zz-csc-env.sh &&"
-install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+install_dir: "{{ install_prefix }}/{{ package_name }}/{{ version }}"
 shared_models_dir: "{{ install_dir }}/cache"
 bin_dir: "{{ install_dir }}/bin"
 module_path: "{{ module_root }}/{{ package_name }}"

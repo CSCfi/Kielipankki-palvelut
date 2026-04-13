@@ -8,7 +8,7 @@ github_src: "https://github.com/CSCfi/{{ repo_name }}/"
 docker_hub_base: "docker://juholeinonen"
 src_root: "{{ compile_root }}"
 compile_dir: "/local_scratch/{{ ansible_user_id }}"
-install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+install_dir: "{{ install_prefix }}/{{ package_name }}/{{ version }}"
 module_path: "{{ module_root }}/{{ package_name }}"
 asr_scripts:
   - name: wrappers/singularity_wrapper.sh
