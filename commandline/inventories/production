@@ -1,10 +1,10 @@
 ---
 hpc:
   hosts:
-    puhti-login13.csc.fi:
-      module_root: /appl/modulefiles
-      install_prefix: /appl/soft
+    roihu-cpu-inst.csc.fi:
+      module_root: /appl/modulefiles/manual/kielipankki/x86_64
+      install_prefix: /appl/soft/manual/kielipankki/x86_64
       kielipankki_data_dir: /appl/data/kielipankki
       swig3_as_module: yes
-      shared_group: p_installation
+      shared_group: r_installation_kielipankki
       is_admin: false
