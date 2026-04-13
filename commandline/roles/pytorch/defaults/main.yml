@@ -1,4 +1,0 @@
----
-# defaults file for pytorth
-
-release_url: https://github.com/pytorch/pytorch.git 

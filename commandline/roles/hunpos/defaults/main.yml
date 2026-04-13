@@ -1,8 +1,0 @@
----
-# defaults
-
-package_name: hunpos
-version: "{{ hunpos_version }}"
-zipfilename: "hunpos-{{ hunpos_version }}-32bit-linux-lib.zip"
-install_dir: "{{ install_prefix }}/{{ package_name }}/{{ version }}"
-lib_dir: "{{ install_dir }}/lib"
