@@ -10,7 +10,7 @@ help([[
 ]])
 
 local   version =       '{{ version }}'
-local   prog_root =     '{{ install_prefix }}/ling/{{ package_name }}'
+local   prog_root =     '{{ install_prefix }}/{{ package_name }}'
 
 prepend_path('LD_LIBRARY_PATH', pathJoin(prog_root,version,'lib'))
 prepend_path('PYTHONPATH', pathJoin(prog_root,version,'lib/python{{ python3_base_version }}/site-packages/{{ libhfst_name_egg }}'))

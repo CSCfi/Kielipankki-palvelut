@@ -5,7 +5,7 @@ package_name: hfst
 release_url: "https://korp.csc.fi/download/hfst-morphologies/"
 version: "{{ hfst_version }}"
 temp_dir: "{{ compile_root }}"
-hfst_install_dir: "{{ install_prefix }}/ling/{{ package_name }}/{{ version }}"
+hfst_install_dir: "{{ install_prefix }}/{{ package_name }}/{{ version }}"
 
 morphologies:
     - { dir: 'en/wn-bnc', pkg: 'hfst-en-morph-wn-bnc', lang: 'english' }
