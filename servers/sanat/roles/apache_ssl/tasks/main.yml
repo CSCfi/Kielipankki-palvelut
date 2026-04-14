@@ -54,3 +54,11 @@
   notify: restart httpd
   become: yes
   tags: vhost
+
+- name: Copy remoteip.conf
+  template:
+    src: "remoteip.conf.j2"
+    dest: "/etc/httpd/conf.d/remoteip.conf"
+  notify: restart httpd
+  become: yes
+
