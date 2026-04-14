@@ -51,12 +51,10 @@
     mode: 0755
 
 - name: Get and unpack models
-  unarchive:
-    src: "{{ model_package_release_url }}"
+  ansible.builtin.get_url:
+    url: "{{ model_package_release_url }}{{ item }}-{{ model_package_version }}.udpipe"
     dest: "{{ model_package_install_dir }}"
-    remote_src: yes
-    exclude:
-      - "{{ model_package_name }}/udpipe" # don't unpack the precompiled executable
+  loop: "{{ language_models }}"
 
 - name: Install modulefile
   template:
