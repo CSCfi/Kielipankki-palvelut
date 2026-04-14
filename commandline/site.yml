@@ -9,7 +9,7 @@
    hfst_ospell_version: 0.5.1
    praat_version: 6.4
    finnish_tagtools_version: 1.6.0
-   udpipe_version: 1.2.0
+   udpipe_version: 1.4.0
    tsv_tools_version: 2.2.0
    vrt_tools_version: 1.0
 
