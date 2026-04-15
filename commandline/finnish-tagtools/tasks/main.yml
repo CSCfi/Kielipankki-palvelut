@@ -42,5 +42,5 @@
 - name: Run make check-installed
   shell:
     chdir: "{{ compile_dir }}"
-    cmd: ". /appl/profile/zz-csc-env.sh && module use {{ module_root }} && module load finnish-tagtools hfst && make check-installed prefix='{{ tagtools_install_dir }}'"
+    cmd: "bash -i -c 'module use {{ module_root }} && module load finnish-tagtools hfst && make check-installed prefix={{ tagtools_install_dir }}'"
 
