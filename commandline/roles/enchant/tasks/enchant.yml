@@ -18,11 +18,11 @@
   ansible.builtin.shell: apptainer build kp-spell.sif kp-spell.def
   args:
     chdir: "{{ compile_dir }}"
+    creates: kp-spell.sif
 
 - name: Make tykky wrappers
   ansible.builtin.shell: |
-    /bin/bash -lc ". /appl/profile/zz-csc-env.sh && \
-    module load tykky && \
+    /bin/bash -ic "module load tykky && \
     wrap-container -w /usr/bin/enchant-2 kp-spell.sif --prefix {{ install_dir }}"
   args:
     chdir: "{{ compile_dir }}"
