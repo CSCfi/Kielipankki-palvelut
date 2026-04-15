@@ -5,5 +5,5 @@ package_name: praat
 version: "{{ praat_version }}"
 release_url: https://github.com/praat/praat/archive/v{{ version }}.tar.gz
 src_root: "{{ compile_root }}"
-compile_dir: "{{ src_root }}/praat-{{ version }}"
+compile_dir: "{{ src_root }}/praat.github.io-{{ version }}"
 install_dir: "{{ install_prefix }}/{{ package_name }}/{{ version }}"

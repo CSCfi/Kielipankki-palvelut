@@ -6,6 +6,6 @@ help([[
 ]])
 
 local   version =       '{{ version }}'
-local   prog_root =     '/appl/soft/praat/'
+local   prog_root =     '{{ install_prefix }}/{{ package_name }}'
 
 prepend_path('PATH', pathJoin(prog_root,version,'bin'))
