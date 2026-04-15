@@ -1,8 +1,15 @@
 help([[
-         {{ package_name }}
+{{ package_name }} {{ version }}
+
+Detailed documentation: https://ufal.mff.cuni.cz/udpipe/1/users-manual
+For installed models run:
+$ ls $UD_MODELS
+Usage example:
+$ echo "Hän istuu."|udpipe --tag --parse --input=horizontal --immediate $UD_MODELS/finnish-ftb-ud-2.5-191206.udpipe
 ]])
 
 local   version =       '{{ version }}'
 local   prog_root =     '{{ install_prefix }}/{{ package_name }}'
 
 prepend_path('PATH', pathJoin(prog_root,version,'bin'))
+setenv ('UD_MODELS', pathJoin(prog_root,'models'))
