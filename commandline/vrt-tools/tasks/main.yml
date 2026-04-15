@@ -2,10 +2,11 @@
 
 - name: Ensure directories exist
   become: no
-  command: mkdir -p "{{ item }}"
-  args:
-    creates: "{{ item }}"
-    warn: false
+  file:
+    path: "{{ item }}"
+    mode: 0775
+    recurse: no
+    state: directory
   loop:
     - "{{ install_dir }}/bin"
     - "{{ module_path }}"
