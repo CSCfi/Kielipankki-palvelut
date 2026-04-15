@@ -14,11 +14,17 @@
 
 - name: Run trankit on test content
   ansible.builtin.shell:
-    cmd: "{{ build_modcall }} {{ install_dir }}/bin/python -m trankit --input {{ build_dir }}/test_input --output_dir {{ build_dir }}/test_output --input_format plaindoc --cache_dir {{ shared_models_dir }} --lang {{ lang }}"
+    cmd: "bash -i -c '{{ install_dir }}/bin/python -m trankit --input {{ build_dir }}/test_input --output_dir {{ build_dir }}/test_output --input_format plaindoc --cache_dir {{ shared_models_dir }} --lang {{ lang }}'"
+    # tykky workaround
+    chdir: "{{ build_dir }}"
+
 
 - name: Run trankit2conllu script
   ansible.builtin.shell:
-    cmd: "{{ build_modcall }} {{ install_dir }}/bin/python {{ bin_dir }}/trankit2conllu --input {{ build_dir }}/test_output }} --output_dir {{ build_dir }}/test_conllu_output"
+    cmd: "bash -i -c '{{ install_dir }}/bin/python {{ bin_dir }}/trankit2conllu --input {{ build_dir }}/test_output --output_dir {{ build_dir }}/test_conllu_output'"
+    # tykky workaround
+    chdir: "{{ build_dir }}"
+
 
 - name: Clear test dirs
   ansible.builtin.file:
