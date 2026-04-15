@@ -16,21 +16,14 @@
     dest: "{{ build_dir }}/trankit.def"
 
 # FIXME doesn't work in buildenv, works as regular user elsewhere?!
-# - name: Build apptainer
-#   ansible.builtin.shell:
-#     cmd: "{{ build_modcall }} cd {{ build_dir }}; apptainer build --fakeroot trankit.sif trankit.def"
-#   creates: "{{ build_dir }}/trankit.sif"
-
-# WORKAROUND
-- name: Copy apptainer
-  ansible.builtin.copy:
-    src: "{{ prebuilt_apptainer_container_path }}"
-    dest: "{{ build_dir }}/trankit.sif"
-    remote_src: true
+- name: Build apptainer
+  ansible.builtin.shell:
+    cmd: "cd {{ build_dir }}; apptainer build --fakeroot trankit.sif trankit.def"
+    creates: "{{ build_dir }}/trankit.sif"
 
 - name: Install and wrap container with tykky
   ansible.builtin.shell:
-    cmd: "{{ build_modcall }} module load tykky; wrap-container -w /usr/local/bin/python {{ build_dir }}/trankit.sif --prefix {{ install_dir }}"
+    cmd: "bash -i -c 'module load tykky; wrap-container -w /usr/bin/python {{ build_dir }}/trankit.sif --prefix {{ install_dir }}'"
 
 - name: Copy scripts to tykky-exported bin dir
   ansible.builtin.copy:
