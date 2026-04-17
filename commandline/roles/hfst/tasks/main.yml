@@ -148,15 +148,6 @@
   environment:
     PYTHONPATH: "{{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages"
 
-- name: "HACK: Get easy-install.pth content"
-  slurp:
-    src: "{{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages/easy-install.pth"
-  register: slurped_data
-
-- name: Decode content and store as fact
-  set_fact:
-    libhfst_name_egg: "{{ slurped_data.content | b64decode | trim }}"
-
 # This relates to https://jira.eduuni.fi/browse/KP-5755
 # Part of PR 50: https://github.com/CSCfi/Kielipankki-palvelut/pull/50/commits/4ed0590d5aad526805ccbc2d60334164f46ad81e
 # I wonder whether this can be generalized -mma 24.10.2022
@@ -172,7 +163,7 @@
   meta: flush_handlers
 
 - name: Checking python module
-  shell: bash --login -c  "{{ python_modcall }} LD_LIBRARY_PATH={{ hfst_install_dir }}/lib/:$LD_LIBRARY_PATH && ./test.sh  --verbose --python python3 --pythonpath {{ hfst_install_dir }}/lib/python{{ python3_base_version }}/site-packages/{{ libhfst_name_egg }}"
+  shell: bash -i -c  "{{ python_modcall }} LD_LIBRARY_PATH={{ hfst_install_dir }}/lib/:$LD_LIBRARY_PATH && ./test.sh  --verbose --python python3 --pythonpath {{ hfst_pythonpath }}"
   args:
     chdir: "{{ hfst_compile_dir }}/python/test"
 
