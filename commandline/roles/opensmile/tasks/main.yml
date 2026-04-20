@@ -16,18 +16,9 @@
     remote_src: true
     creates: "{{ build_dir }}"
 
-- name: Set custom build flags
-  ansible.builtin.lineinfile:
-    path: "{{ build_dir }}/build_flags.sh"
-    regexp: "\\s*{{ item.flag }}="
-    line: "{{ item.new_line }}"
-  loop:
-    - {flag: DWITH_FFMPEG, new_line: "    -DWITH_FFMPEG=ON"}
-    - {flag: DMARCH_NATIVE, new_line: "    -DMARCH_NATIVE=ON"}
-
 - name: Build
   ansible.builtin.shell:
-    cmd: /bin/bash -lc "{{ opensmile_build_modcall }} /bin/bash build.sh"
+    cmd: /bin/bash -i -c "/bin/bash build.sh {{ build_opts }}"
     chdir: "{{ build_dir }}"
     creates: "{{ build_dir }}/build/progsrc/smilextract/SMILExtract"
 
