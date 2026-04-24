@@ -1,11 +1,14 @@
 hpc:
   hosts:
     localhost:
+      compile_root: "{{ lookup('ansible.builtin.env', 'HOME') }}"
+      ansible_connection: local
       module_root: /tmp/{{ansible_user_id}}/ansible/modulefiles
+      python3_base_version: "" # disable python support for now
       install_prefix: /data
       kielipankki_data_dir: /tmp/{{ansible_user_id}}/ansible/kielipankki_data
       is_admin: false
-      swig3_as_module: yes
+      swig3_as_module: no
       python_swig_modcall: ""
       python_modcall: ""
       compiler_call: ""
