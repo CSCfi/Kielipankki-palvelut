@@ -28,7 +28,6 @@
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ install_dir }}/bin/{{ item }}"
-    group: p_installation
     mode: 0775
   loop:
     - trankit2conllu
@@ -63,4 +62,13 @@
     path: "{{ build_dir }}"
     state: absent
 
-
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ item }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX,o-w"
+    recurse: yes
+  with_items:
+    - "{{ install_dir }}"
+    - "{{ model_package_install_dir }}"
+  when: shared_group is defined

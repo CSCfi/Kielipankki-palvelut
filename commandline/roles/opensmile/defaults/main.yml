@@ -3,7 +3,7 @@
 package_name: openSMILE
 version: 3.0.2
 source_url: "https://github.com/audeering/opensmile/archive/refs/tags/v{{ version }}.tar.gz"
-src_root: "/local_scratch/{{ ansible_user_id }}/ansible/build/{{ package_name }}"
+src_root: "{{ compile_root }}/build/{{ package_name }}"
 build_dir: "{{ src_root }}/opensmile-{{ version }}/"
 build_opts: "-DWITH_FFMPEG=OFF -DMARCH_NATIVE=ON"
 install_dir: "{{ install_prefix }}/{{ package_name }}/{{ version }}"
