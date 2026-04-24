@@ -15,7 +15,6 @@
     src: trankit.def.j2
     dest: "{{ build_dir }}/trankit.def"
 
-# FIXME doesn't work in buildenv, works as regular user elsewhere?!
 - name: Build apptainer
   ansible.builtin.shell:
     cmd: "cd {{ build_dir }}; apptainer build --fakeroot trankit.sif trankit.def"
