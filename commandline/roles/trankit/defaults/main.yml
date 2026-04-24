@@ -5,7 +5,7 @@ version: 1.1.0
 # The version that actually builds doesn't have a tag yet
 source_git_version: 54e863327391262cf72f6adc1b0ff104e972a1dc
 source_git_repo: "https://github.com/nlp-uoregon/trankit"
-build_root: "/local_scratch/{{ ansible_user_id }}/ansible/build/{{ package_name }}"
+build_root: "{{ compile_root }}/build/{{ package_name }}"
 build_dir: "{{ build_root }}/{{package_name}}-{{ version }}"
 prebuilt_apptainer_container_path: "" # must be set before installing
 
