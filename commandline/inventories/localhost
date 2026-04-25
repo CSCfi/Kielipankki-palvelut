@@ -12,3 +12,6 @@ hpc:
       python_swig_modcall: ""
       python_modcall: ""
       compiler_call: ""
+  vars:
+    koivu_ansible_retention_months: 1
+    protected_host: false
