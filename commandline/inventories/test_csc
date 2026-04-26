@@ -8,3 +8,5 @@ hpc:
       swig3_as_module: no
       shared_group: r_installation_kielipankki
       is_admin: false
+    localhost:
+      ansible_connection: local

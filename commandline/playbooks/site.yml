@@ -27,7 +27,7 @@
    - { role: opensmile, tags: opensmile }
    - { role: trankit, tags: trankit }
 
-- { name: "Import Heliots", import_playbook: heliots/heliots.yml, tags: heliots }
-- { name: "Import vrt-tools", import_playbook: vrt-tools/vrt-tools.yml, tags: vrt-tools }
-- { name: "Import tsv-utils", import_playbook: tsv-utils/tsv-utils.yml, tags: tsv-utils }
-- { name: "Import tagtools", import_playbook: finnish-tagtools/finnish-tagtools.yml, tags: finnish-tagtools }
+- { name: "Import Heliots", import_playbook: ../heliots/heliots.yml, tags: heliots }
+- { name: "Import vrt-tools", import_playbook: ../vrt-tools/vrt-tools.yml, tags: vrt-tools }
+- { name: "Import tsv-utils", import_playbook: ../tsv-utils/tsv-utils.yml, tags: tsv-utils }
+- { name: "Import tagtools", import_playbook: ../finnish-tagtools/finnish-tagtools.yml, tags: finnish-tagtools }

@@ -1,0 +1,36 @@
+---
+
+- name: Pre-playbook tasks
+  hosts: localhost
+
+  tasks:
+    - name: Run shared pre-playbook tasks
+      import_role:
+        name: kielipankki.common.playbook_wrappers
+        tasks_from: pre-run-steps
+      tags: always
+
+- import_playbook: playbooks/site.yml
+
+- name: Backup logging if normal pre-playbook logging did not happen
+  hosts: localhost
+  tasks:
+    - name: Run pre-playbook tasks after the fact if skipped earlier
+      include_role:
+        name: kielipankki.common.playbook_wrappers
+        tasks_from: pre-run-steps
+      vars:
+        note: >-
+          Pre-run logging did not happen normally: start time not accurate.
+          This can happen e.g. when playbook is run with --start-at-task set.
+      when: run_id is undefined
+      tags: always
+
+- name: Post-playbook tasks
+  hosts: localhost
+  tasks:
+    - name: Run shared post-playbook tasks
+      import_role:
+        name: kielipankki.common.playbook_wrappers
+        tasks_from: post-run-steps
+      tags: always
