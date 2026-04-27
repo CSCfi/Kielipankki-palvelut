@@ -7,7 +7,7 @@ This script installs the following tools to HPC:
  * check-hfst
  * praat
  * udpipe
- * enchan
+ * enchant
  * opensmile
  * trankit
  * heliots
