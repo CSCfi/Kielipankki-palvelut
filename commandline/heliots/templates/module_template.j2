@@ -1,6 +1,12 @@
 help([[
-         {{ package_name }}
+{{ package_name }} - A tool for automatic language identification
+
+type heliots -h for more information.
 ]])
+
+if ( not isloaded("openjdk") )  then
+   load("openjdk")
+end
 
 local   version =       '{{ version }}'
 local   prog_root =     '{{ install_prefix }}/{{ package_name }}'
