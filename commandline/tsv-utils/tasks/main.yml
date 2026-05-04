@@ -5,7 +5,7 @@
   become: no
   file:
     path: "{{ item }}"
-    mode: "g+rwX,o+rwX,o-w"
+    mode: "g+rwX,o+rX,o-w"
     recurse: yes
     state: directory
   loop:
@@ -18,7 +18,7 @@
     src: "{{ release_url }}"
     dest: "{{ src_root }}"
     remote_src: yes
-    mode: "g+rwX,o+rwX,o-w"
+    mode: "g+rwX,o+rX,o-w"
 
 - name: Copy binaries to install_dir
   copy:
@@ -50,6 +50,6 @@
   file:
     path: "{{ install_dir }}"
     group: "{{ shared_group }}"
-    mode: "g+rwX,o+rwX,o-w"
+    mode: "g+rwX,o+rX,o-w"
     recurse: yes
   when: shared_group is defined
