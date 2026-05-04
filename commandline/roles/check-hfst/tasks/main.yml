@@ -1,12 +1,13 @@
 ---
 # tasks file for check-hfst
 
-- name: compile_root directory exists with 0777 permission
+- name: compile_root directory exists with 0775 permission
   become: no
-  file: path={{ compile_root }}
-    mode=0777
-    recurse=no
-    state=directory
+  file:
+    path: "{{ compile_root }}"
+    mode: 0775
+    recurse: no
+    state: directory
 
 - name: Download and extract tarball
   unarchive:
@@ -24,7 +25,7 @@
     PATH: "{{ install_prefix }}/hfst/{{ hfst_version }}/bin:{{ install_prefix }}/hfstospell/{{ hfst_ospell_version }}/bin:{{ ansible_env.PATH }}"
     LD_LIBRARY_PATH: "{{ install_prefix }}/hfst/{{ hfst_version }}/lib:{{ install_prefix }}/hfstospell/{{ hfst_ospell_version }}/lib"
   with_items:
-#   - ./check-morphologies.sh
+   - ./check-morphologies.sh
    - ./check-tools.sh
 #   - ./check-ospell.sh
   ignore_errors: yes
