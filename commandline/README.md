@@ -4,7 +4,6 @@ This script installs the following tools to HPC:
 
  * hfst
  * hfst-morphologies
- * check-hfst
  * praat
  * udpipe
  * enchant
@@ -15,7 +14,7 @@ This script installs the following tools to HPC:
  * tsv-utils
  * finnish-tagtools
 
-See site.yml for details, to generate the list above use `egrep -o "tags: [^ ]+ " site.yml |sed 's/tags:/ \*/'`
+See site.yml for details, to generate the list above use `egrep -o "tags: [^ ]+ " site.yml |sed 's/tags:/ \*/' |grep -v check-hfst`
 the names above represent the tag names in the ansible file.
 
 # Testing
