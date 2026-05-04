@@ -5,7 +5,7 @@
   become: no
   file:
     path: "{{ item }}"
-    mode: 0777
+    mode: "g+rwX,o+rwX,o-w"
     recurse: yes
     state: directory
   loop:
@@ -18,13 +18,14 @@
     src: "{{ release_url }}"
     dest: "{{ src_root }}"
     remote_src: yes
+    mode: "g+rwX,o+rwX,o-w"
 
 - name: Copy binaries to install_dir
   copy:
     remote_src: true
     src: "{{ compile_dir }}/bin/{{ item }}"
     dest: "{{ install_dir }}/bin/{{ item }}"
-    mode: 0755
+    mode: 0775
   loop:
     - csv2tsv
     - number-lines
@@ -43,12 +44,12 @@
   template:
     src: module_template.j2
     dest: "{{ module_path }}/{{ version }}.lua"
-    mode: 0644
+    mode: 0664
 
 - name: Fix permissions (if shared group is set)
   file:
     path: "{{ install_dir }}"
     group: "{{ shared_group }}"
-    mode: "g+rwX,o+rX,o-w"
+    mode: "g+rwX,o+rwX,o-w"
     recurse: yes
   when: shared_group is defined
