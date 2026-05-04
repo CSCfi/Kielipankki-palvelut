@@ -15,7 +15,7 @@
   get_url:
     url: "{{ release_url }}/{{ item }}"
     dest: "{{ install_dir }}/bin/{{ item }}"
-    mode: 0755
+    mode: 0775
   loop:
     - vrt-to-json
 
@@ -23,7 +23,7 @@
   template:
     src: module_template.j2
     dest: "{{ module_path }}/{{ version }}.lua"
-    mode: 0644
+    mode: 0664
 
 
 - name: Fix permissions (if shared group is set)

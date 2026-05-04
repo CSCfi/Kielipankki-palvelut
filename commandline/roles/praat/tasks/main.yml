@@ -20,11 +20,11 @@
     - ansible_os_family == "RedHat"
     - is_admin
 
-- name: src_root directory exists with 0777 permission
+- name: src_root directory exists with 0775 permission
   become: no
   file:
     path: "{{ src_root }}"
-    mode: 0777
+    mode: 0775
     recurse: yes
     state: directory
 
@@ -74,7 +74,7 @@
   template:
     src: module_template.j2
     dest: "{{ module_path }}/{{ version }}.lua"
-    mode: 0644
+    mode: 0664
 
 - name: Fix permissions (if shared group is set)
   file:
