@@ -191,8 +191,8 @@
 
 - name: Fix permissions (if shared group is set)
   file:
-    path: {{ hfst_install_dir }}
-    group: {{ shared_group }}
+    path: "{{ hfst_install_dir }}"
+    group: "{{ shared_group }}"
     mode: "g+rwX,o+rX,o-w"
     recurse: yes
   when: shared_group is defined
