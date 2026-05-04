@@ -26,7 +26,7 @@
   ansible.builtin.copy:
     src: "{{ build_dir }}/build/progsrc/smilextract/SMILExtract"
     dest: "{{ install_dir }}"
-    mode: 0755
+    mode: 0775
     remote_src: true
 
 - name: Copy scripts and config to final location
