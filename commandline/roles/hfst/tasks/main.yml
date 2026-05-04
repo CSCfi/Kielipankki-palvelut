@@ -60,7 +60,7 @@
   become: "{{ is_admin }}"
   file:
     path: "{{ install_prefix }}"
-    mode: 0777
+    mode: 0775
     owner: "{{ ansible_user_id }}"
     recurse: false
     state: directory
@@ -186,13 +186,13 @@
   template:
     src: module_template.j2
     dest: "{{ module_path }}/{{ version }}.lua"
-    mode: 0644
+    mode: 0664
 
 
 - name: Fix permissions (if shared group is set)
   file:
-    path={{ hfst_install_dir }}
-    group={{ shared_group }}
-    mode="g+rwX,o+rX,o-w"
-    recurse=yes
+    path: {{ hfst_install_dir }}
+    group: {{ shared_group }}
+    mode: "g+rwX,o+rX,o-w"
+    recurse: yes
   when: shared_group is defined
