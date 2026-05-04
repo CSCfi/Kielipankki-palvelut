@@ -1,8 +1,8 @@
-
 - name: Ensure directories exist
   file:
     path: "{{ item }}"
     state: directory
+    mode: 0775
   with_items:
     - "{{ tagtools_install_dir }}"
     - "{{ tagtools_install_dir }}/bin"
@@ -21,12 +21,14 @@
     target: install
     params:
       prefix: "{{ tagtools_install_dir }}"
+      umask: 0002
+      mode: g+w
 
 - name: Install modulefile
   template:
     src: module_template.j2
     dest: "{{ module_path }}/{{ version }}.lua"
-    mode: 0644
+    mode: 0664
 
 - name: Fix permissions (if shared group is set)
   file:
