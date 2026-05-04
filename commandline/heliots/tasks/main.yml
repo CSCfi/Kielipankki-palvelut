@@ -22,7 +22,7 @@
   template:
     src: heliots.j2
     dest: "{{ install_dir }}/bin/{{ item }}"
-    mode: 0755
+    mode: 0775
   loop:
     - heliots
 
