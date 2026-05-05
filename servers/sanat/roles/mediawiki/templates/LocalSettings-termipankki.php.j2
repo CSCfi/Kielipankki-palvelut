@@ -149,7 +149,6 @@ wfLoadExtension( 'SapphireSpamCleanse' );
 
 // Semantic MediaWiki
 wfLoadExtension( 'SemanticMediaWiki' );
-enableSemantics( $VHOST );
 $smwgPageSpecialProperties[] = '_CDAT';
 $smwgPageSpecialProperties[] = '_LEDT';
 $smwgPageSpecialProperties[] = '_NEWP';
@@ -158,7 +157,7 @@ $smwgQMaxInlineLimit = 5000;
 $smwgQUpperbound = 30000;
 // Causes performance issues
 $smwgEnabledQueryDependencyLinksStore = false;
-$smwgCheckForConstraintErrors = SMW_CONSTRAINT_ERR_CHECK_NONE;
+$smwgCheckForConstraintErrors = false;
 // Work around SMW bug: https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5250
 $wgNamespacesToBeSearchedDefault[102] = true;
 $wgNamespacesToBeSearchedDefault[108] = true;

@@ -41,13 +41,12 @@ wfLoadExtensions( [
 // Extensions with custom configuration //
 
 wfLoadExtension( 'SemanticMediaWiki' );
-enableSemantics( $VHOST );
-$smwgCheckForConstraintErrors = SMW_CONSTRAINT_ERR_CHECK_NONE;
+$smwgCheckForConstraintErrors = false;
 $smwgSearchByPropertyFuzzy = [ '_num', '_dat' ];
+$smwgQMaxInlineLimit = $wgCategoryPagingLimit = 500;
 
 wfLoadExtension( 'PageForms' );
 $wgPageFormsRedLinksCheckOnlyLocalProps = true;
-$smwgQMaxInlineLimit = $wgCategoryPagingLimit = 500;
 
 wfLoadExtension( 'ParserFunctions' );
 $wgPFEnableStringFunctions = true;
