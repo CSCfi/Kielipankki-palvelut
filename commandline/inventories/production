@@ -1,12 +1,15 @@
 ---
-hpc:
+all:
+  children:
+    hpc:
+      hosts:
+        roihu-cpu-inst.csc.fi:
+          module_root: /appl/modulefiles/manual/kielipankki/x86_64
+          install_prefix: /appl/soft/manual/kielipankki/x86_64
+          kielipankki_data_dir: /appl/data/kielipankki
+          swig3_as_module: yes
+          shared_group: r_installation_kielipankki
+          is_admin: false
   hosts:
-    roihu-cpu-inst.csc.fi:
-      module_root: /appl/modulefiles/manual/kielipankki/x86_64
-      install_prefix: /appl/soft/manual/kielipankki/x86_64
-      kielipankki_data_dir: /appl/data/kielipankki
-      swig3_as_module: yes
-      shared_group: r_installation_kielipankki
-      is_admin: false
     localhost:
       ansible_connection: local
