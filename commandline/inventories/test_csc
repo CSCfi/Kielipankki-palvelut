@@ -1,12 +1,15 @@
 ---
-hpc:
+all:
+  children:
+    hpc:
+      hosts:
+        roihu-cpu-inst.csc.fi:
+          module_root: /local_scratch/{{ ansible_user_id }}/ansible/modulefiles
+          install_prefix: /local_scratch/{{ansible_user_id}}/ansible/install
+          kielipankki_data_dir: /local_scratch/{{ansible_user_id}}/ansible/kielipankki_data
+          swig3_as_module: no
+          shared_group: r_installation_kielipankki
+          is_admin: false
   hosts:
-    roihu-cpu-inst.csc.fi:
-      module_root: /local_scratch/{{ ansible_user_id }}/ansible/modulefiles
-      install_prefix: /local_scratch/{{ansible_user_id}}/ansible/install
-      kielipankki_data_dir: /local_scratch/{{ansible_user_id}}/ansible/kielipankki_data
-      swig3_as_module: no
-      shared_group: r_installation_kielipankki
-      is_admin: false
     localhost:
       ansible_connection: local
