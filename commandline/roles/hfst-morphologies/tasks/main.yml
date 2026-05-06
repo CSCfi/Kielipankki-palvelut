@@ -33,6 +33,16 @@
     validate_certs=false
   loop: "{{ morphologies }}"
 
+- name: "Remove binaries (via -t force_install)"
+  shell:
+    cmd: "rm -f {{ item }}-generate-words {{ item }}-analyze-words"
+    chdir: "{{ hfst_install_dir }}/bin/"
+  loop: "{{ morphologies | map(attribute='lang') | select('defined') | list }}"
+  when: "'force_install' in ansible_run_tags"
+# Not using "tags: ['never', force_install]": due to tag inheritance
+
+
+
 - name: Running make install
   shell: "make install prefix={{ hfst_install_dir }} > MAKE_INSTALL.log"
   args:
