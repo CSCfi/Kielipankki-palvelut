@@ -1,4 +1,31 @@
-- name: Ensure directories exist
+- name: Ensure compile_root
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - "{{ compile_root }}"
+
+# Download first, this takes rather long
+- name: Unpack from tar
+  unarchive:
+    src: "{{ tagtools_tar }}"
+    dest: "{{ compile_root }}"
+    remote_src: yes
+
+# The earlier download minimizes the time the module is unusable
+# if it is removed below
+- name: "Remove current installation (via -t force_install)"
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ tagtools_install_dir }}"
+    - "{{ module_path }}/{{ version }}.lua"
+  when: "'force_install' in ansible_run_tags"
+# Not using "tags: ['never', force_install]": due to tag inheritance
+
+- name: Ensure other directories exist
   file:
     path: "{{ item }}"
     state: directory
@@ -9,20 +36,12 @@
     - "{{ compile_root }}"
     - "{{ module_path }}"
 
-- name: Unpack from tar
-  unarchive:
-    src: "{{ tagtools_tar }}"
-    dest: "{{ compile_root }}"
-    remote_src: yes
-
 - name: Run make install
   make:
     chdir: "{{ compile_dir }}"
     target: install
     params:
       prefix: "{{ tagtools_install_dir }}"
-      umask: 0002
-      mode: g+w
 
 - name: Install modulefile
   template:
