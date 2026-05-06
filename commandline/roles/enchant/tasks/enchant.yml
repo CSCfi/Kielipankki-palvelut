@@ -30,7 +30,7 @@
 - name: Make tykky wrappers
   ansible.builtin.shell: |
     /bin/bash -ic "module load tykky && \
-    wrap-container -w /usr/bin/enchant-2 kp-spell.sif --prefix {{ install_dir }}"
+    wrap-container -w /usr/bin/enchant-2 -w /usr/bin/enchant-lsmod-2 kp-spell.sif --prefix {{ install_dir }}"
   args:
     chdir: "{{ compile_dir }}"
 
@@ -39,3 +39,8 @@
     src: module_file.j2
     dest: "{{ module_dir }}/{{ package_version }}.lua"
     mode: 0664
+
+- name: Quick test
+  ansible.builtin.shell:
+  args:
+    cmd: bash -ic "module load kp-spell && echo 'Koiro kävelee.' | enchant-2 -l -d fi | grep Koirox || ( echo 'test failed'; exit 1 ) "
