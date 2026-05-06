@@ -43,4 +43,4 @@
 - name: Quick test
   ansible.builtin.shell:
   args:
-    cmd: bash -ic "module load kp-spell && echo 'Koiro kävelee.' | enchant-2 -l -d fi | grep Koirox || ( echo 'test failed'; exit 1 ) "
+    cmd: bash -ic "module load kp-spell && echo 'Koiro kävelee.' | enchant-2 -l -d fi | grep Koiro || ( echo 'test failed'; exit 1 ) "
