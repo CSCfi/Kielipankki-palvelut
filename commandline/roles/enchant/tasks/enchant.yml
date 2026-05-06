@@ -4,6 +4,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
+    mode: 0775
   loop:
     - "{{ compile_dir }}"
     - "{{ install_dir }}"
@@ -15,10 +16,16 @@
     dest: "{{ compile_dir }}"
 
 - name: Build apptainer container
-  ansible.builtin.shell: apptainer build kp-spell.sif kp-spell.def
+  ansible.builtin.shell:
   args:
+    cmd: apptainer build kp-spell.sif kp-spell.def
     chdir: "{{ compile_dir }}"
     creates: kp-spell.sif
+
+- name: Add group write permission to container
+  file:
+    path: "{{ compile_dir }}/kp-spell.sif"
+    mode: g+w
 
 - name: Make tykky wrappers
   ansible.builtin.shell: |
