@@ -40,6 +40,14 @@
     dest: "{{ module_dir }}/{{ package_version }}.lua"
     mode: 0664
 
+- name: Fix permissions (if shared group is set)
+  file:
+    path: "{{ install_dir }}"
+    group: "{{ shared_group }}"
+    mode: "g+rwX,o+rX,o-w"
+    recurse: yes
+  when: shared_group is defined
+
 - name: Quick test
   ansible.builtin.shell:
   args:
