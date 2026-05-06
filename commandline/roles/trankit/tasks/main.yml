@@ -4,6 +4,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
+    mode: 0775
   loop:
     - "{{ install_dir }}"
     - "{{ shared_models_dir }}"
@@ -22,7 +23,7 @@
 
 - name: Install and wrap container with tykky
   ansible.builtin.shell:
-    cmd: "bash -i -c 'module load tykky; wrap-container -w /usr/bin/python {{ build_dir }}/trankit.sif --prefix {{ install_dir }}'"
+    cmd: "bash -i -c 'module load tykky && wrap-container -w /usr/local/bin/python {{ build_dir }}/trankit.sif --prefix {{ install_dir }}'"
 
 - name: Copy scripts to tykky-exported bin dir
   ansible.builtin.copy:
@@ -36,7 +37,6 @@
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ install_dir }}/_bin/{{ item }}"
-    group: p_installation
     mode: 0775
   loop:
     - trankit2conllu
