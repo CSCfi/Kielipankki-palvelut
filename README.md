@@ -1,20 +1,11 @@
 # Kielipankki-palvelut
-Hajautetusti ylläpidetyt palvelut, ylläpito: CSC.
+Language Bank services administered not only in-house.
 
-## Metalb
-XML-rajapinta Metashare-dataan
 
-Kehittäjät: Jussi Piitulainen, Martin Matthiesen
+## Sanat / Tieteentermipankki (servers/sanat)
+Wiki-based services
+- sanat.csc.fi
+- tieteentermipankki.fi
 
-## Sanat
-Wiki-pohjainen sanakirjapalvelu
-
-Kehittäjät: Niklas Laxström (Wiki); Mika Hämäläinen (päivtysrajapinta)
-
-## Taito
-Kielipankin työkalut Taito-laskentaympäristössä
-- hfst
-- hfst-morphologies
-- hfst-ospell
-- check-hfst
-- finnish-parse (Turku Dependency Parser)
+## HPC (commandline)
+Language Bank tools in CSC's HPC environment.
