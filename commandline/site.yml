@@ -20,7 +20,7 @@
   roles:
    - { role: hfst, tags: hfst }
    - { role: hfst-morphologies, tags: hfst-morphologies }
-   - { role: check-hfst, tags: check-hfst }
+   - { role: check-hfst, tags: [check-hfst,test] }
    - { role: praat, tags: praat }
    - { role: udpipe, tags: udpipe }
    - { role: enchant, tags: enchant }

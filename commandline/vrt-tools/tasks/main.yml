@@ -39,3 +39,5 @@
     cmd: |
       bash -i -c "module load vrt-tools && \
       echo '<text>' | vrt-to-json | grep data"
+  when: shared_group is defined
+  tags: test

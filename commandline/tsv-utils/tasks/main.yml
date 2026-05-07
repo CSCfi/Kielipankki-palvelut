@@ -46,10 +46,6 @@
     dest: "{{ module_path }}/{{ version }}.lua"
     mode: 0664
 
-# check that one tool is available and works as expected
-- name: Quick test
-  shell:
-    cmd: bash -i -c "module load tsv-utils && echo 'x' | number-lines | grep 1"
 
 - name: Fix permissions (if shared group is set)
   file:
@@ -58,3 +54,12 @@
     mode: "g+rwX,o+rX,o-w"
     recurse: yes
   when: shared_group is defined
+
+# check that one tool is available and works as expected
+- name: Quick test
+  shell:
+    cmd: |
+      bash -i -c "module load tsv-utils && \
+      echo 'x' | number-lines | grep 1 "
+  when: shared_group is defined
+  tags: test

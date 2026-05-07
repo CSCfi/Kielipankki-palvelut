@@ -47,21 +47,6 @@
     dest: "{{ module_path }}/{{version}}.lua"
     mode: 0664
 
-- name: Run tests and fetch shared language models
-  ansible.builtin.include_tasks:
-    file: fetch_model_and_run.yml
-  vars:
-    lang: "{{ item }}"
-  loop:
-    - finnish
-    - english
-    - swedish
-    
-- name: Remove build directory
-  ansible.builtin.file:
-    path: "{{ build_dir }}"
-    state: absent
-
 - name: Fix permissions (if shared group is set)
   file:
     path: "{{ item }}"
@@ -72,3 +57,22 @@
     - "{{ install_dir }}"
     - "{{ model_package_install_dir }}"
   when: shared_group is defined
+
+- name: Run tests and fetch shared language models
+  ansible.builtin.include_tasks:
+    file: fetch_model_and_run.yml
+    apply:
+      tags: test
+  vars:
+    lang: "{{ item }}"
+  loop:
+    - finnish
+    - english
+    - swedish
+  when: shared_group is defined
+  tags: test
+    
+- name: Remove build directory
+  ansible.builtin.file:
+    path: "{{ build_dir }}"
+    state: absent
