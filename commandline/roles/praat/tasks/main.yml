@@ -86,3 +86,10 @@
   loop:
     -  "{{ install_dir }}"
     -  "{{ module_path }}"
+
+# check that one tool is available and expected version
+- name: Quick test
+  shell:
+    cmd: |
+      bash -i -c "module load praat && \
+      praat --version |grep 'Praat 6\.4' "
