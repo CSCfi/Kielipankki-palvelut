@@ -42,7 +42,7 @@ In production the installation target is Kielipankki's software environment on C
 `ansible-playbook -i inventories/production site.yml`
 
 ### Reinstallation as different user
-If you need to reinstall the stack as a differnt user, some tasks will fail due to some `chmod` commands trying to update files not belonging to you. In this case run
+If you need to reinstall the stack as a different user, some tasks will fail due to some `chmod` commands trying to update files not belonging to you. In this case run
 
 `ansible-playbook -i inventories/production site.yml -t force_install`
 
