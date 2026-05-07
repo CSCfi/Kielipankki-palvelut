@@ -93,3 +93,5 @@
     cmd: |
       bash -i -c "module load praat && \
       praat --version |grep 'Praat 6\.4' "
+  when: shared_group is defined
+  tags: test

@@ -84,3 +84,5 @@
           --input=horizontal \
           --immediate \$UD_MODELS/finnish-ftb-ud-2.5-191206.udpipe |
         grep "V,Act,Imprt,Sg2""
+  when: shared_group is defined
+  tags: test

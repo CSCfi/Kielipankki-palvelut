@@ -32,12 +32,6 @@
     dest: "{{ module_path }}/{{ version }}.lua"
     mode: 0664
 
-# quickly check that the module loads and heliots prints help
-- name: Quick test
-  shell:
-    cmd: bash -i -c "module load heliots && heliots -h | grep urn:nbn:fi:lb-2021062801"
-
-
 - name: Fix permissions (if shared group is set)
   file:
     path: "{{ install_dir }}"
@@ -45,3 +39,12 @@
     mode: "g+rwX,o+rX,o-w"
     recurse: yes
   when: shared_group is defined
+
+# quickly check that the module loads and heliots prints help
+- name: Quick test
+  shell:
+    cmd: |
+      bash -i -c "module load heliots && \
+      heliots -h | grep urn:nbn:fi:lb-2021062801"
+  when: shared_group is defined
+  tags: test
