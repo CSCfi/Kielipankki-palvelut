@@ -2,7 +2,8 @@
 
 ## HPC Installation
 
-This script installs the following tools to HPC:
+This script installs the following tools to HPC, the names below can
+be also used as tags for partial installation:
 
  * hfst
  * hfst-morphologies
@@ -19,11 +20,15 @@ This script installs the following tools to HPC:
 See site.yml for details, to generate the list above use `egrep -o "tags: [^ ]+ " site.yml |sed 's/tags:/ \*/' |grep -v check-hfst`
 the names above represent the tag names in the ansible file.
 
-The main target is CSC's HPC environment as specified in inventories/production, the installation can only be performed by CSC admins.
+The main target is CSC's HPC environment as specified in `inventories/production`, the installation can only be performed by CSC admins.
 
-### Testing
+### Development installation
 
-In testing mode the script "installs" the tools to a temporary directory, see inventories/test for details. To selectively install, use tags, e.g.:
+The tools can be installed to a user's personal directory, see
+`inventories/test_csc` for details. This can be useful to test updates
+before installing to Production.
+
+To selectively install, use tags, e.g.:
 ```
 ansible-playbook -i inventories/test_csc site.yml -t tsv-utils
 ssh puhti-login12.csc.fi  # (check host in inventories/test_csc)
