@@ -1,5 +1,7 @@
 # The Language Bank Tool portfolio
 
+## HPC Installation
+
 This script installs the following tools to HPC:
 
  * hfst
@@ -17,7 +19,9 @@ This script installs the following tools to HPC:
 See site.yml for details, to generate the list above use `egrep -o "tags: [^ ]+ " site.yml |sed 's/tags:/ \*/' |grep -v check-hfst`
 the names above represent the tag names in the ansible file.
 
-# Testing
+The main target is CSC's HPC environment as specified in inventories/production, the installation can only be performed by CSC admins.
+
+### Testing
 
 In testing mode the script "installs" the tools to a temporary directory, see inventories/test for details. To selectively install, use tags, e.g.:
 ```
@@ -26,13 +30,40 @@ ssh puhti-login12.csc.fi  # (check host in inventories/test_csc)
 module use /local_scratch/<uid>/ansible/modulefiles  # (check module_root in inventories/test)
 ```
 
+### Production
+
+In production the installation target is Kielipankki's software environment on CSC's supercomputer(s).
+
+ansible-playbook -i inventories/production site.yml
+
+### Reinstallation as different user
+If you need to reinstall the stack as a differnt user, some tasks will fail due to some `chmod` commands trying to update files not belonging to you. In this case run
+
+ansible-playbook -i inventories/production site.yml -t force_install
+
+### Testing the production install
+All tasks should test the installation and have at least a "Quick test" task. Note that the quick tests are far from comprehensive, them failing points to an error, them succeeding gives a high probability that they installed correctly, but is not 100% fool proof.
+You can run tests only using the "test" tag:
+
+ansible-playbook -i inventories/production site.yml -t test
+
+### Partial installation
+
+The roles are tagged, you can run them individually with -t. See
+site.yml for details. Example: to install praat only run
+
+ansible-playbook -i inventories/production site.yml -t praat
+
+to run the quick test of the praat installation run
+
+ansible-playbook -i inventories/production site.yml -t praat -t test
+
 ## Local installation
 
 It is possible to install the tools on a local machine to test the
 scripts, but this still needs some manual work. With these
 instructions, it is possible to run most of the site.yml on a local
 Ubuntu machine.
-
 
 Known issues
 
@@ -42,7 +73,6 @@ Known issues
 - enchant needs to be installed via `apt install enchant-2  libenchant-2-voikko voikko-fi hunspell-sv`
 - finnish-tagtools check fails
 - finnish-tagtools issues harmless syntax warnings in python 3.10+
-
 
 Below are the steps needed:
 
@@ -65,15 +95,3 @@ ansible-playbook site.yml -i inventories/localhost
 ```
 
 A long term solution is to adjust the roles and/or the invocation (e.g. use of `is_admin`) to make these extra steps unnecessary.
-
-# Production
-
-In production the installation target is Kielipankki's software
-environment on CSC's supercomputer(s).
-
-ansible-playbook -i inventories/production site.yml
-
-# Partial installation
-
-The roles are tagged, you can run them individually with -t. See
-site.yml for details, see example in Testing above.
