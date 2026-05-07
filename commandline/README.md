@@ -34,29 +34,29 @@ module use /local_scratch/<uid>/ansible/modulefiles  # (check module_root in inv
 
 In production the installation target is Kielipankki's software environment on CSC's supercomputer(s).
 
-ansible-playbook -i inventories/production site.yml
+`ansible-playbook -i inventories/production site.yml`
 
 ### Reinstallation as different user
 If you need to reinstall the stack as a differnt user, some tasks will fail due to some `chmod` commands trying to update files not belonging to you. In this case run
 
-ansible-playbook -i inventories/production site.yml -t force_install
+`ansible-playbook -i inventories/production site.yml -t force_install`
 
 ### Testing the production install
 All tasks should test the installation and have at least a "Quick test" task. Note that the quick tests are far from comprehensive, them failing points to an error, them succeeding gives a high probability that they installed correctly, but is not 100% fool proof.
 You can run tests only using the "test" tag:
 
-ansible-playbook -i inventories/production site.yml -t test
+`ansible-playbook -i inventories/production site.yml -t test`
 
 ### Partial installation
 
-The roles are tagged, you can run them individually with -t. See
-site.yml for details. Example: to install praat only run
+The roles are tagged, you can run them individually with `-t`. See
+`site.yml` for details. Example: to install praat only run
 
-ansible-playbook -i inventories/production site.yml -t praat
+`ansible-playbook -i inventories/production site.yml -t praat`
 
 to run the quick test of the praat installation run
 
-ansible-playbook -i inventories/production site.yml -t praat -t test
+`ansible-playbook -i inventories/production site.yml -t praat -t test`
 
 ## Local installation
 
