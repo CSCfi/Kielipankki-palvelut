@@ -23,7 +23,6 @@ workdir/extensions/ReplaceText https://github.com/wikimedia/mediawiki-extensions
 workdir/extensions/SapphireSpamCleanse https://github.com/Nikerabbit/mediawiki-extensions-SapphireSpamCleanse main
 workdir/extensions/SemanticMediaWiki https://github.com/SemanticMediaWiki/SemanticMediaWiki 6.0.1
 workdir/extensions/ShortUrl https://github.com/wikimedia/mediawiki-extensions-ShortUrl.git REL1_44
-workdir/extensions/SmiteSpam https://github.com/wikimedia/mediawiki-extensions-SmiteSpam master
 workdir/extensions/SpamBlacklist https://github.com/wikimedia/mediawiki-extensions-SpamBlacklist REL1_44
 workdir/extensions/TemplateStyles https://github.com/wikimedia/mediawiki-extensions-TemplateStyles REL1_44
 workdir/extensions/Termbank https://github.com/Nikerabbit/mediawiki-extensions-Termbank.git master
