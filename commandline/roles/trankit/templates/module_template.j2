@@ -28,19 +28,21 @@ directory, containing the most commonly used models.
 This command will process Finnish language files with the plaindoc
 input_format, and using our provided model directory:
 
+```
 python -m trankit --input /directory/with/input/files \
   --output_dir /directory/with/output/files \
   --input_format plaindoc \
-  --cache_dir $LBMODELS \
+  --cache_dir $LB_MODELS \
   --lang finnish
+```
 
 If you wish to use your own directory for the models (and you will have to
-do so if you are interested in an unsupported language), replace $LBMODELS
+do so if you are interested in an unsupported language), replace `$LB_MODELS`
 with that directory.
 
 NB: Apart from the language-specific models, trankit also uses a large
 multilingual model. This is always accessed from our provided directory. If
-you wish to override that, set the environment variable HF_HOME to a
+you wish to override that, set the environment variable `HF_HOME` to a
 directory of your choice.
 
 2. Converting trankit's output to CoNLL-U
@@ -48,18 +50,20 @@ directory of your choice.
 Trankit's output format is json. It supports converting the json to CoNLL-U,
 but not from the command line. We (The Language Bank) have provided a small
 script for doing the conversion for you. Mirroring trankit's operation, it
-requires an --input option (file or directory containing input files) and an
---output_dir option, eg.
+requires an `--input` option (file or directory containing input files) and an
+`--output_dir` option, eg.
 
+```
 python trankit2conllu --input /path/to/trankit/output \
   --output_dir /path/to/conllu-output
+```
 
 For documentation, see https://trankit.readthedocs.io/en/latest/ and https://github.com/nlp-uoregon/trankit.
 ]])
 
 prepend_path('PATH', '{{ bin_dir }}')
 setenv("HF_HOME", '{{ shared_models_dir }}')
-setenv("LBMODELS", '{{ shared_models_dir }}')
+setenv("LB_MODELS", '{{ shared_models_dir }}')
 setenv("HF_HUB_CACHE", os.getenv("HOME") .. "/.transformers")
 
 if(mode() == 'load') then
