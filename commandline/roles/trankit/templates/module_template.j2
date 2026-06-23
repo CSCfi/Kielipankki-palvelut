@@ -31,11 +31,11 @@ input_format, and using our provided model directory:
 python -m trankit --input /directory/with/input/files \
   --output_dir /directory/with/output/files \
   --input_format plaindoc \
-  --cache_dir $LB_MODELS \
+  --cache_dir $LBMODELS \
   --lang finnish
 
 If you wish to use your own directory for the models (and you will have to
-do so if you are interested in an unsupported language), replace $LB_MODELS
+do so if you are interested in an unsupported language), replace $LBMODELS
 with that directory.
 
 NB: Apart from the language-specific models, trankit also uses a large
@@ -52,14 +52,14 @@ requires an --input option (file or directory containing input files) and an
 --output_dir option, eg.
 
 python trankit2conllu --input /path/to/trankit/output \
-  --output_dir /path/to/conllu_output
+  --output_dir /path/to/conllu-output
 
 For documentation, see https://trankit.readthedocs.io/en/latest/ and https://github.com/nlp-uoregon/trankit.
 ]])
 
 prepend_path('PATH', '{{ bin_dir }}')
 setenv("HF_HOME", '{{ shared_models_dir }}')
-setenv("LB_MODELS", '{{ shared_models_dir }}')
+setenv("LBMODELS", '{{ shared_models_dir }}')
 setenv("HF_HUB_CACHE", os.getenv("HOME") .. "/.transformers")
 
 if(mode() == 'load') then
@@ -67,3 +67,4 @@ if(mode() == 'load') then
         LmodMessage("trankit loaded. For help, see \"module help trankit\".")
         LmodMessage("")
 end
+
