@@ -1,0 +1,4 @@
+# man 5 canonical
+
+# Rewrite to Kielipankki RT queue
+/^.*@tieteentermipankki.fi$/    kielipankki@csc.fi

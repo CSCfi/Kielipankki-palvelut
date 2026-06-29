@@ -15,5 +15,7 @@
   roles:
     - role: kielipankki.common.postfix
       tags: postfix
+    - role: postfix
+      tags: postfix
     - role: kielipankki.common.opsview
       tags: opsview

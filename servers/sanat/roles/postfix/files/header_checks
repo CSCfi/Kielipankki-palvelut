@@ -1,0 +1,5 @@
+# HEADER_CHECKS(5)
+# sanat specific config, see man 5 header_checks
+
+# rewrite Kielipankki RT queue
+/^From:.*@tieteentermipankki/    REPLACE From: Tieteen termipankki <kielipankki@csc.fi>

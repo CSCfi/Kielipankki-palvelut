@@ -1,0 +1,9 @@
+postfix_config_dir: /etc/postfix/
+postfix_config_file: "{{ postfix_config_dir }}/main.cf"
+postfix_config_lines:
+ - "sender_canonical_maps = regexp:/etc/postfix/sender_canonical_maps"
+ - "sender_canonical_classes = envelope_sender, header_sender"
+ - "header_checks = regexp:/etc/postfix/header_checks"
+postfix_custom_configfiles:
+ - header_checks
+ - sender_canonical_maps

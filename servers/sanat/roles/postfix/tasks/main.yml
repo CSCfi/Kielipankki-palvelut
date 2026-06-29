@@ -1,0 +1,15 @@
+- name: copy custom files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ postfix_config_dir }}"
+  loop: "{{ postfix_custom_configfiles }}"
+  notify: restart postfix
+
+- name: Update Postfix configuration
+  ansible.builtin.lineinfile:
+    dest: "{{ postfix_config_file }}"
+    line: "{{ item }}"
+    regexp: "^{{ item | regex_replace('(^[^=]+ =)', '\\1') }}"
+    mode: "0644"
+  loop: "{{ postfix_config_lines }}"
+  notify: restart postfix
