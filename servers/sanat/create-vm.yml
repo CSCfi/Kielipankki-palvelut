@@ -15,7 +15,7 @@
   roles:
     - role: kielipankki.common.postfix
       tags: postfix
-    - role: postfix
+    - role: postfix # local role in this playbook
       tags: postfix
     - role: kielipankki.common.opsview
       tags: opsview
