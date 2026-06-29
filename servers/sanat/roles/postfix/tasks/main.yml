@@ -9,7 +9,7 @@
   ansible.builtin.lineinfile:
     dest: "{{ postfix_config_file }}"
     line: "{{ item }}"
-    regexp: "^{{ item | regex_replace('(^[^=]+ =)', '\\1') }}"
+    regexp: "^{{ item | regex_replace('(^[^=]+ =).*$', '\\1') }}"
     mode: "0644"
   loop: "{{ postfix_config_lines }}"
   notify: restart postfix
