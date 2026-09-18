@@ -22,7 +22,7 @@
   args:
     chdir: "{{ compile_dir }}"
   environment:
-    PATH: "{{ install_prefix }}/hfst/{{ hfst_version }}/bin:{{ install_prefix }}/hfstospell/{{ hfst_ospell_version }}/bin:{{ ansible_env.PATH }}"
+    PATH: "{{ install_prefix }}/hfst/{{ hfst_version }}/bin:{{ install_prefix }}/hfstospell/{{ hfst_ospell_version }}/bin:{{ ansible_facts['env'].PATH }}"
     LD_LIBRARY_PATH: "{{ install_prefix }}/hfst/{{ hfst_version }}/lib:{{ install_prefix }}/hfstospell/{{ hfst_ospell_version }}/lib"
   with_items:
    - ./check-morphologies.sh

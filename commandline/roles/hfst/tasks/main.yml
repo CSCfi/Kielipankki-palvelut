@@ -14,7 +14,7 @@
     state: present
   become: yes
   when:
-    - ansible_os_family == "Debian"
+    - ansible_facts["os_family"] == "Debian"
     - is_admin
 
 - name: "RHEL/CentOS: Install list of packages"
@@ -30,7 +30,7 @@
     state: present
   become: yes
   when:
-    - ansible_os_family == "RedHat"
+    - ansible_facts["os_family"] == "RedHat"
     - is_admin
 
 - name: Ensure finnish locale
@@ -61,7 +61,7 @@
   file:
     path: "{{ install_prefix }}"
     mode: 0775
-    owner: "{{ ansible_user_id }}"
+    owner: "{{ ansible_facts['user_id'] }}"
     recurse: false
     state: directory
   when: not check_install_root.stat.exists
