@@ -2,3 +2,4 @@
 servers/sanat/.idea/*
 *.retry
 *.sw?
+.ansible
