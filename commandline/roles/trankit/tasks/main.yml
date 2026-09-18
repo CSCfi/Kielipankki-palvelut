@@ -64,14 +64,16 @@
     apply:
       tags: test
   vars:
-    lang: "{{ item }}"
+    lang: "{{ language }}"
   loop:
     - finnish
     - english
     - swedish
+  loop_control:
+    loop_var: language
   when: shared_group is defined
   tags: test
-    
+
 - name: Remove build directory
   ansible.builtin.file:
     path: "{{ build_dir }}"
