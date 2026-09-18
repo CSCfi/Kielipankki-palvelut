@@ -1,4 +1,4 @@
-compile_root: /tmp/{{ ansible_user_id }}/ansible
+compile_root: /tmp/{{ ansible_facts['user_id'] }}/ansible
 python_modcall: ""
 gcc_modcall: ""
 koivu_ansible_project_number: 2000680

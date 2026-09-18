@@ -7,17 +7,17 @@
     state: present
   become: yes
   when:
-    - ansible_os_family == "Debian"
+    - ansible_facts["os_family"] == "Debian"
     - is_admin
 
 - name: "RHEL/CentOS: Install list of packages"
-  yum: 
+  yum:
     name:
       - libjack-devel
     state: present
   become: yes
   when:
-    - ansible_os_family == "RedHat"
+    - ansible_facts["os_family"] == "RedHat"
     - is_admin
 
 - name: src_root directory exists with 0775 permission
