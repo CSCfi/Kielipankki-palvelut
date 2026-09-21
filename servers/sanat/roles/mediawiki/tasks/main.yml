@@ -4,6 +4,14 @@
     state: present
   with_items: "{{ mediawiki_packages }}"
 
+- name: Create directory for oregano installation
+  ansible.builtin.file:
+    path: /srv/mediawiki
+    state: directory
+    owner: root
+    group: root
+    mode: '0766'
+
 - name: Install oregano
   get_url:
     url: https://raw.githubusercontent.com/wikimedia/translatewiki/340394a9eb459e5477f98da6ed82d9cc156f79c5/bin/oregano
