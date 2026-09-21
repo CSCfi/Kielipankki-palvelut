@@ -11,7 +11,7 @@
 - src: geerlingguy.repo-remi
   version: 2.1.0
 - src: geerlingguy.java
-  version: 2.5.0
+  version: 2.6.1
 - src: geerlingguy.elasticsearch
   version: 5.1.2
 - src: 0x0i.systemd
