@@ -24,6 +24,11 @@
       ansible.builtin.stat:
         path: "{{ matomo_deploy_dir }}/console"
       register: matomo_installation
+    - name: Check if Matomo has been configured
+      ansible.builtin.stat:
+        path: "{{ matomo_deploy_dir }}/config/config.ini.php"
+      register: matomo_config
+      when: matomo_installation.stat.exists
     - name: Fetch installed version
       ansible.builtin.command: "'{{ matomo_deploy_dir }}/console' core:version"
       register: matomo_installed_version_output
@@ -32,7 +37,7 @@
     - name: Decode installed version number
       ansible.builtin.set_fact:
         matomo_installed_version: "{{ matomo_installed_version_output.stdout }}"
-      when: matomo_installed_version_output is defined
+      when: matomo_installed_version_output.skipped is not defined or not matomo_installed_version_output.skipped
 
 - name: Print Matomo versions
   ansible.builtin.debug:
@@ -51,11 +56,22 @@
         owner: "{{ matomo_user }}"
         group: "{{ matomo_group }}"
     - name: Upgrade if necessary
-      when: matomo_installed_version is defined
       ansible.builtin.command:
         cmd: "'{{ matomo_deploy_dir }}/console' core:update"
       become: true
       become_user: "{{ matomo_user }}"
+      when:
+        - matomo_installed_version is defined
+        - matomo_config.stat.exists | default(false)
+    - name: Warn about unconfigured Matomo installation
+      ansible.builtin.debug:
+        msg: >
+          Matomo files are present at {{ matomo_deploy_dir }} but
+          {{ matomo_deploy_dir }}/config/config.ini.php does not exist yet, so the
+          automatic upgrade was skipped. Run upgrade after configuring.
+      when:
+        - matomo_installed_version is defined
+        - not (matomo_config.stat.exists | default(false))
   when: matomo_installed_version is undefined or matomo_installed_version != matomo_latest_version
 
 - name: Create docroot if missing
