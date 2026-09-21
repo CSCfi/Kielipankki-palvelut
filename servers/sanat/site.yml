@@ -27,8 +27,16 @@
       tags: apache
     - role: mediawiki
       tags: mediawiki
-    - role: firewall
+    - role: kielipankki.common.firewall
       tags: firewall
+      vars:
+        iptable_confs:
+          - protocol: tcp
+            port: 443
+            comment: Allow HTTPS access from everywhere
+          - protocol: tcp
+            port: 80
+            comment: Allow HTTP access from everywhere
     - role: geerlingguy.java
       tags: java
     - role: geerlingguy.elasticsearch
