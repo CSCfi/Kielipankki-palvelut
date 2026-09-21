@@ -58,6 +58,11 @@
       become_user: "{{ matomo_user }}"
   when: matomo_installed_version is undefined or matomo_installed_version != matomo_latest_version
 
+- name: Create docroot if missing
+  ansible.builtin.file:
+    path: "{{ matomo_symlink | dirname }}"
+    state: directory
+
 - name: Link deployment directory from docroot
   ansible.builtin.file:
     path: "{{ matomo_symlink }}"
