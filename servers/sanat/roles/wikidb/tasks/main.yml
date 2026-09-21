@@ -17,13 +17,13 @@
 
 - name: Add database for each wiki
   tags: db
-  mysql_db:
+  ansible.mysql.mysql_db:
     name: "{{ item.value.db.database }}"
     state: present
   with_dict: "{{ mediawikis }}"
 
 - name: Add database user for the wiki
-  mysql_user:
+  ansible.mysql.mysql_user:
     name: "{{ item.value.db.user }}"
     password: "{{ item.value.db.password }}"
     priv: "*.*:ALL"
