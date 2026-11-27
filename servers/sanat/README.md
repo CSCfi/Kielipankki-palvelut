@@ -15,7 +15,7 @@ pip install -r requirements_dev.txt
 
  - Ansible (developed on version 2)
  - Ansible-Galaxy (developed on version 2)
-  - `ansible-galaxy install -r requirements.yml`)
+ - Install the required roles and collections with `ansible-galaxy install -r requirements.yml`.
 
 ## Usage
 
