@@ -1,18 +1,22 @@
-- src: geerlingguy.apache
-  version: 4.0.0
-- src: geerlingguy.memcached
-  version: 2.2.0
-- src: geerlingguy.composer
-  version: 1.9.2
-- src: geerlingguy.php
-  version: 6.0.0
-- src: geerlingguy.php-versions
-  version: 7.0.0
-- src: geerlingguy.repo-remi
-  version: 2.1.0
-- src: geerlingguy.java
-  version: 2.6.1
-- src: geerlingguy.elasticsearch
-  version: 5.1.2
-- src: 0x0i.systemd
-  version: v0.3.5
+roles:
+  - src: geerlingguy.apache
+    version: 4.0.0
+  - src: geerlingguy.memcached
+    version: 2.2.0
+  - src: geerlingguy.composer
+    version: 1.9.2
+  - src: geerlingguy.php
+    version: 6.0.0
+  - src: geerlingguy.php-versions
+    version: 7.0.0
+  - src: geerlingguy.repo-remi
+    version: 2.1.0
+  - src: geerlingguy.java
+    version: 2.6.1
+  - src: geerlingguy.elasticsearch
+    version: 5.1.2
+  - src: 0x0i.systemd
+    version: v0.3.5
+
+collections:
+  - name: ansible.mysql
