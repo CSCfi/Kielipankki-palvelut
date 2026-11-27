@@ -3,7 +3,6 @@
 set -euo pipefail
 
 DIR="$1"
-URL="$2"
 VER="$3"
 
 (
