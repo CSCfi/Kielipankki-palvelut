@@ -1,10 +1,11 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 DIR="$1"
 URL="$2"
-VER="$3"
+
+export GIT_TERMINAL_PROMPT=0
 
 if [ -d "$DIR" ]
 then (
@@ -12,15 +13,14 @@ then (
 	ACTUALURL="$(git config --get remote.origin.url)"
 	if [ "$URL" != "$ACTUALURL" ]
 	then
-		echo "Re-cloning $DIR";
-		cd -
-		rm -rf "$DIR"
+		echo "Updating origin for $DIR"
+		git remote set-url origin "$URL"
+		git remote prune origin
 	fi
 ) fi
 
 if [ ! -d "$DIR" ]
 then
-	export GIT_TERMINAL_PROMPT=0
 	echo "Cloning $DIR";
-	git clone -b "$VER" "$URL" "$DIR" || exit
+	git clone --no-checkout "$URL" "$DIR" || exit
 fi
