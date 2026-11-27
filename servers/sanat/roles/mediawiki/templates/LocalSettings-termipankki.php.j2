@@ -214,12 +214,16 @@ $wgULSLanguageDetection = false;
 wfLoadExtension( 'VEForAll' );
 wfLoadExtension( 'VisualEditor' );
 $wgVisualEditorEnableDiffPage = true;
+// Main is enabled as a content namespace; term namespaces are disabled below.
+$wgVisualEditorAvailableNamespaces = [
+	'Project' => true,
+];
 $wgHiddenPrefs[] = 'visualeditor-tabs';
 $wgHiddenPrefs[] = 'visualeditor-newwikitext';
-#$wgVisualEditorEnableWikitext = true;
-#$wgDefaultUserOptions['visualeditor-newwikitext'] = 1;
+$wgVisualEditorEnableWikitext = true;
+$wgDefaultUserOptions['visualeditor-newwikitext'] = 1;
 $wgVisualEditorUseSingleEditTab = true;
-#$wgDefaultUserOptions['visualeditor-enable'] = 1;
+$wgDefaultUserOptions['visualeditor-editor'] = 'visualeditor';
 $wgHooks['VEForAllToolbarConfigNormal'][] = static function( &$defaultConfigNormal ) {
     $defaultConfigNormal[] = [ 'include' => [ 'reference' ] ];
 };
@@ -284,7 +288,7 @@ function wfAddTermNamespace( $id, $name ) {
 	global $wgExtraNamespaces, $wgContentNamespaces,
 		$wgNamespaceProtection,  $wgNamespacesToBeSearchedDefault,
 		$wgGroupPermissions, $smwgNamespacesWithSemanticLinks,
-		$wgCapitalLinkOverrides, $wgAddGroups;
+		$wgCapitalLinkOverrides, $wgAddGroups, $wgVisualEditorAvailableNamespaces;
 
 	$constant = strtoupper( "NS_$name" );
 	define( $constant, $id );
@@ -294,7 +298,7 @@ function wfAddTermNamespace( $id, $name ) {
 	$wgContentNamespaces[] = $id;
 	$wgNamespacesToBeSearchedDefault[$id] = true;
 	$wgCapitalLinkOverrides[$id] = false;
-	$wgVisualEditorAvailableNamespaces[$id] = false;
+	$wgVisualEditorAvailableNamespaces[$name] = false;
 
 	$right = strtolower( $name );
 	$wgNamespaceProtection[$id] = [ $right ];
